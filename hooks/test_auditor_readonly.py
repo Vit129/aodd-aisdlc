@@ -21,4 +21,8 @@ for c in ["pytest -q 2>&1 | tail", "git diff HEAD~1", "git log --oneline", "pyth
 assert h.decide({"tool_name": "apply_patch", "tool_input": {"command": "*** Begin Patch\n*** Add File: a\n+x\n*** End Patch"}})
 assert h.decide(bash("echo hi > hello.txt")) and h.decide(bash("ls")) is None
 assert h.decide({"tool_name": "Read"}) is None
+for c in ["git tag", "git tag -l 'v*'", "git branch -r --contains abc; git tag", "git stash list"]:
+    assert h.decide(bash(c)) is None, c                              # listing tags/stashes is a read
+for c in ["git tag v1.0.0", "git tag -a v1 -m x", "git stash", "git stash push -m x", "git stash pop"]:
+    assert h.decide(bash(c)), c
 print("ok")

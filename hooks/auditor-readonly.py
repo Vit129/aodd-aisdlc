@@ -16,7 +16,8 @@ BASH_WRITE = re.compile(
     r"(?<![<>&0-9])>{1,2}(?!&|\s*/dev/null)"           # > file, >> file (not 2>&1, >/dev/null)
     r"|\bsed\s+(-\w*\s+)*-i|\bperl\s+-\w*i"
     r"|\b(rm|mv|cp|tee|touch|mkdir|rmdir|chmod|ln|truncate|dd)\b"
-    r"|\bgit\s+(commit|push|add|reset|checkout|switch|stash|merge|rebase|restore|clean|tag|branch\s+-[dD])\b"
+    r"|\bgit\s+(commit|push|add|reset|checkout|switch|merge|rebase|restore|clean|branch\s+-[dD]|stash(?!\s+(list|show)\b))\b"
+    r"|\bgit\s+tag\s+(?!-l\b|--list\b|-n\b|--contains\b|--points-at\b)[^\s;&|]"  # bare `git tag` / `-l` / `stash list` only read
     r"|\bgh\s+(pr|issue)\s+(create|merge|edit|comment|close)\b")
 
 

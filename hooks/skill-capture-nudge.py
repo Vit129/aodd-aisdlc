@@ -31,6 +31,7 @@ SKILL_BASH_WRITE = re.compile(r"(?<![0-9&])>>?\s*['\"]?\S*skills/[^/\s]+/"
                               r"|\b(sed\s+-i|tee|cp|mv|install)\b[^|;&]*skills/[^/\s]+/"
                               r"|open\([^)]*skills/[^)]*,\s*['\"][wa]")
 SKILL_MD = re.compile(r"(/[^\s'\"]*/skills/([^/\s'\"]+)/SKILL\.md)")
+PATCH_FILE = re.compile(r"^\*\*\* (?:Add|Update|Delete) File: (.+?)\s*$", re.M)  # Codex apply_patch headers
 DOC = "docs/skill-learning.md (under your Claude home)"
 
 SKILL_PASS = """[skill-capture] This session had a learning signal ({sig}; {n} tool calls). If it taught a verified, reusable rule, patch the skill now; most sessions teach nothing new and "skill-capture: nothing" is a fine answer. Procedure: {doc}.
@@ -67,6 +68,9 @@ def scan(transcript: Path, since: int = 0):
             try:
                 rec = json.loads(line)
             except json.JSONDecodeError:
+                continue
+            if isinstance(rec.get("payload"), dict):  # Codex rollout
+                n, corrections, fixes, written = _codex(rec, n, since, corrections, fixes, written, loaded)
                 continue
             content = (rec.get("message") or {}).get("content") or []
             after = n > since
@@ -108,6 +112,32 @@ def scan(transcript: Path, since: int = 0):
     if fixes:
         signals.append("fix commit")
     return n, written, signals, loaded
+
+
+def _codex(rec, n, since, corrections, fixes, written, loaded):
+    """Codex rollout record {type: response_item, payload}. Returns updated (n, corrections, fixes, written)."""
+    pl = rec.get("payload") or {}
+    if pl.get("type") == "message" and pl.get("role") == "user":
+        said = " ".join(b.get("text", "") for b in pl.get("content") or [] if isinstance(b, dict) and b.get("type") == "input_text").strip()
+        if (n >= since and said and not said.startswith(("<", "# AGENTS.md")) and "[skill-capture]" not in said
+                and CORRECTION.search(said[:400])):
+            corrections += 1
+    elif pl.get("type") in ("function_call", "custom_tool_call"):
+        n += 1
+        name = pl.get("name")
+        if name == "exec_command":
+            try:
+                cmd = str(json.loads(pl.get("arguments") or "{}").get("cmd", ""))
+            except (ValueError, AttributeError):
+                cmd = ""
+            for m in SKILL_MD.finditer(cmd):
+                loaded[m.group(2)] = m.group(1)
+            if n > since:
+                fixes += bool(FIX_COMMIT.search(cmd))
+                written |= bool(SKILL_BASH_WRITE.search(cmd))
+        elif name == "apply_patch" and n > since:
+            written |= any(SKILL_FILE.search(f) for f in PATCH_FILE.findall(str(pl.get("input") or "")))
+    return n, corrections, fixes, written
 
 
 def skill_path(name: str, known: str, cwd: Path) -> str:

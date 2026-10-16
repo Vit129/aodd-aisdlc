@@ -41,4 +41,13 @@ assert "audit.py" in decide()                                      # 5 files -> 
 audit("PASS"); assert decide() is None; unaudit()                  # audited -> allow
 tr.write_text(ed("/h/notes/agent-memory/x/lessons.md") + "\n" + ed("/h/.claude/projects/p/memory/n.md"))
 assert decide() is None                                            # notes only -> not medium
+# Codex rollout: apply_patch custom_tool_call, files from patch headers
+cx = lambda *fs: json.dumps({"timestamp": "t", "type": "response_item", "payload": {"type": "custom_tool_call", "name": "apply_patch",
+    "input": "*** Begin Patch\n" + "".join(f"*** Update File: {f}\n@@\n-a\n+b\n" for f in fs) + "*** End Patch"}})
+tr.write_text("\n".join(cx(f"/x/{i}.py") for i in range(4)))
+assert decide() is None                                            # 4 patched files -> small
+tr.write_text(cx(*[f"/x/{i}.py" for i in range(5)]))
+assert "audit.py" in decide()                                      # 5 patched files (one patch) -> medium
+tr.write_text(cx(str(prog)) ); prog.write_text("- [ ] z\n")
+assert "- [ ] z" in decide()                                       # Codex-touched progress file with open box -> block
 print("ok")

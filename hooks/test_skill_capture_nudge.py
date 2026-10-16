@@ -50,4 +50,14 @@ recs=reads(24)+[sig]+reads(1); assert run("i",recs)
 recs+= [{"type":"user","message":{"content":"Stop hook feedback: [skill-capture] ... wrong rules"}},{"type":"user","message":{"content":"ไม่ใช่ ทำแบบนี้"}}]+reads(45)
 assert "1 user correction" in run("i",recs)
 assert not h.CORRECTION.search("อย่าลืมรัน test นะ ไม่ต้องรีบ")              # everyday Thai is not a correction
+# Codex rollout records
+def cxcall(cmd): return {"type":"response_item","payload":{"type":"function_call","name":"exec_command","arguments":json.dumps({"cmd":cmd}),"call_id":"c"}}
+cxuser=lambda t: {"type":"response_item","payload":{"type":"message","role":"user","content":[{"type":"input_text","text":t}]}}
+cxreads=lambda n: [cxcall("ls")]*n
+inj=cxuser("<environment_context>wrong</environment_context>")
+assert run("x1",cxreads(25)+[inj]) is None                                  # injected context is not a correction
+assert "user correction" in run("x2",cxreads(24)+[cxuser("ไม่ใช่ ทำผิดแล้ว")]+cxreads(1))
+assert h.FIX_NOTE in run("x3",cxreads(25)+[cxcall('git commit -m "fix(x): y"')])
+assert run("x4",cxreads(25)+[cxuser("wrong"),{"type":"response_item","payload":{"type":"custom_tool_call","name":"apply_patch",
+    "input":"*** Begin Patch\n*** Update File: /u/skills/x/SKILL.md\n@@\n-a\n+b\n*** End Patch"}}]) is None   # skill patched via apply_patch
 print("ok")

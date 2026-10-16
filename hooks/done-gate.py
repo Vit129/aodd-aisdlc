@@ -7,7 +7,7 @@ stop cycle (stop_hook_active), fails open on any error.
 All boxes ticked but no audit report for this session -> block once too:
 a tracked feature is the AODD "large" size, and its Done must be audited before
 the CEO sees it (skills/chief-of-staff step 4.0). Same for AODD "medium": the session
-edited MEDIUM_FILES+ distinct files (Edit/Write/MultiEdit) with no auditor -> block once.
+edited MEDIUM_FILES+ distinct files (Edit/Write/MultiEdit, Codex apply_patch) with no auditor -> block once.
 "Audited" = scripts/audit.py wrote $AODD_HOME/pending-reports/audit-*-<sid8>.md for this session
 (the worker never picks the auditor's brief or relays its verdict). verdict FAIL/UNVERIFIABLE -> block:
 the CEO must hear it failed. Disable with DONE_GATE_AUDIT=0.
@@ -27,13 +27,14 @@ PROGRESS = re.compile(r"(ai-sdlc|dev|qa)-task-progress\.md$")
 MEDIUM_FILES = 5  # below this the micro/light self-check is enough
 NOT_WORK = re.compile(r"(/agent-memory/|/memory/|/\.aodd/|/\.claude/plans/)")  # notes, not deliverables
 EDIT_TOOLS = {"Edit", "Write", "MultiEdit", "write_to_file", "replace_file_content", "multi_replace_file_content"}
+PATCH_FILE = re.compile(r"^\*\*\* (?:Add|Update|Delete) File: (.+?)\s*$", re.M)  # Codex apply_patch headers
 
 
 def scan(transcript: Path):
     """(progress files written this session, whether an auditor subagent ran, files edited)."""
     paths, audited, edited = set(), False, set()
     for line in transcript.open():
-        if "task-progress" not in line and "auditor" not in line and not any(t in line for t in EDIT_TOOLS):
+        if "task-progress" not in line and "auditor" not in line and "apply_patch" not in line and not any(t in line for t in EDIT_TOOLS):
             continue
         try:
             data = json.loads(line)
@@ -47,6 +48,14 @@ def scan(transcript: Path):
                 audited = audited or inp.get("subagent_type") == "auditor"
                 fp = str(inp.get("file_path", ""))
                 if b.get("name") in EDIT_TOOLS and fp and not NOT_WORK.search(fp):
+                    edited.add(fp)
+                if PROGRESS.search(fp):
+                    paths.add(Path(fp))
+        # Codex rollout: {type: response_item, payload: {type: custom_tool_call, name: apply_patch, input: "<patch text>"}}
+        pl = data.get("payload")
+        if isinstance(pl, dict) and pl.get("name") == "apply_patch":
+            for fp in PATCH_FILE.findall(str(pl.get("input") or "")):
+                if not NOT_WORK.search(fp):
                     edited.add(fp)
                 if PROGRESS.search(fp):
                     paths.add(Path(fp))

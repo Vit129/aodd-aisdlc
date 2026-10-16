@@ -11,7 +11,7 @@ import os
 import re
 import sys
 
-WRITE_TOOLS = {"Edit", "Write", "MultiEdit", "NotebookEdit", "apply_patch"}  # apply_patch = Codex's edit tool
+WRITE_TOOLS = {"Edit", "Write", "MultiEdit", "NotebookEdit", "apply_patch"}  # apply_patch = Codex's edit tool (live-verified: tool_input {"command": "<patch>"}; its shell tool arrives as "Bash" with tool_input.command)
 BASH_WRITE = re.compile(
     r"(?<![<>&0-9])>{1,2}(?!&|\s*/dev/null)"           # > file, >> file (not 2>&1, >/dev/null)
     r"|\bsed\s+(-\w*\s+)*-i|\bperl\s+-\w*i"

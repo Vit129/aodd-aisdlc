@@ -17,5 +17,8 @@ for c in ["echo x > f", "cat a >> b", "sed -i '' s/a/b/ f", "rm -rf x", "git com
 for c in ["pytest -q 2>&1 | tail", "git diff HEAD~1", "git log --oneline", "python3 -m py_compile x.py",
           "make test >/dev/null", "grep -n foo f", "git status --porcelain", "bash -n s.sh"]:
     assert h.decide(bash(c)) is None, c
+# Codex, as dumped from a live PreToolUse: edits are apply_patch {command: <patch>}, shell is Bash {command}
+assert h.decide({"tool_name": "apply_patch", "tool_input": {"command": "*** Begin Patch\n*** Add File: a\n+x\n*** End Patch"}})
+assert h.decide(bash("echo hi > hello.txt")) and h.decide(bash("ls")) is None
 assert h.decide({"tool_name": "Read"}) is None
 print("ok")

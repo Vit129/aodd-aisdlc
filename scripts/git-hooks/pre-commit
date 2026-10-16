@@ -1,0 +1,13 @@
+#!/bin/bash
+# Refuse a commit that would leak a personal trace into this neutral package.
+# Enable once per clone: git config core.hooksPath scripts/git-hooks
+# Extra names to block (yours, never committed): one regex per line in .git/aodd-private-names
+pat='/Users/[A-Za-z]|/home/[a-z]|C:\\Users\\|@gmail\.com|claude\.ai/code/session'
+extra="$(git rev-parse --git-dir)/aodd-private-names"
+[ -f "$extra" ] && pat="$pat|$(grep -v '^#' "$extra" | grep . | paste -sd'|' -)"
+hits=$(git diff --cached -U0 --no-color -- . ':(exclude)AGENTS.md' | grep '^+' | grep -v '^+++' | grep -niE "$pat")
+if [ -n "$hits" ]; then
+  echo "pre-commit: personal trace in staged changes (package must stay neutral):" >&2
+  echo "$hits" | head -10 >&2
+  exit 1
+fi

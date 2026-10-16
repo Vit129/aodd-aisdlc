@@ -33,7 +33,7 @@ copy_file() {  # copy_file <src> <dest>
   else
     echo "NEW     $d"
   fi
-  [ "$DRY" = 1 ] || { mkdir -p "$(dirname "$d")"; cp "$s" "$d"; }
+  [ "$DRY" = 1 ] || { mkdir -p "$(dirname "$d")"; cp "$s" "$d"; if [ -x "$s" ]; then chmod +x "$d"; fi; }
 }
 
 copy_tree() {  # copy_tree <relative dir> [dest root]: every file except tests and caches
@@ -45,7 +45,6 @@ copy_tree() {  # copy_tree <relative dir> [dest root]: every file except tests a
 }
 
 for d in skills agents rules hooks scripts docs; do copy_tree "$d"; done
-if [ "$DRY" = 0 ]; then chmod +x "$DEST"/hooks/*.py "$DEST"/scripts/*.py 2>/dev/null || true; fi
 
 # Register hooks in settings.json / hooks.json (python3 stdlib; refuses to touch an unparsable file)
 register_hooks() {  # register_hooks <dest> <settings file name>
@@ -121,7 +120,6 @@ if [ "$CODEX_ON" = 1 ]; then
   CDEST="${CODEX_HOME:-$HOME/.codex}"
   echo "install into: $CDEST (codex)"
   for d in skills agents hooks scripts docs; do copy_tree "$d" "$CDEST"; done
-  if [ "$DRY" = 0 ]; then chmod +x "$CDEST"/hooks/*.py "$CDEST"/scripts/*.py 2>/dev/null || true; fi
   register_hooks "$CDEST" hooks.json
   # AGENTS.md: replace the aodd block in place (or append it), so a re-run never duplicates it
   AG="$CDEST/AGENTS.md"

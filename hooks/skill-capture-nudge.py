@@ -22,7 +22,9 @@ from pathlib import Path
 
 MIN_TOOL_CALLS = 20  # Known limit: raw tool-call count as "complex"; swap for a smarter signal if it fires on grind-y but trivial sessions
 INTERVAL = 40        # further tool calls before the same session can be nudged again
-STATE_DIR = Path(os.environ.get("AODD_HOME") or Path.home() / ".aodd") / "state" / "skill-capture"
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import _aodd_paths  # noqa: E402
+STATE_DIR = _aodd_paths.state() / "skill-capture"
 CORRECTION = re.compile(r"ไม่ใช่|ทำผิด|ผิดแล้ว|อย่าทำ|ไม่ต้องทำแบบ|ยาวไป|สั้นๆ|\b(no[,.]|wrong|that'?s not|too (long|verbose)|stop doing)\b", re.I)
 FIX_COMMIT = re.compile(r"git commit[\s\S]{0,80}?\b(fix|revert)(\(|:)", re.I)  # conventional-commit subject only
 SKILL_FILE = re.compile(r"(?:^|[\s/'\"])skills/[^/\s]+/(SKILL\.md|references/|scripts/|templates/)")

@@ -34,4 +34,5 @@ hooks = json.loads((T / "codex/hooks.json").read_text())["hooks"]
 assert set(hooks) == {"Stop", "PreToolUse", "PostToolUse"} and len(hooks["Stop"]) == 3   # theirs + two of ours, once
 assert (T / "codex/skills/ai-sdlc/SKILL.md").is_file() and (T / "codex/agents/auditor.md").is_file()
 assert (T / "codex/hooks/done-gate.py").is_file() and (T / "claude/settings.json").is_file()   # --codex is in addition to the Claude install
+assert (T / "claude/hooks/_aodd_paths.py").is_file() and (T / "codex/hooks/_aodd_paths.py").is_file()   # the shared resolver rides along
 print("ok")

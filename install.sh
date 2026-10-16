@@ -144,5 +144,5 @@ else:
 PY
   fi
 fi
-echo "state   reports and hook state live under \${AODD_HOME:-~/.aodd}"
+echo "state   reports, plans and hook state live under \${AODD_HOME:-~/.aodd} (override: AODD_REPORTS, AODD_STATE, AODD_PLANS)"
 echo "done"

@@ -19,7 +19,7 @@ model: opus
 
 ## SOP
 
-1. Read the brief / `$AODD_HOME/plans/<feature>/` progress file you were given. Medium jobs have no plan file: then the brief is the user request + Done claims you were given, and the scope is the changed files (`git diff`/`git show`). Nothing usable given → say "no brief — cannot audit" and stop.
+1. Read the brief / `$AODD_PLANS/<feature>/` progress file you were given. Medium jobs have no plan file: then the brief is the user request + Done claims you were given, and the scope is the changed files (`git diff`/`git show`). Nothing usable given → say "no brief — cannot audit" and stop.
 2. List every Done claim. For each, find or re-run the evidence yourself; never accept "tests pass" without output.
 3. Verdict per claim: PASS / FAIL (what's missing) / UNVERIFIABLE (why).
 4. Every row needs evidence you produced (command + output excerpt, or file:line you opened). No evidence → UNVERIFIABLE. Never cite output you did not see.

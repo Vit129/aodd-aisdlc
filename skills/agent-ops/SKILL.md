@@ -23,17 +23,19 @@ description: >
 ## SOP
 
 1. Gather (mechanical, a Haiku subagent is fine):
-   - audit reports: `$AODD_HOME/pending-reports/audit-*.md` and `done/` for the period; count verdicts (`verdict:` frontmatter) and note which rows failed
+   - audit reports: `$AODD_REPORTS/audit-*.md` and `done/` for the period; count verdicts (`verdict:` frontmatter) and note which rows failed
    - skill and rule changes: `git -C <claude-home> log --since=<date> --stat -- skills rules agents hooks`
-   - skill usage: count `Skill` tool calls per skill name in recent session transcripts under `<claude-home>/projects/` (`grep -o '"skill":"[^"]*"'`), plus how many `ai-sdlc-task-progress.md` files exist under `$AODD_HOME/plans/`
-   - skill-capture nudges that fired: `$AODD_HOME/state/skill-capture/` (one marker per session)
+   - skill usage: count `Skill` tool calls per skill name in recent session transcripts under `<claude-home>/projects/` (`grep -o '"skill":"[^"]*"'`), plus how many `ai-sdlc-task-progress.md` files exist under the plans dir (`python3 hooks/_aodd_paths.py plans`)
+   - skill-capture nudges that fired: `$AODD_STATE/skill-capture/` (one marker per session)
 2. Find (your judgment): repeated FAIL/DISPUTED reasons, skills never used in 60 days, the same correction recurring without the governing skill being patched, rules that are always loaded but rarely used.
 3. Propose at most 5 changes, each: **Why** (the problem, with numbers and where they came from) → change → expected effect → how we'll know next month.
-4. Write `$AODD_HOME/pending-reports/agent-ops-<YYYY-MM>.md`; tell the CEO the path. Nothing is applied until approved.
+4. Write `$AODD_REPORTS/agent-ops-<YYYY-MM>.md`; tell the CEO the path. Nothing is applied until approved.
+
+Extension: if `$AODD_HOME/extensions/agent-ops.md` exists, also follow it (extra gather steps, extra report sections). Nothing else is pluggable.
 
 On-demand usage check ("is this worth it", before adding or comparing a skill): decide from the counts above, not impressions. Before calling something a gap, grep `scripts/`, `hooks/` and `git log` for an existing or retired implementation. Verdict per item: used → keep; unused for months → archive or make opt-in; always loaded but rarely used → move behind a skill; must never be skipped → a hook, not prose.
 
-Proposals from other agents (`agy-proposal-*.md` in `$AODD_HOME/pending-reports/`) are triaged the same way: run `python3 scripts/check_agy_proposal.py <file>` first (it auto-rejects one without the evidence fields), then accept or reject each with a reason. Decided files move to `$AODD_HOME/pending-reports/done/` with the decision noted.
+Proposals from other agents (`agy-proposal-*.md` in `$AODD_REPORTS/`) are triaged the same way: run `python3 scripts/check_agy_proposal.py <file>` first (it auto-rejects one without the evidence fields), then accept or reject each with a reason. Decided files move to `$AODD_REPORTS/done/` with the decision noted.
 
 ## Pitfalls (verified)
 

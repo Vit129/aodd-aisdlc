@@ -40,7 +40,7 @@ Missing fields → ask in ONE message, then never again unless a CEO-gate item c
 | Check-back points | Which decisions must the CEO make before work starts? |
 | Delivery | Format, and to whom |
 
-Save it as `$AODD_HOME/plans/<feature>/brief.md` when the work spans sessions.
+Save it as `$AODD_PLANS/<feature>/brief.md` when the work spans sessions.
 
 ## 2. Dispatch (team = existing skill; lead = the skill, members = subagents)
 
@@ -56,7 +56,7 @@ Save it as `$AODD_HOME/plans/<feature>/brief.md` when the work spans sessions.
 
 - Independent pieces → parallel subagents; mechanical pieces → Haiku (see `rules/aodd.md` Cheap-model delegation).
 - Each subagent gets a mini-brief (goal, done, scope, limits) — it sees none of this conversation.
-- Cross-team handoff goes through a file (`$AODD_HOME/plans/<feature>/handoff.md`), not through your memory.
+- Cross-team handoff goes through a file (`$AODD_PLANS/<feature>/handoff.md`), not through your memory.
 - No skill fits → do it yourself; propose a new team only if the same gap shows up again (add teams when work needs them, not to fill the chart).
 
 ## 3. Stop and ask the CEO (never decide these yourself)

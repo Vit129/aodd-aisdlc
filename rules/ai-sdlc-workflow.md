@@ -84,11 +84,11 @@ No mechanical hook enforces these — treat "the user hasn't objected" as differ
   link between a scenario, its automation, and any tracker. Without it, nothing traces.
 - Scenario/test titles also carry a `[LAYER-KIND]` tag (`BE|FE` × `BL|UT|IT`, e.g. `[BE-BL]`) — layer/kind
   definitions and Dev + QA rules → `skills/ai-sdlc/references/dev-qa-pattern.md`.
-- Multi-step/multi-session work: track in `$AODD_HOME/plans/[FEATURE]/ai-sdlc-task-progress.md`
+- Multi-step/multi-session work: track in `$AODD_PLANS/[FEATURE]/ai-sdlc-task-progress.md`
   (legacy `dev-task-progress.md`/`qa-task-progress.md` supported), vertical slices not phases, resume at first unchecked `[ ]`.
   Skip entirely for single-sitting work. Full mechanics (tags, sensitive-data/mock rules,
   rollback, resume protocol) → `skills/ai-sdlc/references/ai-sdlc-progress-spec.md`.
-- Project/Feature Architecture Planning: the architecture document always goes in `$AODD_HOME/plans/[FEATURE]/[FEATURE]-architecture.md` (or `[FEATURE]-architecture/`), next to `ai-sdlc-task-progress.md` and the feature's other artifacts, never scattered.
+- Project/Feature Architecture Planning: the architecture document always goes in `$AODD_PLANS/[FEATURE]/[FEATURE]-architecture.md` (or `[FEATURE]-architecture/`), next to `ai-sdlc-task-progress.md` and the feature's other artifacts, never scattered.
 - Test automation: zero hard waits — whatever fixed-delay primitive the framework in
   use offers is forbidden, use its wait-for-condition primitive instead. 1 self-heal attempt max then
   route to a root-cause debugging pass (`9arm-skills:debug-mantra` if installed) — both are anti-flakiness facts, not
@@ -152,7 +152,7 @@ more for something with a real trade-off — then stop. Read `PRODUCT.md`/`ARCHI
 first if the project has them; every project gets an `ARCHITECTURE.md` regardless of
 size — write/update it with the stack/data-model decision now, a one-bullet entry for a
 trivial task, a full living-doc entry for a real one. For a new feature or project, write the architecture/design document directly at
-`$AODD_HOME/plans/[FEATURE]/[FEATURE]-architecture.md` (or `[FEATURE]-architecture/`), always in the same folder as
+`$AODD_PLANS/[FEATURE]/[FEATURE]-architecture.md` (or `[FEATURE]-architecture/`), always in the same folder as
 `ai-sdlc-task-progress.md`. Combined with the old
 pipeline's separate Dev/QA architecture split: decide here, in the same pass, **what
 needs QA coverage and why** — not the scenarios themselves (that's Phase 3), just
@@ -281,7 +281,7 @@ discipline specifically (writing/updating `CONTEXT.md` via `mattpocock-skills:do
 
 Task breakdown: `to-tickets` and `wayfinder` are also `disable-model-invocation` — for
 multi-step tasks, slice the design and spec into vertical slices directly and write them
-straight into `$AODD_HOME/plans/[FEATURE]/ai-sdlc-task-progress.md` (checkbox per slice; see
+straight into `$AODD_PLANS/[FEATURE]/ai-sdlc-task-progress.md` (checkbox per slice; see
 `skills/ai-sdlc/references/ai-sdlc-progress-spec.md`) instead of `to-tickets`' own
 `.scratch/<slug>/issues/` output, which nothing here reads anyway. For a multi-session epic
 genuinely too big to chart this way, tell the user they can run `/wayfinder` themselves for

@@ -1,0 +1,27 @@
+#!/bin/bash
+# Optional: after a merge/pull that changes the main branch of this repo, run ./install.sh (non-interactive)
+# and then, only if AODD_POST_INSTALL is set, that command. Off unless core.hooksPath points here:
+#   git config core.hooksPath scripts/git-hooks
+# One runner at a time (mkdir lock), 30 s debounce, log in ${AODD_STATE:-${AODD_HOME:-~/.aodd}/state}/post-merge.log.
+# Always exits 0: it never blocks git.
+top="$(git rev-parse --show-toplevel 2>/dev/null)" || exit 0
+branch="$(git symbolic-ref --short HEAD 2>/dev/null)"
+case "$branch" in main|master) ;; *) exit 0 ;; esac
+state="${AODD_STATE:-${AODD_HOME:-$HOME/.aodd}/state}"
+mkdir -p "$state" 2>/dev/null || exit 0
+log="$state/post-merge.log"; lock="$state/post-merge.lock"; stamp="$state/post-merge.stamp"
+# stale lock (a runner that died) older than 10 minutes is removed
+[ -d "$lock" ] && [ -n "$(find "$lock" -maxdepth 0 -mmin +10 2>/dev/null)" ] && rmdir "$lock" 2>/dev/null
+now=$(date +%s)
+[ -f "$stamp" ] && [ $((now - $(cat "$stamp" 2>/dev/null || echo 0))) -lt 30 ] && exit 0
+mkdir "$lock" 2>/dev/null || exit 0
+echo "$now" > "$stamp"
+(
+  trap 'rmdir "$lock" 2>/dev/null' EXIT
+  cd "$top" || exit 0
+  { echo "== $(date '+%F %T') post-merge in $top"
+    ./install.sh </dev/null || echo "install.sh failed ($?)"
+    if [ -n "${AODD_POST_INSTALL:-}" ]; then echo "-- AODD_POST_INSTALL"; bash -c "$AODD_POST_INSTALL" </dev/null || echo "post-install failed ($?)"; fi
+  } >> "$log" 2>&1
+) >/dev/null 2>&1 &
+exit 0

@@ -14,8 +14,8 @@ do the step directly.
 | Structured spec needed | Write it directly as a short markdown doc |
 | Domain language / `CONTEXT.md` | `mattpocock-skills:domain-modeling` (companion) |
 | Interface & seam design (deep modules, adapters) | `mattpocock-skills:codebase-design` (companion) |
-| Project / feature architecture plan | Write `$AODD_HOME/plans/[feature]/[feature]-architecture.md`, next to `ai-sdlc-task-progress.md` |
-| Ticket slicing | Write vertical slices directly into `$AODD_HOME/plans/[feature]/ai-sdlc-task-progress.md` |
+| Project / feature architecture plan | Write `$AODD_PLANS/[feature]/[feature]-architecture.md`, next to `ai-sdlc-task-progress.md` |
+| Ticket slicing | Write vertical slices directly into `$AODD_PLANS/[feature]/ai-sdlc-task-progress.md` |
 | QA test skeletons (RED, shift-left) | Your project's test framework and scenario tool; name IDs/testids per the project convention |
 | TDD implementation | `mattpocock-skills:tdd` for methodology, then write the code directly |
 | Security concern (auth, permissions, user input, secrets) | A security skill or review if you have one: secure-coding half in Phase 4, QA half in Phase 3 |
@@ -23,7 +23,7 @@ do the step directly.
 | Bounded subtask: search files, read/summarize logs, classify, extract facts, run build/test/lint, git/ops mechanics | `Agent(model: "haiku")`, several in parallel; the big model plans and judges. See `rules/aodd.md` |
 | Read/map code ("where is X", "who calls Y") | graphify (companion) first, then a Haiku subagent for broad sweeps; the big model reads every file it will edit itself |
 | Pre-merge review (standards + spec) | `mattpocock-skills:code-review` (companion) or any review skill; feed it the project's coding standards explicitly |
-| Session handoff to another agent/session | Write `$AODD_HOME/plans/[FEATURE]/handoff.md` (sibling of, not the same file as, `ai-sdlc-task-progress.md`) |
+| Session handoff to another agent/session | Write `$AODD_PLANS/[FEATURE]/handoff.md` (sibling of, not the same file as, `ai-sdlc-task-progress.md`) |
 | Bug investigation | `9arm-skills:debug-mantra` (companion) or `mattpocock-skills:diagnosing-bugs` |
 | Post-incident RCA | `9arm-skills:post-mortem` (companion) |
 | Independent audit of a "Done" claim | `python3 scripts/audit.py` (never a worker-briefed subagent) |

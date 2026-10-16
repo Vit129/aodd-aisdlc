@@ -23,7 +23,7 @@ below. Load this file when actually breaking a design into tasks.
 
 ## Artifact locations
 
-- **AI-SDLC Feature Tracking** — everything under `$AODD_HOME/plans/[FEATURE]/` (default `~/.aodd/plans/[FEATURE]/`):
+- **AI-SDLC Feature Tracking** — everything under `$AODD_PLANS/[FEATURE]/` (default `~/.aodd/plans/[FEATURE]/`):
   - `ai-sdlc-task-progress.md` (this IS the unified implementation & verification plan — no separate Dev vs QA tracking files; legacy `dev-task-progress.md`/`qa-task-progress.md` remain supported).
   - Design & Architecture: `[FEATURE]-architecture.md` (or `[FEATURE]-architecture/`, legacy `design.md`), test script skeletons under `test-scripts/`.
   - Handoff notes: `handoff.md`.
@@ -126,7 +126,7 @@ Status: In Progress | Completed
 - [ ] Gate 3 (Seam agreement) — approver: {name}, scope: {seams agreed}, {YYYY-MM-DD HH:mm}
 
 ## Artifacts
-- Architecture / Design: $AODD_HOME/plans/[FEATURE]/[FEATURE]-architecture.md
+- Architecture / Design: $AODD_PLANS/[FEATURE]/[FEATURE]-architecture.md
 
 ## Skill Invocation Log
 - Phase 1: {skill name(s), or "none — collapsed/step-0"}

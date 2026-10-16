@@ -8,7 +8,7 @@ All boxes ticked but no audit report for this session -> block once too:
 a tracked feature is the AODD "large" size, and its Done must be audited before
 the CEO sees it (skills/chief-of-staff step 4.0). Same for AODD "medium": the session
 edited MEDIUM_FILES+ distinct files (Edit/Write/MultiEdit, Codex apply_patch) with no auditor -> block once.
-"Audited" = scripts/audit.py wrote $AODD_HOME/pending-reports/audit-*-<sid8>.md for this session
+"Audited" = scripts/audit.py wrote $AODD_REPORTS/audit-*-<sid8>.md for this session
 (the worker never picks the auditor's brief or relays its verdict). verdict FAIL/UNVERIFIABLE -> block:
 the CEO must hear it failed. Disable with DONE_GATE_AUDIT=0.
 
@@ -20,12 +20,13 @@ import re
 import sys
 from pathlib import Path
 
-AODD_HOME = Path(os.environ.get("AODD_HOME") or Path.home() / ".aodd")
-REPORTS = AODD_HOME / "pending-reports"
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import _aodd_paths  # noqa: E402
+REPORTS = _aodd_paths.reports()
 VERDICT = re.compile(r"^verdict:\s*(\w+)", re.M)
 PROGRESS = re.compile(r"(ai-sdlc|dev|qa)-task-progress\.md$")
 MEDIUM_FILES = 5  # below this the micro/light self-check is enough
-NOT_WORK = re.compile(r"(/agent-memory/|/memory/|/\.aodd/|/\.claude/plans/)")  # notes, not deliverables
+NOT_WORK = re.compile(r"(/agent-memory[^/]*/|/memory/|/\.aodd/|/\.claude/plans/)")  # notes, not deliverables
 EDIT_TOOLS = {"Edit", "Write", "MultiEdit", "write_to_file", "replace_file_content", "multi_replace_file_content"}
 PATCH_FILE = re.compile(r"^\*\*\* (?:Add|Update|Delete) File: (.+?)\s*$", re.M)  # Codex apply_patch headers
 

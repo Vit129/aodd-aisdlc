@@ -61,9 +61,9 @@ Before test script design starts: extract API request/response fields per endpoi
 extract DB columns per table, diff them, fix mismatches. Persist the result so it's not
 re-derived every time a feature is touched:
 
-- `$AODD_HOME/plans/[FEATURE]/api-spec.md` — `## Endpoints`, `## Request/Response Schema`,
+- `$AODD_PLANS/[FEATURE]/api-spec.md` — `## Endpoints`, `## Request/Response Schema`,
   `## Error Cases`, `## Status` (`assumed` or `verified`)
-- `$AODD_HOME/plans/[FEATURE]/db-schema.md` — `## Tables`, `## Service Methods`
+- `$AODD_PLANS/[FEATURE]/db-schema.md` — `## Tables`, `## Service Methods`
   (seed/verify/cleanup signatures), `## Dependency Order` (FK levels)
 
 Check these files first before re-deriving schema from scratch on a feature that's already
@@ -138,6 +138,6 @@ no separate skill for it anymore.
 **Claude Code only (`EnterPlanMode` is a Claude Code tool):** call `EnterPlanMode` before starting Phase 2 design work on anything
 non-trivial — it's the native hard-approval gate. Write the drafted design there, then
 `ExitPlanMode`; only after user approval, copy the approved content into
-`$AODD_HOME/plans/[FEATURE]/[FEATURE]-architecture.md` (the the plan-mode file isn't guaranteed to persist
+`$AODD_PLANS/[FEATURE]/[FEATURE]-architecture.md` (the the plan-mode file isn't guaranteed to persist
 across sessions, the copy is what's durable). Not Claude Code: skip straight to writing
 `[FEATURE]-architecture.md` and confirming in chat before continuing.

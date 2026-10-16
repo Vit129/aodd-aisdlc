@@ -9,12 +9,12 @@ version: 1.0.0
 Read `rules/ai-sdlc-workflow.md` (installed under your Claude home, `~/.claude/rules/`) in full now and follow it phase by phase for this feature. Pull the
 `references/*.md` files next to this SKILL.md only when the phase you are in points to them.
 
-- Argument = feature slug. Create `$AODD_HOME/plans/<slug>/ai-sdlc-task-progress.md` yourself
-  (`AODD_HOME` defaults to `~/.aodd`).
+- Argument = feature slug. Create `$AODD_PLANS/<slug>/ai-sdlc-task-progress.md` yourself
+  (`AODD_PLANS` defaults to `~/.aodd/plans`; `python3 hooks/_aodd_paths.py plans` prints the resolved dir).
 - The 3 approval gates are real stops even in auto mode — the user opted in by invoking this.
 - `hooks/done-gate.py` blocks stopping while that progress file still has `- [ ]` boxes,
   so keep checkboxes current as you go, not at the end.
-- Runs as `chief-of-staff` full: Phase 1 output is the brief (`$AODD_HOME/plans/<slug>/brief.md`),
+- Runs as `chief-of-staff` full: Phase 1 output is the brief (`$AODD_PLANS/<slug>/brief.md`),
   each phase dispatches to its team, and the run ends with the `auditor` + the CEO report shape
   (Result / Evidence / Needs your decision / Cost). `hooks/done-gate.py` blocks Done until the auditor ran.
 - Skill-by-situation routing: `references/skill-routing.md`.

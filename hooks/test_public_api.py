@@ -21,4 +21,7 @@ assert callable(g.scan) and callable(g.audit_report)
 
 c = load("c", os.path.join(here, "..", "scripts", "check_agy_proposal.py"))
 assert len(inspect.signature(c.problems).parameters) == 1, "check_agy_proposal.problems(text)"
+p = load("p", os.path.join(here, "_aodd_paths.py"))
+for name in ("home", "reports", "state", "plans", "project", "worklog", "memory", "claude_home", "workspace_dirs"):
+    assert callable(getattr(p, name)), f"_aodd_paths.{name} is public API"
 print("ok")

@@ -1,0 +1,16 @@
+{
+  "jobs": [
+    {"name": "agent-ops", "default": "mon 09:00", "model": true, "requires": null,
+     "label": "weekly team review",
+     "produces": "agent-ops-<date>.md in the reports dir: at most 5 proposed team changes with evidence"},
+    {"name": "housekeeping", "default": "mon 09:15", "model": true, "requires": null,
+     "label": "cleanup report",
+     "produces": "housekeeping-<date>.md: what could be cleared (old transcripts, stale state, backup files); deletes nothing"},
+    {"name": "pending-work", "default": "daily 08:45", "model": false, "requires": null,
+     "label": "pending-work report",
+     "produces": "pending-work-<date>.md: uncommitted work, unpushed commits, unmerged branches in $AODD_REPOS (only written when something is pending)"},
+    {"name": "memory-backup", "default": "daily 22:00", "model": false, "requires": "agent-memory",
+     "label": "memory backup",
+     "produces": "a git commit (and push, when a remote is set) of $AODD_MEMORY; skipped when it is not a git repo"}
+  ]
+}

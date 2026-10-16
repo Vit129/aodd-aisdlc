@@ -157,7 +157,7 @@ If you showed this interface to someone and said "AI made this," would they beli
 - ❌ Gray text on colored backgrounds
 - ❌ The AI color palette: cyan-on-dark, purple-to-blue gradients, neon accents on dark
 - ❌ Default to dark mode with glowing accents
-- ❌ Another AI-cluster tell: warm cream (`~#F4F1EA`) + high-contrast serif + terracotta accent — this skill's own "tint neutrals toward brand hue" rule below actually funnels toward this cluster, so watch for it specifically rather than assuming the rule already avoids it [source: Anthropic's official `frontend-design` Claude Code plugin — compared 2026-08-08, not adopted]
+- ❌ Another AI-cluster tell: warm cream (`~#F4F1EA`) + high-contrast serif + terracotta accent — this skill's own "tint neutrals toward brand hue" rule below actually funnels toward this cluster, so watch for it specifically rather than assuming the rule already avoids it [source: Anthropic's official `frontend-design` Claude Code plugin — compared, not adopted]
 - ❌ Heavy `rgba()` / alpha transparency (design smell = incomplete palette)
 - ✅ Use OKLCH, not HSL
 - ✅ 60-30-10 rule: 60% neutral, 30% secondary, 10% accent

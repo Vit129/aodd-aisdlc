@@ -66,7 +66,7 @@ Choose:
 `ts-design.md`'s 9-column schema (§15) is the canonical, tracker-agnostic model — **never edit it to fit one tracker's fields.** If a project needs to push scenarios into a specific tool, add a sibling exporter file instead:
 
 1. Create `references/export-{tracker}.md` (e.g. `export-jira.md`, `export-ado.md`) in *this* skill's `references/` — never modify `ts-design.md`, `ts-data-gen.md`, or `ts-maintenance.md` to add tracker-specific fields.
-2. In that file, map the 9 canonical fields (TS-ID, Title, Description, Pre-conditions, Test Steps, Expected Result, Actual Result, Priority, Automation Status) to the tracker's real fields/format — e.g. Jira's Summary/Issue Type/custom fields, or ADO's Area Path/Iteration Path/`System.AssignedTo` (the fields this skill deliberately dropped 2026-09-04 — they come back here, scoped to this file only, if a project actually needs ADO).
+2. In that file, map the 9 canonical fields (TS-ID, Title, Description, Pre-conditions, Test Steps, Expected Result, Actual Result, Priority, Automation Status) to the tracker's real fields/format — e.g. Jira's Summary/Issue Type/custom fields, or ADO's Area Path/Iteration Path/`System.AssignedTo` (fields this skill deliberately leaves out — they come back here, scoped to this file only, if a project actually needs ADO).
 3. Add one row to the "When to Load Each Reference" table above pointing at it (already added).
 4. Google Sheets is usually the exception — a 9-column CSV pastes into Sheets directly with no field translation needed, so only add `export-sheets.md` if the project needs live writes via the Sheets API instead of a one-time paste.
 

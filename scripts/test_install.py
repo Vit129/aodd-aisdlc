@@ -35,4 +35,5 @@ assert set(hooks) == {"Stop", "PreToolUse", "PostToolUse"} and len(hooks["Stop"]
 assert (T / "codex/skills/ai-sdlc/SKILL.md").is_file() and (T / "codex/agents/auditor.md").is_file()
 assert (T / "codex/hooks/done-gate.py").is_file() and (T / "claude/settings.json").is_file()   # --codex is in addition to the Claude install
 assert (T / "claude/hooks/_aodd_paths.py").is_file() and (T / "codex/hooks/_aodd_paths.py").is_file()   # the shared resolver rides along
+assert not (T / "claude/scripts/git-hooks").exists(), "repo git hooks are never installed (they would clobber the host's own)"
 print("ok")

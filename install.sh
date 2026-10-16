@@ -3,7 +3,7 @@
 #   ./install.sh [--dry-run] [--claude-md] [--codex]
 # --codex also installs into ${CODEX_HOME:-~/.codex}: skills, agents, hooks, scripts, docs, the two rules
 # inlined in AGENTS.md between aodd:begin/aodd:end markers (Codex has no @import), hooks in hooks.json.
-# Copies skills, agents, rules, hooks, scripts and docs; registers the three hooks in settings.json
+# Copies skills, agents, rules, hooks, scripts and docs (not tests, and not scripts/git-hooks, which are for working on this repo); registers the three hooks in settings.json
 # (additive, idempotent, fail-open). An existing file that differs is printed as UPDATE and its old
 # content is kept next to it as <file>.aodd-bak. Nothing is ever deleted.
 set -euo pipefail
@@ -41,7 +41,7 @@ copy_tree() {  # copy_tree <relative dir> [dest root]: every file except tests a
   [ -d "$SRC/$rel" ] || return 0
   while IFS= read -r f; do
     copy_file "$SRC/$f" "$DEST/$f"
-  done < <(cd "$SRC" && find "$rel" -type f ! -name 'test_*.py' ! -name '*.pyc' ! -path '*/__pycache__/*' | sort)
+  done < <(cd "$SRC" && find "$rel" -type f ! -name 'test_*.py' ! -name '*.pyc' ! -path '*/__pycache__/*' ! -path '*/git-hooks/*' | sort)
 }
 
 for d in skills agents rules hooks scripts docs; do copy_tree "$d"; done

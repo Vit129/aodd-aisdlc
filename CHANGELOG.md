@@ -3,6 +3,16 @@
 All notable changes to aodd-aisdlc are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and it follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.2.0] - 2026-10-17
+
+### Added
+- Env layout, public API, agent-ops extension and optional post-merge hook (`426c60f`)
+
+### Fixed
+- Never copy scripts/git-hooks into the target home (`bdbb4c6`)
+- Chmod only the files it copied, never the host's own hooks (`851e334`)
+- Listing tags and stashes is a read (`d22884c`)
+
 ## [0.1.0] - 2026-10-16
 
 ### Added

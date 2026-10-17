@@ -3,6 +3,15 @@
 All notable changes to aodd-aisdlc are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and it follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.3.4] - 2026-10-17
+
+### Documentation
+- Update AODD definition to AI Orchestrator Driven Development (`060a390`)
+- Resolve paths via _aodd_paths, stash only the source to prove RED (`d11f558`)
+
+### Fixed
+- Resolve AODD_STATE through _aodd_paths so ${VAR} expands like the Python hooks (`ee4eb29`)
+
 ## [0.3.3] - 2026-10-17
 
 ### Fixed

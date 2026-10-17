@@ -3,6 +3,12 @@
 All notable changes to aodd-aisdlc are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and it follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.3.3] - 2026-10-17
+
+### Fixed
+- Expand $HOME in AODD_STATE (unexpanded settings env) (`1ca4dea`)
+- Disambiguate audit session IDs, preserve diff stat, unify state and adapter hooks (`108c1ad`)
+
 ## [0.3.2] - 2026-10-17
 
 ### Added

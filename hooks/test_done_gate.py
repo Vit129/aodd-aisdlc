@@ -51,4 +51,12 @@ tr.write_text(cx(*[f"/x/{i}.py" for i in range(5)]))
 assert "audit.py" in decide()                                      # 5 patched files (one patch) -> medium
 tr.write_text(cx(str(prog)) ); prog.write_text("- [ ] z\n")
 assert "- [ ] z" in decide()                                       # Codex-touched progress file with open box -> block
+# the audit date in the file name wins over mtime: annotating an older FAIL report later must not override a newer PASS
+import time
+(rep / "done").mkdir(exist_ok=True)
+(rep / "audit-2000-01-02-abcdef12.md").write_text("---\nverdict: PASS\n---\n")
+old = rep / "done/audit-2000-01-01-abcdef12.md"; time.sleep(0.05); old.write_text("---\nverdict: FAIL\n---\nsuperseded\n")
+tr.write_text("\n".join(ed(f"/x/{i}.py") for i in range(5)))
+assert decide() is None, decide()                                  # newer-dated PASS counts
+old.unlink(); (rep / "audit-2000-01-02-abcdef12.md").unlink()
 print("ok")

@@ -288,7 +288,7 @@ genuinely too big to chart this way, tell the user they can run `/wayfinder` the
 its dedicated decision-map flow.
 
 If the feature touches auth, permissions, or sensitive data → flag it for a security review
-here (the `security` skill if you have one), in this same pass (its own coverage decision, same reasoning as "what needs QA
+here (the `security` skill), in this same pass (its own coverage decision, same reasoning as "what needs QA
 coverage"), not discovered later during implementation. If it's a core/load-sensitive
 API → flag it for performance testing too, to run after Phase 5 confirms GREEN.
 
@@ -320,7 +320,7 @@ Dev implements — failing/RED is expected and correct at this point.
 1. Repo already has a test framework installed/configured → use that one, matching
    its existing conventions.
 2. Nothing installed yet (genuinely greenfield) → a sensible default:
-   Web UI/API → Playwright; Mobile → Robot Framework. Say this is a
+   Web UI/API → Playwright (`playwright-testing`, `rules/playwright/`); Mobile → Robot Framework (`robotframework-testing`, `rules/robot/`). Say this is a
    default, not the only valid choice, and ask if the user wants something else
    before scaffolding it.
 3. Still ambiguous → check repo signals (dependency manifests, build config, existing
@@ -345,8 +345,8 @@ directly (`implement` is `disable-model-invocation` — see § Status). If code 
 gets cluttered, call `mattpocock-skills:codebase-design` for deep-module/seam vocabulary
 and refactor directly against it (`improve-codebase-architecture` is likewise blocked).
 
-Before writing code, pick the matching stack-specific coding-standards skill based on project stack
-(if you have one) and apply
+Before writing code, read `rules/coding.md` and pick the matching stack-specific coding-standards skill
+based on project stack (`backend-dev`, `frontend-dev`, `macos-swiftui`) and apply
 its conventions — this phase owns the workflow shape (skeleton → GREEN), the platform
 skill only supplies stack-specific syntax/pattern, it does not replace this phase.
 
@@ -389,7 +389,7 @@ else first).
 
 ## Status
 
-Default route for new/unclear-scope Dev/QA feature work. Stack-specific coding skills, if you have them, still own coding conventions.
+Default route for new/unclear-scope Dev/QA feature work. Stack-specific coding skills (`backend-dev`, `frontend-dev`, `macos-swiftui`) and `rules/coding.md` still own coding conventions.
 
 **`mattpocock-skills` invocation split** — some sub-skills are `disable-model-invocation`
 and cannot be called via the Skill tool mid-task, only run by the user as a

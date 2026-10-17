@@ -7,6 +7,8 @@
 top="$(git rev-parse --show-toplevel 2>/dev/null)" || exit 0
 branch="$(git symbolic-ref --short HEAD 2>/dev/null)"
 case "$branch" in main|master) ;; *) exit 0 ;; esac
+# Opt-in: enabling core.hooksPath for the pre-commit scan must not also start auto-installing.
+[ "${AODD_AUTO_INSTALL:-0}" = 1 ] || exit 0
 state="${AODD_STATE:-${AODD_HOME:-$HOME/.aodd}/state}"
 mkdir -p "$state" 2>/dev/null || exit 0
 log="$state/post-merge.log"; lock="$state/post-merge.lock"; stamp="$state/post-merge.stamp"

@@ -9,11 +9,15 @@ repo.mkdir()
 git = lambda *a: subprocess.run(["git", "-C", str(repo), *a], check=True, capture_output=True)
 git("init", "-q", "-b", "main")
 (repo / "install.sh").write_text(f'#!/bin/bash\necho installed >> "{t}/trace"\n'); (repo / "install.sh").chmod(0o755)
-env = {**os.environ, "AODD_STATE": str(state), "AODD_POST_INSTALL": f'echo post >> "{t}/trace"'}
+env = {**os.environ, "AODD_STATE": str(state), "AODD_POST_INSTALL": f'echo post >> "{t}/trace"', "AODD_AUTO_INSTALL": "0"}
 
 
 def run():
     return subprocess.run(["bash", str(hook)], cwd=repo, env=env, capture_output=True).returncode
+
+
+assert run() == 0; time.sleep(1.5); assert not (t / "trace").exists()   # opt-in: no AODD_AUTO_INSTALL=1, no install
+env["AODD_AUTO_INSTALL"] = "1"
 
 
 def wait(pred):

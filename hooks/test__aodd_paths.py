@@ -1,6 +1,6 @@
 import os, sys, tempfile
 from pathlib import Path
-for k in ("AODD_HOME", "AODD_REPORTS", "AODD_STATE", "AODD_PLANS"):
+for k in ("AODD_HOME", "AODD_REPORTS", "AODD_STATE", "AODD_PLANS", "AODD_WORKLOG", "AODD_MEMORY", "AODD_WORKSPACE", "CLAUDE_HOME"):
     os.environ.pop(k, None)
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import _aodd_paths as p
@@ -20,4 +20,11 @@ os.environ["AODD_PLANS"] = str(t / "{project}/plans")
 assert p.plans(repo / "a/b") == t / "myrepo/plans" and p.plans(t / "plain") == t / "plain/plans"
 os.environ["AODD_PLANS"] = str(t / "fixed")
 assert p.plans(repo) == t / "fixed"
+os.environ.pop("AODD_REPORTS"); os.environ.pop("AODD_STATE")
+assert p.worklog() == t / "h/work-log" and p.memory() == t / "h/memory"
+os.environ["AODD_WORKLOG"] = str(t / "wl"); assert p.worklog() == t / "wl"
+os.environ.pop("CLAUDE_HOME", None)
+assert p.workspace_dirs() == [(Path.home() / ".claude").resolve()]
+os.environ["AODD_WORKSPACE"] = f"{t}{os.pathsep}{t / 'h'}"
+assert p.workspace_dirs() == [t.resolve(), (t / "h").resolve()]
 print("ok")

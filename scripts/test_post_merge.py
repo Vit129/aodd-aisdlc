@@ -5,7 +5,8 @@ from pathlib import Path
 hook = Path(__file__).resolve().parent / "git-hooks" / "post-merge"
 t = Path(tempfile.mkdtemp())
 repo, state = t / "repo", t / "state"
-repo.mkdir()
+repo.mkdir(); (repo / "hooks").mkdir()
+shutil.copy(hook.parent.parent.parent / "hooks" / "_aodd_paths.py", repo / "hooks")
 git = lambda *a: subprocess.run(["git", "-C", str(repo), *a], check=True, capture_output=True)
 git("init", "-q", "-b", "main")
 (repo / "install.sh").write_text(f'#!/bin/bash\necho installed >> "{t}/trace"\n'); (repo / "install.sh").chmod(0o755)
@@ -47,4 +48,8 @@ assert r.returncode == 0
 time.sleep(1.5)
 assert not (repo / "$HOME").exists(), "literal $HOME dir created in the repo"
 assert (fake_home / "st").exists(), list(fake_home.iterdir())
+# ${HOME} braces expand the same way as in Python (_aodd_paths)
+r = subprocess.run(["bash", str(hook)], cwd=repo, capture_output=True,
+                   env={**env, "HOME": str(fake_home), "AODD_STATE": "${HOME}/st2", "AODD_AUTO_INSTALL": "1", "AUTO_INSTALL_DELAY": "0"})
+assert r.returncode == 0 and (fake_home / "st2").exists(), list(fake_home.iterdir())
 print("ok")

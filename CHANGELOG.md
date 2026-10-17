@@ -3,6 +3,11 @@
 All notable changes to aodd-aisdlc are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and it follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.3.1] - 2026-10-17
+
+### Added
+- Multi-root memory, digest templates, report kinds, antigravity usage, work-log fallback (`0d6b80e`)
+
 ## [0.3.0] - 2026-10-17
 
 ### Added

@@ -104,11 +104,10 @@ def scope(repo: Path, base: str | None, since: str | None) -> tuple[str, str]:
         base = f"{first[0]}~1" if first else None
     base = base or git(repo, "merge-base", "HEAD", "origin/main").strip() or "HEAD"
     log = git(repo, "log", "--oneline", f"{base}..HEAD")
-    diff = git(repo, "diff", base) + git(repo, "diff", "--stat", base)
-    for f in git(repo, "ls-files", "--others", "--exclude-standard").split("\n"):  # new files: not in `git diff`
-        if f:
-            diff += git(repo, "diff", "--no-index", "/dev/null", f)
-    return base, f"git log {base}..HEAD:\n{log or '(none)'}\n\ndiff vs {base} (incl. uncommitted):\n{diff[:MAX_DIFF]}"
+    untracked = [f for f in git(repo, "ls-files", "--others", "--exclude-standard").split("\n") if f]
+    stat = git(repo, "diff", "--stat", base) + "".join(f" {f} (untracked)\n" for f in untracked)
+    diff = "".join(git(repo, "diff", "--no-index", "/dev/null", f) for f in untracked) + git(repo, "diff", base)
+    return base, f"git log {base}..HEAD:\n{log or '(none)'}\n\ndiff vs {base} (incl. uncommitted):\n{stat}\n{diff[:MAX_DIFF]}"
 
 
 def run_model(who: str, prompt: str, repo: Path) -> str:
@@ -201,7 +200,7 @@ def main(argv=None) -> int:
     v = verdict(final)
     if other and "Audit void" not in final:
         v = combine(verdict(first), v)
-    sid = tr.stem[:8]
+    sid = _aodd_paths.session_id(tr)
     REPORTS.mkdir(parents=True, exist_ok=True)
     out = REPORTS / f"audit-{date.today()}-{sid}.md"
     out.write_text(f"---\nsession: {tr.stem}\nrepo: {repo}\nbase: {base}\nworker: {worker}\nauditor: {label}\n"

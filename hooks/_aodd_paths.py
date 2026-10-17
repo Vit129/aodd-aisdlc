@@ -75,6 +75,18 @@ def plans(cwd=None) -> Path:
     return Path(tpl.replace("{project}", project(cwd)) if "{project}" in tpl else tpl).expanduser()
 
 
+def session_id(transcript) -> str:
+    """Short session key for audit filenames: disambiguates Antigravity transcript.jsonl and Codex rollout-*.jsonl."""
+    p = Path(transcript)
+    if p.stem in ("transcript", "transcript_full"):
+        for part in reversed(p.parent.parts):
+            if part not in (".system_generated", "logs", "brain", ""):
+                return part[:8]
+    if p.stem.startswith("rollout-") and len(p.stem) > 8:
+        return p.stem[-8:]
+    return p.stem[:8]
+
+
 if __name__ == "__main__":
     what = sys.argv[1] if len(sys.argv) > 1 else ""
     if what in ("home", "reports", "state", "worklog", "memory", "claude_home"):

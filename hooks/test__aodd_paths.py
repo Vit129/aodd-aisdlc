@@ -35,4 +35,7 @@ import subprocess, sys
 out = subprocess.run([sys.executable, "-c", "import sys; sys.path.insert(0, %r); import _aodd_paths as a; print(a.reports())" % str(Path(__file__).parent)],
                      env={**os.environ, "AODD_REPORTS": "$HOME/aodd-x", "HOME": "/tmp/h"}, capture_output=True, text=True).stdout.strip()
 assert out == "/tmp/h/aodd-x", out
+assert p.session_id("/x/abcdef12-3456.jsonl") == "abcdef12"
+assert p.session_id("/x/brain/c040dfd2-31ad-4f81/.system_generated/logs/transcript.jsonl") == "c040dfd2"
+assert p.session_id("/x/sessions/rollout-2026-10-17T09-00-00-019299ab-112233445566.jsonl") == "33445566"
 print("ok")

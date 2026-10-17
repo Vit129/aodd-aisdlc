@@ -24,7 +24,6 @@ import shlex
 import shutil
 import subprocess
 import sys
-import tempfile
 from pathlib import Path
 
 RAW_SEARCH = {"grep", "egrep", "fgrep", "rg", "ripgrep", "ag", "ack", "fd", "find"}
@@ -86,7 +85,11 @@ def uses_graphify(command):
 
 
 def _state_dir():
-    return Path(os.environ.get("GRAPHIFY_GUARD_STATE") or Path(tempfile.gettempdir()) / "graphify-guard")
+    if os.environ.get("GRAPHIFY_GUARD_STATE"):
+        return Path(os.environ["GRAPHIFY_GUARD_STATE"])
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import _aodd_paths
+    return _aodd_paths.state() / "graphify-guard"
 
 
 def _marker(session_id, root, kind):

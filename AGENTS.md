@@ -17,8 +17,8 @@ This repo is an installable package for Claude Code and OpenAI Codex: AODD (an o
 ## Check your change
 
 ```bash
-for t in hooks/test_*.py scripts/test_*.py optional/*/hooks/test_*.py optional/*/scripts/test_*.py; do python3 "$t"; done    # each prints "ok"
-python3 -m py_compile hooks/*.py scripts/*.py optional/*/hooks/*.py optional/*/scripts/*.py && bash -n install.sh
+for t in hooks/test_*.py scripts/test_*.py adapters/test_*.py optional/*/hooks/test_*.py optional/*/scripts/test_*.py; do python3 "$t"; done    # each prints "ok"
+python3 -m py_compile hooks/*.py scripts/*.py adapters/*.py optional/*/hooks/*.py optional/*/scripts/*.py && bash -n install.sh install-agy.sh
 T=$(mktemp -d); CLAUDE_HOME=$T/c AODD_HOME=$T/a CODEX_HOME=$T/x ./install.sh --dry-run --all --codex   # install preview, writes nothing
 ```
 
@@ -43,7 +43,7 @@ Other tools wrap these hooks by loading them by path, so these names are a contr
 - `hooks/skill-capture-nudge.py`: `CORRECTION`, `DOC`, `FIX_COMMIT`, `FIX_NOTE`, `INTERVAL`, `MIN_TOOL_CALLS`, `SKILL_BASH_WRITE`, `SKILL_FILE`, `SKILL_MD`, `STATE_DIR`, `skill_path`, `_text`, `scan`, `decide`
 - `hooks/done-gate.py`: `decide(payload, reports=...)`, `scan`, `audit_report`
 - `scripts/check_agy_proposal.py`: `problems(text)`
-- `hooks/_aodd_paths.py`: `home()`, `reports()`, `state()`, `plans(cwd)`, `project(cwd)`, `worklog()`, `memory()`, `memory_dirs()`, `claude_home()`, `workspace_dirs()`
+- `hooks/_aodd_paths.py`: `home()`, `reports()`, `state()`, `plans(cwd)`, `project(cwd)`, `worklog()`, `memory()`, `memory_dirs()`, `claude_home()`, `workspace_dirs()`, `session_id(transcript)`
 - Extension point: `$AODD_HOME/extensions/agent-ops.md`, read by the agent-ops skill when present. The only one.
 
 ## Versioning and releases

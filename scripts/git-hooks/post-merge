@@ -10,6 +10,8 @@ case "$branch" in main|master) ;; *) exit 0 ;; esac
 # Opt-in: enabling core.hooksPath for the pre-commit scan must not also start auto-installing.
 [ "${AODD_AUTO_INSTALL:-0}" = 1 ] || exit 0
 state="${AODD_STATE:-${AODD_HOME:-$HOME/.aodd}/state}"
+# settings.json "env" reaches us unexpanded ("$HOME/..."): expand $HOME and a leading ~ ourselves
+state="${state//\$HOME/$HOME}"; state="${state/#\~/$HOME}"
 mkdir -p "$state" 2>/dev/null || exit 0
 log="$state/post-merge.log"; lock="$state/post-merge.lock"; stamp="$state/post-merge.stamp"
 # stale lock (a runner that died) older than 10 minutes is removed

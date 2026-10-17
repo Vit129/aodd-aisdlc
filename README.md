@@ -42,7 +42,7 @@ Size decides ceremony (`rules/aodd.md`): small work is just done; medium work ge
 | `scripts/audit.py` | runs the cross-family audit and writes the report |
 | `scripts/check_agy_proposal.py` | rejects another agent's skill proposal that lacks evidence |
 | `docs/skill-learning.md` | how skills improve themselves |
-| `install.sh` | installs into Claude Code (and Codex with `--codex`) |
+| `install.sh` | installs into Claude Code (and Codex with `--codex`, Antigravity with `--agy`; see `docs/antigravity.md`) |
 | `AGENTS.md`, `CLAUDE.md` | guide for working on this repo itself (`CLAUDE.md` is one line: `@AGENTS.md`) |
 
 ## Requirements

@@ -13,7 +13,7 @@
 # stay at their defaults, see hooks/_aodd_paths.py).
 set -euo pipefail
 
-DRY=0; CLAUDE_MD=0; CODEX_ON=0; YES=0; MODS_SET=0; MODS=""
+DRY=0; CLAUDE_MD=0; CODEX_ON=0; AGY_ON=0; YES=0; MODS_SET=0; MODS=""
 ALL_MODULES="agent-memory schedules"
 add_mod() { case " $MODS " in *" $1 "*) ;; *) MODS="${MODS:+$MODS }$1" ;; esac; }
 while [ $# -gt 0 ]; do
@@ -22,6 +22,7 @@ while [ $# -gt 0 ]; do
     --dry-run) DRY=1 ;;
     --claude-md) CLAUDE_MD=1 ;;
     --codex) CODEX_ON=1 ;;
+    --agy) AGY_ON=1 ;;
     --yes|-y) YES=1 ;;
     --all) MODS_SET=1; for m in $ALL_MODULES; do add_mod "$m"; done ;;
     --core-only) MODS_SET=1 ;;
@@ -240,6 +241,9 @@ if has_mod schedules; then
   SP="$DEST/scripts/install-schedules.py"; SDRY=()
   if [ "$DRY" = 1 ] || [ "${AODD_SCHEDULES_DRY_RUN:-0}" = 1 ]; then SP="$SRC/optional/schedules/scripts/install-schedules.py"; SDRY=(--dry-run); fi
   python3 "$SP" ${SDRY[@]+"${SDRY[@]}"} --modules "${MODS// /,}" ${SCHED_ARGS[@]+"${SCHED_ARGS[@]}"} || echo "warn    schedules were not installed (see above); re-run ./install.sh --with schedules"
+fi
+if [ "$AGY_ON" = 1 ]; then  # Antigravity: its own installer (skills, agents, AGENTS.md block, hook adapter)
+  if [ "$DRY" = 1 ]; then bash "$SRC/install-agy.sh" --dry-run; else bash "$SRC/install-agy.sh"; fi
 fi
 echo "state   reports, plans and hook state live under \${AODD_HOME:-~/.aodd} (override: AODD_REPORTS, AODD_STATE, AODD_PLANS, AODD_WORKLOG, AODD_MEMORY; see README)"
 echo "done"

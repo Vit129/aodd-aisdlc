@@ -3,6 +3,14 @@
 All notable changes to aodd-aisdlc are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and it follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.3.5] - 2026-10-17
+
+### Documentation
+- Verify each PR is merged before deleting its branch (`2b361fa`)
+
+### Fixed
+- Split the diff budget so a big new file cannot hide the edit; keep same-day audits as history (`bf5d121`)
+
 ## [0.3.4] - 2026-10-17
 
 ### Documentation

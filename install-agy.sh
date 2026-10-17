@@ -73,7 +73,6 @@ if [ "$DRY" = 1 ]; then
   echo "AGENTS  $AG <- aodd block (would write)"
 else
   mkdir -p "$GEMINI_DIR"
-  [ -f "$AG" ] && [ ! -e "$AG.aodd-bak" ] && cp "$AG" "$AG.aodd-bak" && echo "backup  $AG.aodd-bak"
   AG="$AG" BLOCK="$BLOCK" python3 - <<'PY'
 import os, re
 from pathlib import Path
@@ -83,6 +82,10 @@ old = f.read_text() if f.is_file() else ""
 pat = re.compile(r"<!-- aodd:begin -->.*?<!-- aodd:end -->\n?", re.S)
 new = pat.sub(lambda _: block, old) if pat.search(old) else (old + ("\n" if old and not old.endswith("\n\n") else "") + block)
 if new != old:
+    bak = f.with_name(f.name + ".aodd-bak")
+    if old and not bak.exists():  # back up the user's file once, only when we are about to change it
+        bak.write_text(old)
+        print(f"backup  {bak}")
     f.write_text(new)
     print(f"AGENTS  {f} <- aodd block")
 else:

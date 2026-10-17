@@ -37,7 +37,8 @@ RUNNER = HERE / "aodd_job.py"
 DAYS = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]   # index = cron/launchd weekday (0 = Sunday)
 LABEL = "com.aodd.{}"
 BAKE = ("AODD_HOME", "AODD_REPORTS", "AODD_STATE", "AODD_PLANS", "AODD_WORKLOG", "AODD_MEMORY", "AODD_REPOS",
-        "AODD_WORKSPACE", "AODD_WORKLOG_SKIP", "CLAUDE_HOME", "CODEX_HOME")
+        "AODD_WORKSPACE", "AODD_WORKLOG_SKIP", "AODD_RECALL_EXTRA", "AODD_DIGEST", "AODD_PROJECT_ALIASES",
+        "AODD_REPORT_KINDS", "AODD_AGY_TRANSCRIPTS", "CLAUDE_HOME", "CODEX_HOME")
 
 
 def load_jobs():

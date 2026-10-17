@@ -67,7 +67,10 @@ g = lambda *c: subprocess.run(["git", "-C", str(repo), *c], capture_output=True)
 g("init", "-q", "-b", "main"); (repo / "f").write_text("1"); g("add", "."); g("-c", "core.hooksPath=/dev/null", "commit", "-qm", "x")
 tr.write_text(json.dumps(rows[0]) + "\n" + json.dumps({"message": {"model": "claude-opus-5-5"}}))
 (repo / "new.py").write_text("print('new')\n")
-assert "print('new')" in a.scope(repo, "HEAD", None)[1]              # untracked files are in scope
+(repo / "f").write_text("x" * (a.MAX_DIFF + 5000))
+sc = a.scope(repo, "HEAD", None)[1]
+assert "print('new')" in sc and "new.py (untracked)" in sc and "1 file changed" in sc  # stat & untracked survive >MAX_DIFF patch
+(repo / "f").write_text("1")
 (repo / "new.py").unlink()
 calls = []
 a.REPORTS = d / "reports"

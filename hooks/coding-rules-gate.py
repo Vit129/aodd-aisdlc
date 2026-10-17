@@ -19,7 +19,6 @@ import json
 import os
 import re
 import sys
-import tempfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -58,7 +57,7 @@ ARCH_MSG = (
 
 
 def _marker(sid, kind="read"):
-    d = Path(os.environ.get("CODING_RULES_GATE_STATE") or Path(tempfile.gettempdir()) / "coding-rules-gate")
+    d = Path(os.environ.get("CODING_RULES_GATE_STATE") or _aodd_paths.state() / "coding-rules-gate")
     return d / f"{sid}.{kind}"
 
 

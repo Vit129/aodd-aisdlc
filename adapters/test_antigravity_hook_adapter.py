@@ -17,9 +17,8 @@ spec.loader.exec_module(adapter)
 
 T = Path(tempfile.mkdtemp())
 os.environ["AODD_HOME"] = str(T / "aodd")
-os.environ.pop("AODD_REPORTS", None)
-os.environ.pop("AODD_STATE", None)
-os.environ.pop("AODD_PLANS", None)
+for _k in ("AODD_REPORTS", "AODD_STATE", "AODD_PLANS", "CLAUDE_SKILL_CAPTURE", "AODD_AUDITOR"):
+    os.environ.pop(_k, None)
 
 
 # 1. Fails open when hooks are missing
@@ -236,10 +235,37 @@ def test_install_agy():
     assert (temp_agy / "adapters" / "antigravity-hook-adapter.py").stat().st_mtime == stat_adapter.st_mtime
 
 
+def test_graphify_guard_integration():
+    os.environ["AODD_HOOKS_DIR"] = str(ROOT / "hooks")
+    gproj = T / "gproj"
+    (gproj / "graphify-out").mkdir(parents=True, exist_ok=True)
+    (gproj / "graphify-out" / "graph.json").write_text("{}")
+
+    res_deny = adapter.handle_pre({
+        "conversationId": "gg-sess-1",
+        "workspacePaths": [str(gproj)],
+        "toolCall": {"name": "run_command", "args": {"CommandLine": "grep -rn foo ."}}
+    })
+    assert res_deny.get("decision") == "deny" and "graphify" in res_deny.get("reason", ""), res_deny
+
+    adapter.handle_post({
+        "conversationId": "gg-sess-1",
+        "workspacePaths": [str(gproj)],
+        "toolCall": {"name": "run_command", "args": {"CommandLine": "graphify query 'foo'"}}
+    })
+    res_allow = adapter.handle_pre({
+        "conversationId": "gg-sess-1",
+        "workspacePaths": [str(gproj)],
+        "toolCall": {"name": "run_command", "args": {"CommandLine": "grep -rn foo ."}}
+    })
+    assert res_allow == {"decision": "allow"}, res_allow
+
+
 if __name__ == "__main__":
     test_fails_open_when_missing()
     test_done_gate_integration()
     test_skill_capture_integration()
     test_auditor_readonly_integration()
+    test_graphify_guard_integration()
     test_install_agy()
     print("ok")

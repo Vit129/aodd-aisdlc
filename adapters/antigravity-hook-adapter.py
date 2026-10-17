@@ -62,6 +62,10 @@ def _load_module(name: str, path: Path):
 
 def load_hooks(hooks_dir: Path | None = None) -> dict:
     hdir = hooks_dir if hooks_dir is not None else get_hooks_dir()
+    if str(hdir) not in sys.path:
+        sys.path.insert(0, str(hdir))
+    for shared in ("_aodd_paths", "_aodd_secrets"):
+        sys.modules.pop(shared, None)
     return {
         "aro": _load_module("auditor_readonly", hdir / "auditor-readonly.py"),
         "dg": _load_module("done_gate", hdir / "done-gate.py"),
@@ -69,6 +73,7 @@ def load_hooks(hooks_dir: Path | None = None) -> dict:
         "srg": _load_module("secret_read_guard", hdir / "secret-read-guard.py"),
         "crg": _load_module("coding_rules_gate", hdir / "coding-rules-gate.py"),
         "dbs": _load_module("dirty_branch_switch_guard", hdir / "dirty-branch-switch-guard.py"),
+        "gg": _load_module("graphify_guard", hdir / "graphify-guard.py"),
         "wl": _load_module("work_log", hdir / "work-log.py"),
     }
 
@@ -81,11 +86,12 @@ scn = HOOKS["scn"]
 srg = HOOKS["srg"]
 crg = HOOKS["crg"]
 dbs = HOOKS["dbs"]
+gg = HOOKS["gg"]
 wl = HOOKS["wl"]
 
 
 def get_hook(name: str):
-    global HOOKS, _current_hooks_dir, aro, dg, scn, srg, crg, dbs, wl
+    global HOOKS, _current_hooks_dir, aro, dg, scn, srg, crg, dbs, gg, wl
     hdir = get_hooks_dir()
     if _current_hooks_dir != hdir:
         _current_hooks_dir = hdir
@@ -96,6 +102,7 @@ def get_hook(name: str):
         srg = HOOKS["srg"]
         crg = HOOKS["crg"]
         dbs = HOOKS["dbs"]
+        gg = HOOKS["gg"]
         wl = HOOKS["wl"]
     return HOOKS.get(name)
 
@@ -186,6 +193,18 @@ def handle_pre(agy_data: dict) -> dict:
                     return {"decision": "deny", "reason": msg}
             except Exception:
                 pass
+
+        # 5. graphify-guard (if installed)
+        h_gg = get_hook("gg")
+        if h_gg and hasattr(h_gg, "decide_pre"):
+            try:
+                res = h_gg.decide_pre(cp)
+                if res:
+                    out = res.get("hookSpecificOutput", {})
+                    if out.get("permissionDecision") == "deny":
+                        return {"decision": "deny", "reason": out.get("permissionDecisionReason", "graphify lookup required")}
+            except Exception:
+                pass
     except Exception:
         pass
 
@@ -199,6 +218,12 @@ def handle_post(agy_data: dict) -> dict:
         if h_crg and hasattr(h_crg, "record_post"):
             try:
                 h_crg.record_post(cp)
+            except Exception:
+                pass
+        h_gg = get_hook("gg")
+        if h_gg and hasattr(h_gg, "record_post"):
+            try:
+                h_gg.record_post(cp)
             except Exception:
                 pass
     except Exception:
@@ -387,15 +412,23 @@ def handle_stop(agy_data: dict) -> dict:
             except Exception:
                 pass
 
-        # 3. work-log (records session, if installed)
+        # 3. graphify-guard stop refresh (if installed)
+        h_gg = get_hook("gg")
+        if h_gg and hasattr(h_gg, "decide_stop"):
+            try:
+                h_gg.decide_stop(cp)
+            except Exception:
+                pass
+
+        # 4. work-log (records session, if installed)
         h_wl = get_hook("wl")
         if h_wl and hasattr(h_wl, "entry") and os.environ.get("CLAUDE_WORK_LOG") != "0":
             try:
                 e = h_wl.entry(cp)
-                if e and hasattr(h_wl, "LOG_DIR"):
-                    h_wl.LOG_DIR.mkdir(parents=True, exist_ok=True)
-                    month = datetime.now().strftime("%Y-%m")
-                    with (h_wl.LOG_DIR / f"{month}.jsonl").open("a") as f:
+                d = h_wl.log_dir(e) if (e and hasattr(h_wl, "log_dir")) else (getattr(h_wl, "LOG_DIR", None) if e else None)
+                if e and d:
+                    d.mkdir(parents=True, exist_ok=True)
+                    with (d / f"{e['ts'][:7]}.jsonl").open("a") as f:
                         f.write(json.dumps(e, ensure_ascii=False) + "\n")
             except Exception:
                 pass

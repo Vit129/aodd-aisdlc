@@ -59,4 +59,13 @@ old = rep / "done/audit-2000-01-01-abcdef12.md"; time.sleep(0.05); old.write_tex
 tr.write_text("\n".join(ed(f"/x/{i}.py") for i in range(5)))
 assert decide() is None, decide()                                  # newer-dated PASS counts
 old.unlink(); (rep / "audit-2000-01-02-abcdef12.md").unlink()
+# Antigravity transcript.jsonl and Codex rollout-*.jsonl disambiguate by conversation UUID / rollout tail
+agy1 = d / "brain/11111111-aaaa/.system_generated/logs/transcript.jsonl"
+agy2 = d / "brain/22222222-bbbb/.system_generated/logs/transcript.jsonl"
+agy1.parent.mkdir(parents=True); agy2.parent.mkdir(parents=True)
+agy2.write_text("\n".join(ed(f"/x/{i}.py") for i in range(5)))
+(rep / "audit-2000-01-01-11111111.md").write_text("---\nverdict: PASS\n---\n")
+assert "audit.py" in h.decide({"transcript_path": str(agy2)}, reports=rep)  # session 1's PASS does not clear session 2
+(rep / "audit-2000-01-01-22222222.md").write_text("---\nverdict: PASS\n---\n")
+assert h.decide({"transcript_path": str(agy2)}, reports=rep) is None
 print("ok")

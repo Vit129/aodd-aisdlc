@@ -173,7 +173,8 @@ for event, matcher, script, args in WANT:
 # AODD_* paths: written only for variables the user has set; an existing different value is kept
 if os.environ["WRITE_ENV"] == "1":
     PATHVARS = ("AODD_HOME", "AODD_REPORTS", "AODD_STATE", "AODD_PLANS", "AODD_WORKLOG", "AODD_MEMORY",
-                "AODD_WORKSPACE", "AODD_WORKLOG_SKIP", "AODD_REPOS")
+                "AODD_WORKSPACE", "AODD_WORKLOG_SKIP", "AODD_REPOS", "AODD_RECALL_EXTRA", "AODD_DIGEST",
+                "AODD_PROJECT_ALIASES", "AODD_REPORT_KINDS", "AODD_AGY_TRANSCRIPTS")
     want = {k: os.environ[k] for k in PATHVARS if os.environ.get(k)}
     env = data.setdefault("env", {}) if want else {}
     for k, v in sorted(want.items()):

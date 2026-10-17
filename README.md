@@ -203,7 +203,7 @@ Limits: Codex tool errors are not counted by the skill-capture hook (they are no
 ## Tests
 
 ```bash
-for t in hooks/test_*.py scripts/test_*.py optional/*/hooks/test_*.py optional/*/scripts/test_*.py; do python3 "$t"; done
+for t in hooks/test_*.py scripts/test_*.py adapters/test_*.py optional/*/hooks/test_*.py optional/*/scripts/test_*.py; do python3 "$t"; done
 ```
 
 Tests point `AODD_HOME` at a temp directory and use stub models; no network, no `agy`, no real Claude calls.

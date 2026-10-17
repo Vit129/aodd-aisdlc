@@ -39,4 +39,12 @@ assert (t / "trace").read_text().split() == ["installed", "post"]
 (repo / "install.sh").write_text("#!/bin/bash\nexit 3\n"); git("symbolic-ref", "HEAD", "refs/heads/main")  # failing install never fails git
 assert run() == 0
 assert wait(lambda: "failed" in (state / "post-merge.log").read_text())
+# a literal "$HOME/..." AODD_STATE (unexpanded settings env) must land under the real HOME, not in the repo
+fake_home = Path(tempfile.mkdtemp())
+r = subprocess.run(["bash", str(hook)], cwd=repo, capture_output=True,
+                   env={**env, "HOME": str(fake_home), "AODD_STATE": "$HOME/st", "AODD_AUTO_INSTALL": "1", "AUTO_INSTALL_DELAY": "0"})
+assert r.returncode == 0
+time.sleep(1.5)
+assert not (repo / "$HOME").exists(), "literal $HOME dir created in the repo"
+assert (fake_home / "st").exists(), list(fake_home.iterdir())
 print("ok")

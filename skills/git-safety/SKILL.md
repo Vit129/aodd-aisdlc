@@ -1,7 +1,8 @@
 ---
 name: git-safety
 description: Git and PR moves that silently lose or misplace work — deciding a branch is merged, deleting branches, pushing to a branch whose PR may already be merged, creating branches/worktrees with uncommitted work, worktree isolation, old PR branches far behind main. Use before "ลบ branch", "branch นี้ merge แล้วยัง", "push เพิ่มเข้า PR", "สร้าง worktree", "git push -u", "clean up branches", or any git step that moves or deletes commits. Not for resolving a merge conflict itself.
-version: 0.1.3
+version: 0.1.4
+last_improved: 2026-10-17
 origin: auto-captured
 ---
 
@@ -12,6 +13,7 @@ Basic rules apply (two tasks on two branches, never push main). These are the ve
 ## Before deleting a branch
 - **Merged = ancestor of `origin/main`, or `git cherry origin/main <b>` shows no `+` lines.** Never judge by commit subject or "a merged PR exists" — squash merges and follow-up commits make both lie (9 of 22 "merged" branches once had unique commits).
 - Re-check each branch right before deleting, with that strict test, even if a list says it is merged.
+- **"Both are merged" covers several PRs: check each one** (`gh pr view <n> --json state`) before deleting its branch. Deleting the head branch of an OPEN PR closes it. Recover: `git push origin <sha>:refs/heads/<b>` then `gh pr reopen <n>`.
 
 ## Before pushing more commits to a PR branch
 - **Check the PR is still open:** `gh pr view <n> --json state -q .state`. Pushing to a merged PR's branch leaves the commit off main silently.

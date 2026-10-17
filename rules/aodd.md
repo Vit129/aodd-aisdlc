@@ -92,6 +92,6 @@ How main dispatches: numbered steps, one Bash call per git step, STOP on a failu
 
 ## Audit and Done
 
-- No Done claim without an independent audit once the work is a tracked feature or edits 5+ files: `python3 scripts/audit.py --transcript <session.jsonl> --repo <repo> --claims "<Done claims>"`. The worker never writes the auditor's brief and never edits its verdict. `hooks/done-gate.py` enforces it.
+- Only Medium+ work is audited: a tracked feature, or one task that edits 5+ deliverable files (scratch and memory files don't count; after an audit, only files edited since it count, so a small follow-up needs none). Run `python3 scripts/audit.py --transcript <session.jsonl> --repo <repo> --claims "<Done claims>"`; name in the claims any item the CEO deferred. The worker never writes the auditor's brief and never edits its verdict. `hooks/done-gate.py` enforces it, and puts a non-PASS verdict to the worker once per report.
 - A FAIL or DISPUTED verdict is reported to the CEO as it is, with the report's table. Never paraphrase it away.
 - Lessons from the work are patched into the skill that governs it (`docs/skill-learning.md`), not into a loose notes file.

@@ -68,4 +68,20 @@ agy2.write_text("\n".join(ed(f"/x/{i}.py") for i in range(5)))
 assert "audit.py" in h.decide({"transcript_path": str(agy2)}, reports=rep)  # session 1's PASS does not clear session 2
 (rep / "audit-2000-01-01-22222222.md").write_text("---\nverdict: PASS\n---\n")
 assert h.decide({"transcript_path": str(agy2)}, reports=rep) is None
+# per task: after an audit, only files edited later count; scratch files never count
+edt = lambda f, ts: json.dumps({"timestamp": ts, "message": {"content": [{"type": "tool_use", "name": "Edit", "input": {"file_path": f}}]}})
+tr = d / "cccccccc-pertask.jsonl"
+pt = lambda: h.decide({"transcript_path": str(tr)}, reports=rep)
+tr.write_text("\n".join(edt(f"/private/tmp/x/scratchpad/{i}.html", "2000-01-01T00:00:00Z") for i in range(6)))
+assert pt() is None                                                # scratch only -> not medium
+tr.write_text("\n".join(edt(f"/x/{i}.py", "2000-01-01T00:00:00Z") for i in range(5)))
+r = rep / "audit-2000-01-01-cccccccc.md"; r.write_text("---\nverdict: FAIL\n---\n")
+assert "FAIL" in pt()                                              # medium work FAILED -> told once
+assert pt() is None                                                # same report -> not again
+tr.write_text(tr.read_text() + "\n" + "\n".join(edt(f"/y/{i}.py", "2999-01-01T00:00:00Z") for i in range(2)))
+assert pt() is None                                                # 2 files after the audit -> small follow-up
+r.write_text("---\nverdict: PASS\n---\n")
+tr.write_text(tr.read_text() + "\n" + "\n".join(edt(f"/z/{i}.py", "2999-01-01T00:00:00Z") for i in range(5)))
+assert "audit.py" in pt()                                          # a new medium task after the audit -> audit again
+r.unlink()
 print("ok")

@@ -70,7 +70,7 @@ SKILL_NAME = re.compile(r"skills/([^/\s'\"\\]+)/SKILL\.md")
 def agy_dirs():
     raw = os.environ.get("AODD_AGY_TRANSCRIPTS")
     dirs = raw.split(os.pathsep) if raw else [str(Path.home() / ".gemini" / d / "brain") for d in ("antigravity", "antigravity-cli")]
-    return [Path(d).expanduser() for d in dirs if d]
+    return [Path(os.path.expandvars(d)).expanduser() for d in dirs if d]
 
 
 def agy_section(days):

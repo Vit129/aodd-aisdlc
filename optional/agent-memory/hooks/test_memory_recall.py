@@ -55,4 +55,35 @@ assert "repo/agent-memory/knowledge/b.md" in names("marmotwhistle burrow")  # in
 assert "PLAYBOOK" not in names("zebrafish incubation protocol")   # legacy rows off by default
 os.environ["AODD_RECALL_EXTRA"] = "PLAYBOOK.md"
 assert "m2/PLAYBOOK.md" in names("zebrafish incubation protocol")
-print("memory-recall OK")
+# AODD_RECALL_EXTRA: table rows with CASE-NNN id anchors
+(T / "m2/PLAYBOOK.md").write_text(
+    "# Playbook Cases\n\n| ID | Trigger | Fix |\n|----|---------|-----|\n"
+    "| CASE-001 | alpha apple | beta banana |\n"
+    "| CASE-002 | gamma grape | delta date |\n"
+)
+hits = mr.recall("gamma grape", repo)
+assert len(hits) == 1 and hits[0][2] == "CASE-002"
+assert f"{hits[0][1]}#{hits[0][2]}".endswith("#CASE-002")
+assert hits[0][3] == "| CASE-002 | gamma grape | delta date |"
+assert "Trigger" not in hits[0][3]
+out = run({"prompt": "gamma grape", "cwd": str(repo)})
+ctx = json.loads(out.stdout)["hookSpecificOutput"]["additionalContext"]
+assert "#CASE-002: | CASE-002 | gamma grape | delta date |" in ctx
+assert "Trigger" not in ctx
+# AODD_RECALL_EXTRA: file without rows falls back to sections
+(T / "m2/guide.md").write_text(
+    "# Guide Title\n\n## Fallback Section\n\nepsilon mango details here.\n"
+)
+os.environ["AODD_RECALL_EXTRA"] = f"PLAYBOOK.md{os.pathsep}guide.md"
+hits = mr.recall("epsilon mango", repo)
+assert len(hits) == 1 and hits[0][2] == "Fallback Section"
+assert f"{hits[0][1]}#{hits[0][2]}".endswith("#Fallback Section")
+assert "[Fallback Section] epsilon mango details here." in hits[0][3]
+out = run({"prompt": "epsilon mango", "cwd": str(repo)})
+ctx = json.loads(out.stdout)["hookSpecificOutput"]["additionalContext"]
+assert "#Fallback Section: [Fallback Section] epsilon mango details here." in ctx
+# Defaults unchanged when AODD_RECALL_EXTRA is empty
+os.environ.pop("AODD_RECALL_EXTRA", None)
+assert mr.recall("gamma grape", repo) == []
+assert mr.recall("epsilon mango", repo) == []
+print("ok")

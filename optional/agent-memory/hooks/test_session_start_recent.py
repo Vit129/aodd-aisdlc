@@ -59,4 +59,14 @@ with tempfile.TemporaryDirectory() as home:
     Path(home, "aodd/memory/proj").mkdir(parents=True)
     Path(home, "aodd/memory/proj/SESSION-TOPICS.md").write_text("# T\n## 2026-01 first\nold\n## 2026-02 second\nlast one")
     assert "last one" in run(proj) and "2026-01 first" not in run(proj)
+    # digest template + alias, and extra report kinds
+    Path(home, "digests/other").mkdir(parents=True)
+    Path(home, "digests/other/SESSION-TOPICS.md").write_text("## x\naliased digest")
+    assert "aliased digest" not in run(proj)
+    tpl = {"AODD_DIGEST": str(Path(home, "digests/{project}/SESSION-TOPICS.md"))}
+    assert "aliased digest" not in run(proj, tpl)
+    assert "aliased digest" in run(proj, {**tpl, "AODD_PROJECT_ALIASES": "x=y,proj=other"})
+    (reports / "memory-consolidation-2026-10-30.md").write_text("x")
+    assert "memory-consolidation" not in run()
+    assert "memory-consolidation-2026-10-30" in run(None, {"AODD_REPORT_KINDS": "agent-ops, memory-consolidation"})
 print("ok - session-start-recent self-test passed")

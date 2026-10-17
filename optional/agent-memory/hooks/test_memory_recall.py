@@ -41,4 +41,18 @@ note = "---\nname: x\ndescription: d\n---\n\nSome fact.\n\n**Why:** because.\n**
 assert mr.gist(mr.Path("n.md"), note, "d") == "do the thing."                          # gist prefers How to apply
 assert mr.gist(mr.Path("n.md"), "---\ndescription: d\n---\nOnly a fact.\n", "d") == "Only a fact."
 assert "gist:" in ctx
+# several memory roots, project-local agent-memory/, and AODD_RECALL_EXTRA row files
+from pathlib import Path
+T = Path(TMP)
+(T / "m2/knowledge").mkdir(parents=True); (T / "m2/PLAYBOOK.md").write_text("| zebrafish incubation protocol | rows |\n")
+(T / "m2/knowledge/a.md").write_text("## Quokkas\n\nquokkaferret habitat notes.\n")
+repo = T / "repo"; (repo / ".git").mkdir(parents=True); (repo / "agent-memory/knowledge").mkdir(parents=True)
+(repo / "agent-memory/knowledge/b.md").write_text("## Local\n\nmarmotwhistle burrow depth.\n")
+os.environ["AODD_MEMORY"] = os.pathsep.join([TMP + "/aodd/memory", str(T / "m2")])
+names = lambda q: " ".join(str(p) for _, p, _, _ in mr.recall(q, repo))
+assert "m2/knowledge/a.md" in names("quokkaferret habitat")        # second root searched
+assert "repo/agent-memory/knowledge/b.md" in names("marmotwhistle burrow")  # in-repo memory
+assert "PLAYBOOK" not in names("zebrafish incubation protocol")   # legacy rows off by default
+os.environ["AODD_RECALL_EXTRA"] = "PLAYBOOK.md"
+assert "m2/PLAYBOOK.md" in names("zebrafish incubation protocol")
 print("memory-recall OK")

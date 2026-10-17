@@ -27,4 +27,7 @@ os.environ.pop("CLAUDE_HOME", None)
 assert p.workspace_dirs() == [(Path.home() / ".claude").resolve()]
 os.environ["AODD_WORKSPACE"] = f"{t}{os.pathsep}{t / 'h'}"
 assert p.workspace_dirs() == [t.resolve(), (t / "h").resolve()]
+os.environ["AODD_MEMORY"] = f"{t / 'm1'}{os.pathsep}{t / 'm2'}"
+assert p.memory() == t / "m1" and p.memory_dirs() == [t / "m1", t / "m2"]
+os.environ.pop("AODD_MEMORY"); assert p.memory_dirs() == [t / "h/memory"]
 print("ok")

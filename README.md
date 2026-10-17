@@ -85,10 +85,15 @@ Modules are additive: add one later with `./install.sh --with <module>`; modules
   | `AODD_REPORTS` | `$AODD_HOME/pending-reports` | audit and agent-ops reports, agy proposals; decided ones in `done/` |
   | `AODD_STATE` | `$AODD_HOME/state` | hook state (`skill-capture/` markers) |
   | `AODD_PLANS` | `$AODD_HOME/plans` | `<feature>/` briefs, `ai-sdlc-task-progress.md`, handoffs. May contain `{project}`, the git repo folder name of the session's working directory, e.g. `/notes/{project}/plans` |
-  | `AODD_WORKLOG` | `$AODD_HOME/work-log` | Work Log, one `<YYYY-MM>.jsonl` per month |
+  | `AODD_WORKLOG` | `$AODD_HOME/work-log` | Work Log, one `<YYYY-MM>.jsonl` per month; if you set it and its parent folder is missing, entries go to `$AODD_STATE/work-log/` with a `note` field |
   | `AODD_WORKLOG_SKIP` | empty | path globs (`:`-separated) of session folders the Work Log must not record |
-  | `AODD_MEMORY` | `$AODD_HOME/memory` | agent-memory module: `knowledge/*.md`, `<project>/SESSION-TOPICS.md` |
+  | `AODD_MEMORY` | `$AODD_HOME/memory` | agent-memory module: `knowledge/*.md`, `<project>/SESSION-TOPICS.md`; may be a `:`-separated list of roots (the first is where notes are written, all are searched) |
   | `AODD_WORKSPACE` | the Claude home | agent-memory module: folders (`:`-separated) where the report queue is shown at session start |
+  | `AODD_RECALL_EXTRA` | empty | memory-recall: `:`-separated globs under each memory root of extra files to search (e.g. `*/PLAYBOOK.md`); a repo's own `agent-memory/` is searched when present |
+  | `AODD_DIGEST` | `$AODD_MEMORY/{project}/SESSION-TOPICS.md` | session-start: path template (with `{project}`) of the last-session digest |
+  | `AODD_PROJECT_ALIASES` | empty | session-start: `name=alias,...`, a project folder `name` also reads the digest stored under `alias` |
+  | `AODD_REPORT_KINDS` | `agent-ops,housekeeping,pending-work` | session-start: comma list of report kinds (`<kind>-*.md` in `$AODD_REPORTS`) announced once |
+  | `AODD_AGY_TRANSCRIPTS` | `~/.gemini/antigravity/brain`, `~/.gemini/antigravity-cli/brain` | agent-ops gather: `:`-separated Antigravity transcript dirs for its usage section; nothing found, no section |
   | `AODD_REPOS` | empty | schedules and the curator: folders holding your git repos (pending-work report, project-scoped skills) |
 
   The installer writes the `AODD_*` path variables to `settings.json` `env` only for those you have set in your shell when you run it (an existing different value is kept and reported); unset ones stay at their defaults.

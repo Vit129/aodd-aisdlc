@@ -30,7 +30,7 @@ T=$(mktemp -d); CLAUDE_HOME=$T/c AODD_HOME=$T/a CODEX_HOME=$T/x ./install.sh --d
 - A module never changes core behaviour: its hooks are registered only when chosen, and a core file never imports from `optional/`.
 - Hooks fail open: any error means allow, and installed hook commands exit 0 if the file is gone.
 - Every hook and script has a `test_*.py` next to it. Tests use stub models, never network or real CLIs.
-- State lives only under `AODD_HOME` (default `~/.aodd`), moved piecemeal by `AODD_REPORTS`, `AODD_STATE`, `AODD_PLANS` (may contain `{project}`), `AODD_WORKLOG`, `AODD_MEMORY`; also `AODD_WORKLOG_SKIP` (path globs the Work Log skips), `AODD_WORKSPACE` (where the session-start queue shows, default the Claude home), `AODD_REPOS` (folders of git repos for the pending-work job and project skills). Others set by tests/tools only: `AODD_SCHEDULES_DRY_RUN`, `AODD_LAUNCHAGENTS_DIR`, `AODD_CRONTAB`, `AODD_CODING_RULES`. Read paths only through `hooks/_aodd_paths.py` (install.sh copies it next to the hooks); tests point `AODD_HOME` at a temp dir and clear the others.
+- State lives only under `AODD_HOME` (default `~/.aodd`), moved piecemeal by `AODD_REPORTS`, `AODD_STATE`, `AODD_PLANS` (may contain `{project}`), `AODD_WORKLOG`, `AODD_MEMORY` (an os.pathsep list is allowed); also `AODD_RECALL_EXTRA` (extra globs memory-recall searches under each memory root), `AODD_DIGEST` (session digest path template with `{project}`), `AODD_PROJECT_ALIASES` (`name=alias,...`), `AODD_REPORT_KINDS` (report kinds announced at session start), `AODD_AGY_TRANSCRIPTS` (Antigravity transcript dirs for the agent-ops gather), `AODD_WORKLOG_SKIP` (path globs the Work Log skips), `AODD_WORKSPACE` (where the session-start queue shows, default the Claude home), `AODD_REPOS` (folders of git repos for the pending-work job and project skills). Others set by tests/tools only: `AODD_SCHEDULES_DRY_RUN`, `AODD_LAUNCHAGENTS_DIR`, `AODD_CRONTAB`, `AODD_CODING_RULES`. Read paths only through `hooks/_aodd_paths.py` (install.sh copies it next to the hooks); tests point `AODD_HOME` at a temp dir and clear the others.
 - install.sh never deletes; a differing file is kept as `<file>.aodd-bak`.
 - Keep the package neutral: no personal names, machine paths, project names or dated provenance. Check with
   `grep -rniE '/Users/|/home/|@[a-z0-9-]+\.(com|dev)' . -I --exclude-dir=.git` plus the names you know to avoid.
@@ -43,7 +43,7 @@ Other tools wrap these hooks by loading them by path, so these names are a contr
 - `hooks/skill-capture-nudge.py`: `CORRECTION`, `DOC`, `FIX_COMMIT`, `FIX_NOTE`, `INTERVAL`, `MIN_TOOL_CALLS`, `SKILL_BASH_WRITE`, `SKILL_FILE`, `SKILL_MD`, `STATE_DIR`, `skill_path`, `_text`, `scan`, `decide`
 - `hooks/done-gate.py`: `decide(payload, reports=...)`, `scan`, `audit_report`
 - `scripts/check_agy_proposal.py`: `problems(text)`
-- `hooks/_aodd_paths.py`: `home()`, `reports()`, `state()`, `plans(cwd)`, `project(cwd)`, `worklog()`, `memory()`, `claude_home()`, `workspace_dirs()`
+- `hooks/_aodd_paths.py`: `home()`, `reports()`, `state()`, `plans(cwd)`, `project(cwd)`, `worklog()`, `memory()`, `memory_dirs()`, `claude_home()`, `workspace_dirs()`
 - Extension point: `$AODD_HOME/extensions/agent-ops.md`, read by the agent-ops skill when present. The only one.
 
 ## Versioning and releases

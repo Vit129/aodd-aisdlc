@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """UserPromptSubmit hook: surface relevant memory before the model answers.
 
-Searches, for the prompt's keywords: knowledge/*.md sections under $AODD_MEMORY and under
-$AODD_MEMORY/<project> (the cwd's git repo folder), plus the auto-memory notes of the Claude home and of
+Searches, for the prompt's keywords: knowledge/*.md sections under every root of $AODD_MEMORY (os.pathsep
+list) and under <root>/<project> (the cwd's git repo folder), the repo's own agent-memory/ when present,
+files matching the globs in $AODD_RECALL_EXTRA (os.pathsep list, relative to each root; default none), plus the auto-memory notes of the Claude home and of
 the cwd's project (projects/<slug>/memory/*.md, matched on name+description+body). Adds at most 5 pointers
 (file + description + one gist line, usually the note's 'How to apply') as additionalContext; it never
 pastes whole notes, so the cost stays small.
@@ -127,9 +128,26 @@ def gist(path: Path, text: str, shown: str) -> str:
 
 
 def candidates(cwd: Path):
-    mem = _aodd_paths.memory()
-    for r in (mem, mem / _aodd_paths.project(cwd)):
-        yield from sorted((r / "knowledge").rglob("*.md")) if (r / "knowledge").is_dir() else []
+    proj = _aodd_paths.project(cwd)
+    roots = [r for m in _aodd_paths.memory_dirs() for r in (m, m / proj)]
+    local = here = Path(cwd).resolve()
+    for d in (here, *here.parents):  # project-local memory kept inside the repo
+        if (d / ".git").exists():
+            local = d
+            break
+    if (local / "agent-memory").is_dir():
+        roots += [local / "agent-memory"]
+    seen = set()
+    for r in roots:
+        for p in sorted((r / "knowledge").rglob("*.md")) if (r / "knowledge").is_dir() else []:
+            if p.resolve() not in seen:
+                seen.add(p.resolve())
+                yield p
+        for g in (x for x in os.environ.get("AODD_RECALL_EXTRA", "").split(os.pathsep) if x):  # legacy row files
+            for p in sorted(r.glob(g)):
+                if p.is_file() and p.resolve() not in seen:
+                    seen.add(p.resolve())
+                    yield p
     slugs = {re.sub(r"[/.]", "-", str(p)) for p in (HOME, cwd)}  # Claude Code's project dir naming
     for s in slugs:
         d = HOME / "projects" / s / "memory"

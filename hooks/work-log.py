@@ -92,12 +92,24 @@ def entry(payload: dict):
     }
 
 
+FALLBACK_DIR = _aodd_paths.state() / "work-log"
+
+
+def log_dir(e: dict) -> Path:
+    """LOG_DIR, or FALLBACK_DIR when an explicit $AODD_WORKLOG points under a folder that does not exist
+    (e.g. a central repo not cloned): the entry is never lost and says so once in its own line."""
+    if os.environ.get("AODD_WORKLOG") and not LOG_DIR.parent.exists() and FALLBACK_DIR != LOG_DIR:
+        e["note"] = f"fallback: {LOG_DIR.parent} missing"
+        return FALLBACK_DIR
+    return LOG_DIR
+
+
 def report(month: str) -> str:
-    path = LOG_DIR / f"{month}.jsonl"
-    if not path.is_file():
+    paths = [p for p in (LOG_DIR / f"{month}.jsonl", FALLBACK_DIR / f"{month}.jsonl") if p.is_file()]
+    if not paths:
         return f"no work log for {month}"
     last = {}
-    for line in path.read_text().splitlines():
+    for line in (l for p in paths for l in p.read_text().splitlines()):
         try:
             e = json.loads(line)
             last[e["session"]] = e
@@ -124,8 +136,9 @@ def main():
     try:
         e = entry(json.load(sys.stdin))
         if e:
-            LOG_DIR.mkdir(parents=True, exist_ok=True)
-            with (LOG_DIR / f"{e['ts'][:7]}.jsonl").open("a") as f:
+            d = log_dir(e)
+            d.mkdir(parents=True, exist_ok=True)
+            with (d / f"{e['ts'][:7]}.jsonl").open("a") as f:
                 f.write(json.dumps(e, ensure_ascii=False) + "\n")
     except Exception:
         return

@@ -20,3 +20,12 @@ assert w.project_of(home + "/work/private/x") == "x"
 _os.environ["AODD_WORKLOG_SKIP"] = _os.pathsep.join([home + "/work/private/*", home + "/.scratch*"])
 assert w.project_of(home + "/work/private/x") is None and w.project_of(home + "/.scratch/y") is None
 assert w.project_of(home + "/work/public/x") == "x"
+
+# unreachable $AODD_WORKLOG parent -> entry goes to $AODD_STATE/work-log with a note; default dir is untouched
+w.FALLBACK_DIR = d / "state/work-log"; w.LOG_DIR = d / "missing/central/work-log"
+e2 = {"ts": "2026-10-02T00:00:00", "session": "s2"}
+assert w.log_dir(e2) == w.LOG_DIR and "note" not in e2         # env unset: default behaviour
+_os.environ["AODD_WORKLOG"] = str(w.LOG_DIR)
+assert w.log_dir(e2) == w.FALLBACK_DIR and "missing" in e2["note"]
+w.LOG_DIR = d / "wl2"; assert w.log_dir({}) == w.LOG_DIR     # parent exists: no fallback
+_os.environ.pop("AODD_WORKLOG")

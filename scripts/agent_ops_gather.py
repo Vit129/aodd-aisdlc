@@ -9,10 +9,16 @@ ponytail: usage = transcripts containing an invocation marker (see markers()), n
 transcript parse - good enough to separate used from never-used; upgrade to per-tool transcript parsing
 if the counts start driving decisions on their own.
 
+Antigravity has no skills folder to inventory, so it gets its own section when transcripts exist (dirs in
+$AODD_AGY_TRANSCRIPTS, os.pathsep list; default ~/.gemini/antigravity/brain and ~/.gemini/antigravity-cli/brain):
+per session the tool calls and the skills loaded. Silent when there are none.
+
 Usage: agent_ops_gather.py OUT.md [--days 7]
 """
 import datetime
+import json
 import os
+import re
 import subprocess
 import sys
 import time
@@ -58,6 +64,47 @@ def skill_usage(skills, files):
     return len(seen), {s: sum(s in hit for hit in seen.values()) for s in skills}
 
 
+SKILL_NAME = re.compile(r"skills/([^/\s'\"\\]+)/SKILL\.md")
+
+
+def agy_dirs():
+    raw = os.environ.get("AODD_AGY_TRANSCRIPTS")
+    dirs = raw.split(os.pathsep) if raw else [str(Path.home() / ".gemini" / d / "brain") for d in ("antigravity", "antigravity-cli")]
+    return [Path(d).expanduser() for d in dirs if d]
+
+
+def agy_section(days):
+    """Per-session tool calls and skills loaded from Antigravity transcripts; "" when none."""
+    sessions = {}  # session dir -> [tool calls, {skills}]
+    for base in agy_dirs():
+        files = recent_files([(base, "*/.system_generated/messages/*"), (base, "**/*.jsonl")], days)
+        for f in files:
+            try:
+                text = f.read_text(errors="ignore")
+            except OSError:
+                continue
+            sid = f.relative_to(base).parts[0] if f.relative_to(base).parts[1:] else f.stem
+            n, skills = sessions.setdefault(f"{base.name}/{sid}", [0, set()])
+            skills.update(SKILL_NAME.findall(text))
+            for line in text.splitlines():
+                try:
+                    rec = json.loads(line)
+                except ValueError:
+                    continue
+                calls = rec.get("tool_calls") if isinstance(rec, dict) else None
+                if isinstance(calls, list):
+                    sessions[f"{base.name}/{sid}"][0] += len(calls)
+                    skills.update(str(c["args"]["skill"]).split(":")[-1] for c in calls
+                                  if isinstance(c, dict) and c.get("name") == "Skill" and isinstance(c.get("args"), dict) and c["args"].get("skill"))
+    if not sessions:
+        return ""
+    lines = [f"# Agent: antigravity (transcripts)", "", f"Sessions in the last {days} days: {len(sessions)}", "",
+             "## Usage per session (tool calls / skills loaded)", ""]
+    for sid, (n, skills) in sorted(sessions.items()):
+        lines.append(f"- {sid}: {n} / {', '.join(sorted(skills)) or 'none'}")
+    return "\n".join(lines)
+
+
 def section(name, cfg, days):
     root = cfg["root"]
     skills = sorted(p.parent.name for p in (root / "skills").glob("*/SKILL.md"))
@@ -79,6 +126,7 @@ def main(argv):
     out = Path(argv[1])
     days = int(argv[argv.index("--days") + 1]) if "--days" in argv else 7
     parts = [section(n, c, days) for n, c in AGENTS.items() if c["root"].is_dir()]
+    parts += [x for x in [agy_section(days)] if x]
     hooks = next((d for d in (HERE.parent / "hooks", HERE.parent.parent / "hooks") if (d / "work-log.py").is_file()), None)
     month = datetime.date.today().strftime("%Y-%m")
     for title, cmd in ((f"Work Log {month}", hooks and [hooks / "work-log.py", "--report", month]),

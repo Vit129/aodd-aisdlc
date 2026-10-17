@@ -5,7 +5,8 @@ AODD_REPORTS  $AODD_HOME/pending-reports   audit reports, agent-ops reports, agy
 AODD_STATE    $AODD_HOME/state             hook state (one marker per session)
 AODD_PLANS    $AODD_HOME/plans             briefs, ai-sdlc progress files, handoffs; may contain {project}
 AODD_WORKLOG  $AODD_HOME/work-log          one JSONL file per month, written by hooks/work-log.py
-AODD_MEMORY   $AODD_HOME/memory            agent-memory module: knowledge/*.md, <project>/SESSION-TOPICS.md
+AODD_MEMORY   $AODD_HOME/memory            agent-memory module: knowledge/*.md, <project>/SESSION-TOPICS.md;
+                                           an os.pathsep list is allowed: memory() = first, memory_dirs() = all
 AODD_WORKSPACE  <claude home>              agent-memory module: dirs (os.pathsep list) where the central report
                                            queue is shown at session start; default CLAUDE_HOME or ~/.claude
 AODD_WORKLOG_SKIP  (empty)                 path globs (os.pathsep list) of session dirs the Work Log skips
@@ -34,8 +35,15 @@ def worklog() -> Path:
     return Path(os.environ.get("AODD_WORKLOG") or home() / "work-log").expanduser()
 
 
+def memory_dirs() -> list:
+    """All memory roots: AODD_MEMORY may be an os.pathsep-separated list; default one root under AODD_HOME."""
+    raw = os.environ.get("AODD_MEMORY")
+    dirs = [d for d in raw.split(os.pathsep) if d] if raw else []
+    return [Path(d).expanduser() for d in dirs] or [(home() / "memory").expanduser()]
+
+
 def memory() -> Path:
-    return Path(os.environ.get("AODD_MEMORY") or home() / "memory").expanduser()
+    return memory_dirs()[0]  # first root: where new notes are written
 
 
 def claude_home() -> Path:

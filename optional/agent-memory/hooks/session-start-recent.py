@@ -2,8 +2,10 @@
 """SessionStart hook (agent-memory module): inject this project's latest session digest and, in the
 workspace only, the queue of reports that wait for the CEO.
 
-  digest     $AODD_MEMORY/<project>/SESSION-TOPICS.md, last "## " section (when the file exists)
-  reports    newest agent-ops / housekeeping / pending-work report in $AODD_REPORTS, pointed at once
+  digest     <memory root>/<project>/SESSION-TOPICS.md, last "## " section (when the file exists);
+             $AODD_DIGEST = path template with {project}, $AODD_PROJECT_ALIASES = "name=alias,..."
+  reports    newest report of each kind in $AODD_REPORTS (kinds: $AODD_REPORT_KINDS, comma list; default
+             agent-ops,housekeeping,pending-work), pointed at once
   proposals  agy-*.md in $AODD_REPORTS until moved to done/; an agy-proposal without evidence
              (scripts/check_agy_proposal.py) is auto-rejected into done/ and never reaches the CEO
   audits     audit-*.md: PASS is filed to done/, FAIL / DISPUTED / UNVERIFIABLE is shown until filed
@@ -14,6 +16,7 @@ shows in a session of the repo it audited. Fails open (any error prints nothing)
 """
 import importlib.util
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -23,13 +26,34 @@ for _d in (HERE, HERE.parents[2] / "hooks"):  # installed: next to this file; in
 import _aodd_paths  # noqa: E402
 
 
+def report_kinds():
+    raw = os.environ.get("AODD_REPORT_KINDS") or "agent-ops,housekeeping,pending-work"
+    return [k.strip() for k in raw.split(",") if k.strip()]
+
+
+def digest_file(cwd):
+    """First existing digest for the project: $AODD_DIGEST template ({project}; default
+    <memory root>/{project}/SESSION-TOPICS.md for every root) tried for the project name, then for its
+    alias from $AODD_PROJECT_ALIASES ("name=alias,...")."""
+    name = _aodd_paths.project(cwd)
+    aliases = dict(a.split("=", 1) for a in os.environ.get("AODD_PROJECT_ALIASES", "").split(",") if "=" in a)
+    tpls = [os.environ["AODD_DIGEST"]] if os.environ.get("AODD_DIGEST") else [
+        str(m / "{project}" / "SESSION-TOPICS.md") for m in _aodd_paths.memory_dirs()]
+    for n in (name, aliases.get(name, "").strip()):
+        for t in tpls if n else []:
+            f = Path(t.replace("{project}", n)).expanduser()
+            if f.is_file():
+                return f
+    return None
+
+
 def main(payload):
     cwd = payload.get("cwd") or "."
     here = Path(cwd).expanduser().resolve()
     reports = _aodd_paths.reports()
     parts = []
-    topics = _aodd_paths.memory() / _aodd_paths.project(cwd) / "SESSION-TOPICS.md"
-    if topics.is_file():
+    topics = digest_file(cwd)
+    if topics:
         parts.append("Last session digest for this project (from SESSION-TOPICS.md):\n## "
                      + topics.read_text(encoding="utf-8").split("\n## ")[-1][:3000])
     workspace = any(here == r or r in here.parents for r in _aodd_paths.workspace_dirs())
@@ -37,7 +61,7 @@ def main(payload):
         seen_file = _aodd_paths.state() / "reports-seen"
         seen = set(seen_file.read_text().split()) if seen_file.is_file() else set()
         new = []
-        for kind in ("agent-ops", "housekeeping", "pending-work"):
+        for kind in report_kinds():
             newest = max(reports.glob(f"{kind}-*.md"), default=None, key=lambda p: p.stat().st_mtime)
             if newest and newest.name not in seen:
                 new.append(newest)

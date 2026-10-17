@@ -3,6 +3,18 @@
 All notable changes to aodd-aisdlc are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and it follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.3.2] - 2026-10-17
+
+### Added
+- Split extra files into row and section chunks (`ecc7b26`)
+
+### Documentation
+- Unexpanded settings env; latest-report by name date (`384e618`)
+
+### Fixed
+- Expand $VARS and ~ in AODD_* env values (`b40072e`)
+- Pick the audit by its date in the name, then mtime (`8b55da0`)
+
 ## [0.3.1] - 2026-10-17
 
 ### Added

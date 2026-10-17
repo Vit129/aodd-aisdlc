@@ -1,7 +1,7 @@
 ---
 name: hook-authoring
 description: Writing or fixing a Claude Code hook (a script under the agent home's `hooks/`: PreToolUse/PostToolUse/Stop/UserPromptSubmit/SessionStart python scripts, settings.json registration, regex guards on commands or prompts). Use when the user says "เขียน hook", "แก้ hook", "hook บล็อกผิด", "hook ไม่ทำงาน", "add a hook", "guard blocks my command", or a hook denies/blocks something it should not. Not for Claude Code plugin mods (use plugin-authoring) or git hooks.
-version: 0.1.4
+version: 0.1.5
 origin: auto-captured
 ---
 
@@ -22,6 +22,8 @@ Hooks are installed into the agent home's `hooks/` and registered in `settings.j
 9. **Usage keyed by name** (skills, commands): names collide across projects/plugins and old ledgers persist — anchor age on the item's own `created` date, never only on the last use of the name.
 - **Keyword tables:** match with word boundaries (`\btax\b`), not substrings (`tax` hits "syntax"), and keep the table in one data file the hook and the docs both read.
 - **Gotcha:** a `scripts/*.sh` without +x fails "Permission denied"; run `bash <script>`.
+- **settings.json `env` values are not shell-expanded.** `"X": "$HOME/notes"` reaches the hook literally and `Path(...)` creates a folder named `$HOME` in the session cwd. Expand once where env is read (`os.path.expanduser(os.path.expandvars(v))`). Check: `find <claude-home> -maxdepth 2 -name '$HOME'` stays empty after a session.
+- **Pick "the latest" report by the date in its name, not mtime alone.** Annotating or moving an old report updates its mtime and makes it look newest. Check: a test that edits an older report after a newer one exists.
 - **A hook test must clear the env switches it depends on** (`CLAUDE_SKILL_CAPTURE`, `DONE_GATE_AUDIT`, …) at its top: callers like `scripts/audit.py` set them, and the test then fails on correct code. Check: `CLAUDE_SKILL_CAPTURE=0 python3 hooks/test_<name>.py` still passes.
 - **A hook that moves or deletes a file another hook reads** (e.g. session-start filing a report to `done/` that done-gate looks up) breaks the reader on a resumed session. Make the reader search both places, and add a test that moves the file first and then calls the reader.
 - **Hooks import each other** (a helper hook may reuse `skill-capture-nudge.scan`). Before changing a helper's return shape or name: `grep -rn "<module>.<fn>(" hooks scripts`, update every caller, and run **every** `hooks/test_*.py` — fail-open `try/except` turns the breakage into silently wrong data (a log recorded `tool_calls: 0` for every session).

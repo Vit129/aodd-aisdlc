@@ -95,7 +95,7 @@ Modules are additive: add one later with `./install.sh --with <module>`; modules
 
   `python3 hooks/_aodd_paths.py reports|state|plans [cwd]` prints the resolved path.
 - **Your own agent-ops steps**: if `$AODD_HOME/extensions/agent-ops.md` exists, the agent-ops skill also follows it. That is the only extension hook; there is no plugin framework.
-- **Optional post-merge hook** (off unless you enable it): `git config core.hooksPath scripts/git-hooks` makes `scripts/git-hooks/post-merge` run `./install.sh` after a merge or pull that changes this repo's main branch, then, only if `AODD_POST_INSTALL` is set, that command (for example a script that mirrors the installed files to other tools). One runner at a time (a `mkdir` lock, 30 s debounce), output in `$AODD_STATE/post-merge.log`, never blocks git. It runs `install.sh` as the current checkout, so it only installs what you merged.
+- **Optional post-merge hook** (off unless you enable it): `git config core.hooksPath scripts/git-hooks` plus `AODD_AUTO_INSTALL=1` in your environment makes `scripts/git-hooks/post-merge` run `./install.sh` after a merge or pull that changes this repo's main branch, then, only if `AODD_POST_INSTALL` is set, that command (for example a script that mirrors the installed files to other tools). One runner at a time (a `mkdir` lock, 30 s debounce), output in `$AODD_STATE/post-merge.log`, never blocks git. It runs `install.sh` as the current checkout, so it only installs what you merged.
 - Without `--claude-md`, add the line `@rules/aodd.md` to your `CLAUDE.md` yourself, or the contract will not load.
 
 ### Companion plugins (optional, installed separately, not copied here)

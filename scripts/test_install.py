@@ -6,11 +6,13 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 T = Path(tempfile.mkdtemp())
-env = {**os.environ, "CLAUDE_HOME": str(T / "claude"), "CODEX_HOME": str(T / "codex")}
+env = {k: v for k, v in os.environ.items() if not k.startswith("AODD_")}
+env.update(CLAUDE_HOME=str(T / "claude"), CODEX_HOME=str(T / "codex"), AODD_SCHEDULES_DRY_RUN="1")
 
 
-def run(*flags):
-    p = subprocess.run(["bash", str(ROOT / "install.sh"), *flags], capture_output=True, text=True, env=env)
+def run(*flags, extra=None, home=None):
+    p = subprocess.run(["bash", str(ROOT / "install.sh"), *flags], capture_output=True, text=True, stdin=subprocess.DEVNULL,
+                       env={**env, **(extra or {})})
     assert p.returncode == 0, p.stderr
     return p.stdout
 
@@ -33,11 +35,40 @@ assert (T / "codex/AGENTS.md.aodd-bak").read_text() == "# mine\n" and (T / "code
 run("--codex")
 assert (T / "codex/AGENTS.md").read_text() == first
 hooks = json.loads((T / "codex/hooks.json").read_text())["hooks"]
-assert set(hooks) == {"Stop", "PreToolUse", "PostToolUse"} and len(hooks["Stop"]) == 3   # theirs + two of ours, once
+assert set(hooks) == {"Stop", "PreToolUse", "PostToolUse"} and len(hooks["Stop"]) == 5   # theirs + four of ours (graphify-guard, skill-capture, done-gate, work-log), once
 assert (T / "codex/skills/ai-sdlc/SKILL.md").is_file() and (T / "codex/agents/auditor.md").is_file()
 assert (T / "codex/hooks/done-gate.py").is_file() and (T / "claude/settings.json").is_file()   # --codex is in addition to the Claude install
 assert (T / "claude/hooks/_aodd_paths.py").is_file() and (T / "codex/hooks/_aodd_paths.py").is_file()   # the shared resolver rides along
 assert (mine.stat().st_mode & 0o777) == 0o644, "install must not chmod the host's own files"
 assert os.access(T / "claude/hooks/done-gate.py", os.X_OK)                 # its own hooks stay executable
 assert not (T / "claude/scripts/git-hooks").exists(), "repo git hooks are never installed (they would clobber the host's own)"
+
+# --- optional modules --------------------------------------------------------------------------
+assert not (T / "claude/hooks/memory-recall.py").exists() and not (T / "claude/scripts/install-schedules.py").exists()   # core only by default
+assert (T / "claude/hooks/secret-read-guard.py").is_file() and (T / "claude/hooks/_aodd_secrets.py").is_file()
+out = run("--dry-run", "--all")
+assert "modules core agent-memory schedules" in out and "schedule agent-ops" in out and "delegation" not in out
+bad = subprocess.run(["bash", str(ROOT / "install.sh"), "--with", "nope"], capture_output=True, text=True, env=env)
+assert bad.returncode == 2 and "unknown module" in bad.stderr
+M = T / "m"
+menv = {"CLAUDE_HOME": str(M / "c"), "AODD_HOME": str(M / "a"), "AODD_LAUNCHAGENTS_DIR": str(M / "la")}
+out = run("--with", "agent-memory", extra=menv)
+for f in ("hooks/memory-recall.py", "hooks/memory-write-scan.py", "hooks/session-start-recent.py"):
+    assert (M / "c" / f).is_file(), f
+assert not (M / "c/scripts/install-schedules.py").exists()                       # schedules not chosen -> not installed
+st = json.loads((M / "c/settings.json").read_text())
+assert {"UserPromptSubmit", "SessionStart"} <= set(st["hooks"]) and st["env"] == {"AODD_HOME": str(M / "a")}
+run("--with", "agent-memory,schedules", extra=menv)                              # add a module later
+assert (M / "c/scripts/install-schedules.py").is_file() and (M / "c/schedules/jobs.json").is_file() and (M / "c/scripts/aodd_job.py").is_file()
+snap = {p: p.read_bytes() for p in (M / "c").rglob("*") if p.is_file()}
+second = run("--all", extra=menv)                                                # idempotent: nothing changes, no new .aodd-bak
+assert snap == {p: p.read_bytes() for p in (M / "c").rglob("*") if p.is_file()}, "second run changed files"
+assert "UPDATE" not in second and "would register" not in second
+assert not list((M / "la").glob("*")), "schedules installer must not write launch agents under AODD_SCHEDULES_DRY_RUN"
+# a user's own env value is kept, and no env is written when nothing is set
+run("--core-only", extra={"CLAUDE_HOME": str(M / "c2")})
+assert "env" not in json.loads((M / "c2/settings.json").read_text())
+json.dump({"env": {"AODD_HOME": "/mine"}}, open(M / "c2/settings.json", "w"))
+assert "kept" in run("--core-only", extra={"CLAUDE_HOME": str(M / "c2"), "AODD_HOME": str(M / "other")})
+assert json.loads((M / "c2/settings.json").read_text())["env"]["AODD_HOME"] == "/mine"
 print("ok")

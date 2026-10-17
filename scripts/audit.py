@@ -24,7 +24,7 @@ import re
 import shutil
 import subprocess
 import sys
-from datetime import date
+from datetime import date, datetime
 from pathlib import Path
 
 HOME = Path.home()
@@ -106,8 +106,10 @@ def scope(repo: Path, base: str | None, since: str | None) -> tuple[str, str]:
     log = git(repo, "log", "--oneline", f"{base}..HEAD")
     untracked = [f for f in git(repo, "ls-files", "--others", "--exclude-standard").split("\n") if f]
     stat = git(repo, "diff", "--stat", base) + "".join(f" {f} (untracked)\n" for f in untracked)
-    diff = "".join(git(repo, "diff", "--no-index", "/dev/null", f) for f in untracked) + git(repo, "diff", base)
-    return base, f"git log {base}..HEAD:\n{log or '(none)'}\n\ndiff vs {base} (incl. uncommitted):\n{stat}\n{diff[:MAX_DIFF]}"
+    # new files get at most half the budget, so neither a big edit nor a big new file hides the other
+    new = "".join(git(repo, "diff", "--no-index", "/dev/null", f) for f in untracked)[:MAX_DIFF // 2]
+    diff = git(repo, "diff", base)[:MAX_DIFF - len(new)] + new
+    return base, f"git log {base}..HEAD:\n{log or '(none)'}\n\ndiff vs {base} (incl. uncommitted):\n{stat}\n{diff}"
 
 
 def run_model(who: str, prompt: str, repo: Path) -> str:
@@ -203,6 +205,9 @@ def main(argv=None) -> int:
     sid = _aodd_paths.session_id(tr)
     REPORTS.mkdir(parents=True, exist_ok=True)
     out = REPORTS / f"audit-{date.today()}-{sid}.md"
+    if out.exists():  # a same-day re-audit keeps the earlier verdict as history in done/ instead of overwriting it
+        (REPORTS / "done").mkdir(exist_ok=True)
+        out.rename(REPORTS / "done" / f"audit-{date.today()}-{datetime.fromtimestamp(out.stat().st_mtime):%H%M%S}-{sid}.md")
     out.write_text(f"---\nsession: {tr.stem}\nrepo: {repo}\nbase: {base}\nworker: {worker}\nauditor: {label}\n"
                    f"verifier: {'claude-opus' if other else 'none'}\nverdict: {v}\n---\n\n"
                    f"# Audit {date.today()} — {repo.name}\n\n## Final ({notes or who})\n\n{final}\n" +

@@ -58,7 +58,18 @@ git clone <this repo> aodd-aisdlc && cd aodd-aisdlc
 - Target is `~/.claude`; set `CLAUDE_HOME` for another location.
 - Existing files that differ are printed as `UPDATE` and the old content is kept as `<file>.aodd-bak`. Nothing is deleted.
 - Hooks are added to `settings.json` additively and idempotently (a `settings.json.aodd-bak` is made once). Each command is fail-open: `f=...; [ -f "$f" ] || exit 0; exec python3 "$f"`, so removing a hook file never breaks Claude Code.
-- All state lives under `AODD_HOME` (default `~/.aodd`): `pending-reports/` (audit and agent-ops reports, agy proposals; decided ones in `done/`), `plans/<feature>/` (briefs, `ai-sdlc-task-progress.md`, handoffs), `state/` (hook state).
+- All state lives under `AODD_HOME` (default `~/.aodd`), each part movable with an optional env var (set them in `settings.json` `env` or your shell). `hooks/_aodd_paths.py` is the one resolver all hooks and scripts use (installed with them):
+
+  | Variable | Default | Holds |
+  |---|---|---|
+  | `AODD_HOME` | `~/.aodd` | root of the three below |
+  | `AODD_REPORTS` | `$AODD_HOME/pending-reports` | audit and agent-ops reports, agy proposals; decided ones in `done/` |
+  | `AODD_STATE` | `$AODD_HOME/state` | hook state (`skill-capture/` markers) |
+  | `AODD_PLANS` | `$AODD_HOME/plans` | `<feature>/` briefs, `ai-sdlc-task-progress.md`, handoffs. May contain `{project}`, the git repo folder name of the session's working directory, e.g. `/notes/{project}/plans` |
+
+  `python3 hooks/_aodd_paths.py reports|state|plans [cwd]` prints the resolved path.
+- **Your own agent-ops steps**: if `$AODD_HOME/extensions/agent-ops.md` exists, the agent-ops skill also follows it. That is the only extension hook; there is no plugin framework.
+- **Optional post-merge hook** (off unless you enable it): `git config core.hooksPath scripts/git-hooks` makes `scripts/git-hooks/post-merge` run `./install.sh` after a merge or pull that changes this repo's main branch, then, only if `AODD_POST_INSTALL` is set, that command (for example a script that mirrors the installed files to other tools). One runner at a time (a `mkdir` lock, 30 s debounce), output in `$AODD_STATE/post-merge.log`, never blocks git. It runs `install.sh` as the current checkout, so it only installs what you merged.
 - Without `--claude-md`, add the line `@rules/aodd.md` to your `CLAUDE.md` yourself, or the contract will not load.
 
 ### Companion plugins (optional, installed separately, not copied here)
@@ -85,7 +96,7 @@ git clone <this repo> aodd-aisdlc && cd aodd-aisdlc
 
 3. **Verifier and the DISPUTED rule.** agy and Codex sometimes invent evidence, so when either audits, a cold Claude Opus re-checks every row. They have also caught real Claude mistakes, so a Claude verifier may not clear their FAIL on its own: auditor FAIL + verifier PASS = **DISPUTED**, and the CEO decides. The verifier can only add failures, never erase one silently. Combined verdicts: PASS, FAIL, DISPUTED, UNVERIFIABLE.
 4. **Read-only, void on write.** The auditor runs with `AODD_AUDITOR=1`; `hooks/auditor-readonly.py` denies edits and Bash commands that write files or git history. Afterwards `audit.py` compares `git status` and `HEAD` and the reports directory; any change voids the audit (verdict FAIL, "Audit void").
-5. **Report.** Written to `$AODD_HOME/pending-reports/audit-<date>-<sid8>.md` with a `verdict:` frontmatter line. Exit code 0 = PASS, 1 = FAIL/DISPUTED/UNVERIFIABLE, 2 = could not run.
+5. **Report.** Written to `$AODD_REPORTS/audit-<date>-<sid8>.md` with a `verdict:` frontmatter line. Exit code 0 = PASS, 1 = FAIL/DISPUTED/UNVERIFIABLE, 2 = could not run.
 
 ### done-gate behaviour
 
@@ -104,7 +115,7 @@ It fails open on any error. `DONE_GATE_AUDIT=0` disables the audit requirement.
 
 ### Proposals from other agents (evidence gate)
 
-Another agent (agy, Codex) never edits its synced copy of a skill. It writes `agy-proposal-<date>-<slug>.md` into `$AODD_HOME/pending-reports/`. `scripts/check_agy_proposal.py <file>` auto-rejects it unless it carries all of these fields, each non-trivial:
+Another agent (agy, Codex) never edits its synced copy of a skill. It writes `agy-proposal-<date>-<slug>.md` into `$AODD_REPORTS/`. `scripts/check_agy_proposal.py <file>` auto-rejects it unless it carries all of these fields, each non-trivial:
 
 `Project`, `Repo` (a real git repo), `What` (targets a file under `.claude/`), `Analysis`, `Code`, `Test`, `Fix`, `Verified` (must differ from `Test`), `Commit` (a hash that exists in `Repo`), `Proposed change`.
 

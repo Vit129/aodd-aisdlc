@@ -6,9 +6,10 @@ every claim of Done. This file is the always-on contract. The full feature workf
 `rules/ai-sdlc-workflow.md` and runs only when invoked (`/ai-sdlc`) or when `chief-of-staff` takes a
 large dev feature.
 
-Everything stateful lives under `AODD_HOME` (default `~/.aodd`): `pending-reports/` (audit reports,
-agent-ops reports, agy proposals; decided ones in `done/`), `plans/<feature>/` (briefs, progress files,
-handoffs), `state/` (hook state).
+Everything stateful lives under `AODD_HOME` (default `~/.aodd`): `$AODD_REPORTS` (default `pending-reports/`:
+audit reports, agent-ops reports, agy proposals; decided ones in `done/`), `$AODD_PLANS` (default `plans/`; a
+`{project}` in it is the repo folder name; `<feature>/` holds briefs, progress files, handoffs), `$AODD_STATE`
+(default `state/`: hook state). Resolve any of them with `python3 hooks/_aodd_paths.py reports|state|plans`.
 
 ## AODD triage: every request passes this gate (silently, no announcement)
 

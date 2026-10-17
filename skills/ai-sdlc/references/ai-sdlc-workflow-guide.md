@@ -10,7 +10,7 @@ Operational guide for executing the 5-phase Shift-Left software lifecycle using 
 |---|---|---|---|
 | **Phase 0: Scope & Discovery** | Map unknowns, spikes, multi-session work | `/wayfinder`, `/research`, `/prototype` | Decision tickets, exploratory spike |
 | **Phase 1: Interview** | Uncover assumptions, clarify scope | `/grilling`, `/grill-me`, `/grill-with-docs` → `/to-spec` | Feature Spec (`docs/specs/` or prompt output) |
-| **Phase 2: Architect** | Domain language, interface/seam design & ticket slicing | `/domain-modeling`, `/codebase-design`, `/to-tickets` | `CONTEXT.md`, `$AODD_HOME/plans/[FEATURE]/[FEATURE]-architecture.md`, `$AODD_HOME/plans/[FEATURE]/ai-sdlc-task-progress.md` |
+| **Phase 2: Architect** | Domain language, interface/seam design & ticket slicing | `/domain-modeling`, `/codebase-design`, `/to-tickets` | `CONTEXT.md`, `$AODD_PLANS/[FEATURE]/[FEATURE]-architecture.md`, `$AODD_PLANS/[FEATURE]/ai-sdlc-task-progress.md` |
 | **Phase 3: QA-Design** | Shift-Left test scenarios & skeletons | scenario tool + your test framework (Playwright, Robot Framework, ...) | `[TS-XXXX]` test files in **RED (failing)** state |
 | **Phase 4: Dev** | Implement tickets until tests pass | `/tdd`, `/implement`, `/improve-codebase-architecture` | Application code driving tests to **GREEN** |
 | **Phase 5: QA-Verify** | Verify suite & run parallel pre-merge audit | Full test suite run + `/code-review`, `/handoff` | Code Review Report (Standards + Spec) |
@@ -36,9 +36,9 @@ Operational guide for executing the 5-phase Shift-Left software lifecycle using 
 ### Step 2: Architect & Slice Tickets (Phase 2)
 1. Standardize ubiquitous domain terms in `CONTEXT.md` using `/domain-modeling`.
 2. Determine module depth, public seams, and adapters using `/codebase-design`.
-3. Create/record the architecture plan directly in `$AODD_HOME/plans/[FEATURE]/[FEATURE]-architecture.md` (co-located with `ai-sdlc-task-progress.md`).
+3. Create/record the architecture plan directly in `$AODD_PLANS/[FEATURE]/[FEATURE]-architecture.md` (co-located with `ai-sdlc-task-progress.md`).
 4. Determine QA testability requirements (`data-testid`, DB fixtures, mock boundaries) per `references/dev-qa-handoff.md`.
-5. Break the spec into vertical slices via `/to-tickets` and initialize `$AODD_HOME/plans/[FEATURE]/ai-sdlc-task-progress.md`.
+5. Break the spec into vertical slices via `/to-tickets` and initialize `$AODD_PLANS/[FEATURE]/ai-sdlc-task-progress.md`.
 
 ### Step 3: Design Test Skeletons in RED (Phase 3)
 1. Generate `[TS-XXXX]` scenarios (your scenario tool, or by hand).
@@ -59,7 +59,7 @@ Operational guide for executing the 5-phase Shift-Left software lifecycle using 
    - **Standards Sub-agent**: Validates against the project's coding standards and baseline code smells.
    - **Spec Sub-agent**: Verifies complete coverage against the Phase 1 spec.
 3. Optionally run `/scrutinize` for an outsider-perspective sanity check.
-4. If handing off to another agent or session, produce a structured summary via `/handoff` — save it to `$AODD_HOME/plans/[FEATURE]/handoff.md`; `ai-sdlc-task-progress.md` is a checkbox list, don't drop the narrative into that.
+4. If handing off to another agent or session, produce a structured summary via `/handoff` — save it to `$AODD_PLANS/[FEATURE]/handoff.md`; `ai-sdlc-task-progress.md` is a checkbox list, don't drop the narrative into that.
 
 ---
 

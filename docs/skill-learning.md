@@ -3,7 +3,7 @@
 Lessons live **inside skills**, not in a separate lessons file. The Stop hook
 `hooks/skill-capture-nudge.py` runs this procedure for Claude Code. Other agents (Antigravity
 `agy`, Codex) never patch their synced copies of a skill: they raise the same patch as an
-`agy-proposal-*.md` in `$AODD_HOME/pending-reports/` and Claude decides. A proposal must carry the
+`agy-proposal-*.md` in `$AODD_REPORTS/` and Claude decides. A proposal must carry the
 evidence fields below; `scripts/check_agy_proposal.py` auto-rejects one without them.
 
 ```

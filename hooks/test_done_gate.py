@@ -1,4 +1,5 @@
 import os as _o, tempfile as _t
+[_o.environ.pop(k, None) for k in ("AODD_REPORTS", "AODD_STATE", "AODD_PLANS")]
 _o.environ["AODD_HOME"] = _t.mkdtemp()  # tests never touch the real AODD_HOME
 import json, importlib.util, tempfile, pathlib, os
 spec = importlib.util.spec_from_file_location("h", os.path.join(os.path.dirname(os.path.abspath(__file__)), "done-gate.py"))

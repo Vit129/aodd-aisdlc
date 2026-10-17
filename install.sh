@@ -3,7 +3,7 @@
 #   ./install.sh [--dry-run] [--claude-md] [--codex]
 # --codex also installs into ${CODEX_HOME:-~/.codex}: skills, agents, hooks, scripts, docs, the two rules
 # inlined in AGENTS.md between aodd:begin/aodd:end markers (Codex has no @import), hooks in hooks.json.
-# Copies skills, agents, rules, hooks, scripts and docs; registers the three hooks in settings.json
+# Copies skills, agents, rules, hooks, scripts and docs (not tests, and not scripts/git-hooks, which are for working on this repo); registers the three hooks in settings.json
 # (additive, idempotent, fail-open). An existing file that differs is printed as UPDATE and its old
 # content is kept next to it as <file>.aodd-bak. Nothing is ever deleted.
 set -euo pipefail
@@ -33,7 +33,7 @@ copy_file() {  # copy_file <src> <dest>
   else
     echo "NEW     $d"
   fi
-  [ "$DRY" = 1 ] || { mkdir -p "$(dirname "$d")"; cp "$s" "$d"; }
+  [ "$DRY" = 1 ] || { mkdir -p "$(dirname "$d")"; cp "$s" "$d"; if [ -x "$s" ]; then chmod +x "$d"; fi; }
 }
 
 copy_tree() {  # copy_tree <relative dir> [dest root]: every file except tests and caches
@@ -41,11 +41,10 @@ copy_tree() {  # copy_tree <relative dir> [dest root]: every file except tests a
   [ -d "$SRC/$rel" ] || return 0
   while IFS= read -r f; do
     copy_file "$SRC/$f" "$DEST/$f"
-  done < <(cd "$SRC" && find "$rel" -type f ! -name 'test_*.py' ! -name '*.pyc' ! -path '*/__pycache__/*' | sort)
+  done < <(cd "$SRC" && find "$rel" -type f ! -name 'test_*.py' ! -name '*.pyc' ! -path '*/__pycache__/*' ! -path '*/git-hooks/*' | sort)
 }
 
 for d in skills agents rules hooks scripts docs; do copy_tree "$d"; done
-if [ "$DRY" = 0 ]; then chmod +x "$DEST"/hooks/*.py "$DEST"/scripts/*.py 2>/dev/null || true; fi
 
 # Register hooks in settings.json / hooks.json (python3 stdlib; refuses to touch an unparsable file)
 register_hooks() {  # register_hooks <dest> <settings file name>
@@ -121,7 +120,6 @@ if [ "$CODEX_ON" = 1 ]; then
   CDEST="${CODEX_HOME:-$HOME/.codex}"
   echo "install into: $CDEST (codex)"
   for d in skills agents hooks scripts docs; do copy_tree "$d" "$CDEST"; done
-  if [ "$DRY" = 0 ]; then chmod +x "$CDEST"/hooks/*.py "$CDEST"/scripts/*.py 2>/dev/null || true; fi
   register_hooks "$CDEST" hooks.json
   # AGENTS.md: replace the aodd block in place (or append it), so a re-run never duplicates it
   AG="$CDEST/AGENTS.md"
@@ -144,5 +142,5 @@ else:
 PY
   fi
 fi
-echo "state   reports and hook state live under \${AODD_HOME:-~/.aodd}"
+echo "state   reports, plans and hook state live under \${AODD_HOME:-~/.aodd} (override: AODD_REPORTS, AODD_STATE, AODD_PLANS)"
 echo "done"

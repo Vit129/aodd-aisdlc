@@ -13,7 +13,7 @@
    re-checks every row. But agy has also caught real Claude mistakes that Claude then confirmed,
    so a Claude verifier may not clear an agy FAIL on its own: agy FAIL + verifier PASS = DISPUTED,
    which the CEO decides (combine()). The verifier can only add failures, never erase one silently.
-4. This script writes the report ($AODD_HOME/pending-reports/audit-<date>-<sid8>.md, frontmatter `verdict:`);
+4. This script writes the report ($AODD_REPORTS/audit-<date>-<sid8>.md, frontmatter `verdict:`);
    hooks/done-gate.py reads it before a session may claim Done. Repo changed during the audit -> FAIL.
 Exit 0 = PASS, 1 = FAIL/UNVERIFIABLE, 2 = could not run.
 """
@@ -28,8 +28,9 @@ from datetime import date
 from pathlib import Path
 
 HOME = Path.home()
-AODD_HOME = Path(os.environ.get("AODD_HOME") or HOME / ".aodd")
-REPORTS = AODD_HOME / "pending-reports"
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "hooks"))
+import _aodd_paths  # noqa: E402
+REPORTS = _aodd_paths.reports()
 JD = Path(__file__).resolve().parent.parent / "agents/auditor.md"
 AGY = os.environ.get("AGY_BIN", "agy")
 CLAUDE = os.environ.get("CLAUDE_BIN", "claude")

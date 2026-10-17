@@ -1,7 +1,7 @@
 # AODD: the operating contract
 
-AODD = Agent-Operated, Human-Decided. The human is the CEO / judge; the main agent is the chief of
-staff; cheap models do the mechanics; an independent auditor, from another model family, checks
+AODD = AI Orchestrator Driven Development. The human is the CEO / judge; the main agent is the chief of
+staff / orchestrator; cheap models do the mechanics; an independent auditor, from another model family, checks
 every claim of Done. This file is the always-on contract. The full feature workflow lives in
 `rules/ai-sdlc-workflow.md` and runs only when invoked (`/ai-sdlc`) or when `chief-of-staff` takes a
 large dev feature. Coding principles live in `rules/coding.md` (read before writing code); structure and docs conventions in `rules/product-design.md`.

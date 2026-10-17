@@ -2,7 +2,7 @@
 
 Two things for Claude Code that work together:
 
-- **AODD** (Agent-Operated, Human-Decided): an operating contract. You are the CEO. The main agent is your chief of staff. Cheap models do the mechanics. An independent auditor from another model family checks every claim of "Done" before it reaches you.
+- **AODD** (AI Orchestrator Driven Development): an operating contract. You are the CEO. The main agent is your chief of staff / orchestrator. Cheap models do the mechanics. An independent auditor from another model family checks every claim of "Done" before it reaches you.
 - **ai-sdlc**: a Dev/QA feature workflow. Interview, architect, QA design (tests RED), dev (GREEN), QA verify, with three real approval gates.
 
 ## The flow

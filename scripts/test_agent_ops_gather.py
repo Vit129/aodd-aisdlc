@@ -1,3 +1,6 @@
+import os as _os
+for _k in [k for k in _os.environ if k.startswith("AODD_")]:  # a live install sets these; tests own their env
+    del _os.environ[_k]
 import json, importlib.util, os, pathlib, tempfile
 spec = importlib.util.spec_from_file_location("g", os.path.join(os.path.dirname(os.path.abspath(__file__)), "agent_ops_gather.py"))
 g = importlib.util.module_from_spec(spec); spec.loader.exec_module(g)

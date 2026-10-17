@@ -80,7 +80,7 @@ def audit_report(transcript: Path, reports: Path = REPORTS):
     """(report path, verdict) of the newest audit for this session, or (None, None)."""
     # done/ too: a PASS may be filed there, and a resumed session must still count as audited
     pat = f"audit-*-{transcript.stem[:8]}.md"
-    found = sorted([*reports.glob(pat), *(reports / "done").glob(pat)], key=lambda p: p.stat().st_mtime) if reports.is_dir() else []
+    found = sorted([*reports.glob(pat), *(reports / "done").glob(pat)], key=lambda p: (p.name.split("-", 1)[1][:10], p.stat().st_mtime)) if reports.is_dir() else []  # audit date in the name first: annotating an old report must not make it "newest"
     if not found:
         return None, None
     m = VERDICT.search(found[-1].read_text(errors="ignore"))

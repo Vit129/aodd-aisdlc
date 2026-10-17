@@ -30,4 +30,9 @@ assert p.workspace_dirs() == [t.resolve(), (t / "h").resolve()]
 os.environ["AODD_MEMORY"] = f"{t / 'm1'}{os.pathsep}{t / 'm2'}"
 assert p.memory() == t / "m1" and p.memory_dirs() == [t / "m1", t / "m2"]
 os.environ.pop("AODD_MEMORY"); assert p.memory_dirs() == [t / "h/memory"]
+# settings.json "env" is not shell-expanded: "$HOME/x" must still resolve under the real home
+import subprocess, sys
+out = subprocess.run([sys.executable, "-c", "import sys; sys.path.insert(0, %r); import _aodd_paths as a; print(a.reports())" % str(Path(__file__).parent)],
+                     env={**os.environ, "AODD_REPORTS": "$HOME/aodd-x", "HOME": "/tmp/h"}, capture_output=True, text=True).stdout.strip()
+assert out == "/tmp/h/aodd-x", out
 print("ok")

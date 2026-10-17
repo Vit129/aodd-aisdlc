@@ -15,6 +15,12 @@ AODD_WORKLOG_SKIP  (empty)                 path globs (os.pathsep list) of sessi
 itself when there is no .git above it). Shell: python3 hooks/_aodd_paths.py reports|state|plans [cwd]
 """
 import os
+
+# Claude Code does not expand $VARS in settings.json "env", so a value like "$HOME/notes" arrives literally
+# and would create a folder named "$HOME" in the cwd. Expand once at import, for every reader.
+for _k, _v in list(os.environ.items()):
+    if _k.startswith("AODD_") or _k == "CLAUDE_HOME":
+        os.environ[_k] = os.path.expanduser(os.path.expandvars(_v))
 import sys
 from pathlib import Path
 

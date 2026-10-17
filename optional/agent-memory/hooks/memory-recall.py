@@ -12,6 +12,7 @@ Match rule: a candidate needs >=2 distinct keywords, or 1 keyword of >=10 chars 
 Keywords are Latin/identifier tokens >=4 chars and Thai terms >=3 chars minus stopwords.
 Conversational filler returns nothing rather than noise. Fails open; disable with MEMORY_RECALL=0.
 """
+import fnmatch
 import json
 import os
 import re
@@ -35,6 +36,7 @@ HIT_LOG = Path(os.environ.get("MEMORY_RECALL_LOG") or _aodd_paths.state() / "rec
 
 
 MACHINE_TEXT = re.compile(r"^\s*<(system-reminder|task-notification|local-command|command-)")
+CASE_ROW = re.compile(r"^\s*\|\s*[`*]*([A-Za-z][A-Za-z0-9]*[-_][A-Za-z0-9_-]+)[`*]*\s*\|")
 MAX_KEYWORDS = 15  # a real question has a handful; more means a pasted log/report/notification
 
 
@@ -95,13 +97,47 @@ def keywords(prompt: str, cap: int | None = 20) -> list[str]:
     return out[:cap] if cap is not None else out
 
 
-def sections(path: Path):
-    """Yield (anchor, text) chunks: '## ' sections for knowledge/ files, the whole file for notes."""
+def is_recall_extra(path: Path) -> bool:
+    if path.parent.name == "knowledge":
+        return False
+    extra = os.environ.get("AODD_RECALL_EXTRA", "")
+    if not extra:
+        return False
+    for g in (x for x in extra.split(os.pathsep) if x):
+        if path.name == g or path.match(g) or path.match(f"*/{g}") or fnmatch.fnmatch(str(path), f"*/{g}") or fnmatch.fnmatch(path.name, g):
+            return True
+    return False
+
+
+def sections(path: Path, is_extra: bool | None = None):
+    """Yield (anchor, text) chunks: table rows or '## ' sections for extra files, '## ' for knowledge/, whole file for notes."""
     try:
         text = path.read_text(encoding="utf-8", errors="ignore")
     except OSError:
         return
-    if path.parent.name == "knowledge":
+    if is_extra is None:
+        is_extra = is_recall_extra(path)
+    if is_extra:
+        rows = [
+            (m.group(1), line.strip())
+            for line in text.splitlines()
+            if (m := CASE_ROW.match(line))
+        ]
+        if rows:
+            yield from rows
+        else:
+            has_sections = bool(re.search(r"^##\s+", text, re.M))
+            if has_sections:
+                for chunk in re.split(r"\n(?=## )", text):
+                    chunk = chunk.strip()
+                    if not chunk:
+                        continue
+                    head = chunk.splitlines()[0][:60]
+                    anchor = head.lstrip("# ").strip() if head.startswith("## ") else ""
+                    yield anchor, chunk
+            else:
+                yield "", text
+    elif path.parent.name == "knowledge":
         for chunk in re.split(r"\n(?=## )", text):
             head = chunk.strip().splitlines()[0][:60] if chunk.strip() else ""
             yield head.lstrip("# ").strip(), chunk
@@ -114,6 +150,8 @@ def describe(path: Path, text: str, anchor: str) -> str:
     if m:
         return m.group(1).strip()
     first = next((l.strip() for l in text.splitlines() if l.strip() and not l.startswith("#")), "")
+    if text.strip().startswith("|") and "\n" not in text.strip():
+        return first
     return f"[{anchor}] {first}" if anchor else first
 
 

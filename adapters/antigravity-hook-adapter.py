@@ -28,6 +28,10 @@ Usage:
 import importlib.util
 import json
 import os
+
+for _k, _v in list(os.environ.items()):  # settings "env" values arrive unexpanded (see hooks/_aodd_paths.py)
+    if _k.startswith("AODD_") or _k == "CLAUDE_HOME":
+        os.environ[_k] = os.path.expanduser(os.path.expandvars(_v))
 import re
 import sys
 from datetime import datetime

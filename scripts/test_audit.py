@@ -70,6 +70,10 @@ tr.write_text(json.dumps(rows[0]) + "\n" + json.dumps({"message": {"model": "cla
 (repo / "f").write_text("x" * (a.MAX_DIFF + 5000))
 sc = a.scope(repo, "HEAD", None)[1]
 assert "print('new')" in sc and "new.py (untracked)" in sc and "1 file changed" in sc  # stat & untracked survive >MAX_DIFF patch
+(repo / "f").write_text("edited-line\n")                            # the reverse: a big new file must not hide the edit
+(repo / "new.py").write_text("y" * (a.MAX_DIFF + 5000))
+sc = a.scope(repo, "HEAD", None)[1]
+assert "+edited-line" in sc and len(sc) < a.MAX_DIFF + 2000, len(sc)
 (repo / "f").write_text("1")
 (repo / "new.py").unlink()
 calls = []
@@ -87,6 +91,7 @@ assert [c[0] for c in calls] == ["agy", "claude-opus"] and "แก้ทุก�
 assert "OVERALL: FAIL" in calls[1][1]                               # verifier sees agy's audit
 rep = next(a.REPORTS.glob("audit-*-s.md")).read_text()
 assert "verdict: DISPUTED" in rep and "auditor: agy" in rep and "agy's original audit" in rep
+assert any("verdict: FAIL" in f.read_text() for f in (a.REPORTS / "done").glob("audit-*-*-s.md"))  # same-day re-audit kept the FAIL
 
 calls.clear()
 a.run_model = lambda who, prompt, r: ((repo / "f").write_text("tampered") and "OVERALL: PASS")

@@ -72,3 +72,12 @@ json.dump({"env": {"AODD_HOME": "/mine"}}, open(M / "c2/settings.json", "w"))
 assert "kept" in run("--core-only", extra={"CLAUDE_HOME": str(M / "c2"), "AODD_HOME": str(M / "other")})
 assert json.loads((M / "c2/settings.json").read_text())["env"]["AODD_HOME"] == "/mine"
 print("ok")
+
+# --- --no-backup: an UPDATE over differing files leaves no .aodd-bak anywhere ---------------------
+N = T / "nb"
+nenv = {"CLAUDE_HOME": str(N / "c"), "CODEX_HOME": str(N / "x"), "AGY_HOME": str(N / "g/antigravity-cli")}
+for f in ("c/skills/ai-sdlc/SKILL.md", "c/settings.json", "x/AGENTS.md", "x/hooks.json", "g/AGENTS.md", "g/antigravity-cli/skills/ai-sdlc/SKILL.md"):
+    (N / f).parent.mkdir(parents=True, exist_ok=True); (N / f).write_text("{}" if f.endswith(".json") else "mine\n")
+out = run("--no-backup", "--codex", "--agy", extra=nenv)
+assert "UPDATE" in out and not list(N.rglob("*.aodd-bak")), list(N.rglob("*.aodd-bak"))
+print("ok - install self-test passed (incl. --no-backup)")

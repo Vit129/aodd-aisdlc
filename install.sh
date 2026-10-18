@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Install aodd-aisdlc into a Claude Code home (default ~/.claude, override with CLAUDE_HOME).
-#   ./install.sh [--dry-run] [--claude-md] [--codex] [--with agent-memory,schedules | --all | --core-only] [--yes]
+#   ./install.sh [--dry-run] [--no-backup] [--claude-md] [--codex] [--with agent-memory,schedules | --all | --core-only] [--yes]
 # Core (always): skills, agents, rules, hooks, scripts, docs; hooks registered in settings.json (additive,
 # idempotent, fail-open). Optional modules (optional/<name>/): agent-memory, schedules. Asked one by one
 # when run in a terminal; --with / --all / --core-only answer for you, --yes asks nothing (default: core only,
@@ -8,7 +8,7 @@
 # --codex also installs into ${CODEX_HOME:-~/.codex}: the same files, the two rules inlined in AGENTS.md
 # between aodd:begin/aodd:end markers (Codex has no @import), hooks in hooks.json.
 # An existing file that differs is printed as UPDATE and its old content is kept next to it as
-# <file>.aodd-bak. Nothing is ever deleted, host files are never chmod'ed, repo git-hooks are not installed.
+# <file>.aodd-bak (--no-backup or AODD_NO_BACKUP=1: no .aodd-bak files at all). Nothing is ever deleted, host files are never chmod'ed, repo git-hooks are not installed.
 # Paths: AODD_* variables you have set in the environment are written to settings.json "env" (unset ones
 # stay at their defaults, see hooks/_aodd_paths.py).
 set -euo pipefail
@@ -20,6 +20,7 @@ while [ $# -gt 0 ]; do
   a="$1"; shift
   case "$a" in
     --dry-run) DRY=1 ;;
+    --no-backup) export AODD_NO_BACKUP=1 ;;
     --claude-md) CLAUDE_MD=1 ;;
     --codex) CODEX_ON=1 ;;
     --agy) AGY_ON=1 ;;
@@ -44,8 +45,10 @@ copy_file() {  # copy_file <src> <dest>
   local s="$1" d="$2"
   if [ -e "$d" ]; then
     if cmp -s "$s" "$d"; then return 0; fi
-    echo "UPDATE  $d (old content kept as $d.aodd-bak)"
-    [ "$DRY" = 1 ] || cp "$d" "$d.aodd-bak"
+    if [ "${AODD_NO_BACKUP:-0}" = 1 ]; then echo "UPDATE  $d"; else
+      echo "UPDATE  $d (old content kept as $d.aodd-bak)"
+      [ "$DRY" = 1 ] || cp "$d" "$d.aodd-bak"
+    fi
   else
     echo "NEW     $d"
   fi
@@ -190,7 +193,7 @@ if os.environ["WRITE_ENV"] == "1":
 if changed and not dry:
     if settings.is_file():
         bak = settings.with_name(settings.name + ".aodd-bak")
-        if not bak.exists():
+        if not bak.exists() and os.environ.get("AODD_NO_BACKUP") != "1":
             bak.write_text(settings.read_text())
             print(f"backup  {bak}")
     settings.parent.mkdir(parents=True, exist_ok=True)
@@ -221,7 +224,7 @@ if [ "$CODEX_ON" = 1 ]; then
   BLOCK="$(printf '<!-- aodd:begin -->\n'; cat "$SRC/rules/aodd.md"; printf '\n'; cat "$SRC/rules/ai-sdlc-workflow.md"; printf '\n<!-- aodd:end -->\n')"
   if [ "$DRY" = 1 ]; then echo "AGENTS  $AG <- aodd block (would write)"; else
     mkdir -p "$CDEST"
-    [ -f "$AG" ] && [ ! -e "$AG.aodd-bak" ] && ! grep -q "aodd:begin" "$AG" && cp "$AG" "$AG.aodd-bak" && echo "backup  $AG.aodd-bak"
+    [ "${AODD_NO_BACKUP:-0}" != 1 ] && [ -f "$AG" ] && [ ! -e "$AG.aodd-bak" ] && ! grep -q "aodd:begin" "$AG" && cp "$AG" "$AG.aodd-bak" && echo "backup  $AG.aodd-bak"
     AG="$AG" BLOCK="$BLOCK" python3 - <<'PY'
 import os, re
 from pathlib import Path

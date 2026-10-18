@@ -75,7 +75,7 @@ In a terminal the installer asks about each optional module (one line each, defa
 Modules are additive: add one later with `./install.sh --with <module>`; modules you do not name are left as they are.
 
 - Target is `~/.claude`; set `CLAUDE_HOME` for another location.
-- Existing files that differ are printed as `UPDATE` and the old content is kept as `<file>.aodd-bak`. Nothing is deleted.
+- Existing files that differ are printed as `UPDATE` and the old content is kept as `<file>.aodd-bak`. Nothing is deleted. `--no-backup` (or `AODD_NO_BACKUP=1`, e.g. when another tool already mirrors these files) makes no `.aodd-bak` files at all.
 - Hooks are added to `settings.json` additively and idempotently (a `settings.json.aodd-bak` is made once). Each command is fail-open: `f=...; [ -f "$f" ] || exit 0; exec python3 "$f"`, so removing a hook file never breaks Claude Code.
 - All state lives under `AODD_HOME` (default `~/.aodd`), each part movable with an optional env var (set them in `settings.json` `env` or your shell). `hooks/_aodd_paths.py` is the one resolver all hooks and scripts use (installed with them):
 

@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 # Install aodd-aisdlc into an Antigravity environment (default ~/.gemini/antigravity-cli, override with AGY_HOME).
-#   ./install-agy.sh [--dry-run]
+#   ./install-agy.sh [--dry-run] [--no-backup]
 # Copies skills, agents, and adapters; writes AODD rules into the Antigravity instruction file
 # (AGENTS.md) between <!-- aodd:begin --> and <!-- aodd:end --> markers; registers the lifecycle hook
 # adapter in Antigravity's config/hooks.json (additive, idempotent, fail-open).
-# An existing file that differs is printed as UPDATE and its old content is kept next to it as <file>.aodd-bak.
+# An existing file that differs is printed as UPDATE and its old content is kept next to it as <file>.aodd-bak
+# (--no-backup or AODD_NO_BACKUP=1: no .aodd-bak files at all).
 # Nothing is ever deleted. Never chmods files it did not install.
 set -euo pipefail
 
@@ -12,7 +13,8 @@ DRY=0
 for a in "$@"; do
   case "$a" in
     --dry-run) DRY=1 ;;
-    -h|--help) sed -n '2,9p' "$0"; exit 0 ;;
+    --no-backup) export AODD_NO_BACKUP=1 ;;
+    -h|--help) sed -n '2,10p' "$0"; exit 0 ;;
     *) echo "unknown option: $a" >&2; exit 2 ;;
   esac
 done
@@ -49,8 +51,10 @@ copy_file() {  # copy_file <src> <dest>
   local s="$1" d="$2"
   if [ -e "$d" ]; then
     if cmp -s "$s" "$d"; then return 0; fi
-    echo "UPDATE  $d (old content kept as $d.aodd-bak)"
-    [ "$DRY" = 1 ] || { [ -e "$d.aodd-bak" ] || cp "$d" "$d.aodd-bak"; }
+    if [ "${AODD_NO_BACKUP:-0}" = 1 ]; then echo "UPDATE  $d"; else
+      echo "UPDATE  $d (old content kept as $d.aodd-bak)"
+      [ "$DRY" = 1 ] || { [ -e "$d.aodd-bak" ] || cp "$d" "$d.aodd-bak"; }
+    fi
   else
     echo "NEW     $d"
   fi
@@ -83,7 +87,7 @@ pat = re.compile(r"<!-- aodd:begin -->.*?<!-- aodd:end -->\n?", re.S)
 new = pat.sub(lambda _: block, old) if pat.search(old) else (old + ("\n" if old and not old.endswith("\n\n") else "") + block)
 if new != old:
     bak = f.with_name(f.name + ".aodd-bak")
-    if old and not bak.exists():  # back up the user's file once, only when we are about to change it
+    if old and not bak.exists() and os.environ.get("AODD_NO_BACKUP") != "1":  # back up the user's file once, only when we are about to change it
         bak.write_text(old)
         print(f"backup  {bak}")
     f.write_text(new)
@@ -155,7 +159,7 @@ else:
     if not dry:
         if hfile.is_file():
             bak = hfile.with_name(hfile.name + ".aodd-bak")
-            if not bak.exists():
+            if not bak.exists() and os.environ.get("AODD_NO_BACKUP") != "1":
                 bak.write_text(hfile.read_text())
                 print(f"backup  {bak}")
         hfile.parent.mkdir(parents=True, exist_ok=True)

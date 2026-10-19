@@ -22,9 +22,8 @@ requirements, schema consistency) → `skills/ai-sdlc/references/dev-qa-handoff.
 
 ## Closing Phase 2 (always, whichever Phase 2 files you loaded)
 
-**Approval Gate 1 applies here** — see § Approval Gates in `rules/ai-sdlc-workflow.md`: don't start Phase 3/4
-until the user has approved this phase's design/implementation plan (skip only if the
-task collapsed per baseline rule 1 in `rules/ai-sdlc-workflow.md`).
+**Approval Gate 1 applies here when the full shape is running** — see § Approval Gates in `rules/ai-sdlc-workflow.md`: don't start Phase 3/4
+until the user has approved this phase's design/implementation plan. A Medium task states its file separation plan and keeps the gates light (Task Sizing in the same file); a Small task that collapsed per baseline rule 1 skips the gate.
 
 Deep DDD work (bounded contexts, aggregates/events, sync-vs-async integration tradeoffs)
 is model judgment applied directly here — there's no separate skill for it. Domain-term

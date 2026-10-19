@@ -20,10 +20,10 @@ Route by situation:
 - High-stakes decision, non-trivial logic, before commit/deploy → `mattpocock-skills:grilling` (adversarial stress-test)
 - Framework/library specific implementation, API version matters → `mattpocock-skills:research`
 
-Step 0 still applies first, silently: if scope is already unambiguous from the request + visible context (typo fix, single clear bug, direct question, explain/summarize/search/diagnose), state the 1-line scope read and skip straight to the fitting phase/action — don't invoke any of the above.
+The scope check comes first, silently: if scope is already unambiguous from the request + visible context (typo fix, single clear bug, direct question, explain/summarize/search/diagnose), state the 1-line scope read and skip straight to the fitting phase/action — don't invoke any of the above.
 
 **When the full shape is running, Phase 1 is not skippable and hands off to plan mode.**
-Step 0's skip is for collapsed tasks only. For full-shape work, close Phase 1 by stating
+The scope-check skip is for collapsed tasks only. For full-shape work, close Phase 1 by stating
 the resolved scope (spec summary + any assumptions still open) in the response, then —
 Claude Code only — call `EnterPlanMode` *before* writing any Phase 2 design, so Phase 2
 drafts inside plan mode and Gate 1 is the native `ExitPlanMode` approval (mechanics:

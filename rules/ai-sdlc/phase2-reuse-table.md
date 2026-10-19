@@ -1,16 +1,16 @@
 # Phase 2 — Reuse-Table Artifact & Nth-Occurrence Centralization Rule
 
-> Load when the Existing Asset Scan found something to reuse or a pattern now occurs a third time. Parent: `rules/ai-sdlc-workflow.md`.
+> Load whenever Phase 2 touches more than one file or adds a function/component/query/helper (even when every verdict is create-new), and when a pattern now occurs a third time. Parent: `rules/ai-sdlc-workflow.md`.
 
 
 **MANDATORY, always — this does not collapse for small tasks and is not the model's call
 to skip.** See baseline rule 3 in `rules/ai-sdlc-workflow.md`: a trivial one-line edit with nothing to
 scan is exempt because there's genuinely nothing to check, not because this rule is
 optional. The instant a task adds any new function/component/query/helper, run the scan
-and produce the table below before writing that code — on a "small" task exactly as much
+and the Nth-Occurrence check below before writing that code — on a "small" task exactly as much
 as a large one.
 
-**Mandatory when Phase 2 touches more than one file:** produce a markdown table as part of
+**The table itself is required when Phase 2 touches more than one file:** produce a markdown table as part of
 the feature's `[FEATURE]-architecture.md`, columns exactly:
 
 ```markdown

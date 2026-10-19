@@ -132,7 +132,7 @@ headers: {
 
 ### 3. Fixtures & Schemas (MANDATORY — create before spec file)
 
-Per `workflow.md` Step 5-6 and `api.md` PART 1, fixtures and schemas MUST exist before generating spec files.
+Per `workflow.md` Step 5-6 and `api.md` § Structure, fixtures and schemas MUST exist before generating spec files.
 
 **Fixture file** (`fixtures/[collection]/[folder]/[folder]Data.ts`):
 

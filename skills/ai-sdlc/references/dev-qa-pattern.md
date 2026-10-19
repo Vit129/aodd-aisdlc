@@ -22,7 +22,7 @@ The scenario/test ID (`[TS-…]`/`[TC-…]`, per `rules/ai-sdlc-workflow.md`) is
 
 ## 2. Dev rules
 1. Rules live in the BE layer; FE calls them and never computes a rule itself.
-2. Check what exists before adding (Existing Asset Scan / Reuse Table in `rules/ai-sdlc-workflow.md` Phase 2).
+2. Check what exists before adding (Existing Asset Scan / Reuse Table: `rules/ai-sdlc/phase2-existing-asset-scan.md`, `rules/ai-sdlc/phase2-reuse-table.md`).
 3. Extending a shared function: additive and backward compatible, then re-run its callers' tests.
 4. Anything that must equal another implementation (a port, a reference) is checked against values generated
    from that implementation, never hand-typed numbers.

@@ -6,7 +6,7 @@ version: 1.0.0
 
 # ai-sdlc
 
-Read `rules/ai-sdlc-workflow.md` (installed under your Claude home, `~/.claude/rules/`) in full now and follow it phase by phase for this feature. Pull the
+Read `rules/ai-sdlc-workflow.md` (installed under your Claude home, `~/.claude/rules/`) now and follow it phase by phase for this feature: load each phase file from its Phase map (`rules/ai-sdlc/`) only when you reach that phase. Pull the
 `references/*.md` files next to this SKILL.md only when the phase you are in points to them.
 
 - Argument = feature slug. Create `$AODD_PLANS/<slug>/ai-sdlc-task-progress.md` yourself

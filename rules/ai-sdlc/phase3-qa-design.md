@@ -13,7 +13,7 @@ against. If Phase 2 flagged a security concern, fold the security QA scenarios i
 work until the user has approved the scenario list.
 
 **Update `ai-sdlc-task-progress.md` now** — mark the scenario list approved, record
-approver/scope/timestamp for Approval Gate 2 (§ Incremental Update Rule).
+approver/scope/timestamp for Approval Gate 2 (§ Incremental Update Rule, `skills/ai-sdlc/references/ai-sdlc-progress-spec.md`).
 
 Test skeleton: before stubbing any test, state the public seam(s) each scenario will
 test at (the boundary — an API endpoint, a public function, a UI element — not the
@@ -36,4 +36,4 @@ Dev implements — failing/RED is expected and correct at this point.
   applies whichever framework was picked above.
 
 **Update `ai-sdlc-task-progress.md` now** — mark Approval Gate 3's seam agreement recorded,
-mark each skeleton file `[ ]` (RED, not yet green) as it's stubbed (§ Incremental Update Rule).
+mark each skeleton file `[ ]` (RED, not yet green) as it's stubbed (§ Incremental Update Rule, `skills/ai-sdlc/references/ai-sdlc-progress-spec.md`).

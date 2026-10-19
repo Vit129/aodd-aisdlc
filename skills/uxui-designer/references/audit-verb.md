@@ -1,6 +1,6 @@
 # The `audit` Trigger — Read-Only Quality Check
 
-[source:github.com/Nutlope/hallmark] — adapted from `skills/hallmark/references/verbs/audit.md`. Mechanism ported as-is (score against anti-pattern list, stamp-vs-page check, no edits); prose translated from Hallmark's macrostructure/theme vocabulary to ui-designer's Anti-Patterns (Hard Bans) section and pattern/style vocabulary.
+[source:github.com/Nutlope/hallmark] — adapted from [hallmark `references/verbs/audit.md`](https://github.com/Nutlope/hallmark/blob/main/skills/hallmark/references/verbs/audit.md). Mechanism ported as-is (score against anti-pattern list, stamp-vs-page check, no edits); prose translated from Hallmark's macrostructure/theme vocabulary to ui-designer's Anti-Patterns (Hard Bans) section and pattern/style vocabulary.
 
 This closes a real gap: `audit` was listed as an Implement Mode trigger keyword in SKILL.md's Two Modes table, but nothing routed it anywhere distinct — it fell through to the normal build/polish flow, which edits code. `audit` must never edit code. If you find yourself about to write or modify a file during an audit, stop — that's a different mode.
 

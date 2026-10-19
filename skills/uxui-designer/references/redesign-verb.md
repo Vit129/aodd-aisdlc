@@ -1,6 +1,6 @@
 # The `redesign` Trigger — Same Content, Different Structural Fingerprint
 
-[source:github.com/Nutlope/hallmark] — adapted from `skills/hallmark/references/verbs/redesign.md`. Scope-detection (single-page vs multi-page), the non-destructive implementation rule, and the inverted-diversification rule for multi-page are ported mechanisms; the design-system-lock step reuses ui-designer's own existing `DESIGN.md`/`design-system/<project>/MASTER.md` conventions instead of introducing Hallmark's separate `design.md` format.
+[source:github.com/Nutlope/hallmark] — adapted from [hallmark `references/verbs/redesign.md`](https://github.com/Nutlope/hallmark/blob/main/skills/hallmark/references/verbs/redesign.md). Scope-detection (single-page vs multi-page), the non-destructive implementation rule, and the inverted-diversification rule for multi-page are ported mechanisms; the design-system-lock step reuses ui-designer's own existing `DESIGN.md`/`design-system/<project>/MASTER.md` conventions instead of introducing Hallmark's separate `design.md` format.
 
 The user is unhappy with the current visual/structural shape of a page — it reads as templated, generic, or "AI-shaped" — but wants the same content, copy intent, and information architecture. `redesign` keeps what works and forces a genuinely different structural fingerprint, not a re-skin.
 

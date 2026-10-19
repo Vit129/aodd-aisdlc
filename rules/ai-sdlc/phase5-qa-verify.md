@@ -4,7 +4,7 @@
 
 
 Run the full scenario suite from Phase 3 against the Phase 4 implementation. Every
-test still carries its `[TS-XXXX]`/`[TC-XXXX]` ID and obeys the core facts above (no
+test still carries its `[TS-XXXX]`/`[TC-XXXX]` ID and obeys the core facts in `rules/ai-sdlc-workflow.md` (no
 hard waits, 1 heal attempt max before routing to `9arm-skills:debug-mantra`). This phase
 is verification only — no new scenarios get invented here; a genuinely missing case
 found during verification goes back to Phase 3, it doesn't get patched in place.

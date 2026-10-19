@@ -5,7 +5,7 @@
 
 Extending a shared module/component can break every other caller/spec that already
 depends on it. This rule is defined here, next to the classification that triggers it,
-but **it cannot run in Phase 2** — no code has changed yet. If Existing Asset Scan above
+but **it cannot run in Phase 2** — no code has changed yet. If the Existing Asset Scan (`rules/ai-sdlc/phase2-existing-asset-scan.md`)
 classified something `extend`, carry that flag into Phase 4 and execute there, right
 after this task's own change passes:
 
@@ -31,9 +31,9 @@ after this task's own change passes:
    that setup logic — it already re-verifies it every run. A Dev unit test that **mocks**
    auth gets NO exception — it never exercises the real path, so retest it normally.
 
-**Approval Gate 1 applies here** — see § Approval Gates above: don't start Phase 3/4
+**Approval Gate 1 applies here** — see § Approval Gates in `rules/ai-sdlc-workflow.md`: don't start Phase 3/4
 until the user has approved this phase's design/implementation plan (skip only if the
-task collapsed per § Collapse for small tasks).
+task collapsed per baseline rule 1 in `rules/ai-sdlc-workflow.md`).
 
 Deep DDD work (bounded contexts, aggregates/events, sync-vs-async integration tradeoffs)
 is model judgment applied directly here — there's no separate skill for it. Domain-term

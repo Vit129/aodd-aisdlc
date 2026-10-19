@@ -4,7 +4,7 @@
 
 
 **MANDATORY, always — this does not collapse for small tasks and is not the model's call
-to skip.** See § Collapse for small tasks above: a trivial one-line edit with nothing to
+to skip.** See baseline rule 3 in `rules/ai-sdlc-workflow.md`: a trivial one-line edit with nothing to
 scan is exempt because there's genuinely nothing to check, not because this rule is
 optional. The instant a task adds any new function/component/query/helper, run the scan
 and produce the table below before writing that code — on a "small" task exactly as much
@@ -23,7 +23,7 @@ the feature's `[FEATURE]-architecture.md`, columns exactly:
 - **Reuse-as-is** — an existing symbol already does exactly what's needed, called
   unmodified. Cite `file:line`.
 - **Extend** — one existing symbol/file is close, gets a backward-compatible parameter/
-  behavior added in place (feeds § Reuse Modification Retest below). Still ONE file being
+  behavior added in place (feeds the Reuse Modification Retest, `rules/ai-sdlc/phase2-reuse-retest.md`). Still ONE file being
   touched, not a new one.
 - **Create-centralized** — see the Nth-Occurrence Rule immediately below. A **new** shared
   file/symbol is created, but *because* the scan found the same logic already duplicated
@@ -43,8 +43,8 @@ call site, the correct move for this task (which would otherwise be the 3rd copy
    location (per step 1 of the Existing Asset Scan — reuse the shared-folder convention
    already established, don't invent a new one).
 2. Refactor the existing N duplicates to call the new centralized symbol, deleting their
-   private copies. This is itself an `extend` on each of those N files — run § Reuse
-   Modification Retest on each before considering the centralization done, since each
+   private copies. This is itself an `extend` on each of those N files — run the Reuse
+   Modification Retest (`rules/ai-sdlc/phase2-reuse-retest.md`) on each before considering the centralization done, since each
    duplicate has its own existing callers/tests that must stay green.
 3. The task's own new caller reuses the centralized symbol — it contributes **zero** new
    duplicate logic.

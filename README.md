@@ -26,7 +26,7 @@ Size decides ceremony (`rules/aodd.md`): small work is just done; medium work ge
 | Path | What |
 |---|---|
 | `rules/aodd.md` | the AODD contract: triage, boss reporting shape, model split, cheap-model delegation, Haiku ops runner |
-| `rules/ai-sdlc-workflow.md` | the 5-phase workflow spine and approval gates |
+| `rules/ai-sdlc-workflow.md` | the 5-phase workflow spine and approval gates; per-phase detail in `rules/ai-sdlc/`, loaded only when you reach that phase |
 | `skills/chief-of-staff`, `skills/ai-sdlc` (+ `references/`), `skills/agent-ops` | orchestrator, workflow, monthly team review |
 | `agents/auditor.md`, `agents/advisor.md` | independent auditor, second-opinion expert |
 | `hooks/done-gate.py` | Stop hook: no "Done" with open checkboxes or without a passing audit |

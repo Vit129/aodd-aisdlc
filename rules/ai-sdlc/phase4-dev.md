@@ -35,4 +35,4 @@ tests — those stay green as part of Phase 4's own Done-gate (`rules/aodd.md`
 Test-Before-Deliver).
 
 **Update `ai-sdlc-task-progress.md` now** — mark each skeleton `[x]` as it actually goes
-GREEN, not batched at the end (§ Incremental Update Rule).
+GREEN, not batched at the end (§ Incremental Update Rule, `skills/ai-sdlc/references/ai-sdlc-progress-spec.md`).

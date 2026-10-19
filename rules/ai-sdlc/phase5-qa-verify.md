@@ -16,5 +16,5 @@ Pre-merge gate: once all tests confirm GREEN, invoke `mattpocock-skills:code-rev
 **Knowledge graph sync:** If `graphify-out/` exists in the repository, run `graphify update .` before closing the task (AST-only, keeps the graph fresh for subsequent queries/tools).
 
 **Update `ai-sdlc-task-progress.md` now** — mark the final checkbox, feature Done (§
-Incremental Update Rule; this IS the Done-gate (`rules/aodd.md`) — don't call it Done anywhere
+Incremental Update Rule, `skills/ai-sdlc/references/ai-sdlc-progress-spec.md`; this IS the Done-gate (`rules/aodd.md`) — don't call it Done anywhere
 else first).

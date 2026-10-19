@@ -1,6 +1,6 @@
 # The `study` Trigger — Extracting Design DNA from a Screenshot or URL
 
-[source:github.com/Nutlope/hallmark] — adapted from `skills/hallmark/references/study.md` and `SKILL.md`'s `## hallmark study` section. The five-step extraction protocol, refusal heuristics, URL safety checks, and provenance/attestation flow are ported mechanisms, translated from Hallmark's macrostructure/theme/genre catalog vocabulary to ui-designer's own pattern/style/color/typography axes (`scripts/search.py --domain ...`). This is a **separate capability from `references/extract.md`**, which consolidates patterns from the user's *own* existing codebase — `study` reads a reference the user admires (someone else's site or a moodboard), never the user's own repo.
+[source:github.com/Nutlope/hallmark] — adapted from [hallmark `references/study.md`](https://github.com/Nutlope/hallmark/blob/main/skills/hallmark/references/study.md) and `SKILL.md`'s `## hallmark study` section. The five-step extraction protocol, refusal heuristics, URL safety checks, and provenance/attestation flow are ported mechanisms, translated from Hallmark's macrostructure/theme/genre catalog vocabulary to ui-designer's own pattern/style/color/typography axes (`scripts/search.py --domain ...`). This is a **separate capability from `references/extract.md`**, which consolidates patterns from the user's *own* existing codebase — `study` reads a reference the user admires (someone else's site or a moodboard), never the user's own repo.
 
 ## What `study` does
 

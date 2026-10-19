@@ -65,7 +65,14 @@ def describe(t) -> str:
 
 
 def baked_env(claude):
-    env = {k: os.environ[k] for k in BAKE if os.environ.get(k)}
+    # cron/launchd see neither the shell nor Claude Code's settings.json "env", so bake both (shell wins);
+    # settings values are literal ("$HOME/..."), expand them here
+    try:
+        cfg = json.loads((paths.claude_home() / "settings.json").read_text()).get("env") or {}
+    except (OSError, ValueError):
+        cfg = {}
+    src = {**cfg, **{k: v for k, v in os.environ.items() if v}}
+    env = {k: os.path.expandvars(src[k]) for k in BAKE if src.get(k)}
     dirs = [str(Path(p).parent) for p in (claude, shutil.which("git"), shutil.which("python3")) if p]
     env["PATH"] = os.pathsep.join(dict.fromkeys(dirs + ["/usr/local/bin", "/usr/bin", "/bin"]))
     if claude:

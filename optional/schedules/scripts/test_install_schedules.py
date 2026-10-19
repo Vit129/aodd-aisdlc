@@ -30,6 +30,13 @@ assert "AODD_REPORTS" not in p["EnvironmentVariables"] and p["StandardOutPath"].
 before = {q: q.stat().st_mtime_ns for q in plists}
 assert s.main(["--platform", "launchd", "--modules", "agent-memory", "--set", "agent-ops=tue 10:30", "--set", "housekeeping=off"]) == 0
 assert before == {q: q.stat().st_mtime_ns for q in plists}
+# AODD_* from the Claude settings.json "env" is baked, with $HOME expanded
+os.environ.pop("AODD_MEMORY", None)
+(T / "ch").mkdir(exist_ok=True)
+(T / "ch/settings.json").write_text('{"env": {"AODD_MEMORY": "$HOME/mem", "AODD_HOME": "/ignored"}}')
+e = s.baked_env(str(claude))
+assert e["AODD_MEMORY"] == os.path.expanduser("~/mem") and e["AODD_HOME"] == str(T / "aodd"), e
+(T / "ch/settings.json").unlink()
 # without the agent-memory module the backup job is skipped
 assert s.main(["--platform", "launchd", "--modules", "", "--only", "memory-backup", "--dry-run"]) == 0
 assert s.main(["--platform", "launchd", "--uninstall"]) == 0 and not list((T / "la").glob("*.plist"))

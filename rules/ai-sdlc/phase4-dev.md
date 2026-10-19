@@ -3,13 +3,13 @@
 > Load when you start Phase 4. Parent: `rules/ai-sdlc-workflow.md`.
 
 
-**If Phase 2's Existing Asset Scan classified anything `extend`, this is where § Reuse
-Modification Retest actually executes** — right after this task's own change passes, before
+**If Phase 2's Existing Asset Scan classified anything `extend`, this is where the Reuse
+Modification Retest actually executes**: read `rules/ai-sdlc/phase2-reuse-retest.md` now and run it right after this task's own change passes, before
 moving on. It was only decided in Phase 2; it runs here, not there.
 
 Implement against the Phase 3 skeleton(s) until they pass. Call `mattpocock-skills:tdd`
 via the Skill tool for its red→green/seam/anti-pattern methodology, then write the code
-directly (`implement` is `disable-model-invocation` — see § Status). If code structure
+directly (`implement` is `disable-model-invocation` — see § Status in `rules/ai-sdlc-workflow.md`). If code structure
 gets cluttered, call `mattpocock-skills:codebase-design` for deep-module/seam vocabulary
 and refactor directly against it (`improve-codebase-architecture` is likewise blocked).
 

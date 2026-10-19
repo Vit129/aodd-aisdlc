@@ -4,7 +4,7 @@
 
 
 Entry check (full shape): Phase 1 closed with a stated scope, and — Claude Code — plan
-mode is active (§ Phase 1 end). If either is missing, go back and do it first.
+mode is active (end of `rules/ai-sdlc/phase1-interview.md`). If either is missing, go back and do it first.
 
 No template. Write however much design the task needs — a sentence for a small fix,
 more for something with a real trade-off — then stop. Read `PRODUCT.md`/`ARCHITECTURE.md`

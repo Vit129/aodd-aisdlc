@@ -9,7 +9,7 @@ Scenario: use your scenario skill or tool, or write it by hand — it produces t
 `[TS-XXXX]`/`[TC-XXXX]`-tagged scenario list Phase 4 implements
 against. If Phase 2 flagged a security concern, fold the security QA scenarios into this same scenario list rather than a separate pass.
 
-**Approval Gate 2 applies here** — see § Approval Gates above: don't move on to skeleton
+**Approval Gate 2 applies here** — see § Approval Gates in `rules/ai-sdlc-workflow.md`: don't move on to skeleton
 work until the user has approved the scenario list.
 
 **Update `ai-sdlc-task-progress.md` now** — mark the scenario list approved, record

@@ -15,7 +15,7 @@ project already uses:
    keyword (translate non-English intent to English terms first).
 3. Classify: does exactly what's needed → **reuse** (use as-is); close but missing a
    method/parameter → **extend** (keep the existing signature backward-compatible — see
-   Reuse Modification Retest below); nothing matches → **create**.
+   Reuse Modification Retest, `rules/ai-sdlc/phase2-reuse-retest.md`); nothing matches → **create**.
 4. **Smart-Copy Rule:** never copy a whole file — copy only the function/method needed
    plus its direct dependencies.
 5. **Known-bug check:** for a `reuse`/`extend` candidate, check the project's notes and the Pitfalls sections of loaded skills for gotchas already recorded against that component before building on it.

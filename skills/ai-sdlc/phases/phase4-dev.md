@@ -4,7 +4,7 @@
 
 
 **If Phase 2's Existing Asset Scan classified anything `extend`, this is where the Reuse
-Modification Retest actually executes**: read `rules/ai-sdlc/phase2-reuse-retest.md` now and run it right after this task's own change passes, before
+Modification Retest actually executes**: read `skills/ai-sdlc/phases/phase2-reuse-retest.md` now and run it right after this task's own change passes, before
 moving on. It was only decided in Phase 2; it runs here, not there.
 
 Implement against the Phase 3 skeleton(s) until they pass. Call `mattpocock-skills:tdd`

@@ -5,7 +5,7 @@
 
 Extending a shared module/component can break every other caller/spec that already
 depends on it. This rule is defined here, next to the classification that triggers it,
-but **it cannot run in Phase 2** — no code has changed yet. If the Existing Asset Scan (`rules/ai-sdlc/phase2-existing-asset-scan.md`)
+but **it cannot run in Phase 2** — no code has changed yet. If the Existing Asset Scan (`skills/ai-sdlc/phases/phase2-existing-asset-scan.md`)
 classified something `extend`, carry that flag into Phase 4 and execute there, right
 after this task's own change passes:
 

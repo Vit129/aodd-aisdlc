@@ -23,7 +23,7 @@ the feature's `[FEATURE]-architecture.md`, columns exactly:
 - **Reuse-as-is** — an existing symbol already does exactly what's needed, called
   unmodified. Cite `file:line`.
 - **Extend** — one existing symbol/file is close, gets a backward-compatible parameter/
-  behavior added in place (feeds the Reuse Modification Retest, `rules/ai-sdlc/phase2-reuse-retest.md`). Still ONE file being
+  behavior added in place (feeds the Reuse Modification Retest, `skills/ai-sdlc/phases/phase2-reuse-retest.md`). Still ONE file being
   touched, not a new one.
 - **Create-centralized** — see the Nth-Occurrence Rule immediately below. A **new** shared
   file/symbol is created, but *because* the scan found the same logic already duplicated
@@ -44,7 +44,7 @@ call site, the correct move for this task (which would otherwise be the 3rd copy
    already established, don't invent a new one).
 2. Refactor the existing N duplicates to call the new centralized symbol, deleting their
    private copies. This is itself an `extend` on each of those N files — run the Reuse
-   Modification Retest (`rules/ai-sdlc/phase2-reuse-retest.md`) on each before considering the centralization done, since each
+   Modification Retest (`skills/ai-sdlc/phases/phase2-reuse-retest.md`) on each before considering the centralization done, since each
    duplicate has its own existing callers/tests that must stay green.
 3. The task's own new caller reuses the centralized symbol — it contributes **zero** new
    duplicate logic.

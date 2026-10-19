@@ -39,8 +39,8 @@ the unit level.
    task "skips": if the project doesn't have one yet, this is where it gets created
    (one bullet is enough), collapsed task or not.
 3. **The Existing Asset Scan never collapses** for any task that adds a new
-   function/component/helper/query. § Existing Asset Scan (`rules/ai-sdlc/phase2-existing-asset-scan.md`) and its
-   Reuse-Table/Nth-Occurrence rule (`rules/ai-sdlc/phase2-reuse-table.md`) run regardless of task size — exempt only when
+   function/component/helper/query. § Existing Asset Scan (`skills/ai-sdlc/phases/phase2-existing-asset-scan.md`) and its
+   Reuse-Table/Nth-Occurrence rule (`skills/ai-sdlc/phases/phase2-reuse-table.md`) run regardless of task size — exempt only when
    there's genuinely nothing to scan (a single-line edit to an existing line).
 4. **Verification never collapses.** `rules/aodd.md`'s Test-Before-Deliver (build
    passes + relevant tests pass) is a baseline outside this file's
@@ -50,14 +50,14 @@ the unit level.
 
 | Phase | Load when | File |
 |---|---|---|
-| Phase 1 — Interview | when you start Phase 1 | `rules/ai-sdlc/phase1-interview.md` |
-| Phase 2 — Architect | when you start Phase 2 (full or Medium shape) | `rules/ai-sdlc/phase2-architect.md` |
-| Phase 2 — Existing Asset Scan | before designing any new module, component, service, query or test helper (never collapses) | `rules/ai-sdlc/phase2-existing-asset-scan.md` |
-| Phase 2 — Reuse-Table Artifact & Nth-Occurrence Centralization Rule | whenever Phase 2 touches more than one file or adds a function/component/query/helper (the table is Gate 1's review artifact, even for create-new), and when a pattern now occurs a third time | `rules/ai-sdlc/phase2-reuse-table.md` |
-| Phase 2 — Reuse Modification Retest | when a design modifies an existing shared component (decided in Phase 2, executed in Phase 4) | `rules/ai-sdlc/phase2-reuse-retest.md` |
-| Phase 3 — QA-Design | when you start Phase 3 | `rules/ai-sdlc/phase3-qa-design.md` |
-| Phase 4 — Dev | when you start Phase 4 | `rules/ai-sdlc/phase4-dev.md` |
-| Phase 5 — QA-Verify | when you start Phase 5 | `rules/ai-sdlc/phase5-qa-verify.md` |
+| Phase 1 — Interview | when you start Phase 1 | `skills/ai-sdlc/phases/phase1-interview.md` |
+| Phase 2 — Architect | when you start Phase 2 (full or Medium shape) | `skills/ai-sdlc/phases/phase2-architect.md` |
+| Phase 2 — Existing Asset Scan | before designing any new module, component, service, query or test helper (never collapses) | `skills/ai-sdlc/phases/phase2-existing-asset-scan.md` |
+| Phase 2 — Reuse-Table Artifact & Nth-Occurrence Centralization Rule | whenever Phase 2 touches more than one file or adds a function/component/query/helper (the table is Gate 1's review artifact, even for create-new), and when a pattern now occurs a third time | `skills/ai-sdlc/phases/phase2-reuse-table.md` |
+| Phase 2 — Reuse Modification Retest | when a design modifies an existing shared component (decided in Phase 2, executed in Phase 4) | `skills/ai-sdlc/phases/phase2-reuse-retest.md` |
+| Phase 3 — QA-Design | when you start Phase 3 | `skills/ai-sdlc/phases/phase3-qa-design.md` |
+| Phase 4 — Dev | when you start Phase 4 | `skills/ai-sdlc/phases/phase4-dev.md` |
+| Phase 5 — QA-Verify | when you start Phase 5 | `skills/ai-sdlc/phases/phase5-qa-verify.md` |
 
 Approval Gates, Core facts and Status below stay in force in every phase.
 

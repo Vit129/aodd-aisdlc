@@ -7,10 +7,10 @@
 to skip.** See baseline rule 3 in `rules/ai-sdlc-workflow.md`: a trivial one-line edit with nothing to
 scan is exempt because there's genuinely nothing to check, not because this rule is
 optional. The instant a task adds any new function/component/query/helper, run the scan
-and produce the table below before writing that code — on a "small" task exactly as much
+and the Nth-Occurrence check below before writing that code — on a "small" task exactly as much
 as a large one.
 
-**Mandatory when Phase 2 touches more than one file:** produce a markdown table as part of
+**The table itself is required when Phase 2 touches more than one file:** produce a markdown table as part of
 the feature's `[FEATURE]-architecture.md`, columns exactly:
 
 ```markdown

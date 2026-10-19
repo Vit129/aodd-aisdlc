@@ -1,6 +1,6 @@
 # Phase 2 — Reuse-Table Artifact & Nth-Occurrence Centralization Rule
 
-> Load when the Existing Asset Scan found something to reuse or a pattern now occurs a third time. Parent: `rules/ai-sdlc-workflow.md`.
+> Load whenever Phase 2 touches more than one file or adds a function/component/query/helper (even when every verdict is create-new), and when a pattern now occurs a third time. Parent: `rules/ai-sdlc-workflow.md`.
 
 
 **MANDATORY, always — this does not collapse for small tasks and is not the model's call

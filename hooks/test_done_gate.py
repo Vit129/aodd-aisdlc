@@ -11,6 +11,7 @@ prog = d / "ai-sdlc-task-progress.md"
 tr = d / "abcdef12-session.jsonl"
 audit = lambda v: (rep / "audit-2000-01-01-abcdef12.md").write_text(f"---\nverdict: {v}\n---\n")
 unaudit = lambda: [p.unlink() for p in rep.glob("*") if p.is_file()]
+unmark = lambda: [p.unlink() for p in h._aodd_paths.state().glob("done-gate-medium-*")]  # cases below reuse one session id
 tr.write_text(json.dumps({"message": {"content": [{"type": "tool_use", "name": "Edit", "input": {"file_path": str(prog)}}]}}))
 prog.write_text("- [x] a\n- [ ] b\n")
 assert "- [ ] b" in decide()                                       # open item -> block
@@ -39,7 +40,13 @@ assert decide() is None                                            # 4 files -> 
 audit("FAIL"); assert decide() is None; unaudit()                  # small work: a FAIL report does not gate
 tr.write_text("\n".join(ed(f"/x/{i}.py") for i in range(5)))
 assert "audit.py" in decide()                                      # 5 files -> medium, not audited
+assert decide() is None                                            # same work, next stop -> told once, not every turn
+tr.write_text("\n".join(ed(f"/x/{i}.py") for i in range(9)))
+assert decide() is None                                            # 4 more files -> still the same ask
+tr.write_text("\n".join(ed(f"/x/{i}.py") for i in range(10)))
+assert "audit.py" in decide()                                      # MEDIUM_FILES more since the ask -> ask again
 audit("PASS"); assert decide() is None; unaudit()                  # audited -> allow
+unmark()
 tr.write_text(ed("/h/notes/agent-memory/x/lessons.md") + "\n" + ed("/h/.claude/projects/p/memory/n.md"))
 assert decide() is None                                            # notes only -> not medium
 # Codex rollout: apply_patch custom_tool_call, files from patch headers

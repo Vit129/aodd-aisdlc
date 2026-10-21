@@ -160,7 +160,7 @@ def test_install_agy():
     temp_gemini = T / "gemini"
 
     install_env = {
-        **os.environ,
+        **{k: v for k, v in os.environ.items() if k != "AODD_NO_BACKUP"},  # a caller's switch must not skip the backup this test checks
         "AGY_HOME": str(temp_agy),
         "CLAUDE_HOME": str(temp_claude),
     }

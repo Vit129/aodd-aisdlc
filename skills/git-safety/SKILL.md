@@ -1,8 +1,8 @@
 ---
 name: git-safety
 description: Git and PR moves that silently lose or misplace work — deciding a branch is merged, deleting branches, pushing to a branch whose PR may already be merged, creating branches/worktrees with uncommitted work, worktree isolation, old PR branches far behind main. Use before "ลบ branch", "branch นี้ merge แล้วยัง", "push เพิ่มเข้า PR", "สร้าง worktree", "git push -u", "clean up branches", or any git step that moves or deletes commits. Not for resolving a merge conflict itself.
-version: 0.1.4
-last_improved: 2026-10-17
+version: 0.1.5
+last_improved: 2026-10-21
 origin: auto-captured
 ---
 
@@ -29,6 +29,9 @@ Basic rules apply (two tasks on two branches, never push main). These are the ve
 - **Terminals/IDEs that auto-isolate worktrees:** `git checkout -b <b>` on main may be auto-isolated into a worktree while the tab stays on main. After creating a branch run `git branch --show-current` and `git worktree list`; work in the worktree path.
 - Never `git push -u origin HEAD:<new>` from main — it re-points main's upstream. Use `git push origin HEAD:refs/heads/<b>`, then `git branch --track`.
 - A worktree with symlinked deps (`node_modules -> ../../node_modules`): ignore it as `node_modules` (no trailing slash — `node_modules/` matches dirs only) and never `git add -A` there, or the symlink gets tracked and replaces the real dir on merge.
+
+## Rewriting history to change an identity
+- `git filter-repo --mailmap` fixes author/committer only; a `Co-authored-by: <old email>` trailer in the message needs `--replace-message` too. Bundle first (`git bundle create .tmp/<repo>.bundle --all`), then check `git log --branches --tags --format='%ae%n%ce%n%B' | grep -ci <old>` is 0 and the HEAD tree hash is unchanged. Push main with `--force-with-lease=main:<old sha>`, then `--force --tags`. Other clones must `reset --hard origin/main`, never pull. Changing the email does not change who owns the copyright.
 
 ## Check it worked
 `git status -sb`, `git worktree list`, and for a PR `gh pr view <n> --json state,mergedAt` plus `git log origin/main..origin/<b>` empty.

@@ -218,4 +218,5 @@ Delete the files this repo copied (for Codex: from `$CODEX_HOME`, also the block
 
 ## License
 
-MIT, see `LICENSE`.
+Apache License 2.0, see `LICENSE` and `NOTICE`. Releases up to v0.3.6 were published under MIT and remain
+available under those terms (`LICENSE-MIT`).

@@ -1,7 +1,7 @@
 ---
 name: hook-authoring
 description: Writing or fixing a Claude Code hook (a script under the agent home's `hooks/`: PreToolUse/PostToolUse/Stop/UserPromptSubmit/SessionStart python scripts, settings.json registration, regex guards on commands or prompts). Use when the user says "เขียน hook", "แก้ hook", "hook บล็อกผิด", "hook ไม่ทำงาน", "add a hook", "guard blocks my command", or a hook denies/blocks something it should not. Not for Claude Code plugin mods (use plugin-authoring) or git hooks.
-version: 0.1.7
+version: 0.1.8
 last_improved: 2026-10-21
 origin: auto-captured
 ---
@@ -26,7 +26,7 @@ Hooks are installed into the agent home's `hooks/` and registered in `settings.j
 - **settings.json `env` values are not shell-expanded.** `"X": "$HOME/notes"` reaches the hook literally and `Path(...)` creates a folder named `$HOME` in the session cwd. Resolve paths only through the shared path resolver (`hooks/_aodd_paths.py`, which expands `$VARS`/`${VARS}`/`~` at import); a shell or git hook calls `python3 <repo>/hooks/_aodd_paths.py <kind>` instead of its own `${v//\$HOME/...}`, which misses `${HOME}`. Check: `find <claude-home> -maxdepth 2 -name '$HOME'` stays empty after a session.
 - **Prove a regression test fails without the fix** by stashing only the source file (`git stash push <src>`), never the whole tree: that stashes the new test too and the "fails before" run proves nothing.
 - **Pick "the latest" report by the date in its name, not mtime alone.** Annotating or moving an old report updates its mtime and makes it look newest. Check: a test that edits an older report after a newer one exists.
-- **A hook test must clear the env switches it depends on** (`CLAUDE_SKILL_CAPTURE`, `DONE_GATE_AUDIT`, …) at its top: callers like `scripts/audit.py` set them, and the test then fails on correct code. Check: `CLAUDE_SKILL_CAPTURE=0 python3 hooks/test_<name>.py` still passes.
+- **A hook test must clear the env switches it depends on** (`CLAUDE_SKILL_CAPTURE`, `DONE_GATE_AUDIT`, `AODD_NO_BACKUP` for installer tests, …) at its top, including the env it passes to a subprocess: callers like `scripts/audit.py` set them, and the test then fails on correct code. Check: `CLAUDE_SKILL_CAPTURE=0 python3 hooks/test_<name>.py` still passes.
 - **A hook that moves or deletes a file another hook reads** (e.g. session-start filing a report to `done/` that done-gate looks up) breaks the reader on a resumed session. Make the reader search both places, and add a test that moves the file first and then calls the reader.
 - **Hooks import each other** (a helper hook may reuse `skill-capture-nudge.scan`). Before changing a helper's return shape or name: `grep -rn "<module>.<fn>(" hooks scripts`, update every caller, and run **every** `hooks/test_*.py` — fail-open `try/except` turns the breakage into silently wrong data (a log recorded `tool_calls: 0` for every session).
 - **Every block path needs its own once-guard**, not only the one the docstring was written for: a Stop hook that returns the same reason on every stop (done-gate's medium-audit ask fired ~15 times in one session) costs tokens each turn. Check: call `decide()` twice on the same transcript and assert the second is `None`.

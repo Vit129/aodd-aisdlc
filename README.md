@@ -61,6 +61,8 @@ git clone https://github.com/<owner>/aodd-aisdlc.git && cd aodd-aisdlc
 ./install.sh --claude-md        # copy files, register hooks, import rules/aodd.md in CLAUDE.md
 ```
 
+Update: `git pull && ./install.sh` (re-running is safe; changed files are kept as `.aodd-bak`). To make it automatic after every pull, enable the post-merge hook (below).
+
 In a terminal the installer asks about each optional module (one line each, default no) and, for `schedules`, which times to use. To skip the questions:
 
 | Flag | Effect |

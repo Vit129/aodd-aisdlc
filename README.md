@@ -216,6 +216,10 @@ Delete the files this repo copied (for Codex: from `$CODEX_HOME`, also the block
 - **agent-memory**: `hooks/{memory-recall,memory-write-scan,session-start-recent}.py` and the three entries (`UserPromptSubmit`, `SessionStart`, and `memory-write-scan` under `PreToolUse`) in `settings.json`. Your `$AODD_MEMORY` notes are yours; the installer never touches them.
 - **schedules**: first `python3 <claude home>/scripts/install-schedules.py --uninstall` (removes the `# aodd:begin` ... `# aodd:end` cron block or the `com.aodd.*` launch agents; `--dry-run` previews), then delete `scripts/{install-schedules,aodd_job}.py` and `schedules/`.
 
+## Contributors
+
+Developed and maintained by the **aodd-aisdlc contributors** and **Claude** (Anthropic).
+
 ## License
 
 Apache License 2.0, see `LICENSE` and `NOTICE`. Releases up to v0.3.6 were published under MIT and remain

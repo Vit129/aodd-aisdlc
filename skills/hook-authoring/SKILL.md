@@ -1,8 +1,8 @@
 ---
 name: hook-authoring
 description: Writing or fixing a Claude Code hook (a script under the agent home's `hooks/`: PreToolUse/PostToolUse/Stop/UserPromptSubmit/SessionStart python scripts, settings.json registration, regex guards on commands or prompts). Use when the user says "เขียน hook", "แก้ hook", "hook บล็อกผิด", "hook ไม่ทำงาน", "add a hook", "guard blocks my command", or a hook denies/blocks something it should not. Not for Claude Code plugin mods (use plugin-authoring) or git hooks.
-version: 0.1.6
-last_improved: 2026-10-17
+version: 0.1.7
+last_improved: 2026-10-21
 origin: auto-captured
 ---
 
@@ -29,6 +29,8 @@ Hooks are installed into the agent home's `hooks/` and registered in `settings.j
 - **A hook test must clear the env switches it depends on** (`CLAUDE_SKILL_CAPTURE`, `DONE_GATE_AUDIT`, …) at its top: callers like `scripts/audit.py` set them, and the test then fails on correct code. Check: `CLAUDE_SKILL_CAPTURE=0 python3 hooks/test_<name>.py` still passes.
 - **A hook that moves or deletes a file another hook reads** (e.g. session-start filing a report to `done/` that done-gate looks up) breaks the reader on a resumed session. Make the reader search both places, and add a test that moves the file first and then calls the reader.
 - **Hooks import each other** (a helper hook may reuse `skill-capture-nudge.scan`). Before changing a helper's return shape or name: `grep -rn "<module>.<fn>(" hooks scripts`, update every caller, and run **every** `hooks/test_*.py` — fail-open `try/except` turns the breakage into silently wrong data (a log recorded `tool_calls: 0` for every session).
+- **Every block path needs its own once-guard**, not only the one the docstring was written for: a Stop hook that returns the same reason on every stop (done-gate's medium-audit ask fired ~15 times in one session) costs tokens each turn. Check: call `decide()` twice on the same transcript and assert the second is `None`.
+- **A plugin hook runs in every project the plugin is installed for.** Gate it on the project first (a marker folder in cwd), and for a `type: prompt` hook put that approve-first condition at the top of the prompt; a prompt hook cannot be skipped by code, so it still costs one model call per stop.
 - **Anything a hook writes outside the project** (a shared notes repo, a personal log) must skip work that belongs to someone else, such as a client or employer repo: filter by cwd, and add a test with such a path.
 
 ## Check it worked

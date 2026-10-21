@@ -1,7 +1,7 @@
 ---
 name: ai-sdlc
 description: Full Dev/QA feature workflow (interview → architect → QA design RED → dev GREEN → QA verify, with 3 approval gates). Use when the user runs /ai-sdlc, says "ทำฟีเจอร์ใหม่", "new feature", "วางแผนฟีเจอร์", "เริ่มโปรเจกต์", "full workflow", or starts a multi-file feature/refactor that needs QA coverage and tracked progress.
-version: 1.0.0
+version: 1.0.1
 ---
 
 # ai-sdlc
@@ -18,6 +18,16 @@ Read `rules/ai-sdlc-workflow.md` (installed under your Claude home, `~/.claude/r
   each phase dispatches to its team, and the run ends with the `auditor` + the CEO report shape
   (Result / Evidence / Needs your decision / Cost). `hooks/done-gate.py` blocks Done until the auditor ran.
 - Skill-by-situation routing: `references/skill-routing.md`.
+
+## Read before each phase (memory dir from the `agent-memory` skill; open only matching sections)
+
+| Before | Read first |
+|---|---|
+| Any phase / "continue" | this feature's progress file → resume at its first `- [ ]` (session start lists unfinished ones) |
+| 1 Interview | `INDEX.md` → `knowledge/` notes for this domain; earlier plans of the same feature |
+| 2 Architect | `PRODUCT.md` / `ARCHITECTURE.md`, `knowledge/` decision records, the governing skills' pitfalls |
+| 3 QA design | `knowledge/` notes on known bugs in this area (each one gets a regression test) |
+| 4 Dev / 5 Verify | the governing skills' pitfalls, `knowledge/` notes on known bugs |
 
 ## Self-Update (after every use)
 

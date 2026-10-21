@@ -7,7 +7,7 @@ description: >
   or needs guidance on the agent memory file structure, session flow,
   knowledge capture, or subagent delegation patterns.
   Non-coding tasks (research, analysis, writing) use this memory system alongside coding tasks.
-version: 4.0.0
+version: 4.0.1
 ---
 
 # Agent Memory
@@ -52,7 +52,7 @@ Never skip silently when it is missing: create it, then continue.
 
 - **Skills** hold every reusable procedure, pitfall and correction. Procedure: `docs/skill-learning.md` (the Stop hook `skill-capture-nudge.py` asks for it).
 - `knowledge/` holds reference facts that are not a procedure (a domain note, a decision record): flat topic files, no taxonomy.
-- `INDEX.md` lists every `knowledge/` and `plans/` file; add a row when you add a file, mark rows archived instead of deleting.
+- `INDEX.md` lists every `knowledge/` and `plans/` file. Do not maintain it by hand: run `python3 scripts/memory_index.py <memory dir>` (installed next to the other scripts) after adding, moving or finishing files; it rebuilds only its marked block, so hand-written notes stay.
 
 ### Promotion flow
 
@@ -88,7 +88,7 @@ When a session passes ~50 turns without resolution: summarize, do not truncate (
 ## Verification
 
 - [ ] No secrets/credentials stored in any memory file
-- [ ] New `knowledge/` and `plans/` files have an INDEX.md row
+- [ ] `memory_index.py` ran after adding or finishing knowledge/plans files
 
 ## Self-update
 

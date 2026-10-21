@@ -74,3 +74,15 @@ skills unused for a long time, and auto-captured skills (`origin: auto-captured`
 candidates to archive (move to `skills/.archive/`, recoverable, never deleted); skills with overlapping
 descriptions are candidates to merge. These are proposals for the CEO, each with the evidence that
 prompted it. `pinned: true` in frontmatter exempts a skill.
+
+## Skill capture (self-improving skills)
+
+`hooks/skill-capture-nudge.py` asks the agent to patch the governing skill, but only when the session has at least 20 tool calls and one of two signals: a **user correction** (English or Thai phrases such as "no", "wrong", "too long", "ไม่ใช่", "ยาวไป") or a **`fix:` / `revert:` commit**. Ordinary tool errors do not count. It nudges again only after 40 more tool calls with a new signal, and right after a fix commit it reminds in the moment. The procedure (where to write the lesson, verified-only, generalize, bump version) is `docs/skill-learning.md`. Disable with `CLAUDE_SKILL_CAPTURE=0`.
+
+### Proposals from other agents (evidence gate)
+
+Another agent (agy, Codex) never edits its synced copy of a skill. It writes `agy-proposal-<date>-<slug>.md` into `$AODD_REPORTS/`. `scripts/check_agy_proposal.py <file>` auto-rejects it unless it carries all of these fields, each non-trivial:
+
+`Project`, `Repo` (a real git repo), `What` (targets a file under `.claude/`), `Analysis`, `Code`, `Test`, `Fix`, `Verified` (must differ from `Test`), `Commit` (a hash that exists in `Repo`), `Proposed change`.
+
+It proves the evidence is present and the commit is real, not that the content is honest; the triage (the `agent-ops` skill) and the CEO still judge it.

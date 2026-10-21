@@ -3,6 +3,20 @@
 All notable changes to aodd-aisdlc are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and it follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.3.6] - 2026-10-21
+
+### Changed
+- Make `rules/gemini-prompting.md` mandatory for Gemini models and Antigravity (`agy`) at session start
+
+### Documentation & Fixes
+- Link hallmark sources by URL in uxui-designer (#24)
+- Install ai-sdlc phase files under the skill (#23)
+- Reuse-table load triggers and Incremental Update Rule references (#21, #22)
+- Workflow phase and Playwright rules lazy-loading (#18, #19, #20)
+- Bake AODD_* settings into schedules launchd jobs (#17)
+- Add `--no-backup` opt-out for `.aodd-bak` files (#16)
+- Audit Medium+ work per task in done-gate (#15)
+
 ## [0.3.5] - 2026-10-17
 
 ### Documentation

@@ -1,8 +1,9 @@
-# Gemini 3 & Antigravity (agy) Prompting Principles
+# Gemini & Antigravity (agy) Prompting Principles
 
-Optional: applies only if you delegate work to Antigravity (`agy`) or a Gemini 3 model.
+> [!IMPORTANT]
+> **MANDATORY FOR GEMINI / ANTIGRAVITY:** If you are running as a Gemini model, Antigravity / `agy` (or delegating to them), you **MUST ALWAYS read and strictly obey this file at session start**. This is NOT optional.
 
-Guidelines for writing effective prompts, dispatching tasks, and avoiding failure patterns for Antigravity (agy) and Gemini 3 models.
+Guidelines for writing effective prompts, dispatching tasks, and avoiding failure patterns for Antigravity (agy) and Gemini models.
 
 ## Core Mandate 1: Grounded Analysis & Zero Hallucination
 

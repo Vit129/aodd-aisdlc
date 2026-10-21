@@ -57,8 +57,7 @@ Size decides ceremony (`rules/aodd.md`): small work is just done; medium work ge
 ## Install
 
 ```bash
-git clone <this repo> aodd-aisdlc && cd aodd-aisdlc
-./install.sh --dry-run          # see what would change
+git clone https://github.com/<owner>/aodd-aisdlc.git && cd aodd-aisdlc
 ./install.sh --claude-md        # copy files, register hooks, import rules/aodd.md in CLAUDE.md
 ```
 

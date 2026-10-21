@@ -1,7 +1,7 @@
 ---
 name: git-safety
 description: Git and PR moves that silently lose or misplace work — deciding a branch is merged, deleting branches, pushing to a branch whose PR may already be merged, creating branches/worktrees with uncommitted work, worktree isolation, old PR branches far behind main. Use before "ลบ branch", "branch นี้ merge แล้วยัง", "push เพิ่มเข้า PR", "สร้าง worktree", "git push -u", "clean up branches", or any git step that moves or deletes commits. Not for resolving a merge conflict itself.
-version: 0.1.5
+version: 0.1.6
 last_improved: 2026-10-21
 origin: auto-captured
 ---
@@ -32,6 +32,7 @@ Basic rules apply (two tasks on two branches, never push main). These are the ve
 
 ## Rewriting history to change an identity
 - `git filter-repo --mailmap` fixes author/committer only; a `Co-authored-by: <old email>` trailer in the message needs `--replace-message` too. Bundle first (`git bundle create .tmp/<repo>.bundle --all`), then check `git log --branches --tags --format='%ae%n%ce%n%B' | grep -ci <old>` is 0 and the HEAD tree hash is unchanged. Push main with `--force-with-lease=main:<old sha>`, then `--force --tags`. Other clones must `reset --hard origin/main`, never pull. Changing the email does not change who owns the copyright.
+- **Before any rewrite, list open PRs** (`gh pr list --state open`): a rewrite or fresh-history push closes them unmerged and their changes vanish silently. Merge them first, or re-apply each one's diff (`gh pr diff <n>`) on the new main.
 
 ## Check it worked
 `git status -sb`, `git worktree list`, and for a PR `gh pr view <n> --json state,mergedAt` plus `git log origin/main..origin/<b>` empty.

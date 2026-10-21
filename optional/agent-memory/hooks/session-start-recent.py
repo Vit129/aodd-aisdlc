@@ -8,6 +8,8 @@ workspace only, the queue of reports that wait for the CEO.
              agent-ops,housekeeping,pending-work), pointed at once
   proposals  agy-*.md in $AODD_REPORTS until moved to done/; an agy-proposal without evidence
              (scripts/check_agy_proposal.py) is auto-rejected into done/ and never reaches the CEO
+  progress   unfinished ai-sdlc/dev/qa progress files of this project ($AODD_PLANS with {project}, and
+             <repo>/agent-memory/plans/): feature + first open box; carried-over files (Moved to:) skipped
   audits     audit-*.md: PASS is filed to done/, FAIL / DISPUTED / UNVERIFIABLE is shown until filed
 
 "Workspace" = a session whose cwd is inside a dir of $AODD_WORKSPACE (os.pathsep list; default: the
@@ -47,6 +49,26 @@ def digest_file(cwd):
     return None
 
 
+PROGRESS = ("ai-sdlc-task-progress.md", "dev-task-progress.md", "qa-task-progress.md")
+
+
+def open_progress(here):
+    """'<feature>: <first open box>' for each live progress file of this project: $AODD_PLANS when it is
+    per project ({project}), plus the repo's own agent-memory/plans/. A file with 'Moved to:' was carried
+    over and is skipped."""
+    dirs = [here / "agent-memory" / "plans"]
+    if "{project}" in os.environ.get("AODD_PLANS", ""):
+        dirs.insert(0, _aodd_paths.plans(str(here)))
+    out = []
+    for d in dirs:
+        for f in sorted(p for n in PROGRESS for p in d.rglob(n)) if d.is_dir() else []:
+            lines = f.read_text(encoding="utf-8", errors="ignore").splitlines()
+            box = next((l.strip()[6:] for l in lines if l.lstrip().startswith("- [ ]")), None)
+            if box and not any(l.startswith("Moved to:") for l in lines):
+                out.append(f"- {f.parent.relative_to(d)}: {box[:120]}  ({f})")
+    return out[:10]
+
+
 def main(payload):
     cwd = payload.get("cwd") or "."
     here = Path(cwd).expanduser().resolve()
@@ -56,6 +78,10 @@ def main(payload):
     if topics:
         parts.append("Last session digest for this project (from SESSION-TOPICS.md):\n## "
                      + topics.read_text(encoding="utf-8").split("\n## ")[-1][:3000])
+    live = open_progress(here)
+    if live:
+        parts.append("Unfinished work in this project (feature: first open box). On 'continue' or a related "
+                     "request, open that file and resume there; do not re-read the rest:\n" + "\n".join(live))
     workspace = any(here == r or r in here.parents for r in _aodd_paths.workspace_dirs())
     if workspace and reports.is_dir():
         seen_file = _aodd_paths.state() / "reports-seen"

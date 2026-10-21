@@ -69,4 +69,17 @@ with tempfile.TemporaryDirectory() as home:
     (reports / "memory-consolidation-2026-10-30.md").write_text("x")
     assert "memory-consolidation" not in run()
     assert "memory-consolidation-2026-10-30" in run(None, {"AODD_REPORT_KINDS": "agent-ops, memory-consolidation"})
+    # unfinished progress files of this project are pointed at, first open box only
+    pl = {"AODD_PLANS": str(Path(home, "plans/{project}"))}
+    f = Path(home, "plans/proj/login/ai-sdlc-task-progress.md"); f.parent.mkdir(parents=True)
+    f.write_text("- [x] design\n- [ ] write tests\n- [ ] ship\n")
+    out = run(proj, pl)
+    assert "login" in out and "write tests" in out and "ship" not in out, out
+    Path(home, "plans/proj/done-one").mkdir(); Path(home, "plans/proj/done-one/ai-sdlc-task-progress.md").write_text("- [x] a\n")
+    assert "done-one" not in run(proj, pl)                       # all ticked -> not listed
+    loc = proj / "agent-memory/plans/2026SP21/pbi-7/qa-task-progress.md"; loc.parent.mkdir(parents=True)
+    loc.write_text("- [ ] Phase 2.1\n")
+    assert "pbi-7" in run(proj)                                  # repo-local agent-memory/plans (legacy name) too
+    loc.write_text("Moved to: 2026SP22/pbi-7\n- [ ] Phase 2.1\n")
+    assert "pbi-7" not in run(proj)                              # carried over -> the old file is not live
 print("ok - session-start-recent self-test passed")

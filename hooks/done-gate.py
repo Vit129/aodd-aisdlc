@@ -108,6 +108,22 @@ def already_raised(transcript: Path, report: Path) -> bool:
     return False
 
 
+def medium_asked(transcript: Path, report, n: int) -> bool:
+    """True if the medium-audit ask was already made for this work; records it otherwise.
+    Asks again only after MEDIUM_FILES more files, or once a newer audit report starts a new task."""
+    mark = _aodd_paths.state() / f"done-gate-medium-{_aodd_paths.session_id(transcript)}"
+    key = report.name if report else "-"
+    try:
+        k, prev = mark.read_text().split(":")
+        if k == key and n < int(prev) + MEDIUM_FILES:
+            return True
+    except (OSError, ValueError):
+        pass
+    mark.parent.mkdir(parents=True, exist_ok=True)
+    mark.write_text(f"{key}:{n}")
+    return False
+
+
 AUDIT_SCRIPT = Path(__file__).resolve().parent.parent / "scripts" / "audit.py"
 AUDIT_CMD = "python3 " + str(AUDIT_SCRIPT) + " --transcript {t} --repo <repo> --claims \"<your Done claims>\""
 
@@ -138,7 +154,7 @@ def decide(payload: dict, reports: Path = REPORTS):
         if paths and not audited and audit_on:
             return ("[done-gate] Every box is ticked in " + ", ".join(map(str, paths)) + " but no independent audit ran for this "
                     "session. Before reporting Done, run: " + AUDIT_CMD.format(t=transcript) + " and put its table in your report.")
-        if not paths and audit_on and len(edited) >= MEDIUM_FILES:
+        if not paths and audit_on and len(edited) >= MEDIUM_FILES and not medium_asked(transcript, report, len(edited)):
             return (f"[done-gate] This session edited {len(edited)} files (AODD medium+) and no independent audit ran. Before "
                     "reporting Done, run: " + AUDIT_CMD.format(t=transcript) + " and put its table in your report. "
                     "Trivial wording/color edits: say so in one line instead.")

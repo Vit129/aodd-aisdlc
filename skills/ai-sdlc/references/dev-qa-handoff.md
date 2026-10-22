@@ -128,7 +128,7 @@ otherwise-shared fixture (e.g. an `ApiSetup.ts` that Web UI uses to seed via API
 
 If Phase 2 design work resolves or challenges a domain term, write/update `CONTEXT.md`
 (project root, or per-context under `src/{context}/CONTEXT.md` for multi-context repos)
-per `mattpocock-skills:domain-modeling`'s discipline (challenge conflicting terms, propose
+(challenge conflicting terms, propose
 canonical names, never batch — write each term as it's resolved) rather than letting the
 term drift undocumented. For genuinely deep DDD work (multiple bounded contexts, explicit
 monolith-vs-microservices tradeoffs, aggregate/event modeling) beyond what a normal Phase 2

@@ -7,11 +7,15 @@
 Modification Retest actually executes**: read `skills/ai-sdlc/phases/phase2-reuse-retest.md` now and run it right after this task's own change passes, before
 moving on. It was only decided in Phase 2; it runs here, not there.
 
-Implement against the Phase 3 skeleton(s) until they pass. Call `mattpocock-skills:tdd`
-via the Skill tool for its red→green/seam/anti-pattern methodology, then write the code
-directly (`implement` is `disable-model-invocation` — see § Status in `rules/ai-sdlc-workflow.md`). If code structure
-gets cluttered, call `mattpocock-skills:codebase-design` for deep-module/seam vocabulary
-and refactor directly against it (`improve-codebase-architecture` is likewise blocked).
+Implement against the Phase 3 skeleton(s) until they pass, one vertical slice at a time,
+with the unit-level loop below. If code structure gets cluttered, refactor toward deep
+modules (small interface, real logic behind it) at the seams Phase 2/3 agreed, with tests green.
+
+**Unit loop (red → green → refactor):**
+1. Write one failing test for the next behaviour, through the public seam (not internals). Run it; see it fail for the right reason.
+2. Write the least code that makes it pass. Run the suite.
+3. Refactor with the suite green; no new behaviour in this step.
+4. Repeat. Never write several tests ahead, and never mock the module under test.
 
 Before writing code, read `rules/coding.md` and pick the matching stack-specific coding-standards skill
 based on project stack (`backend-dev`, `frontend-dev`, `macos-swiftui`) and apply
@@ -29,8 +33,7 @@ scenario (the acceptance criteria). Phase 4 additionally owns unit-level tests f
 internal logic it writes — derived FROM the same business rules/edge cases QA already
 spelled out in Phase 3's scenarios (boundary values, validation rules, error paths), not
 invented separately — per the rule that non-trivial logic leaves one
-runnable check behind and `mattpocock-skills:tdd`'s red→green→refactor applied at the unit
-level. Phase 5 verifies the QA scenario suite; it doesn't re-verify Phase 4's own unit
+runnable check behind and the unit loop above. Phase 5 verifies the QA scenario suite; it doesn't re-verify Phase 4's own unit
 tests — those stay green as part of Phase 4's own Done-gate (`rules/aodd.md`
 Test-Before-Deliver).
 

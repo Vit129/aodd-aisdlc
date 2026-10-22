@@ -3,19 +3,54 @@
 All notable changes to aodd-aisdlc are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and it follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-## [0.3.6] - 2026-10-21
+## [0.4.0] - 2026-10-22
+
+### Added
+- Resume unfinished work at session start, INDEX by script, read-before map (`cc7fb10`)
+- Detect coding agents on the machine (`024d4da`)
+- Inline the ponytail ladder and advisor tiering (`d0deae8`)
 
 ### Changed
-- Make `rules/gemini-prompting.md` mandatory for Gemini models and Antigravity (`agy`) at session start
+- Drop the mattpocock-skills dependency (`220b015`)
 
-### Documentation & Fixes
-- Link hallmark sources by URL in uxui-designer (#24)
-- Install ai-sdlc phase files under the skill (#23)
-- Reuse-table load triggers and Incremental Update Rule references (#21, #22)
-- Workflow phase and Playwright rules lazy-loading (#18, #19, #20)
-- Bake AODD_* settings into schedules launchd jobs (#17)
-- Add `--no-backup` opt-out for `.aodd-bak` files (#16)
-- Audit Medium+ work per task in done-gate (#15)
+### Documentation
+- Once-guard every block path; gate plugin hooks on the project (`5c0c149`)
+- Env switches also leak into installer subprocesses (`d870d72`)
+- Relicense from MIT to Apache-2.0 (`2ff1b90`)
+- Identity rewrite needs --replace-message for Co-authored-by trailers (`e3a4ba3`)
+- Credit Claude as contributor (`533fe7e`)
+- Remove --dry-run from install instructions (`43083e4`)
+- List open PRs before a history rewrite (`86e78c7`)
+- Say how to update in the Install section (`8577ecc`)
+- Move audit, skill capture and Codex details to docs/ (`09a3ed4`)
+- AODD stands for AI Orchestration Driven Development (`43e1bfa`)
+
+### Fixed
+- Ask for the medium audit once, not on every stop (`fe89504`)
+- Antigravity adapter test clears AODD_NO_BACKUP before the install it checks (`192bc51`)
+- Point workflow guide at the in-house handoff.md format (`506c7da`)
+- Count typed slash commands; grep sub-command names when retiring (`c7ca74f`)
+
+## [0.3.6] - 2026-10-21
+
+### Added
+- --no-backup / AODD_NO_BACKUP=1 opt-out for .aodd-bak files (`b6cce38`)
+
+### Changed
+- Install the ai-sdlc phase files under the skill, not under rules/ (`4fa3c1a`)
+
+### Documentation
+- Load workflow phases and playwright detail only when reached (`f26b6d2`)
+- Point phase files at the file that now holds each referenced section (`9ada1d7`)
+- Name the progress spec wherever a phase cites the Incremental Update Rule (`1bd4cea`)
+- Link the hallmark sources by URL and check every skills/ link (`5ff5f14`)
+
+### Fixed
+- Audit Medium+ work per task, not per session (`dda2709`)
+- Bake AODD_* from Claude settings env so launchd jobs use the real paths (`0996d06`)
+- Keep the Phase 2 closing steps in the file that is always loaded (`c7239ad`)
+- Load the Reuse-Table whenever it is mandatory, not only on reuse (`64d6fc7`)
+- One trigger for the Reuse-Table, no dangling Step 0, Gate 1 by task size (`73f1c30`)
 
 ## [0.3.5] - 2026-10-17
 

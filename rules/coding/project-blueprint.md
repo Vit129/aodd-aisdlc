@@ -65,19 +65,12 @@ docs/ (adr/)   scripts/ (tooling only)   <source-root>/   tests/   <- tests/ is 
 - Nothing else loose at root: no stray `fix_*.py`, one-off `*.js`, `*.txt`. Put in `scripts/` or delete.
 - Test output (`playwright-report/` `test-results/` `output/`) and caches are gitignored.
 
-### 2.1 Project Runner & Environment Standard (Zero-Friction DX)
+### 2.1 Project runner (MAY)
 
-Projects should provide standardized environment scripts and single-command runners so neither humans nor AI agents need to guess ports or memorize multi-step commands:
-- **Three Server Tiers:**
-  - **Dev Server:** Local development with hot-reload (e.g. `npm run dev` / `make run` / default port).
-  - **Test Server:** Isolated test environment with mocks/fixtures for QA/Playwright automation (e.g. `npm run dev:test` / `make bench` / dedicated port).
-  - **Prod / Preview Server:** Staging/production build verification (e.g. `npm run preview` / `make prod`).
-- **Interactive & Scriptable Runner (`make start` / `npm start` / `scripts/start.js`):**
-  - Interactive arrow-key menu for human devs: `1) Commit + Push + Merge`, `2) Dev Server`, `3) Test Server`, `4) Pre-Deploy Verify (Audit + Security + Performance)`, `5) Release + Deploy (Bump + git-cliff)`.
-  - Supports non-interactive positional arguments (`make start 2`, `npm start 2`) for AI agents and CI scripts.
-- **Desktop Launcher (`app-run-command/<App>.command` / `.bat`):**
-  - Double-clickable launcher for macOS/Windows desktop environments.
-  - Automatically resolves/creates venv/deps, kills any dangling process on target ports (`pkill -f ...`), launches server, waits for health check, and auto-opens the browser.
+One entry point so neither a person nor an agent has to guess ports or chain commands:
+- **Three servers:** dev (hot reload), test (fixtures/mocks, its own port, what Playwright and QA run against), preview/prod build.
+- **Runner** (`npm start`, `make start`, `scripts/start.*`): an arrow-key menu for people (commit/push/merge, dev, test, release gate, release + deploy, showing the current and next versions) that also takes the choice as an argument or env var (`npm start 2`, `START_CHOICE=dev`, `--yes` / `CI` for no prompts), so agents and CI never hit the menu. Falls back to a numbered prompt when stdin is not a TTY.
+- **Desktop launcher (optional):** a double-click file (`.command` on macOS, `.bat` on Windows) that sets up the env, frees the port, starts the server, waits for a health check and opens the browser.
 
 ## 3. Source layout by size
 

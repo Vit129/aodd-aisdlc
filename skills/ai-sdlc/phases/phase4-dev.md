@@ -11,8 +11,7 @@ Implement against the Phase 3 skeleton(s) until they pass, one vertical slice at
 with the unit-level loop below. If code structure gets cluttered, refactor toward deep
 modules (small interface, real logic behind it) at the seams Phase 2/3 agreed, with tests green.
 
-**Single Subagent Execution (Red $\to$ Green):**
-To eliminate git conflicts, race conditions, and interface mismatches between test and product code, dispatch **1 single Subagent** to execute this implementation phase. The single subagent owns the full unit loop within its workspace:
+**One implementation subagent** runs the whole loop below, tests and code together, so no two agents edit the same or a shared file. Split across more subagents only when the parts touch disjoint files; give each its file list and the interface it must meet, and keep shared files with one owner.
 
 **Unit loop (red → green → refactor):**
 1. Write one failing test for the next behaviour, through the public seam (not internals). Run it; see it fail for the right reason.
@@ -43,4 +42,4 @@ Test-Before-Deliver).
 **Update `ai-sdlc-task-progress.md` now** — mark each skeleton `[x]` as it actually goes
 GREEN, not batched at the end (§ Incremental Update Rule, `skills/ai-sdlc/references/ai-sdlc-progress-spec.md`).
 
-**Propose commit to user:** Once implementation reaches GREEN and unit test suites pass verified, prompt the user to commit the working changes (e.g. `feat([scope]): implement [feature]`) with the test evidence before handing off to Phase 5 verification.
+**At GREEN, propose a commit** (`feat:`/`fix:`) with the test evidence, before Phase 5.

@@ -8,37 +8,32 @@ live in `skills/ai-sdlc/references/` — `ai-sdlc-progress-spec.md` (task
 tracking), `dev-qa-handoff.md` (dev↔QA handoff), `ai-sdlc-workflow-guide.md`
 (execution guide), `qa-automation-loop.md` (self-heal/reporting).
 
-**Roles (AODD JD — the main thread orchestrates and switches hats; dispatches specialized subagents to isolate context and prevent conflicts):**
+**Roles (AODD JD — one owner per phase; the main thread switches hats and orchestrates, and dispatches the subagents below):**
 
-| Role | Owns | Subagent Delegation | KPI |
-|---|---|---|---|
-| Dev Lead | Phase 2 dev half (design, Existing Asset Scan), Phase 4; dispatches stack-specific skills if you have them, mechanical pieces to Haiku | Phase 2: dispatches **Dev Subagent** (speed, clean architecture, file structure, reuse scan); Phase 4: dispatches **1 Subagent** for TDD Red $\to$ Green | Phase 5 failures sent back to Phase 4 |
-| QA Lead | Phase 2 QA half, Phase 3 (RED), Phase 5 (GREEN sign-off); dispatches your scenario, test-framework and performance skills if you have them | Phase 2: dispatches **QA Subagent** (fragility/edge cases, security, boundary values, mocks, testability) | Defects found after Phase 5 sign-off |
-| Reviewer | Built-in `/code-review` on the Phase 4 diff before Phase 5 | — | — |
-| Auditor | `scripts/audit.py` after Phase 5 (cross-family, writes its own report): re-checks evidence vs. the brief, reports to the CEO | Fixing | Defects after audit PASS |
+| Role | Owns | Out of scope | Subagents | KPI |
+|---|---|---|---|---|
+| Dev Lead | Phase 2 dev half (design, Existing Asset Scan), Phase 4; dispatches stack-specific skills if you have them, mechanical pieces to Haiku | Writing scenarios; declaring QA pass | Phase 2: Dev design subagent; Phase 4: the implementation subagent | Phase 5 failures sent back to Phase 4 |
+| QA Lead | Phase 2 QA half, Phase 3 (RED), Phase 5 (GREEN sign-off); dispatches your scenario, test-framework and performance skills if you have them | Patching product code to make a test pass | Phase 2: QA design subagent | Defects found after Phase 5 sign-off |
+| Reviewer | Built-in `/code-review` on the Phase 4 diff before Phase 5 | — | — | — |
+| Auditor | `scripts/audit.py` after Phase 5 (cross-family, writes its own report): re-checks evidence vs. the brief, reports to the CEO | Fixing | — | Defects after audit PASS |
 
 Each role follows the same SOP: read brief + progress file → ask once, everything at once → do →
 check vs. Definition of Done → hand back to the next owner via the progress/handoff file → leave the record (checkbox).
 
-**Subagent Execution Model (Design vs. Implementation):**
-- **Phase 2 Design (2 Subagents: Dev 1, QA 1):** Two perspectives counterbalancing each other. Dev Subagent optimizes for structure, cleanliness, and reuse; QA Subagent stress-tests for failure modes, security, edge cases, and mocks. Main thread synthesizes both into a **Single Plan Artifact** (`/plan` or `[FEATURE]-plan.md`).
-- **Living Docs Sync & Commit Proposal (Post-Gate 1):** Before approval, changes remain in the interactive Plan Artifact. Once user approves Gate 1, sync durable decisions to root living docs:
-  - `PRODUCT.md`: feature scope, user expectations, in/out of scope.
-  - `DESIGN.md`: UI/UX design tokens, layout, component guidelines (if UI).
-  - `ARCHITECTURE.md` + Tech Stack: technical decisions, lib choices, file structure, seams (`hooks/coding-rules-gate.py` enforces reading this before editing code).
-  - `CONTEXT.md`: ubiquitous domain language glossary.
-  - **Commit proposal:** Prompt user to commit the approved living docs (`docs: update specifications for [feature]`) before any code is written, locking the contract.
-- **Phase 4 Implementation (1 single Subagent for TDD Red $\to$ Green):** When moving to code, dispatch **1 single Subagent** to execute the unit-level Red $\to$ Green loop. Running 1 subagent guarantees smooth execution without git conflicts, race conditions, or signature mismatch between test and product code. Once all tests pass GREEN and are verified, propose a commit (`feat: implement [feature]`) to the user.
-- **Phase 5 Delivery Gate (Pre-Deploy Pipeline):** Before any release or deploy, enforce four checks:
-  1. **Security Scan:** secret leaks, SAST, dependency checks, auth/trust boundaries.
-  2. **Performance & Regression Check:** benchmark runs, endpoint latency, load tests, or bundle/CWV checks.
-  3. **Cross-Family Audit (`scripts/audit.py`):** independent check against brief and diff; must be PASS.
-  4. **Version & git-cliff Changelog:** semantic bump (`major|minor|patch`), update `CHANGELOG.md` via `git-cliff --tag vX.Y.Z --output CHANGELOG.md`, propose release commit/tag.
-- **Project Runner & Multi-Environment Standard (Zero-friction DX):**
-  Projects should provide standardized server tiers and runner commands so humans and agents don't memorize raw bash:
-  - **3 Server Tiers:** Dev server (hot-reload), Test server (isolated mock/fixture env for QA/Playwright), Prod/Preview server.
-  - **Interactive CLI Runner (`start` / `Makefile` / `npm start`):** Arrow-key selection menu in terminal (1-Commit, 2-Dev, 3-Test, 4-Pre-Deploy Verify, 5-Release/Deploy) with support for non-interactive arguments (`make start 2`, `npm start 2`).
-  - **Desktop Launcher (`.command` / `.bat`):** Double-clickable macOS/Windows launcher that auto-resolves env/venv, kills dangling processes on target ports, starts the server, health-checks, and auto-opens the browser.
+**Subagents: many eyes for design, one pair of hands for code.**
+- **Phase 2 design (Large, or Medium that is hard):** two subagents in parallel, so the views stay independent and the phase stays fast. Dev: structure, file separation, reuse, stack. QA: failure modes, edge and boundary cases, security, mocks, testability. The main thread merges both into one plan (plan mode, or a plan file in `$AODD_PLANS/[FEATURE]/`). Other Medium work: the main thread designs alone.
+- **Phase 4 code:** one subagent by default, so no two agents write the same or a shared file. More than one only when the work splits into parts that touch disjoint files, each given an explicit scope (the files it may edit, the interface it must meet); shared files stay with one owner.
+
+**Documents: plan first, living docs after Gate 1.** Until Gate 1 everything stays in the plan; no repo doc or product code changes. After approval, write the durable decisions into four living docs at the repo root, one owner each, kept short:
+
+| Doc | Owner | Holds |
+|---|---|---|
+| `PRODUCT.md` | PO | scope, users, outcomes, in/out of scope |
+| `ARCHITECTURE.md` | Dev + QA | tech stack, structure, seams, data model, test strategy |
+| `DESIGN.md` | UX/UI | tokens, layout, components (UI projects only) |
+| `CONTEXT.md` | everyone | domain glossary |
+
+Then propose a `docs:` commit, before any test or code. The second commit point is Phase 4 GREEN (`feat:`/`fix:`), with the test evidence. Release checks (security/pen test, performance) → `rules/coding/release.md`; project runner → `rules/coding/project-blueprint.md` § 2.1.
 
 **Shift-left:** QA scenario/test-skeleton design happens BEFORE dev writes
 implementation code — dev implements against a known RED state and drives it to

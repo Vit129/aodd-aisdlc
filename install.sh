@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 # Install aodd-aisdlc into a Claude Code home (default ~/.claude, override with CLAUDE_HOME).
-#   ./install.sh [--dry-run] [--no-backup] [--claude-md] [--codex] [--with agent-memory,schedules | --all | --core-only] [--yes]
+#   ./install.sh [--dry-run] [--detect] [--no-backup] [--claude-md] [--codex] [--agy] [--with agent-memory,schedules | --all | --core-only] [--yes]
 # Core (always): skills, agents, rules, hooks, scripts, docs; hooks registered in settings.json (additive,
 # idempotent, fail-open). Optional modules (optional/<name>/): agent-memory, schedules. Asked one by one
 # when run in a terminal; --with / --all / --core-only answer for you, --yes asks nothing (default: core only,
 # default schedule times). Add a module later by re-running with --with <name>.
+# Agents: the coding agents on this machine are detected (binary on PATH, or its home dir) and listed. In a
+# terminal, each supported one found (Codex, Antigravity) is offered; --codex / --agy choose without asking, and a
+# non-terminal run (e.g. the post-merge hook) never adds one by itself. --detect only prints the list.
 # --codex also installs into ${CODEX_HOME:-~/.codex}: the same files, the two rules inlined in AGENTS.md
 # between aodd:begin/aodd:end markers (Codex has no @import), hooks in hooks.json.
 # An existing file that differs is printed as UPDATE and its old content is kept next to it as
@@ -13,7 +16,7 @@
 # stay at their defaults, see hooks/_aodd_paths.py).
 set -euo pipefail
 
-DRY=0; CLAUDE_MD=0; CODEX_ON=0; AGY_ON=0; YES=0; MODS_SET=0; MODS=""
+DRY=0; DETECT=0; AGENTS_SET=0; CLAUDE_MD=0; CODEX_ON=0; AGY_ON=0; YES=0; MODS_SET=0; MODS=""
 ALL_MODULES="agent-memory schedules"
 add_mod() { case " $MODS " in *" $1 "*) ;; *) MODS="${MODS:+$MODS }$1" ;; esac; }
 while [ $# -gt 0 ]; do
@@ -22,8 +25,9 @@ while [ $# -gt 0 ]; do
     --dry-run) DRY=1 ;;
     --no-backup) export AODD_NO_BACKUP=1 ;;
     --claude-md) CLAUDE_MD=1 ;;
-    --codex) CODEX_ON=1 ;;
-    --agy) AGY_ON=1 ;;
+    --detect) DETECT=1 ;;
+    --codex) CODEX_ON=1; AGENTS_SET=1 ;;
+    --agy) AGY_ON=1; AGENTS_SET=1 ;;
     --yes|-y) YES=1 ;;
     --all) MODS_SET=1; for m in $ALL_MODULES; do add_mod "$m"; done ;;
     --core-only) MODS_SET=1 ;;
@@ -31,12 +35,42 @@ while [ $# -gt 0 ]; do
       for m in $(echo "$1" | tr ',' ' '); do
         case " $ALL_MODULES " in *" $m "*) add_mod "$m" ;; *) echo "unknown module: $m (modules: $ALL_MODULES)" >&2; exit 2 ;; esac
       done; shift ;;
-    -h|--help) sed -n '2,15p' "$0"; exit 0 ;;
+    -h|--help) sed -n '2,18p' "$0"; exit 0 ;;
     *) echo "unknown option: $a" >&2; exit 2 ;;
   esac
 done
 
 SRC="$(cd "$(dirname "$0")" && pwd)"
+
+# ---- agent detection -----------------------------------------------------------------------------
+# name|binaries|home dir (relative to $HOME, "-" for none). Supported targets: claude, codex, agy.
+AGENTS_TABLE="claude|claude claude-code|.claude
+codex|codex codex-cli|.codex
+agy|agy antigravity antigravity-cli|.gemini/antigravity-cli
+gemini|gemini gemini-cli|-
+cursor|cursor-agent cursor-cli|.cursor
+copilot|copilot copilot-cli github-copilot|.copilot
+opencode|opencode|.config/opencode
+hermes|hermes|.hermes
+kiro|kiro kiro-cli|.kiro
+aider|aider|-
+goose|goose|-
+grok|grok grok-cli|-
+pi|pi pi-cli|-
+openclaw|openclaw openclaude|-"
+FOUND=""
+while IFS='|' read -r name bins dir; do
+  hit=0
+  for b in $bins; do command -v "$b" >/dev/null 2>&1 && { hit=1; break; }; done
+  [ "$hit" = 0 ] && [ "$dir" != - ] && [ -d "$HOME/$dir" ] && hit=1
+  [ "$hit" = 1 ] && FOUND="${FOUND:+$FOUND }$name"
+done <<< "$AGENTS_TABLE"
+found() { case " $FOUND " in *" $1 "*) return 0 ;; *) return 1 ;; esac; }
+echo "agents  found: ${FOUND:-none}"
+OTHER=""; for a in $FOUND; do case "$a" in claude|codex|agy) ;; *) OTHER="${OTHER:+$OTHER }$a" ;; esac; done
+[ -n "$OTHER" ] && echo "agents  no installer yet for: $OTHER"
+found agy || found codex || echo "warn    no agy or codex CLI: the cross-family audit (scripts/audit.py) will fall back to a Claude auditor"
+[ "$DETECT" = 1 ] && exit 0
 DEST="${CLAUDE_HOME:-$HOME/.claude}"
 [ "$DRY" = 1 ] && echo "[dry-run] nothing will be written"
 echo "install into: $DEST"
@@ -78,7 +112,15 @@ if [ "$MODS_SET" = 0 ] && [ "$YES" = 0 ] && [ -t 0 ]; then
   echo "Core installs always. Optional modules (add later with ./install.sh --with <name>):"
   ask "  agent-memory: agents recall past decisions and lessons across sessions and projects. Install?" && add_mod agent-memory
   ask "  schedules: weekly team review, cleanup report and backups run by themselves at times you pick. Install?" && add_mod schedules
-elif [ "$MODS_SET" = 0 ] && [ "$YES" = 0 ]; then
+fi
+if [ "$AGENTS_SET" = 0 ] && [ "$YES" = 0 ] && [ -t 0 ]; then
+  found codex && ask "  Codex found: also install into ${CODEX_HOME:-~/.codex}?" && CODEX_ON=1
+  found agy && ask "  Antigravity found: also install into it (install-agy.sh)?" && AGY_ON=1
+elif [ "$AGENTS_SET" = 0 ]; then
+  found codex && echo "note    Codex found: add --codex to install into it"
+  found agy && echo "note    Antigravity found: add --agy to install into it"
+fi
+if [ "$MODS_SET" = 0 ] && [ "$YES" = 0 ] && [ ! -t 0 ]; then
   echo "note    not a terminal: installing core only (use --with agent-memory,schedules or --all for modules)"
 fi
 has_mod() { case " $MODS " in *" $1 "*) return 0 ;; *) return 1 ;; esac; }

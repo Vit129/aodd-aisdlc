@@ -21,7 +21,7 @@ Each role follows the same SOP: read brief + progress file → ask once, everyth
 check vs. Definition of Done → hand back to the next owner via the progress/handoff file → leave the record (checkbox).
 
 **Subagents: many eyes for design, one pair of hands for code.**
-- **Phase 2 design (Large, or Medium that is hard):** two subagents in parallel, so the views stay independent and the phase stays fast. Dev: structure, file separation, reuse, stack. QA: failure modes, edge and boundary cases, security, mocks, testability. The main thread merges both into one plan (plan mode, or a plan file in `$AODD_PLANS/[FEATURE]/`). Other Medium work: the main thread designs alone.
+- **Phase 2 design (Requirement path):** two subagents in parallel, so the views stay independent and the phase stays fast. Dev: structure, file separation, reuse, stack. QA: failure modes, edge and boundary cases, security, mocks, testability. The main thread merges both into one plan (plan mode, or a plan file in `$AODD_PLANS/[FEATURE]/`). Logic and UX/UI paths: the main thread designs alone.
 - **Phase 4 code:** one subagent by default, so no two agents write the same or a shared file. More than one only when the work splits into parts that touch disjoint files, each given an explicit scope (the files it may edit, the interface it must meet); shared files stay with one owner.
 
 **Documents: plan first, living docs after Gate 1.** Until Gate 1 everything stays in the plan; no repo doc or product code changes. After approval, write the durable decisions into four living docs at the repo root, one owner each, kept short:
@@ -40,14 +40,25 @@ implementation code — dev implements against a known RED state and drives it t
 GREEN, QA re-verifies GREEN at the end. TDD applied at the feature level, not just
 the unit level.
 
-**Task Sizing & Phase 2 Architect Enforcement (Small vs. Medium vs. Large):**
-- **Small tasks (1-5 line fix, typo, single clear bug, direct question)**: Ceremony collapses skips straight to Architect (one sentence) → Dev → done — no `[TS-XXXX]` scenario, no tracked `ai-sdlc-task-progress.md`, no automation skeleton, none of the 3 approval gates.
-- **Medium tasks (multi-file change, new component/helper, refactoring a module, state/API changes, QA test suites)**:
-  - **Phase 2 Architect is mandatory:** state the file separation plan before touching code or tests (split by responsibility, e.g. UI, flow, pure logic, integration, config, types, data; one file per concern, no monolith). QA ceremony (TS-XXXX / gates) can stay light.
-- **Large tasks (new full feature, cross-service flow)**: Full `/ai-sdlc` shape with all 5 phases and 3 approval gates.
+**Pick the path by what changes, not by size.** Every task, small or large, takes the path for the kind of change; only that path's phases run. A change can carry more than one kind (a new requirement with a new screen runs both). If it is not clear which kind it is, Phase 1 decides that first.
+
+| What changes | Path | Runs | Gates | Living docs |
+|---|---|---|---|---|
+| Wording, typo, config value | Just do it | edit → verify | — | — |
+| **Logic**: a bug, a rule inside an existing requirement, a refactor | TDD | Phase 4 unit loop: failing test first → GREEN → refactor; Existing Asset Scan when it adds a helper | — | `ARCHITECTURE.md` only if a seam or the data model changes |
+| **UX/UI**: look, layout, an on-screen flow | Design | read `DESIGN.md` → change → look at it in a browser/screenshot; a Playwright test when a user flow changes | show the mock or screenshot first for a new screen | `DESIGN.md` |
+| **Requirement**: a new or changed capability, a rule users see, a new integration | Full | Phase 1 → 5, two design subagents in Phase 2 | Gates 1-3 | `PRODUCT.md`, `ARCHITECTURE.md`, `CONTEXT.md` (+ `DESIGN.md` with UI) |
+| Unclear which | Interview | Phase 1 resolves the kind, then the path above | — | — |
+
+**Look before you pick.** Size is not known from the request; it comes from the code. Before choosing, check: the blast radius (graphify `blast_radius`/`affected`, or grep the token, component or function), how many screens or callers it reaches, and whether this was already "fixed" before (git log, past sessions). Then weigh it:
+- one place, first attempt → the path as it is;
+- wide reach (a color token used on 30 screens, a shared helper with many callers) → list every affected place in a short plan and check each one, even on the Logic or UX/UI path;
+- already failed once, or many small symptoms on one screen (clipping, wrapping, spacing) → stop patching symptom by symptom: Phase 1 lists all the symptoms first, find the shared cause, then fix and verify them together (UI: `rules/gui-fixes.md`, 2 rounds then options).
+
+Size still matters for orchestration and audit (`rules/aodd.md` triage): a change that adds or splits files states its file separation plan on any path.
 
 **Four independent baseline rules — a floor, not a free pass (single authoritative version — other files point back to this list):**
-1. **Ceremony collapses ONLY for Small tasks.** Medium and Large tasks require architectural separation before coding.
+1. **Only the Requirement path runs the full ceremony.** Any path that adds or splits files states the file separation plan before coding.
 2. **ARCHITECTURE.md never collapses.** Every project gets one regardless of task
    size. This is a standing
    per-project artifact, not a per-task ceremony step, so it isn't something a small
@@ -66,7 +77,7 @@ the unit level.
 | Phase | Load when | File |
 |---|---|---|
 | Phase 1 — Interview | when you start Phase 1 | `skills/ai-sdlc/phases/phase1-interview.md` |
-| Phase 2 — Architect | when you start Phase 2 (full or Medium shape) | `skills/ai-sdlc/phases/phase2-architect.md` |
+| Phase 2 — Architect | when you start Phase 2 (Requirement path, or a file separation plan on any path) | `skills/ai-sdlc/phases/phase2-architect.md` |
 | Phase 2 — Existing Asset Scan | before designing any new module, component, service, query or test helper (never collapses) | `skills/ai-sdlc/phases/phase2-existing-asset-scan.md` |
 | Phase 2 — Reuse-Table Artifact & Nth-Occurrence Centralization Rule | whenever Phase 2 touches more than one file or adds a function/component/query/helper (the table is Gate 1's review artifact, even for create-new), and when a pattern now occurs a third time | `skills/ai-sdlc/phases/phase2-reuse-table.md` |
 | Phase 2 — Reuse Modification Retest | when a design modifies an existing shared component (decided in Phase 2, executed in Phase 4) | `skills/ai-sdlc/phases/phase2-reuse-retest.md` |
@@ -76,7 +87,7 @@ the unit level.
 
 Approval Gates, Core facts and Status below stay in force in every phase.
 
-## Approval Gates (mandatory when the full shape is running)
+## Approval Gates (mandatory on the Requirement path)
 
 Three checkpoints carry a real hard stop — everything else stays Auto Mode default
 (don't stop to ask). These three have a uniquely expensive undo: get one wrong and

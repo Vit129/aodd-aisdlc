@@ -18,7 +18,7 @@ audit reports, agent-ops reports, agy proposals; decided ones in `done/`), `$AOD
 | Small | question, wording, color, typo, spacing | Just do it |
 | Small logic | 1-5 line fix or one clear bug that changes behavior | `chief-of-staff` micro: write a one-line Done yourself (no question to the CEO), run the tests, check the diff against the project's design docs/README, report Result / Evidence / Needs your decision. Hard (daemon/concurrency/security/network, another agent's unreviewed work, a re-broken fix, cross-module behavior) → `chief-of-staff` invokes `ai-sdlc` at Small size: design check, RED test first, fix, `auditor` |
 | Medium | multi-file change, needs 2+ skills, refactor, test suite | State the file separation plan first when the change adds or splits files (one file per concern, no monolith); `chief-of-staff` light: fill brief gaps in ONE question, dispatch, `auditor` before reporting (`hooks/done-gate.py` enforces at 5+ edited files) |
-| Large | new feature, needs QA coverage, "do it all and report back" | `chief-of-staff` full: brief, dispatch, `auditor` before reporting; a dev feature → `chief-of-staff` invokes `ai-sdlc` itself (its 3 gates stay real stops) |
+| Large | new feature, needs QA coverage, "do it all and report back" | `chief-of-staff` full: brief, dispatch, `auditor` before reporting; a dev feature → `chief-of-staff` invokes `ai-sdlc` itself, which picks its path by what changes (logic, UX/UI, requirement); the Requirement path's 3 gates stay real stops |
 | Any size | spends money, reaches a customer/outside party, irreversible | Stop and ask the CEO first, always |
 
 When unsure between two sizes, pick the smaller (token overuse is the known failure mode).
@@ -51,7 +51,7 @@ No task is complete until the build passes and the relevant tests pass. If tests
 | Work | Who |
 |---|---|
 | Plan, pick architecture/data source, write the brief, review every diff, re-run test/build, check the UI in a browser | main session (Opus/Fable) |
-| Design for a Large or hard feature (ai-sdlc Phase 2) | **2 subagents** in parallel, Dev view + QA view; main merges them into one plan |
+| Design on the ai-sdlc Requirement path (Phase 2) | **2 subagents** in parallel, Dev view + QA view; main merges them into one plan |
 | Multi-file feature or bug fix | **1 Sonnet** subagent in its own worktree from `origin/main` (more only for parts with disjoint files and an explicit scope each); commits, never pushes/deploys |
 | Bounded templated runs: one ingest, a ≤9-item research/decision batch, a single-script edit, data dumps, summaries | **Haiku** subagents, in parallel when independent; main checks the result, then Haiku commits/pushes (§ Haiku ops runner) |
 

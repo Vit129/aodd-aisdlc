@@ -3,6 +3,15 @@
 All notable changes to aodd-aisdlc are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and it follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.5.0] - 2026-10-22
+
+### Documentation
+- Design subagents, living-docs sync, delivery gate (agy draft) (`01d9e24`)
+- Keep role limits, scope subagents, one home for the release gate (`4e55ab1`)
+- K6 NFRs from design, traceability at sign-off, terms after Gate 1 (`3eebd7d`)
+- Pick the path by what changes, weigh it by a look at the code (`9253a41`)
+- Give every path a QA side, not only dev (`690f85c`)
+
 ## [0.4.0] - 2026-10-22
 
 ### Added

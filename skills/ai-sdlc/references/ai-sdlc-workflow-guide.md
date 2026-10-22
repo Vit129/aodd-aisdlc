@@ -74,6 +74,4 @@ Operational guide for executing the 5-phase Shift-Left software lifecycle using 
 
 ## Collapse Rules (When to Skip Phases)
 
-- **Large Feature (Default):** Full 5-phase lifecycle.
-- **Medium Task (Small feature/subsystem addition):** Collapse Phase 1 & 2 into a 1-paragraph summary → Phase 3 (quick RED test) → Phase 4 (GREEN) → Phase 5 (`/code-review`).
-- **Small Fix (Typo, bug fix, 1-5 lines):** Skip Phase 1-3 → Implement directly → Verify existing tests pass → Done.
+- The path follows what changes (logic → TDD only, UX/UI → design + visual check, requirement → all 5 phases), not the size; see § Pick the path in `rules/ai-sdlc-workflow.md`.

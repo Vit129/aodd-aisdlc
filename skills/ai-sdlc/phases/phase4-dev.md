@@ -11,6 +11,8 @@ Implement against the Phase 3 skeleton(s) until they pass, one vertical slice at
 with the unit-level loop below. If code structure gets cluttered, refactor toward deep
 modules (small interface, real logic behind it) at the seams Phase 2/3 agreed, with tests green.
 
+**One implementation subagent** runs the whole loop below, tests and code together, so no two agents edit the same or a shared file. Split across more subagents only when the parts touch disjoint files; give each its file list and the interface it must meet, and keep shared files with one owner.
+
 **Unit loop (red → green → refactor):**
 1. Write one failing test for the next behaviour, through the public seam (not internals). Run it; see it fail for the right reason.
 2. Write the least code that makes it pass. Run the suite.
@@ -39,3 +41,5 @@ Test-Before-Deliver).
 
 **Update `ai-sdlc-task-progress.md` now** — mark each skeleton `[x]` as it actually goes
 GREEN, not batched at the end (§ Incremental Update Rule, `skills/ai-sdlc/references/ai-sdlc-progress-spec.md`).
+
+**At GREEN, propose a commit** (`feat:`/`fix:`) with the test evidence, before Phase 5.

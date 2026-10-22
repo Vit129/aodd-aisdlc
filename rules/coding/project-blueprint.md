@@ -65,6 +65,13 @@ docs/ (adr/)   scripts/ (tooling only)   <source-root>/   tests/   <- tests/ is 
 - Nothing else loose at root: no stray `fix_*.py`, one-off `*.js`, `*.txt`. Put in `scripts/` or delete.
 - Test output (`playwright-report/` `test-results/` `output/`) and caches are gitignored.
 
+### 2.1 Project runner (MAY)
+
+One entry point so neither a person nor an agent has to guess ports or chain commands:
+- **Three servers:** dev (hot reload), test (fixtures/mocks, its own port, what Playwright and QA run against), preview/prod build.
+- **Runner** (`npm start`, `make start`, `scripts/start.*`): an arrow-key menu for people (commit/push/merge, dev, test, release gate, release + deploy, showing the current and next versions) that also takes the choice as an argument or env var (`npm start 2`, `START_CHOICE=dev`, `--yes` / `CI` for no prompts), so agents and CI never hit the menu. Falls back to a numbered prompt when stdin is not a TTY.
+- **Desktop launcher (optional):** a double-click file (`.command` on macOS, `.bat` on Windows) that sets up the env, frees the port, starts the server, waits for a health check and opens the browser.
+
 ## 3. Source layout by size
 
 Size is STRONG. Move up a size when a folder stops being scannable (thresholds are guides; bend with a recorded deviation). Role names stay; the container changes.

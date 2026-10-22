@@ -15,7 +15,7 @@ then, one bullet is enough.
 
 **Two design subagents (Large, or Medium that is hard):** dispatch in parallel, each with the brief and Phase 1 spec:
 - **Dev:** file separation, structure, stack, API/data interfaces; runs the Existing Asset Scan (`phase2-existing-asset-scan.md`) and the Reuse Table (`phase2-reuse-table.md`).
-- **QA:** failure modes, edge and boundary values, security/auth, testability, which externals need mocks (`dev-qa-handoff.md`).
+- **QA:** failure modes, edge and boundary values, security/auth, testability, which externals need mocks (`dev-qa-handoff.md`); and the **NFRs** the release gate will check: a performance budget for each hot path (k6 thresholds, e.g. p95 latency and error rate at a stated load) and which surfaces need a pen test. None → say "no NFR" so the gate knows.
 
 The main thread merges both into the one plan. Other Medium work: design it yourself. Combined with the old
 pipeline's separate Dev/QA architecture split: decide here, in the same pass, **what

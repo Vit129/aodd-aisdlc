@@ -42,18 +42,18 @@ the unit level.
 
 **Pick the path by what changes, not by size.** Every task, small or large, takes the path for the kind of change; only that path's phases run. A change can carry more than one kind (a new requirement with a new screen runs both). If it is not clear which kind it is, Phase 1 decides that first.
 
-| What changes | Path | Runs | Gates | Living docs |
-|---|---|---|---|---|
-| Wording, typo, config value | Just do it | edit → verify | — | — |
-| **Logic**: a bug, a rule inside an existing requirement, a refactor | TDD | Phase 4 unit loop: failing test first → GREEN → refactor; Existing Asset Scan when it adds a helper | — | `ARCHITECTURE.md` only if a seam or the data model changes |
-| **UX/UI**: look, layout, an on-screen flow | Design | read `DESIGN.md` → change → look at it in a browser/screenshot; a Playwright test when a user flow changes | show the mock or screenshot first for a new screen | `DESIGN.md` |
-| **Requirement**: a new or changed capability, a rule users see, a new integration | Full | Phase 1 → 5, two design subagents in Phase 2 | Gates 1-3 | `PRODUCT.md`, `ARCHITECTURE.md`, `CONTEXT.md` (+ `DESIGN.md` with UI) |
-| Unclear which | Interview | Phase 1 resolves the kind, then the path above | — | — |
+| What changes | Path | Dev | QA | Gates | Living docs |
+|---|---|---|---|---|---|
+| Wording, typo, config value | Just do it | edit | existing tests still pass | — | — |
+| **Logic**: a bug, a rule inside an existing requirement, a refactor | TDD | Phase 4 unit loop: failing test first → GREEN → refactor; Existing Asset Scan when it adds a helper | a regression test that fails without the fix; the cases next to it (boundary, null, error path); callers in the blast radius still pass | — | `ARCHITECTURE.md` only if a seam or the data model changes |
+| **UX/UI**: look, layout, an on-screen flow | Design | read `DESIGN.md` → change | look at every affected screen in a browser/screenshot (sizes, long text, dark mode); a Playwright test when a user flow changes | show the mock or screenshot first for a new screen | `DESIGN.md` |
+| **Requirement**: a new or changed capability, a rule users see, a new integration | Full | Phase 2 Dev subagent, Phase 4 | Phase 2 QA subagent (NFRs), Phase 3 scenarios RED, Phase 5 traceability + sign-off | Gates 1-3 | `PRODUCT.md`, `ARCHITECTURE.md`, `CONTEXT.md` (+ `DESIGN.md` with UI) |
+| Unclear which | Interview | Phase 1 resolves the kind, then the path above | | — | — |
 
 **Look before you pick.** Size is not known from the request; it comes from the code. Before choosing, check: the blast radius (graphify `blast_radius`/`affected`, or grep the token, component or function), how many screens or callers it reaches, and whether this was already "fixed" before (git log, past sessions). Then weigh it:
 - one place, first attempt → the path as it is;
-- wide reach (a color token used on 30 screens, a shared helper with many callers) → list every affected place in a short plan and check each one, even on the Logic or UX/UI path;
-- already failed once, or many small symptoms on one screen (clipping, wrapping, spacing) → stop patching symptom by symptom: Phase 1 lists all the symptoms first, find the shared cause, then fix and verify them together (UI: `rules/gui-fixes.md`, 2 rounds then options).
+- wide reach (a color token used on 30 screens, a shared helper with many callers) → list every affected place in a short plan; QA checks each one (a regression list, not a spot check), even on the Logic or UX/UI path;
+- already failed once, or many small symptoms on one screen (clipping, wrapping, spacing) → stop patching symptom by symptom: Phase 1 lists all the symptoms first (QA turns each into a check that fails now), find the shared cause, then fix and re-run every check together (UI: `rules/gui-fixes.md`, 2 rounds then options).
 
 Size still matters for orchestration and audit (`rules/aodd.md` triage): a change that adds or splits files states its file separation plan on any path.
 

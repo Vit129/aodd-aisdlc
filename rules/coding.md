@@ -33,6 +33,20 @@ Before implementing:
 
 Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
 
+**Before writing code, stop at the first rung that holds** (after you understand the problem, not instead of it):
+1. Does this need to be built at all?
+2. Does it already exist in this codebase? Reuse the helper or pattern that is there.
+3. Does the standard library do it?
+4. Does a native platform feature cover it?
+5. Does an already-installed dependency solve it?
+6. Can it be one line?
+7. Only then: write the minimum code that works.
+
+- **Bug fix = root cause:** grep every caller of the function you touch and fix the shared function once, not one guard per caller.
+- When two stdlib approaches are the same size, pick the edge-case-correct one: less code, not the flimsier algorithm.
+- **Mark a deliberate shortcut** that has a known ceiling (global lock, O(n²) scan, naive heuristic) with a `ponytail:` comment naming the ceiling and the upgrade path.
+- **Never lazy about:** understanding the problem, input validation at trust boundaries, error handling that prevents data loss, security, accessibility, calibration real hardware needs, anything explicitly requested. Non-trivial logic leaves ONE runnable check behind (a small assert-based self-check or one test file); trivial one-liners need none.
+
 - Never write or open report-style HTML files with large embedded data (for example graphify's `graph.html`, or a test/coverage report) in the workspace: they burn tokens and context. For graphify use `query`/`path`/`explain`; write other documents and reports as Markdown or plain text.
 
 ## 3. Graph Before & After Edit

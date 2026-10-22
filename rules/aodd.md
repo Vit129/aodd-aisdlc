@@ -72,7 +72,7 @@ Routing table: search with Haiku, check with Sonnet, escalate to the advisor.
 - **Big data stays out of main context:** any ingest, scrape, PDF/HTML dump or data extract over ~300 lines or 40KB goes to a Haiku subagent, or is parsed with a local script that prints a short structured summary. Main never reads the raw dump.
 - **Code lookup is Haiku too:** "which file holds X, who calls Y" is lookup, not reasoning. Haiku returns file paths + edges only; then the big model reads in full every file it will edit, debug or review.
 - **Big model keeps:** writing and changing code, debugging, design, plans, judgment, reviewing every Haiku result.
-- Tiers: **big model** = Fable/Opus/Sonnet (plans, judges, controls Haiku); **advisor** = Fable/Opus only (second opinion via the `advisor` subagent, never Sonnet/Haiku).
+- Tiers: **big model** = Fable/Opus/Sonnet (plans, judges, controls Haiku); **advisor** = Fable/Opus only (second opinion via the `advisor` subagent, never Sonnet/Haiku): Fable for more capability than the main model, Opus for a cold view not anchored on the transcript; at most two advisor calls per task before telling the CEO.
 - The subagent sees none of this conversation: pass it the facts it needs in the prompt.
 
 ## Haiku ops runner

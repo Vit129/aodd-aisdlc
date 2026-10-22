@@ -3,22 +3,17 @@
 > Load when you start Phase 1. Parent: `rules/ai-sdlc-workflow.md`.
 
 
-`mattpocock-skills:grilling` and `mattpocock-skills:research` can be called directly via the
-Skill tool. `to-spec`, `to-questionnaire`, and `grill-with-docs` are configured
-`disable-model-invocation` in this plugin — only the user can run
-`/to-spec`/`/grill-with-docs` themselves; calling them via the Skill tool fails outright.
 Route by situation:
-- No codebase, vague/underspecified idea → `mattpocock-skills:grilling` to stress-test the
-  idea via the Skill tool, then write the resulting spec directly as a short markdown doc
-  (what `/to-spec` would have produced) — or tell the user they can run `/to-spec` themselves
-  for its structured questionnaire flow.
-- Has codebase, align language, stress-test plan against code, record ADRs/glossary as it
-  goes → do this directly: read the actual code the plan touches, note where the plan's
-  language drifts from what the code already calls things, record any real ADR-worthy
-  decision inline. Tell the user they can run `/grill-with-docs` themselves for its fuller,
-  doc-grounded version of this.
-- High-stakes decision, non-trivial logic, before commit/deploy → `mattpocock-skills:grilling` (adversarial stress-test)
-- Framework/library specific implementation, API version matters → `mattpocock-skills:research`
+- Vague or underspecified idea, or a high-stakes / hard-to-reverse decision → **grill it**:
+  list the 3-5 weakest assumptions or open forks in the plan, then ask them one at a time
+  (`AskUserQuestion`, recommended answer first, with the why). Follow each answer to the next
+  dependent question; stop when every branch has a decision. Write the result as a short
+  markdown spec (goal, scope in/out, decisions, open assumptions).
+- Has codebase → read the code the plan touches first, so questions the code can answer are
+  never asked; note where the plan's language drifts from what the code already calls things,
+  and record any real ADR-worthy decision inline.
+- Framework/library specific, API version matters → a Haiku subagent fetches the primary
+  docs and returns facts + sources; read the cited parts before relying on them.
 
 The scope check comes first, silently: if scope is already unambiguous from the request + visible context (typo fix, single clear bug, direct question, explain/summarize/search/diagnose), state the 1-line scope read and skip straight to the fitting phase/action — don't invoke any of the above.
 

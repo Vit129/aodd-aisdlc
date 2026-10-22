@@ -168,7 +168,15 @@ Combined tags can be used across Dev and QA (`[Infra]`, `[Backend]`, `[Frontend]
 1. Read `PROGRESS.md` → find the 🔄 in-progress feature.
 2. Read that feature's progress file, verify every path in `## Artifacts` still exists —
    if one's missing, warn before resuming ("phase ก่อนหน้าหาย ต้องทำใหม่").
-3. Find the first `[ ]` task → resume there.
+3. If `handoff.md` exists next to the progress file, read it before anything else.
+4. Find the first `[ ]` task → resume there.
+
+**Writing `handoff.md`** (when stopping mid-feature, the user asks for a handoff, or context is about to run out): overwrite `$AODD_PLANS/[FEATURE]/handoff.md` with
+- **State:** phase, current task, branch/worktree, last green command
+- **Tried:** what was attempted and why it failed (error text), so it is not retried
+- **Next:** the exact next step
+- **Open:** decisions waiting on the user, files to open first
+Keep it under 30 lines; delete it once the feature is Done.
 
 ## Incremental update rule — update in real time, never batch at the end
 
@@ -218,7 +226,7 @@ Never mark a task ✅ while its test is still failing — completion means GREEN
 ## When all tasks complete
 
 Run the full suite one final time and record pass/fail. **Dev only** — run
-code review (via `mattpocock-skills:code-review` or any review skill you have)
+code review (via `/code-review` or any review skill you have)
 against the full diff before committing; don't commit with Critical/Important
 findings unresolved. Update `PROGRESS.md` to ✅ + date.
 

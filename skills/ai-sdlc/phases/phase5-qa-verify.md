@@ -9,7 +9,7 @@ hard waits, 1 heal attempt max before routing to `9arm-skills:debug-mantra`). Th
 is verification only — no new scenarios get invented here; a genuinely missing case
 found during verification goes back to Phase 3, it doesn't get patched in place.
 
-Pre-merge gate: once all tests confirm GREEN, invoke `mattpocock-skills:code-review` (or `/code-review`) to run parallel sub-agents evaluating two distinct axes:
+Pre-merge gate: once all tests confirm GREEN, run `/code-review` (or any review skill you have) on the full diff, checking two axes:
 - **Standards Axis**: conforms to the project's coding standards
 - **Spec Axis**: faithfully implements the originating spec produced in Phase 1
 

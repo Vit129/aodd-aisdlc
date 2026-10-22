@@ -27,16 +27,13 @@ until the user has approved this phase's design/implementation plan. A Medium ta
 
 Deep DDD work (bounded contexts, aggregates/events, sync-vs-async integration tradeoffs)
 is model judgment applied directly here — there's no separate skill for it. Domain-term
-discipline specifically (writing/updating `CONTEXT.md` via `mattpocock-skills:domain-modeling`) →
+discipline specifically (writing/updating `CONTEXT.md`) →
 `skills/ai-sdlc/references/dev-qa-handoff.md`'s Domain Language note.
 
-Task breakdown: `to-tickets` and `wayfinder` are also `disable-model-invocation` — for
-multi-step tasks, slice the design and spec into vertical slices directly and write them
-straight into `$AODD_PLANS/[FEATURE]/ai-sdlc-task-progress.md` (checkbox per slice; see
-`skills/ai-sdlc/references/ai-sdlc-progress-spec.md`) instead of `to-tickets`' own
-`.scratch/<slug>/issues/` output, which nothing here reads anyway. For a multi-session epic
-genuinely too big to chart this way, tell the user they can run `/wayfinder` themselves for
-its dedicated decision-map flow.
+Task breakdown: for multi-step tasks, slice the design and spec into vertical slices and
+write them straight into `$AODD_PLANS/[FEATURE]/ai-sdlc-task-progress.md` (checkbox per
+slice; see `skills/ai-sdlc/references/ai-sdlc-progress-spec.md`). For a multi-session epic
+too big for that, write a decision map first (open decisions, what blocks what).
 
 If the feature touches auth, permissions, or sensitive data → flag it for a security review
 here (the `security` skill), in this same pass (its own coverage decision, same reasoning as "what needs QA

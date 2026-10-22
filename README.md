@@ -106,7 +106,6 @@ Modules are additive: add one later with `./install.sh --with <module>`; modules
 
 ### Companion plugins (optional, installed separately, not copied here)
 
-- **mattpocock-skills**: in Claude Code, `/plugin install mattpocock-skills@claude-plugins-official` (marketplace `claude-plugins-official`). Provides `grilling`, `research`, `tdd`, `code-review`, `domain-modeling`, `codebase-design`, which the workflow calls in its phases. Some of its sub-skills are `disable-model-invocation`; the workflow says where to do the work directly instead.
 - **9arm-skills**: upstream repo `github.com/thananon/9arm-skills` (`debug-mantra`, `post-mortem`, `scrutinize`, ...). Install with `npx skills add thananon/9arm-skills -g -y`. The upstream repo ships no Claude Code marketplace manifest; to use it as a plugin, wrap it in a one-plugin local marketplace whose plugin source is that GitHub repo.
 - **graphify** (code knowledge graph for code navigation): `uv tool install graphifyy` (PyPI package `graphifyy`), or `pip install graphifyy`. Add the `mcp` extra (`graphifyy[mcp]`) if you want the MCP server; check the extra against the version of `mcp` you run. Then `graphify update .` in a project. The workflow only uses it when `graphify-out/` exists.
 

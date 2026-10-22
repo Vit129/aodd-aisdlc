@@ -116,13 +116,3 @@ No mechanical hook enforces these — treat "the user hasn't objected" as differ
 ## Status
 
 Default route for new/unclear-scope Dev/QA feature work. Stack-specific coding skills (`backend-dev`, `frontend-dev`, `macos-swiftui`) and `rules/coding.md` still own coding conventions.
-
-**`mattpocock-skills` invocation split** — some sub-skills are `disable-model-invocation`
-and cannot be called via the Skill tool mid-task, only run by the user as a
-`/slash-command`: `to-spec`, `to-questionnaire`, `grill-with-docs`, `to-tickets`,
-`wayfinder`, `implement`, `implement-spec`, `improve-codebase-architecture`, `ask-matt`,
-`handoff`, `triage`, `setup-matt-pocock-skills`. Every phase above accounts for this —
-where the referenced sub-skill is blocked, the phase does the work directly instead and
-points the user at the `/slash-command` as an optional fuller alternative. Directly
-invocable: `grilling`, `research`, `domain-modeling`, `codebase-design`, `tdd`,
-`code-review`, `diagnosing-bugs`, `resolving-merge-conflicts`, `prototype`, `wizard`.

@@ -48,7 +48,7 @@ Save it as `$AODD_PLANS/<feature>/brief.md` when the work spans sessions.
 |---|---|
 | Engineering (Dev Lead) | `ai-sdlc` Phase 2/4 and any stack-specific coding skills you have; cheap hands: Haiku |
 | QA (QA Lead) | `ai-sdlc` Phase 3/5 and your test-framework skills. A skill marked `disable-model-invocation` cannot be called by you: ask the CEO to run the `/slash-command` (put it under "Needs your decision"), don't read around it |
-| Review | built-in `/code-review` or `mattpocock-skills:code-review` |
+| Review | built-in `/code-review` |
 | Design | any design skill you have installed |
 | Audit (independent → CEO) | `python3 scripts/audit.py` (cross-family auditor, writes its own report to the CEO), a security review if you have one |
 | Experts | `advisor` subagent |

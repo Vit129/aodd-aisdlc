@@ -1,6 +1,6 @@
 ---
 name: agent-ops
-version: 0.2.0
+version: 0.2.1
 description: >
   AODD "Agent Ops" learning loop. Reads the audit reports, git history and skill usage and
   proposes team changes (add/merge/retire a skill or agent, fix a rule that keeps causing
@@ -41,6 +41,8 @@ Proposals from other agents (`agy-proposal-*.md` in `$AODD_REPORTS/`) are triage
 
 - A learning/usage metric that reads ~0% for weeks usually counts the wrong thing: check it against real transcripts for every output type (skill patches, project skills, Bash reads) before rebuilding the system.
 - Comparing us with an external tool: fetch its upstream README/source and cite it, and re-check that our own scripts still match the current setup; never compare from memory or a pasted post.
+- Skill usage counts miss user-typed slash commands: `"skill":"<name>"` only catches Skill tool calls. Also count `<command-name>/<plugin>:<skill>` in the transcripts, or a skill the user runs by hand reads as unused.
+- Retiring a skill or plugin: after removing its references, grep for its sub-command names too (`/<command>`, `<plugin>:<skill>`), not only the plugin name; a bare `/<command>` left in a guide keeps the dependency alive.
 
 ## Self-Update (after every use)
 

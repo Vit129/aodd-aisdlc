@@ -13,7 +13,7 @@ Operational guide for executing the 5-phase Shift-Left software lifecycle using 
 | **Phase 2: Architect** | Domain language, interface/seam design & ticket slicing | Phase 2 design + vertical slices | `CONTEXT.md`, `$AODD_PLANS/[FEATURE]/[FEATURE]-architecture.md`, `$AODD_PLANS/[FEATURE]/ai-sdlc-task-progress.md` |
 | **Phase 3: QA-Design** | Shift-Left test scenarios & skeletons | scenario tool + your test framework (Playwright, Robot Framework, ...) | `[TS-XXXX]` test files in **RED (failing)** state |
 | **Phase 4: Dev** | Implement tickets until tests pass | Phase 4 unit loop (red → green → refactor) | Application code driving tests to **GREEN** |
-| **Phase 5: QA-Verify** | Verify suite & run parallel pre-merge audit | Full test suite run + `/code-review`, `/handoff` | Code Review Report (Standards + Spec) |
+| **Phase 5: QA-Verify** | Verify suite & run parallel pre-merge audit | Full test suite run + `/code-review`, `handoff.md` when stopping mid-feature | Code Review Report (Standards + Spec) |
 
 ---
 
@@ -59,7 +59,7 @@ Operational guide for executing the 5-phase Shift-Left software lifecycle using 
    - **Standards Sub-agent**: Validates against the project's coding standards and baseline code smells.
    - **Spec Sub-agent**: Verifies complete coverage against the Phase 1 spec.
 3. Optionally run `/scrutinize` for an outsider-perspective sanity check.
-4. If handing off to another agent or session, produce a structured summary via `/handoff` — save it to `$AODD_PLANS/[FEATURE]/handoff.md`; `ai-sdlc-task-progress.md` is a checkbox list, don't drop the narrative into that.
+4. If handing off to another agent or session, write a structured summary (format: `references/ai-sdlc-progress-spec.md` § Resume protocol) to `$AODD_PLANS/[FEATURE]/handoff.md`; `ai-sdlc-task-progress.md` is a checkbox list, don't drop the narrative into that.
 
 ---
 

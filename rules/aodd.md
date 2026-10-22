@@ -44,13 +44,16 @@ No task is complete until the build passes and the relevant tests pass. If tests
 - Check diff size against task scope first (`git diff --stat`); far beyond the task → stop and confirm.
 - The same test failing 3 times in a row → stop and escalate rather than loop.
 - One commit per task, verified per task.
+- **Commit milestones:** Propose user commits at two key points — (1) after living documentation (`PRODUCT.md`, `DESIGN.md`, `ARCHITECTURE.md`, `CONTEXT.md`) is updated post-Gate 1 approval, and (2) after implementation reaches verified GREEN.
+- **Pre-Deploy Delivery Gate:** Before any release, merge to main, or deploy, enforce four sequential checks: (1) Security scan, (2) Performance & regression check, (3) Cross-family audit (`scripts/audit.py`), and (4) Semantic version bump & `git-cliff` changelog generation.
 
 ## Default model split (don't ask each time)
 
 | Work | Who |
 |---|---|
 | Plan, pick architecture/data source, write the brief, review every diff, re-run test/build, check the UI in a browser | main session (Opus/Fable) |
-| Multi-file feature or bug fix, endpoint + client + tests | **Sonnet** subagent in its own worktree from `origin/main`; commits, never pushes/deploys |
+| Phase 2 Co-design (Medium/Large) | **2 Subagents** (Dev 1 for structure/cleanliness/reuse, QA 1 for fragility/edge cases/mocks); main synthesizes both into Plan Artifact |
+| Multi-file feature or bug fix implementation | **1 Sonnet** subagent for TDD Red $\to$ Green (single subagent avoids git collisions and test/code mismatch) in its own worktree from `origin/main`; commits, never pushes/deploys |
 | Bounded templated runs: one ingest, a ≤9-item research/decision batch, a single-script edit, data dumps, summaries | **Haiku** subagents, in parallel when independent; main checks the result, then Haiku commits/pushes (§ Haiku ops runner) |
 
 Main never reports a subagent's result as done without reviewing it. Deploys, writes to production data stores, PR merges and rewriting existing records always go back to the CEO first. A project's own workflow file may refine this split.

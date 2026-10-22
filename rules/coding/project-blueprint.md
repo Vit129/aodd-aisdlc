@@ -65,6 +65,20 @@ docs/ (adr/)   scripts/ (tooling only)   <source-root>/   tests/   <- tests/ is 
 - Nothing else loose at root: no stray `fix_*.py`, one-off `*.js`, `*.txt`. Put in `scripts/` or delete.
 - Test output (`playwright-report/` `test-results/` `output/`) and caches are gitignored.
 
+### 2.1 Project Runner & Environment Standard (Zero-Friction DX)
+
+Projects should provide standardized environment scripts and single-command runners so neither humans nor AI agents need to guess ports or memorize multi-step commands:
+- **Three Server Tiers:**
+  - **Dev Server:** Local development with hot-reload (e.g. `npm run dev` / `make run` / default port).
+  - **Test Server:** Isolated test environment with mocks/fixtures for QA/Playwright automation (e.g. `npm run dev:test` / `make bench` / dedicated port).
+  - **Prod / Preview Server:** Staging/production build verification (e.g. `npm run preview` / `make prod`).
+- **Interactive & Scriptable Runner (`make start` / `npm start` / `scripts/start.js`):**
+  - Interactive arrow-key menu for human devs: `1) Commit + Push + Merge`, `2) Dev Server`, `3) Test Server`, `4) Pre-Deploy Verify (Audit + Security + Performance)`, `5) Release + Deploy (Bump + git-cliff)`.
+  - Supports non-interactive positional arguments (`make start 2`, `npm start 2`) for AI agents and CI scripts.
+- **Desktop Launcher (`app-run-command/<App>.command` / `.bat`):**
+  - Double-clickable launcher for macOS/Windows desktop environments.
+  - Automatically resolves/creates venv/deps, kills any dangling process on target ports (`pkill -f ...`), launches server, waits for health check, and auto-opens the browser.
+
 ## 3. Source layout by size
 
 Size is STRONG. Move up a size when a folder stops being scannable (thresholds are guides; bend with a recorded deviation). Role names stay; the container changes.

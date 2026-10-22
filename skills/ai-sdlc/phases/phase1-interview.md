@@ -20,10 +20,11 @@ The scope check comes first, silently: if scope is already unambiguous from the 
 **When the full shape is running, Phase 1 is not skippable and hands off to plan mode.**
 The scope-check skip is for collapsed tasks only. For full-shape work, close Phase 1 by stating
 the resolved scope (spec summary + any assumptions still open) in the response, then —
-Claude Code only — call `EnterPlanMode` *before* writing any Phase 2 design, so Phase 2
-drafts inside plan mode and Gate 1 is the native `ExitPlanMode` approval (mechanics:
-`skills/ai-sdlc/references/dev-qa-handoff.md`). Never go interview → architect
-file directly without passing through plan mode.
+call `EnterPlanMode` (Claude Code) or create a Single Plan Artifact (`/plan` or `[FEATURE]-plan.md` with `RequestFeedback: true`)
+*before* writing any Phase 2 design, so Phase 2 drafts inside plan mode and Gate 1 is the explicit user approval
+(mechanics: `skills/ai-sdlc/references/dev-qa-handoff.md`). Keep all interview/planning context in the Plan Artifact;
+do not edit repo living docs (`PRODUCT.md`, `ARCHITECTURE.md`, etc.) or product code until Gate 1 is approved.
+Never go interview → architect file directly without passing through plan mode.
 
 **Update `ai-sdlc-task-progress.md` now** — initialize it if this is the first phase touching
 this feature, record the spec/decisions this phase produced (§ Incremental Update Rule,

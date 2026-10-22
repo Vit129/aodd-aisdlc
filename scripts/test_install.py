@@ -82,3 +82,18 @@ for f in ("c/skills/ai-sdlc/SKILL.md", "c/settings.json", "x/AGENTS.md", "x/hook
 out = run("--no-backup", "--codex", "--agy", extra=nenv)
 assert "UPDATE" in out and not list(N.rglob("*.aodd-bak")), list(N.rglob("*.aodd-bak"))
 print("ok - install self-test passed (incl. --no-backup)")
+
+# agent detection: a fake PATH and HOME decide what is found; a non-terminal run never adds a target by itself
+fake = T / "fakebin"; fake.mkdir()
+for b in ("codex", "hermes", "opencode"):
+    (fake / b).write_text("#!/bin/sh\n"); (fake / b).chmod(0o755)
+(T / "fakehome/.cursor").mkdir(parents=True)
+det = {"PATH": f"{fake}:/usr/bin:/bin", "HOME": str(T / "fakehome")}
+out = run("--detect", extra=det)
+assert "found: codex cursor opencode hermes" in out, out
+assert "no installer yet for: cursor opencode hermes" in out and "warn    no agy" not in out
+assert "install into" not in out  # --detect only prints
+out = run("--dry-run", "--core-only", extra=det)
+assert "add --codex" in out and "(codex)" not in out, out
+out = run("--detect", extra={"PATH": "/usr/bin:/bin", "HOME": str(T / "fakehome")})
+assert "warn    no agy or codex CLI" in out, out

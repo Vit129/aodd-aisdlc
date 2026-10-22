@@ -61,6 +61,8 @@ git clone https://github.com/<owner>/aodd-aisdlc.git && cd aodd-aisdlc
 ./install.sh --claude-md        # copy files, register hooks, import rules/aodd.md in CLAUDE.md
 ```
 
+`./install.sh --detect` lists the coding agents on this machine (Claude Code, Codex, Antigravity, Gemini CLI, Cursor, Copilot, OpenCode, Hermes, Kiro, Aider, Goose, Grok, Pi, OpenClaw; found by binary on PATH or home dir). A terminal install offers Codex and Antigravity when found; the others are listed as having no installer yet. It also warns when neither `agy` nor `codex` is present, since the cross-family audit then falls back to a Claude auditor.
+
 Update: `git pull && ./install.sh` (re-running is safe; changed files are kept as `.aodd-bak`). To make it automatic after every pull, enable the post-merge hook (below).
 
 In a terminal the installer asks about each optional module (one line each, default no) and, for `schedules`, which times to use. To skip the questions:

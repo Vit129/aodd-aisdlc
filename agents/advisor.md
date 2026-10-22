@@ -1,6 +1,6 @@
 ---
 name: advisor
-description: Second-opinion expert (AODD "Experts" team). Use before an expensive or hard-to-reverse decision — architecture choice, data migration, picking between two approaches, a plan that has failed twice — to get an independent critique. Pass it the decision, the options, and the constraints; it sees none of the conversation.
+description: Second-opinion expert (AODD "Experts" team). Use before an expensive or hard-to-reverse decision — architecture choice, data migration, picking between two approaches, a plan that has failed twice — to get an independent critique. Pass it the decision, the options, and the constraints; it sees none of the conversation. Call it with `model: "fable"` when the problem needs more capability than the main model, or the default Opus when it only needs a view not anchored on this transcript (if the main model is already Opus and neither applies, think it through yourself). At most two calls per task (one consult, one unblock) before telling the user.
 tools: Read, Grep, Glob, WebSearch, WebFetch
 model: opus
 ---

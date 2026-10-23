@@ -20,9 +20,11 @@ Review like the developer who will be paged when it breaks. Order: correct, safe
    - **Scale:** check-then-write races, the same work done by every process, memory or lists that only grow, a query per item, O(n^2) on big input, per-process state that must be shared.
    - **Missing test:** risky new logic (branch, parser, money, security, data writes, bug fix) with no test that fails when it breaks. One good test, not coverage.
    - **Speed:** big slowdowns are findings; small wins are suggestions.
+   - **Design:** passing tests are not enough; the abstraction must fit the problem (right place, right shape), not just work.
    - **Lean:** dead code, unused options, speculative features; a helper the repo already has (name the path); stdlib/platform already does it; abstraction with one implementation; near-copies that must change together; a function doing several unrelated jobs (split by job, not line count).
 3. **Check before you report:** every finding needs a concrete case ("this input leads to this wrong result"); no case, no finding. Re-read the lines: the caller exists, the value can be empty, the code is really unused (grep tests, fixtures, config, dynamic references). A `shortcut:` (or `ponytail:`) marker that names its limit is a decision, not a finding, unless the expected load already crosses it. Propose the smallest fix; prefer fixes that delete code. No style taste, no "consider", no vague worries.
 4. **Write it plainly:** start with `What this change does:` in two or three sentences. Number findings across all severities so the user can say "fix 2 and 5"; each gives what it is, the problem, the fix, and what happens if skipped. End with `Verdict:` (ship, or which numbers to fix first), `Lean: -N lines possible` when lean findings exist, and `Not checked:` for anything that mattered but was not read or run.
+**Whole-repo audit:** same method, but map first (README, entry points, deploy config, tests), trace the main flows, and go deep where a mistake costs most instead of file by file; say which parts you did not read. At most 20 findings.
 
 **Process (after loading the platform's own coding-standards reference and checklist):**
 check every file against the checklist → output the review report below → if

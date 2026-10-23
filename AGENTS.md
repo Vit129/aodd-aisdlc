@@ -7,7 +7,7 @@ This repo is an installable package for Claude Code and OpenAI Codex: AODD (an o
 - `rules/` the AODD contract and the ai-sdlc workflow spine (inlined into Codex `AGENTS.md`, imported by Claude `CLAUDE.md`)
 - `skills/` chief-of-staff, ai-sdlc (+ `references/`), agent-ops
 - `agents/` auditor and advisor subagent definitions
-- `hooks/` core hooks: done-gate, auditor-readonly, skill-capture-nudge, secret-read-guard, coding-rules-gate, dirty-branch-switch-guard, graphify-guard, work-log; `_aodd_paths.py` (path resolver) and `_aodd_secrets.py` (credential shapes) are imported by the others
+- `hooks/` core hooks: done-gate, auditor-readonly, skill-capture-nudge, secret-read-guard, coding-rules-gate, dirty-branch-switch-guard, graphify-guard, work-log, subagent-rules (Claude only); `_aodd_paths.py` (path resolver) and `_aodd_secrets.py` (credential shapes) are imported by the others
 - `scripts/` `audit.py` (cross-family audit), `check_agy_proposal.py`, `skill_learning_report.py` (curator), `agent_ops_gather.py`, install test
 - `optional/<module>/{skills,rules,hooks,scripts,schedules}/` modules the installer adds only when chosen: `agent-memory` (memory-recall, memory-write-scan, session-start-recent) and `schedules` (`aodd_job.py` runner, `install-schedules.py`, `schedules/jobs.json` + prompt templates). Everything under a module is installed flat into the same top-level folder as core (`optional/schedules/scripts/x.py` -> `<home>/scripts/x.py`); a module hook finds `_aodd_paths.py` next to itself when installed and in the repo's `hooks/` when run from here
 - `docs/` skill-learning procedure

@@ -3,6 +3,14 @@
 All notable changes to aodd-aisdlc are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and it follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.6.0] - 2026-10-23
+
+### Added
+- Adopt ponytail v5 scope, review method and subagent rules (`9c4bf49`)
+
+### Documentation
+- Add design check, whole-repo audit, invariants in Phase 2 (`4806a02`)
+
 ## [0.5.0] - 2026-10-22
 
 ### Documentation

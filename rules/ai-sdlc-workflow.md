@@ -21,7 +21,7 @@ Each role follows the same SOP: read brief + progress file → ask once, everyth
 check vs. Definition of Done → hand back to the next owner via the progress/handoff file → leave the record (checkbox).
 
 **Subagents: many eyes for design, one pair of hands for code.**
-- **Phase 2 design (Requirement path):** two subagents in parallel, so the views stay independent and the phase stays fast. Dev: structure, file separation, reuse, stack. QA: failure modes, edge and boundary cases, security, mocks, testability. The main thread merges both into one plan (plan mode, or a plan file in `$AODD_PLANS/[FEATURE]/`). Logic and UX/UI paths: the main thread designs alone.
+- **Phase 2 design (Requirement path):** two subagents in parallel, so the views stay independent and the phase stays fast. Dev: structure, file separation, reuse, stack, the invariants that must always hold. QA: failure modes, edge and boundary cases, security boundaries (where untrusted input enters), mocks, testability. The main thread merges both into one plan (plan mode, or a plan file in `$AODD_PLANS/[FEATURE]/`). Logic and UX/UI paths: the main thread designs alone.
 - **Phase 4 code:** one subagent by default, so no two agents write the same or a shared file. More than one only when the work splits into parts that touch disjoint files, each given an explicit scope (the files it may edit, the interface it must meet); shared files stay with one owner.
 
 **Documents: plan first, living docs after Gate 1.** Until Gate 1 everything stays in the plan; no repo doc or product code changes. After approval, write the durable decisions into four living docs at the repo root, one owner each, kept short:

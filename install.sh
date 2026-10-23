@@ -185,7 +185,8 @@ MODULE = {
         ("SessionStart", "startup|resume|clear", "session-start-recent.py", ()),
     ],
 }
-WANT = CORE + [w for m in mods for w in MODULE.get(m, [])]
+CLAUDE_ONLY = [("SubagentStart", "*", "subagent-rules.py", ())]  # Codex hooks.json has no SubagentStart
+WANT = CORE + (CLAUDE_ONLY if settings.name == "settings.json" else []) + [w for m in mods for w in MODULE.get(m, [])]
 
 try:
     data = json.loads(settings.read_text()) if settings.is_file() else {}

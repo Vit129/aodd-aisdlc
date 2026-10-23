@@ -18,6 +18,7 @@ Before implementing:
 - If multiple interpretations exist, present them - don't pick silently.
 - If a simpler approach exists, say so. Push back when warranted.
 - If something is unclear, stop. Name what's confusing. Ask.
+- **Scope = every place the change must reach:** read the task and the code it touches, then list the callers, tests, fixtures, config and exports the change affects, and what it could break for users (data it would destroy or expose, callers that stop working). That is scope; extra features are not.
 - **Architecture-First (Medium+ tasks, Dev & QA):** before writing code or tests that add or split files, state a short separation plan (where logic, UI/integration, and tests/fixtures go) — see § Anti-Monolith & Separation Pattern.
 - **Plan co-location:** when planning a project or feature, put the architecture document in `$AODD_PLANS/<feature>/<feature>-architecture.md` (or `<feature>-architecture/`), in the same folder as `ai-sdlc-task-progress.md`. Do not scatter planning documents.
 
@@ -30,6 +31,9 @@ Before implementing:
 - No "flexibility" or "configurability" that wasn't requested.
 - No error handling for impossible scenarios.
 - If you write 200 lines and it could be 50, rewrite it.
+- A vague request ("build me X") gets the smallest version that does the core job; name what you left out in one line.
+- No wrapper or type conversion nobody asked for: keep values in the form the platform already gives you.
+- The shortest working diff wins, once you know everything it must touch. A one-liner that needs decoding is not short.
 
 Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
 
@@ -37,14 +41,16 @@ Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, sim
 1. Does this need to be built at all?
 2. Does it already exist in this codebase? Reuse the helper or pattern that is there.
 3. Does the standard library do it?
-4. Does a native platform feature cover it?
-5. Does an already-installed dependency solve it?
+4. Does a native platform feature cover it? (The project's own component beats a native widget, rung 2.)
+5. Does an already-installed dependency solve it? Never add a dependency for a few lines.
 6. Can it be one line?
 7. Only then: write the minimum code that works.
 
+- **Lazy about the solution, never about the change:** finish every part the task needs, including the callers, tests and fixtures your change breaks.
+- **Code you move or merge keeps its error handling and validation.**
 - **Bug fix = root cause:** grep every caller of the function you touch and fix the shared function once, not one guard per caller.
 - When two stdlib approaches are the same size, pick the edge-case-correct one: less code, not the flimsier algorithm.
-- **Mark a deliberate shortcut** that has a known ceiling (global lock, O(n²) scan, naive heuristic) with a `ponytail:` comment naming the ceiling and the upgrade path.
+- **Mark a deliberate shortcut** that has a known ceiling (global lock, O(n²) scan, naive heuristic) with a comment `shortcut: <the limit>, <when to upgrade>` (older code may say `ponytail:`). List them with `git grep -nE '(#|//|/[*]) ?(shortcut|ponytail):'`; a marker with no upgrade trigger is debt that rots, flag it `no-trigger`.
 - **Never lazy about:** understanding the problem, input validation at trust boundaries, error handling that prevents data loss, security, accessibility, calibration real hardware needs, anything explicitly requested. Non-trivial logic leaves ONE runnable check behind (a small assert-based self-check or one test file); trivial one-liners need none.
 
 - Never write or open report-style HTML files with large embedded data (for example graphify's `graph.html`, or a test/coverage report) in the workspace: they burn tokens and context. For graphify use `query`/`path`/`explain`; write other documents and reports as Markdown or plain text.
@@ -90,7 +96,10 @@ existing test means the refactor is wrong, not the test.
 **Refactoring moves, when a real smell is present** (don't apply these speculatively — see §2):
 nesting 3+ levels deep → guard clauses/early returns; a function past ~50 lines doing multiple
 things → extract one focused helper; a boolean-flag parameter (`fn(true, false)`) → an options
-object or two distinct functions.
+object or two distinct functions. Split a function or file by job (it does several unrelated
+things, so it is hard to read or test), never only to hit a line count, and never into helpers
+that exist just to make a function shorter; the 300–400 line target in §6 is a signal to look,
+not a reason to split.
 
 **Boundary check** — most bugs hide where two things disagree about a contract: verify
 casing/shape consistency at serialization boundaries (camelCase vs snake_case, date formats),
@@ -166,6 +175,7 @@ Each step names what to read or call next. **[hook]** means the step is enforced
 
 - **Read before write:** understand existing code before modifying it.
 - **New feature branch before coding** unless instructed otherwise. Never commit work-in-progress directly on `main`/`master`.
+- **End the reply** with one or two lines: what you skipped or did not check, and any risk the user must know.
 
 ## Citation Format
 

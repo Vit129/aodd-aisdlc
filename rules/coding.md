@@ -129,7 +129,7 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 
 Sub-files of this rule:
 - `rules/coding/project-blueprint.md` (loaded on demand): Directory roles, size trees, dependency direction.
-- `rules/coding/decoupled-architecture-pattern.md` (loaded on demand): The 5-Layer Core-UI-Translator pattern (pure domain core, semantic design tokens, translation dictionary, presentation UI, and QA automated architecture guard tests). A pattern, not a copy-paste template.
+- `skills/ai-sdlc/references/dev-qa-pattern.md` (loaded on demand): The unified Dev + QA Pattern (BE vs FE, 5-layer Core-UI-Translator architecture, layer/kind tags, and QA automated architecture guard tests). A pattern, not a copy-paste template.
 
 For projects you own, follow them. A repo with its own enforced layout keeps that layout.
 

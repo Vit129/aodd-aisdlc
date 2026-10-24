@@ -127,7 +127,11 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 
 ## 6. Project Structure
 
-Sub-file of this rule: `rules/coding/project-blueprint.md` (loaded on demand). For projects you own, follow it (fixed role dirs, root layout, size trees, dependency direction, review checklist). A repo with its own enforced layout keeps that layout.
+Sub-files of this rule:
+- `rules/coding/project-blueprint.md` (loaded on demand): Directory roles, size trees, dependency direction.
+- `rules/coding/decoupled-architecture-pattern.md` (loaded on demand): The 5-Layer Core-UI-Translator pattern (pure domain core, semantic design tokens, translation dictionary, presentation UI, and QA automated architecture guard tests). A pattern, not a copy-paste template.
+
+For projects you own, follow them. A repo with its own enforced layout keeps that layout.
 
 ### Logic vs UI split (every repo)
 

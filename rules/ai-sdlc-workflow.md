@@ -33,7 +33,7 @@ check vs. Definition of Done → hand back to the next owner via the progress/ha
 | `DESIGN.md` | UX/UI | tokens, layout, components (UI projects only) |
 | `CONTEXT.md` | everyone | domain glossary |
 
-Then propose a `docs:` commit, before any test or code. The second commit point is Phase 4 GREEN (`feat:`/`fix:`), with the test evidence. Architectural invariants and QA automated guard pattern → `rules/coding/decoupled-architecture-pattern.md`; release checks (security/pen test, performance) → `rules/coding/release.md`; project runner → `rules/coding/project-blueprint.md` § 2.1.
+Then propose a `docs:` commit, before any test or code. The second commit point is Phase 4 GREEN (`feat:`/`fix:`), with the test evidence. Architectural invariants and QA automated guard pattern → `skills/ai-sdlc/references/dev-qa-pattern.md`; release checks (security/pen test, performance) → `rules/coding/release.md`; project runner → `rules/coding/project-blueprint.md` § 2.1.
 
 **Shift-left:** QA scenario/test-skeleton design happens BEFORE dev writes
 implementation code — dev implements against a known RED state and drives it to

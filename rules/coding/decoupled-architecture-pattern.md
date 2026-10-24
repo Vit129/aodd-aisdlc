@@ -96,9 +96,11 @@ This pattern enforces a **5-Layer Separation of Concerns** backed by a **Continu
 
 ## 4. QA Verification Pattern (How to Guard It)
 
-Instead of relying on human vigilance or manual review checklists, QA implements an automated **Architecture Guard** test file (`tests/architectureGuard.test.js` or `tests/architecture_guard_test.py`).
+Instead of relying on human vigilance or manual review checklists, QA implements automated verification across two complementary dimensions:
+1. **Static Invariants:** An automated **Architecture Guard** test file (`tests/architectureGuard.test.js` or `tests/architecture_guard_test.py`) running in Vitest/Jest (<100ms).
+2. **Behavioral Dual-Layer Testing:** Playwright test automation adhering to `rules/playwright/pw-coding-standards.md` (`fixtures/`, `pages/`, `tests-api/`, `tests-web/`).
 
-### The 4 Canonical Automated Invariants
+### 4.1 The 4 Canonical Automated Invariants (Static Guard)
 
 ```javascript
 describe('Architecture Guard (Logic / UI / Translator / Tokens)', () => {
@@ -160,6 +162,32 @@ describe('Architecture Guard (Logic / UI / Translator / Tokens)', () => {
 });
 ```
 
+### 4.2 Decoupled Functional & Behavioral Testing (Playwright QA Pattern)
+
+When verifying features designed with this pattern, QA must **mirror the 5-layer separation** rather than creating ad-hoc test monoliths. Align directly with `rules/playwright/pw-coding-standards.md`:
+
+```
+tests/
+├── fixtures/[feature]/[feature]Data.js   # 1. Single Source of Truth: Business Scenarios & Matrix
+├── pages/[feature]/[feature]Page.js       # 2. Page Object Model: Encapsulates Layer 4 DOM & Actions
+├── tests-api/[feature].api.spec.js        # 3. Headless Core Engine: 100% permutation testing in ms
+└── tests-web/[feature].ui.spec.js         # 4. Web E2E: Key user journeys via Page Object on Chrome
+```
+
+1. **Shared Scenario Fixtures (`fixtures/`):**
+   - Business test scenarios (e.g., job switches, bonus types, bracket variations, legal limits) live in `fixtures/` as pure data.
+   - Zero DOM locators and zero assertions inside fixtures.
+   - Shared between headless logic tests and browser UI tests.
+2. **Headless Core Engine Tests (`tests-api/`):**
+   - Directly executes Layer 1 (Pure Domain Core) without launching a browser.
+   - Exhaustively tests the entire scenario matrix (tax brackets 0%–35%, PVD ceilings, overflow rules) in milliseconds.
+3. **Page Object Model (`pages/`):**
+   - Encapsulates Layer 4 (Presentation UI) DOM locators (`getByTestId`, semantic buttons, form controls).
+   - Test specs must NEVER call raw `page.locator('#salary')` directly; all interactions go through domain methods (e.g. `await pageObj.fillSalary('65000')`).
+4. **Browser E2E Tests (`tests-web/`):**
+   - Runs against real browsers via Playwright to verify rendering, reactive state recalculations, and visual badges.
+   - Tests key representative journeys (not exhaustive math permutations) to keep test runs fast and resilient.
+
 ---
 
 ## 5. Anti-Patterns & Traps
@@ -171,6 +199,7 @@ describe('Architecture Guard (Logic / UI / Translator / Tokens)', () => {
 | **The Template Duplication Trap** (Copying a calculation helper into 3 components) | Calculation drift. When tax laws or formulas update, duplicate files diverge. | Extract logic to `*-core` or `src/logic/` with 100% unit test coverage. |
 | **The Arbitrary CSS Override Trap** (`text-[10.5px]`, `fontSize: 13`) | Destroys typographical rhythm and causes visual clutter. | Map to nearest semantic type scale token (`TYPOGRAPHY.TEXT_MICRO` or `TEXT_LABEL`). |
 | **The Monolithic State-Math Hook** (Mixing 400 lines of tax math inside a React hook) | Impossible to test in headless CI without DOM mocks. | Separate into pure calculation functions (`taxLogic.js`) called by a slim state hook (`useTaxState.js`). |
+| **The Ad-Hoc Test Monolith Trap** (Creating one-off scenario folders with hardcoded locators and assertions) | Fractures test standards and makes tests brittle to DOM refactors. | Follow `pw-coding-standards.md`: shared `fixtures/` + Page Object `pages/` + fast headless `tests-api/` + browser `tests-web/`. |
 
 ---
 

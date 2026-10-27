@@ -289,6 +289,20 @@ if has_mod schedules; then
   if [ "$DRY" = 1 ] || [ "${AODD_SCHEDULES_DRY_RUN:-0}" = 1 ]; then SP="$SRC/optional/schedules/scripts/install-schedules.py"; SDRY=(--dry-run); fi
   python3 "$SP" ${SDRY[@]+"${SDRY[@]}"} --modules "${MODS// /,}" ${SCHED_ARGS[@]+"${SCHED_ARGS[@]}"} || echo "warn    schedules were not installed (see above); re-run ./install.sh --with schedules"
 fi
+if :; then  # core, not a module: REA's own `rea setup` registers its MCP server (and skill) per client; AODD_REA_CMD replaces the launcher (tests)
+  if [ -n "${AODD_REA_CMD:-}" ]; then read -r -a REA <<<"$AODD_REA_CMD"
+  elif command -v rea >/dev/null 2>&1; then REA=(rea)
+  elif command -v npx >/dev/null 2>&1; then REA=(npx -y rea-agents@6.8.0)
+  else REA=(); echo "warn    rea: neither rea nor npx found; install Node, then re-run ./install.sh"; fi
+  if [ ${#REA[@]} -gt 0 ]; then
+    RCLIENTS="claude_code"; [ "$CODEX_ON" = 1 ] && RCLIENTS="$RCLIENTS codex"; [ "$AGY_ON" = 1 ] && RCLIENTS="$RCLIENTS antigravity"
+    if [ "$DRY" = 1 ]; then RMODE=--dry-run; else RMODE=--yes; fi
+    for c in $RCLIENTS; do
+      echo "rea     setup --client $c $RMODE"
+      "${REA[@]}" setup --client "$c" "$RMODE" || echo "warn    rea setup for $c failed (see above); check with: rea doctor --client $c"
+    done
+  fi
+fi
 if [ "$AGY_ON" = 1 ]; then  # Antigravity: its own installer (skills, agents, AGENTS.md block, hook adapter)
   if [ "$DRY" = 1 ]; then bash "$SRC/install-agy.sh" --dry-run; else bash "$SRC/install-agy.sh"; fi
 fi

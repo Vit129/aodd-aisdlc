@@ -50,7 +50,7 @@ assert not (T / "claude/scripts/git-hooks").exists(), "repo git hooks are never 
 assert not (T / "claude/hooks/memory-recall.py").exists() and not (T / "claude/scripts/install-schedules.py").exists()   # core only by default
 assert (T / "claude/hooks/secret-read-guard.py").is_file() and (T / "claude/hooks/_aodd_secrets.py").is_file()
 out = run("--dry-run", "--all")
-assert "modules core agent-memory schedules rea" in out and "rea     setup --client claude_code --dry-run" in out and "schedule agent-ops" in out and "delegation" not in out
+assert "modules core agent-memory schedules" in out and "rea     setup --client claude_code --dry-run" in out and "schedule agent-ops" in out and "delegation" not in out
 bad = subprocess.run(["bash", str(ROOT / "install.sh"), "--with", "nope"], capture_output=True, text=True, env=env)
 assert bad.returncode == 2 and "unknown module" in bad.stderr
 M = T / "m"
@@ -61,14 +61,14 @@ for f in ("hooks/memory-recall.py", "hooks/memory-write-scan.py", "hooks/session
 assert not (M / "c/scripts/install-schedules.py").exists()                       # schedules not chosen -> not installed
 st = json.loads((M / "c/settings.json").read_text())
 assert {"UserPromptSubmit", "SessionStart"} <= set(st["hooks"]) and st["env"] == {"AODD_HOME": str(M / "a")}
-run("--with", "agent-memory,schedules,rea", extra=menv)                            # add a module later
+run("--with", "agent-memory,schedules", extra=menv)                            # add a module later
 assert (M / "c/scripts/install-schedules.py").is_file() and (M / "c/schedules/jobs.json").is_file() and (M / "c/scripts/aodd_job.py").is_file()
 snap = {p: p.read_bytes() for p in (M / "c").rglob("*") if p.is_file()}
 second = run("--all", extra=menv)                                                # idempotent: nothing changes, no new .aodd-bak
 assert snap == {p: p.read_bytes() for p in (M / "c").rglob("*") if p.is_file()}, "second run changed files"
 assert "UPDATE" not in second and "would register" not in second
 assert not list((M / "la").glob("*")), "schedules installer must not write launch agents under AODD_SCHEDULES_DRY_RUN"
-assert (M / "c/skills/reverse-engineer-anything/SKILL.md").is_file()             # rea module: skill copied, setup run per client
+assert (M / "c/skills/reverse-engineer-anything/SKILL.md").is_file()             # rea is core: skill copied and setup run even with no module chosen
 assert "setup --client claude_code --yes" in REA_LOG.read_text()
 # a user's own env value is kept, and no env is written when nothing is set
 run("--core-only", extra={"CLAUDE_HOME": str(M / "c2")})

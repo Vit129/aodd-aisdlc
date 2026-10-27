@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Install aodd-aisdlc into a Claude Code home (default ~/.claude, override with CLAUDE_HOME).
-#   ./install.sh [--dry-run] [--detect] [--no-backup] [--claude-md] [--codex] [--agy] [--with agent-memory,schedules,rea | --all | --core-only] [--yes]
+#   ./install.sh [--dry-run] [--detect] [--no-backup] [--claude-md] [--codex] [--agy] [--with agent-memory,schedules | --all | --core-only] [--yes]
 # Core (always): skills, agents, rules, hooks, scripts, docs; hooks registered in settings.json (additive,
-# idempotent, fail-open). Optional modules (optional/<name>/): agent-memory, schedules, rea. Asked one by one
+# idempotent, fail-open). Optional modules (optional/<name>/): agent-memory, schedules. Asked one by one
 # when run in a terminal; --with / --all / --core-only answer for you, --yes asks nothing (default: core only,
 # default schedule times). Add a module later by re-running with --with <name>.
 # Agents: the coding agents on this machine are detected (binary on PATH, or its home dir) and listed. In a
@@ -17,7 +17,7 @@
 set -euo pipefail
 
 DRY=0; DETECT=0; AGENTS_SET=0; CLAUDE_MD=0; CODEX_ON=0; AGY_ON=0; YES=0; MODS_SET=0; MODS=""
-ALL_MODULES="agent-memory schedules rea"
+ALL_MODULES="agent-memory schedules"
 add_mod() { case " $MODS " in *" $1 "*) ;; *) MODS="${MODS:+$MODS }$1" ;; esac; }
 while [ $# -gt 0 ]; do
   a="$1"; shift
@@ -112,7 +112,6 @@ if [ "$MODS_SET" = 0 ] && [ "$YES" = 0 ] && [ -t 0 ]; then
   echo "Core installs always. Optional modules (add later with ./install.sh --with <name>):"
   ask "  agent-memory: agents recall past decisions and lessons across sessions and projects. Install?" && add_mod agent-memory
   ask "  schedules: weekly team review, cleanup report and backups run by themselves at times you pick. Install?" && add_mod schedules
-  ask "  rea: reverse-engineer shipped binaries, apps and packages (REA skill + MCP server, needs Node). Install?" && add_mod rea
 fi
 if [ "$AGENTS_SET" = 0 ] && [ "$YES" = 0 ] && [ -t 0 ]; then
   found codex && ask "  Codex found: also install into ${CODEX_HOME:-~/.codex}?" && CODEX_ON=1
@@ -290,11 +289,11 @@ if has_mod schedules; then
   if [ "$DRY" = 1 ] || [ "${AODD_SCHEDULES_DRY_RUN:-0}" = 1 ]; then SP="$SRC/optional/schedules/scripts/install-schedules.py"; SDRY=(--dry-run); fi
   python3 "$SP" ${SDRY[@]+"${SDRY[@]}"} --modules "${MODS// /,}" ${SCHED_ARGS[@]+"${SCHED_ARGS[@]}"} || echo "warn    schedules were not installed (see above); re-run ./install.sh --with schedules"
 fi
-if has_mod rea; then  # REA's own `rea setup` registers its MCP server (and skill) per client; AODD_REA_CMD replaces the launcher (tests)
+if :; then  # core, not a module: REA's own `rea setup` registers its MCP server (and skill) per client; AODD_REA_CMD replaces the launcher (tests)
   if [ -n "${AODD_REA_CMD:-}" ]; then read -r -a REA <<<"$AODD_REA_CMD"
   elif command -v rea >/dev/null 2>&1; then REA=(rea)
   elif command -v npx >/dev/null 2>&1; then REA=(npx -y rea-agents@6.8.0)
-  else REA=(); echo "warn    rea: neither rea nor npx found; install Node, then re-run ./install.sh --with rea"; fi
+  else REA=(); echo "warn    rea: neither rea nor npx found; install Node, then re-run ./install.sh"; fi
   if [ ${#REA[@]} -gt 0 ]; then
     RCLIENTS="claude_code"; [ "$CODEX_ON" = 1 ] && RCLIENTS="$RCLIENTS codex"; [ "$AGY_ON" = 1 ] && RCLIENTS="$RCLIENTS antigravity"
     if [ "$DRY" = 1 ]; then RMODE=--dry-run; else RMODE=--yes; fi

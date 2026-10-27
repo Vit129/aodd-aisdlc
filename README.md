@@ -28,6 +28,7 @@ Size decides ceremony (`rules/aodd.md`): small work is just done; medium work ge
 | `rules/aodd.md` | the AODD contract: triage, boss reporting shape, model split, cheap-model delegation, Haiku ops runner |
 | `rules/ai-sdlc-workflow.md` | the 5-phase workflow spine and approval gates; per-phase detail in `skills/ai-sdlc/phases/`, loaded only when you reach that phase |
 | `skills/chief-of-staff`, `skills/ai-sdlc` (+ `references/`), `skills/agent-ops` | orchestrator, workflow, monthly team review |
+| `skills/reverse-engineer-anything` | [REA](https://github.com/morluto/rea) skill for shipped binaries, Electron/JS apps, Android, firmware; the installer also runs `rea setup --client <claude_code, codex, antigravity> --yes` for each agent you install into (`rea` on PATH, else `npx -y rea-agents@6.8.0`, needs Node; `--dry-run` passes `--dry-run`). Later, no reinstall needed: `python3 scripts/rea_check.py` reports installed vs latest and `rea doctor` per agent, `--update` upgrades `rea-agents` and re-registers what is stale |
 | `agents/auditor.md`, `agents/advisor.md` | independent auditor, second-opinion expert |
 | `hooks/done-gate.py` | Stop hook: no "Done" with open checkboxes or without a passing audit |
 | `hooks/auditor-readonly.py` | PreToolUse hook: an auditor run cannot write |
@@ -118,7 +119,6 @@ Core works alone. Each module is a folder `optional/<module>/` with its own `ski
 | Module | Gives you | Details |
 |---|---|---|
 | `agent-memory` | agents recall past decisions and lessons across sessions and projects | `memory-recall.py` (UserPromptSubmit) adds up to 5 pointers + a one-line gist from `knowledge/*.md` under `$AODD_MEMORY` and from Claude's auto-memory notes; `memory-write-scan.py` (PreToolUse) refuses to store a real credential or an injection phrase in a memory file; `session-start-recent.py` (SessionStart) shows the project's last session digest and, in the workspace only, new reports, agent proposals and audits that need you |
-| `rea` | reverse-engineer shipped binaries, Electron/JS apps, Android and firmware with [REA](https://github.com/morluto/rea) | copies the `reverse-engineer-anything` skill, then runs `rea setup --client <claude_code, codex, antigravity> --yes` for each agent you install into (`rea` on PATH, else `npx -y rea-agents@6.8.0`; needs Node); `--dry-run` passes `--dry-run` to it |
 | `schedules` | weekly team review, cleanup report and backups run by themselves at times you pick | `scripts/install-schedules.py` writes cron lines (Linux) or launchd agents (macOS) with absolute paths resolved at install time; jobs run `scripts/aodd_job.py` |
 
 Add one later: `./install.sh --with agent-memory` (or `--with agent-memory,schedules`).
@@ -163,7 +163,7 @@ Tests point `AODD_HOME` at a temp directory and use stub models; no network, no 
 
 Delete the files this repo copied (for Codex: from `$CODEX_HOME`, also the block between the `aodd:begin` and `aodd:end` markers in `AGENTS.md` and the hook entries in `hooks.json`) from your Claude home, remove the matching hook entries from `settings.json` (or restore `settings.json.aodd-bak`) and the `@rules/aodd.md` line from `CLAUDE.md`, and optionally delete `~/.aodd`. Because the hook commands are fail-open, deleting only the hook files already makes them inert.
 
-- **Core**: `skills/{chief-of-staff,ai-sdlc,agent-ops}`, `agents/{auditor,advisor}.md`, `rules/{aodd,ai-sdlc-workflow}.md`, `hooks/{done-gate,auditor-readonly,skill-capture-nudge,secret-read-guard,coding-rules-gate,dirty-branch-switch-guard,graphify-guard,work-log,_aodd_paths,_aodd_secrets}.py`, `scripts/{audit,check_agy_proposal,skill_learning_report,agent_ops_gather}.py`, `docs/skill-learning.md`, plus the `env` keys you had it write.
+- **Core**: `skills/{chief-of-staff,ai-sdlc,agent-ops,reverse-engineer-anything}`, `agents/{auditor,advisor}.md`, `rules/{aodd,ai-sdlc-workflow}.md`, `hooks/{done-gate,auditor-readonly,skill-capture-nudge,secret-read-guard,coding-rules-gate,dirty-branch-switch-guard,graphify-guard,work-log,_aodd_paths,_aodd_secrets}.py`, `scripts/{audit,check_agy_proposal,skill_learning_report,agent_ops_gather}.py`, `docs/skill-learning.md`, plus the `env` keys you had it write.
 - **agent-memory**: `hooks/{memory-recall,memory-write-scan,session-start-recent}.py` and the three entries (`UserPromptSubmit`, `SessionStart`, and `memory-write-scan` under `PreToolUse`) in `settings.json`. Your `$AODD_MEMORY` notes are yours; the installer never touches them.
 - **schedules**: first `python3 <claude home>/scripts/install-schedules.py --uninstall` (removes the `# aodd:begin` ... `# aodd:end` cron block or the `com.aodd.*` launch agents; `--dry-run` previews), then delete `scripts/{install-schedules,aodd_job}.py` and `schedules/`.
 

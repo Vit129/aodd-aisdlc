@@ -5,11 +5,11 @@ This repo is an installable package for Claude Code and OpenAI Codex: AODD (an o
 ## Layout
 
 - `rules/` the AODD contract and the ai-sdlc workflow spine (inlined into Codex `AGENTS.md`, imported by Claude `CLAUDE.md`)
-- `skills/` chief-of-staff, ai-sdlc (+ `references/`), agent-ops
+- `skills/` chief-of-staff, ai-sdlc (+ `references/`), agent-ops, reverse-engineer-anything (REA; install.sh also runs `rea setup` per client, core not a module)
 - `agents/` auditor and advisor subagent definitions
 - `hooks/` core hooks: done-gate, auditor-readonly, skill-capture-nudge, secret-read-guard, coding-rules-gate, dirty-branch-switch-guard, graphify-guard, work-log, subagent-rules (Claude only); `_aodd_paths.py` (path resolver) and `_aodd_secrets.py` (credential shapes) are imported by the others
-- `scripts/` `audit.py` (cross-family audit), `check_agy_proposal.py`, `skill_learning_report.py` (curator), `agent_ops_gather.py`, install test
-- `optional/<module>/{skills,rules,hooks,scripts,schedules}/` modules the installer adds only when chosen: `agent-memory` (memory-recall, memory-write-scan, session-start-recent), `rea` (reverse-engineer-anything skill; install.sh runs `rea setup` per client) and `schedules` (`aodd_job.py` runner, `install-schedules.py`, `schedules/jobs.json` + prompt templates). Everything under a module is installed flat into the same top-level folder as core (`optional/schedules/scripts/x.py` -> `<home>/scripts/x.py`); a module hook finds `_aodd_paths.py` next to itself when installed and in the repo's `hooks/` when run from here
+- `scripts/` `audit.py` (cross-family audit), `check_agy_proposal.py`, `skill_learning_report.py` (curator), `agent_ops_gather.py`, `rea_check.py` (REA version/registration check, `--update` to fix), install test
+- `optional/<module>/{skills,rules,hooks,scripts,schedules}/` modules the installer adds only when chosen: `agent-memory` (memory-recall, memory-write-scan, session-start-recent) and `schedules` (`aodd_job.py` runner, `install-schedules.py`, `schedules/jobs.json` + prompt templates). Everything under a module is installed flat into the same top-level folder as core (`optional/schedules/scripts/x.py` -> `<home>/scripts/x.py`); a module hook finds `_aodd_paths.py` next to itself when installed and in the repo's `hooks/` when run from here
 - `docs/` skill-learning procedure
 - `scripts/git-hooks/` `pre-commit` (neutrality scan) and an optional `post-merge` (re-install after main changes, then `AODD_POST_INSTALL`; active only when `core.hooksPath` points here AND `AODD_AUTO_INSTALL=1`)
 - `install.sh` installer (`--dry-run`, `--detect`, `--claude-md`, `--codex`, `--agy`, `--with <modules>`, `--all`, `--core-only`, `--yes`)

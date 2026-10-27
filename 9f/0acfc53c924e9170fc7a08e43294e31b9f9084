@@ -1,0 +1,34 @@
+AGENTS.md
+  s_9c0070bf7045eb::t_b63705871f724d 8,11-12
+README.md
+  s_9c0070bf7045eb::t_02d499eb9ef0f0 166
+  s_9c0070bf7045eb::t_2cb38bb49a931e 31
+install.sh
+  s_9c0070bf7045eb::t_b63705871f724d 3,5,20,296
+  s_9c0070bf7045eb::t_f1d9649ca735ad 292
+scripts/test_rea_check.py
+  s_9c0070bf7045eb::t_fbbf9ebad5ac08 1-41
+scripts/rea_check.py
+  s_9c0070bf7045eb::t_9f4ead5bf7100c 1-72,76-81,86-88,90-101
+  s_9c0070bf7045eb::t_fbbf9ebad5ac08 74-75,83-85,89
+  s_9c0070bf7045eb::t_6af77213718c5a 73
+  s_9c0070bf7045eb::t_f8a69cb404ca7c 82
+scripts/test_install.py
+  s_9c0070bf7045eb::t_b63705871f724d 53,64,71
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "9f0acfc53c924e9170fc7a08e43294e31b9f9084",
+  "prompts": {},
+  "sessions": {
+    "s_9c0070bf7045eb": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "551fdaaf-5f76-43bb-a636-8d1801c5a789",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

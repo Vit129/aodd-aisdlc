@@ -118,6 +118,7 @@ Core works alone. Each module is a folder `optional/<module>/` with its own `ski
 | Module | Gives you | Details |
 |---|---|---|
 | `agent-memory` | agents recall past decisions and lessons across sessions and projects | `memory-recall.py` (UserPromptSubmit) adds up to 5 pointers + a one-line gist from `knowledge/*.md` under `$AODD_MEMORY` and from Claude's auto-memory notes; `memory-write-scan.py` (PreToolUse) refuses to store a real credential or an injection phrase in a memory file; `session-start-recent.py` (SessionStart) shows the project's last session digest and, in the workspace only, new reports, agent proposals and audits that need you |
+| `rea` | reverse-engineer shipped binaries, Electron/JS apps, Android and firmware with [REA](https://github.com/morluto/rea) | copies the `reverse-engineer-anything` skill, then runs `rea setup --client <claude_code, codex, antigravity> --yes` for each agent you install into (`rea` on PATH, else `npx -y rea-agents@6.8.0`; needs Node); `--dry-run` passes `--dry-run` to it |
 | `schedules` | weekly team review, cleanup report and backups run by themselves at times you pick | `scripts/install-schedules.py` writes cron lines (Linux) or launchd agents (macOS) with absolute paths resolved at install time; jobs run `scripts/aodd_job.py` |
 
 Add one later: `./install.sh --with agent-memory` (or `--with agent-memory,schedules`).

@@ -121,7 +121,7 @@ def run_model(who: str, prompt: str, repo: Path) -> str:
         cmd, stdin = [CODEX, "exec", "-s", "read-only", "--ephemeral", "--color", "never", "-C", str(repo), "-"], prompt
     else:
         cmd, stdin = [CLAUDE, "-p", "--model", "opus", "--allowedTools", "Read Grep Glob Bash",
-                      "--disallowedTools", "Edit Write MultiEdit NotebookEdit"], prompt
+                      "--disallowedTools", "Edit Write NotebookEdit"], prompt
     # AODD_AUDITOR: hooks/auditor-readonly.py blocks writes. CLAUDE_SKILL_CAPTURE=0: the Stop nudge would
     # otherwise ask the auditor to write a skill patch / agy-proposal.
     env = {**os.environ, "AODD_AUDITOR": "1", "CLAUDE_SKILL_CAPTURE": "0"}

@@ -1,0 +1,37 @@
+rules/aodd.md
+  s_3247b3afdc4e68::t_887d32ff785e63 56
+  s_3247b3afdc4e68::t_d2899a4948c2b6 57
+install.sh
+  s_3247b3afdc4e68::t_97814994671745 72
+agents/auditor.md
+  s_3247b3afdc4e68::t_087d73e765d494 18
+scripts/test_install.py
+  s_3247b3afdc4e68::t_0bc7cf3c875565 103
+README.md
+  s_3247b3afdc4e68::t_f67381165cb1d2 64
+hooks/done-gate.py
+  s_3247b3afdc4e68::t_9441fbd60f2e6e 151
+docs/audit.md
+  s_3247b3afdc4e68::t_476d0288faa71c 10,12-13
+  s_3247b3afdc4e68::t_ef4478c3459e7d 15
+scripts/audit.py
+  s_3247b3afdc4e68::t_c87bed51dcea97 9-13,56,72,76,86,88,112-113,119,136-138,140,142,160,169-170,172,179-180,190
+scripts/test_audit.py
+  s_3247b3afdc4e68::t_baec475d8ccb7d 12,20,22-25,57,60,77,79,84,86-87,89,96,98-99,102,107,109
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "5d91a2c77ddee3d6bc34aa0c9d4bce7cb017977c",
+  "prompts": {},
+  "sessions": {
+    "s_3247b3afdc4e68": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "eb49f067-a76e-4c5f-8773-fae79688c9b3",
+        "model": "claude-haiku-5-5"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

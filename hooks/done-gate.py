@@ -148,7 +148,7 @@ def decide(payload: dict, reports: Path = REPORTS):
         open_items += [f"{p}: {l.strip()}" for l in p.read_text().splitlines() if l.lstrip().startswith("- [ ]")]
     if not open_items and audited and verdict != "PASS" and audit_on and (paths or medium_session) and not already_raised(transcript, report):
         return (f"[done-gate] The independent audit says {verdict}: {report}. Do not report Done. Either fix the "
-                "failed rows and re-run the audit, or tell the user plainly it is " + ("DISPUTED (agy found a failure the "
+                "failed rows and re-run the audit, or tell the user plainly it is " + ("DISPUTED (the other-family auditor found a failure the "
                 "verifier rejected: the CEO decides)" if verdict == "DISPUTED" else "FAILED") + ", quoting the report's table.")
     if not open_items:
         if paths and not audited and audit_on:

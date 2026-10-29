@@ -10,7 +10,6 @@ This document describes how `aodd-aisdlc` integrates with Google Antigravity (th
 | Agents (`agents/`) | Copied into `$AGY_HOME/agents` (default `~/.gemini/antigravity-cli/agents`). |
 | Rules (`rules/aodd.md`, `rules/ai-sdlc-workflow.md`) | Inlined into the Antigravity instruction file (`AGENTS.md`, default `~/.gemini/AGENTS.md`) between `<!-- aodd:begin -->` and `<!-- aodd:end -->` markers. |
 | Lifecycle Hook Adapter (`adapters/antigravity-hook-adapter.py`) | Registered under `"aodd-guardrails"` in Antigravity's `config/hooks.json` (default `~/.gemini/config/hooks.json`). Bridges Antigravity events to installed Python hooks. |
-| Cross-family audit (`scripts/audit.py`) | Supported: `audit.py` can invoke Antigravity as the independent auditor or detect an Antigravity worker session to audit. |
 
 ### Lifecycle Hook Adapter details
 

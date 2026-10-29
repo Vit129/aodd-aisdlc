@@ -53,6 +53,8 @@ No task is complete until the build passes and the relevant tests pass. If tests
 | Plan, pick architecture/data source, write the brief, review every diff, re-run test/build, check the UI in a browser | main session (Opus/Fable) |
 | Design on the ai-sdlc Requirement path (Phase 2) | **2 subagents** in parallel, Dev view + QA view; main merges them into one plan |
 | Multi-file feature or bug fix | **1 Sonnet** subagent in its own worktree from `origin/main` (more only for parts with disjoint files and an explicit scope each); commits, never pushes/deploys |
+| Design work, when delegated to ChatGPT | **ChatGPT `terra`** writes the design (the plan, interfaces, file split); main session reviews it before any code is written |
+| Implementation of a ChatGPT design | **ChatGPT `luna`** at effort `medium` (default) or `high` (when the task failed twice or the design is hard to reverse); keeps working until the assigned task is finished: every acceptance check passes, or it reports one concrete blocker. It does not stop after a partial step. Main session reviews the diff before Done |
 | Bounded templated runs: one ingest, a ≤9-item research/decision batch, a single-script edit, data dumps, summaries | **Haiku** subagents, in parallel when independent; main checks the result, then Haiku commits/pushes (§ Haiku ops runner) |
 
 Main never reports a subagent's result as done without reviewing it. Deploys, writes to production data stores, PR merges and rewriting existing records always go back to the CEO first. A project's own workflow file may refine this split.

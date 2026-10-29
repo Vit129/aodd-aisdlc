@@ -69,7 +69,7 @@ found() { case " $FOUND " in *" $1 "*) return 0 ;; *) return 1 ;; esac; }
 echo "agents  found: ${FOUND:-none}"
 OTHER=""; for a in $FOUND; do case "$a" in claude|codex|agy) ;; *) OTHER="${OTHER:+$OTHER }$a" ;; esac; done
 [ -n "$OTHER" ] && echo "agents  no installer yet for: $OTHER"
-found agy || found codex || echo "warn    no agy or codex CLI: the cross-family audit (scripts/audit.py) will fall back to a Claude auditor"
+found codex || echo "warn    no codex CLI: the cross-family audit (scripts/audit.py) will fall back to a Claude auditor"
 [ "$DETECT" = 1 ] && exit 0
 DEST="${CLAUDE_HOME:-$HOME/.claude}"
 [ "$DRY" = 1 ] && echo "[dry-run] nothing will be written"

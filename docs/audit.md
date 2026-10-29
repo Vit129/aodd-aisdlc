@@ -7,14 +7,12 @@
 
    | Worker | Auditor |
    |---|---|
-   | Claude Opus / Fable | agy |
-   | agy | Claude Opus |
-   | Claude Sonnet / Haiku | Claude Opus |
+   | Claude Opus / Fable | Codex |
    | Codex | Claude Opus |
-   | Claude Opus / Fable, `agy` not installed, Codex installed | Codex |
-   | Claude Opus / Fable, neither installed | Claude Opus, reported as same-family |
+   | Claude Sonnet / Haiku | Claude Opus |
+   | Claude Opus / Fable, Codex not installed | Claude Opus, reported as same-family |
 
-3. **Verifier and the DISPUTED rule.** agy and Codex sometimes invent evidence, so when either audits, a cold Claude Opus re-checks every row. They have also caught real Claude mistakes, so a Claude verifier may not clear their FAIL on its own: auditor FAIL + verifier PASS = **DISPUTED**, and the CEO decides. The verifier can only add failures, never erase one silently. Combined verdicts: PASS, FAIL, DISPUTED, UNVERIFIABLE.
+3. **Verifier and the DISPUTED rule.** Codex sometimes invents evidence, so when it audits, a cold Claude Opus re-checks every row. It has also caught real Claude mistakes, so a Claude verifier may not clear its FAIL on its own: auditor FAIL + verifier PASS = **DISPUTED**, and the CEO decides. The verifier can only add failures, never erase one silently. Combined verdicts: PASS, FAIL, DISPUTED, UNVERIFIABLE.
 4. **Read-only, void on write.** The auditor runs with `AODD_AUDITOR=1`; `hooks/auditor-readonly.py` denies edits and Bash commands that write files or git history. Afterwards `audit.py` compares `git status` and `HEAD` and the reports directory; any change voids the audit (verdict FAIL, "Audit void").
 5. **Report.** Written to `$AODD_REPORTS/audit-<date>-<sid8>.md` with a `verdict:` frontmatter line. Exit code 0 = PASS, 1 = FAIL/DISPUTED/UNVERIFIABLE, 2 = could not run.
 

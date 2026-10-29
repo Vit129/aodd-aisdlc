@@ -100,4 +100,4 @@ assert "install into" not in out  # --detect only prints
 out = run("--dry-run", "--core-only", extra=det)
 assert "add --codex" in out and "(codex)" not in out, out
 out = run("--detect", extra={"PATH": "/usr/bin:/bin", "HOME": str(T / "fakehome")})
-assert "warn    no agy or codex CLI" in out, out
+assert "warn    no codex CLI" in out, out

@@ -15,7 +15,7 @@ model: opus
 | KPI | Defects found after an audit PASS = 0 |
 | Permissions | Read everything; run read-only and test commands. No writes, no git push, no network posts |
 | Reports to | CEO directly (not the team lead whose work it audits) |
-| How it runs | Only through `scripts/audit.py`: it builds the brief from the CEO's own words + the diff, picks a model of another family than the worker (Claude Opus/Fable → agy; agy → Claude Opus; Sonnet/Haiku → Opus; agy not installed → Opus, reported as same-family), runs it read-only, writes the report itself. Launched as a subagent by the worker instead? Say "run scripts/audit.py instead" and stop. |
+| How it runs | Only through `scripts/audit.py`: it builds the brief from the CEO's own words + the diff, picks a model of another family than the worker (Claude Opus/Fable → Codex; Codex → Claude Opus; Sonnet/Haiku → Opus; Codex not installed → Opus, reported as same-family), runs it read-only, writes the report itself. Launched as a subagent by the worker instead? Say "run scripts/audit.py instead" and stop. |
 
 ## SOP
 

@@ -6,12 +6,11 @@
 1. Brief is built here, not by the worker: the user's own messages (verbatim, from the transcript),
    the git log + diff of the session, and the worker's claims (labelled untrusted).
 2. Auditor is another model family than the worker (cross-family rule):
-   worker Claude Opus/Fable -> agy (--sandbox: can run tests, cannot write files) if installed, else
-   Codex (read-only sandbox) if installed, else Claude Opus (same-family, said in the report);
-   worker Codex or agy -> Claude Opus; worker Claude Sonnet/Haiku -> Claude Opus.
-3. agy and Codex can invent evidence, so when either audits, a fresh Claude Opus (cold, not the worker)
-   re-checks every row. But agy has also caught real Claude mistakes that Claude then confirmed,
-   so a Claude verifier may not clear an agy FAIL on its own: agy FAIL + verifier PASS = DISPUTED,
+   worker Claude Opus/Fable -> Codex (read-only sandbox) if installed, else Claude Opus (same-family, said in the report);
+   worker Codex -> Claude Opus; worker Claude Sonnet/Haiku -> Claude Opus.
+3. Codex can invent evidence, so when it audits, a fresh Claude Opus (cold, not the worker)
+   re-checks every row. But Codex has also caught real Claude mistakes that Claude then confirmed,
+   so a Claude verifier may not clear a Codex FAIL on its own: Codex FAIL + verifier PASS = DISPUTED,
    which the CEO decides (combine()). The verifier can only add failures, never erase one silently.
 4. This script writes the report ($AODD_REPORTS/audit-<date>-<sid8>.md, frontmatter `verdict:`);
    hooks/done-gate.py reads it before a session may claim Done. Repo changed during the audit -> FAIL.
@@ -32,7 +31,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "hooks"))
 import _aodd_paths  # noqa: E402
 REPORTS = _aodd_paths.reports()
 JD = Path(__file__).resolve().parent.parent / "agents/auditor.md"
-AGY = os.environ.get("AGY_BIN", "agy")
 CLAUDE = os.environ.get("CLAUDE_BIN", "claude")
 CODEX = os.environ.get("CODEX_BIN", "codex")
 MAX_DIFF = 60_000
@@ -55,7 +53,7 @@ def _text(content) -> str:
 
 
 def read_transcript(path: Path):
-    """(user messages, worker kind: 'agy' | 'codex' | 'claude-<family>', first timestamp or None)."""
+    """(user messages, worker kind: 'codex' | 'claude-<family>', first timestamp or None)."""
     users, worker, first_ts = [], None, None
     for line in path.open(errors="ignore"):
         try:
@@ -71,14 +69,11 @@ def read_transcript(path: Path):
                 if said and not said.startswith(("<", "# AGENTS.md")):  # injected AGENTS.md / environment blocks are not the user
                     users.append(said[:4000])
             continue
-        if r.get("type") in ("USER_INPUT",) or r.get("source") == "USER_EXPLICIT":
-            worker = "agy"
-            said = r.get("content") if isinstance(r.get("content"), str) else _text((r.get("message") or {}).get("content"))
-        elif r.get("type") == "user" and not r.get("isSidechain") and not r.get("isMeta"):
+        if r.get("type") == "user" and not r.get("isSidechain") and not r.get("isMeta"):
             said = _text((r.get("message") or {}).get("content"))
         else:
             m = (r.get("message") or {}).get("model") or ""
-            if m.startswith("claude-") and worker not in ("agy", "codex"):
+            if m.startswith("claude-") and worker != "codex":
                 worker = "claude-" + next((f for f in ("opus", "fable", "sonnet", "haiku") if f in m), "opus")
             continue
         said = (said or "").strip()
@@ -88,9 +83,9 @@ def read_transcript(path: Path):
 
 
 def pick_auditor(worker: str) -> str:
-    """Cross-family by default; Opus audits its own family only for Sonnet/Haiku work or when no other family is installed."""
+    """Cross-family by default; Opus audits its own family only for Sonnet/Haiku work or when Codex is not installed."""
     if worker in ("claude-opus", "claude-fable"):
-        return "agy" if shutil.which(AGY) else "codex" if shutil.which(CODEX) else "claude-opus"
+        return "codex" if shutil.which(CODEX) else "claude-opus"
     return "claude-opus"
 
 
@@ -114,16 +109,14 @@ def scope(repo: Path, base: str | None, since: str | None) -> tuple[str, str]:
 
 def run_model(who: str, prompt: str, repo: Path) -> str:
     # Claude gets the prompt on stdin: as argv, a prompt starting with the JD's `---` frontmatter is
-    # parsed as an unknown option (exit 1). agy -p needs it as an argument.
-    if who == "agy":
-        cmd, stdin = [AGY, "-p", prompt, "--sandbox"], None
-    elif who == "codex":  # prompt on stdin via `-`: read-only sandbox, no session file, only the final message on stdout
+    # parsed as an unknown option (exit 1).
+    if who == "codex":  # prompt on stdin via `-`: read-only sandbox, no session file, only the final message on stdout
         cmd, stdin = [CODEX, "exec", "-s", "read-only", "--ephemeral", "--color", "never", "-C", str(repo), "-"], prompt
     else:
         cmd, stdin = [CLAUDE, "-p", "--model", "opus", "--allowedTools", "Read Grep Glob Bash",
                       "--disallowedTools", "Edit Write NotebookEdit"], prompt
     # AODD_AUDITOR: hooks/auditor-readonly.py blocks writes. CLAUDE_SKILL_CAPTURE=0: the Stop nudge would
-    # otherwise ask the auditor to write a skill patch / agy-proposal.
+    # otherwise ask the auditor to write a skill patch.
     env = {**os.environ, "AODD_AUDITOR": "1", "CLAUDE_SKILL_CAPTURE": "0"}
     try:
         p = subprocess.run(cmd, cwd=repo, input=stdin, stdin=None if stdin else subprocess.DEVNULL,
@@ -140,13 +133,13 @@ def verdict(text: str) -> str:
     return m.group(1).upper() if m else "UNVERIFIABLE"
 
 
-def combine(agy: str, opus: str) -> str:
-    """Final verdict when agy audits and a Claude Opus verifies (see docstring point 3)."""
-    if agy == "PASS" and opus == "PASS":
+def combine(first: str, opus: str) -> str:
+    """Final verdict when Codex audits and a Claude Opus verifies (see docstring point 3)."""
+    if first == "PASS" and opus == "PASS":
         return "PASS"
-    if agy == "FAIL" and opus == "PASS":
+    if first == "FAIL" and opus == "PASS":
         return "DISPUTED"
-    return "FAIL" if "FAIL" in (agy, opus) else "UNVERIFIABLE"
+    return "FAIL" if "FAIL" in (first, opus) else "UNVERIFIABLE"
 
 
 def build_prompt(users, claims, scope_text) -> str:
@@ -164,7 +157,7 @@ def main(argv=None) -> int:
     ap.add_argument("--repo", default=".")
     ap.add_argument("--base")
     ap.add_argument("--claims", default="")
-    ap.add_argument("--auditor", choices=["agy", "codex", "claude-opus"], help="override the cross-family pick")
+    ap.add_argument("--auditor", choices=["codex", "claude-opus"], help="override the cross-family pick")
     a = ap.parse_args(argv)
     tr, repo = Path(a.transcript), Path(a.repo).resolve()
     if not tr.is_file():
@@ -173,18 +166,18 @@ def main(argv=None) -> int:
     users, worker, since = read_transcript(tr)
     who = a.auditor or pick_auditor(worker)
     label = who
-    if who in ("agy", "codex") and not shutil.which(AGY if who == "agy" else CODEX):  # chosen auditor missing: Opus audits, said in the report
-        who, label = "claude-opus", f"claude-opus ({who} not installed, same-family)"
+    if who == "codex" and not shutil.which(CODEX):  # chosen auditor missing: Opus audits, said in the report
+        who, label = "claude-opus", "claude-opus (codex not installed, same-family)"
     elif who == "claude-opus" and worker in ("claude-opus", "claude-fable") and not a.auditor:
-        label = "claude-opus (agy/codex not installed, same-family)"
+        label = "claude-opus (codex not installed, same-family)"
     base, scope_text = scope(repo, a.base, since)
     before = git(repo, "status", "--porcelain") + git(repo, "rev-parse", "HEAD")
     reports_before = set(REPORTS.glob("*")) if REPORTS.is_dir() else set()
 
     first = run_model(who, build_prompt(users, a.claims, scope_text), repo)
     final, notes = first, ""
-    other = who in ("agy", "codex")
-    if other:  # these models can cite evidence that does not exist: a cold Opus re-checks every row
+    other = who == "codex"
+    if other:  # Codex can cite evidence that does not exist: a cold Opus re-checks every row
         check = (f"{JD.read_text() if JD.is_file() else ''}\n\nAnother model ({who}) audited this repo. It sometimes "
                  "invents evidence. Re-check EVERY row yourself (open the file:line, re-run the command). Keep rows "
                  "you confirm. To overturn a row you must show concrete counter-evidence (command + output, file:line); "
@@ -194,7 +187,7 @@ def main(argv=None) -> int:
                  "After the table add `Overturned auditor rows:` listing each row you reversed and why (or `none`).")
         final, notes = run_model("claude-opus", check, repo), "verified by a fresh Claude Opus"
 
-    # Known limit: only the repo and pending-reports/ are checked; agy's own file tool can write elsewhere.
+    # Known limit: only the repo and pending-reports/ are checked; the auditor's own file tool can write elsewhere.
     stray = (set(REPORTS.glob("*")) if REPORTS.is_dir() else set()) - reports_before
     if git(repo, "status", "--porcelain") + git(repo, "rev-parse", "HEAD") != before or stray:
         final = ("OVERALL: FAIL\nThe auditor wrote files during the audit" +

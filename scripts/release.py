@@ -65,6 +65,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("bump", nargs="?", choices=("patch", "minor", "major"), default="patch")
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--resume", action="store_true", help="complete the current tagged release without bumping")
     args = parser.parse_args()
 
     branch = output("git", "branch", "--show-current")
@@ -84,23 +85,30 @@ def main() -> int:
     subject = output("git", "log", "-1", "--format=%s")
 
     # Finish a release commit that was created before its tag/push/release step failed.
-    if subject == f"chore(release): {tag}" and tag_commit != head:
-        run(["git", "merge-base", "--is-ancestor", "origin/main", "HEAD"])
-        if args.dry_run:
-            print(f"Would tag and publish the pending release {tag} from {head}.")
-            return 0
-        if not tag_commit:
+    if subject == f"chore(release): {tag}":
+        if tag_commit and tag_commit != head:
+            raise RuntimeError(f"Tag {tag} points to {tag_commit}, but its release commit is {head}; resolve the tag mismatch manually.")
+        if tag_commit != head:
+            run(["git", "merge-base", "--is-ancestor", "origin/main", "HEAD"])
+            if args.dry_run:
+                print(f"Would tag and publish the pending release {tag} from {head}.")
+                return 0
             run(["git", "tag", tag])
-        publish(tag)
-        return 0
+            publish(tag)
+            return 0
 
     # A release tag at HEAD is either already done or needs its hosted release completed.
     if tag_commit == head:
         if args.dry_run:
-            print(f"Would verify/publish the existing tag {tag}.")
+            action = "resume" if args.resume else "start the next version after"
+            print(f"Would {action} {tag}.")
             return 0
-        publish(tag)
-        return 0
+        if args.resume:
+            publish(tag)
+            return 0
+        if not release_exists(tag):
+            publish(tag)
+            return 0
 
     if output("git", "status", "--porcelain"):
         raise RuntimeError("Release requires a clean working tree; preserve and resolve all edits first.")

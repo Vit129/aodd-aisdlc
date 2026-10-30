@@ -152,7 +152,7 @@ After a user correction or a `fix:` commit, a Stop hook asks the agent to patch 
 
 ## Release
 
-After the release gates pass, run `python3 scripts/release.py [patch|minor|major]` from a clean, synchronized `main`. It updates `VERSION` and `CHANGELOG.md`, commits and tags the release, pushes it, and creates the GitHub Release. Use `--dry-run` to preview. If a prior run stopped after creating the release commit or tag, rerun the command to complete that same version. Requires `git-cliff` and an authenticated `gh` CLI.
+After the release gates pass, run `python3 scripts/release.py [patch|minor|major]` from a clean, synchronized `main`. It updates `VERSION` and `CHANGELOG.md`, commits and tags the release, pushes it, and creates the GitHub Release. A normal invocation after a complete release starts the next version; use `--resume` to complete the current tag without bumping. Use `--dry-run` to preview. Requires `git-cliff` and an authenticated `gh` CLI.
 
 ## Tests
 

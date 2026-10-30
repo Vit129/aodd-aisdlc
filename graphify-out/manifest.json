@@ -125,8 +125,8 @@
     "semantic_hash": ""
   },
   "install.sh": {
-    "mtime": 1793342824.715405,
-    "ast_hash": "e0a441dc9c0df624cb242250089b6451",
+    "mtime": 1793368815.7975798,
+    "ast_hash": "d7b80b964ae8cbd70a82d7edf02b14b8",
     "semantic_hash": ""
   },
   "optional/agent-memory/hooks/memory-recall.py": {
@@ -250,8 +250,8 @@
     "semantic_hash": ""
   },
   "scripts/test_install.py": {
-    "mtime": 1793342824.7159243,
-    "ast_hash": "d93217856241b7aa2057463b179a52d2",
+    "mtime": 1793368815.797947,
+    "ast_hash": "0be6d22d0b21a24f8e8176172b98d6f4",
     "semantic_hash": ""
   },
   "scripts/test_post_merge.py": {
@@ -300,8 +300,8 @@
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1793342824.7133086,
-    "ast_hash": "fce0f6a494e287ebc93b9dacf43d9317",
+    "mtime": 1793368815.796874,
+    "ast_hash": "c3b21f0587cac93039c870dc01f749da",
     "semantic_hash": ""
   },
   "CHANGELOG.md": {
@@ -315,8 +315,8 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1793342824.7140162,
-    "ast_hash": "8577ee91436d187862b0283f9a6c2a53",
+    "mtime": 1793368815.797214,
+    "ast_hash": "871964d5b765c3df25fc7099ec01c1b5",
     "semantic_hash": ""
   },
   "agents/advisor.md": {

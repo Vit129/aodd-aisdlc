@@ -3,13 +3,13 @@ _Auto-generated from GRAPH_REPORT.md · do not edit manually_
 _Regen: `graphify update .`_
 
 ## Summary
-- 2361 nodes · 2527 edges · 223 communities (199 shown, 24 thin omitted)
+- 2366 nodes · 2532 edges · 226 communities (197 shown, 29 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 9 edges (avg confidence: 0.53)
 - Token cost: 0 input · 0 output
 
 
 ## Graph Freshness
-- Built from commit: `ebd898c1`
+- Built from commit: `b4aa5b24`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -32,11 +32,11 @@ A high-degree node isn't always architecturally central - a widely-used
 utility/config file can rack up more edges than a real coupler while only
 ever touching one area. This ranks by how many DIFFERENT communities a
 node's neighbors span, not by raw edge count.
-1. `search()` - bridges 2 areas (10 edges)
-2. `Browser Session Management` - bridges 2 areas (10 edges)
-3. `generate_design_system()` - bridges 2 areas (8 edges)
+1. `search()` - bridges 3 areas (10 edges)
+2. `generate_design_system()` - bridges 2 areas (8 edges)
+3. `Tracing` - bridges 2 areas (8 edges)
 4. `_resolve_color_mode()` - bridges 2 areas (5 edges)
-5. `_select_palette_for_mode()` - bridges 2 areas (4 edges)
+5. `_generate_intelligent_overrides()` - bridges 2 areas (5 edges)
 6. `Browser Automation with playwright-cli` - bridges 1 areas (17 edges)
 7. `Running Custom Playwright Code` - bridges 1 areas (13 edges)
 8. `main()` - bridges 1 areas (11 edges)

@@ -21,6 +21,7 @@ All notable changes to aodd-aisdlc are documented here. The format is based on
 
 ### Fixed
 - Drop MultiEdit from verifier's disallowed tools (`9c14325`)
+- Restore agy in the installer warning and README (`4686724`)
 - Make release resume and bump idempotent (`ed931af`)
 - Keep resume from starting a new release (`9540656`)
 - Keep release resume from pushing unrelated main (`38dd283`)
@@ -163,4 +164,3 @@ All notable changes to aodd-aisdlc are documented here. The format is based on
 ### Added
 - Initial release: AODD + ai-sdlc for Claude Code and Codex (`d75adf4`)
 - Done-gate and skill-capture read Codex rollouts; auditor deny verified live (`bb16c85`)
-

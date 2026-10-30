@@ -50,8 +50,14 @@ def release_exists(tag: str) -> bool:
     return any(release.get("tagName") == tag for release in releases)
 
 
-def publish(tag: str) -> None:
-    run(["git", "push", "origin", "main", tag])
+def publish(tag: str, *, push_main: bool = True) -> None:
+    if output("git", "status", "--porcelain"):
+        raise RuntimeError("Release publishing requires a clean working tree.")
+    if push_main:
+        run(["git", "merge-base", "--is-ancestor", "origin/main", "HEAD"])
+        run(["git", "push", "origin", "main", tag])
+    else:
+        run(["git", "push", "origin", tag])
     if release_exists(tag):
         print(f"GitHub Release {tag} already exists; release is complete.")
         return
@@ -118,7 +124,7 @@ def main() -> int:
             if args.dry_run:
                 print(f"Would resume the existing {tag} release.")
                 return 0
-            publish(tag)
+            publish(tag, push_main=False)
             return 0
         if version_tuple(version) <= version_tuple(latest_tag_version):
             raise RuntimeError(f"No pending release for VERSION {version}; latest tag is v{latest_tag_version}.")

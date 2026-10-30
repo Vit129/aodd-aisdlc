@@ -22,6 +22,7 @@ All notable changes to aodd-aisdlc are documented here. The format is based on
 ### Fixed
 - Drop MultiEdit from verifier's disallowed tools (`9c14325`)
 - Make release resume and bump idempotent (`ed931af`)
+- Keep resume from starting a new release (`9540656`)
 
 ## [0.6.0] - 2026-10-23
 

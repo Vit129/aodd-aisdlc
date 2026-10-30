@@ -1,0 +1,21 @@
+VERSION
+  s_3f9beff91c01f6::t_26b9f354798a25 1
+CHANGELOG.md
+  s_3f9beff91c01f6::t_26b9f354798a25 6-11,177
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "1d1d0b4cff0ecc7874fbfd535365ae895e17fc80",
+  "prompts": {},
+  "sessions": {
+    "s_3f9beff91c01f6": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a18bf3-8983-71a3-b62f-66d0cc32d15e",
+        "model": "gpt-6-luna"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

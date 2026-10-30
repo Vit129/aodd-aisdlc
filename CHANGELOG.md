@@ -3,6 +3,28 @@
 All notable changes to aodd-aisdlc are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and it follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.6.1] - 2026-10-30
+
+### Added
+- Add rea module so reverse engineering is one install away on every agent (`c7022dd`)
+- Make REA core and add rea_check.py to check and update it (`9f0acfc`)
+- Automate versioned releases (`6164012`)
+
+### Changed
+- Consolidate decoupled pattern into single dev-qa-pattern canonical file (`e6cb28c`)
+
+### Documentation
+- Add decoupled core-ui-translator pattern and QA architecture guard (`4bcc919`)
+- Extend decoupled pattern with behavioral QA Playwright standards (`166b40f`)
+- Update NOTICE with Antigravity co-author (`db228ea`)
+- Define release deployment integrity (`edefc68`)
+
+### Fixed
+- Drop MultiEdit from verifier's disallowed tools (`9c14325`)
+- Make release resume and bump idempotent (`ed931af`)
+- Keep resume from starting a new release (`9540656`)
+- Keep release resume from pushing unrelated main (`38dd283`)
+
 ## [0.6.0] - 2026-10-23
 
 ### Added

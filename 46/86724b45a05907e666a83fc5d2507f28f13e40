@@ -1,0 +1,23 @@
+README.md
+  s_3247b3afdc4e68::t_93ca92c298f602 64
+scripts/test_install.py
+  s_3247b3afdc4e68::t_a8fe8fa422243d 103
+install.sh
+  s_3247b3afdc4e68::t_cca9d316e87bc6 72
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "4686724b45a05907e666a83fc5d2507f28f13e40",
+  "prompts": {},
+  "sessions": {
+    "s_3247b3afdc4e68": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "eb49f067-a76e-4c5f-8773-fae79688c9b3",
+        "model": "claude-haiku-5-5"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

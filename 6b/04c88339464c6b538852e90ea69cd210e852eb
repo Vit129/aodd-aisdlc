@@ -1,0 +1,25 @@
+graphify-out/graph.json
+  s_3f9beff91c01f6::t_c738a853e84684 1-52325
+graphify-out/manifest.json
+  s_3f9beff91c01f6::t_c738a853e84684 1-1187
+graphify-out/GRAPH_REPORT.md
+  s_3f9beff91c01f6::t_c738a853e84684 1-773
+graphify-out/GRAPH_SUMMARY.md
+  s_3f9beff91c01f6::t_c738a853e84684 1-58
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "6b04c88339464c6b538852e90ea69cd210e852eb",
+  "prompts": {},
+  "sessions": {
+    "s_3f9beff91c01f6": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a18bf3-8983-71a3-b62f-66d0cc32d15e",
+        "model": "gpt-6-luna"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

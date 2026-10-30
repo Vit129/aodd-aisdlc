@@ -12,7 +12,7 @@ This repo is an installable package for Claude Code and OpenAI Codex: AODD (an o
 - `optional/<module>/{skills,rules,hooks,scripts,schedules}/` modules the installer adds only when chosen: `agent-memory` (memory-recall, memory-write-scan, session-start-recent) and `schedules` (`aodd_job.py` runner, `install-schedules.py`, `schedules/jobs.json` + prompt templates). Everything under a module is installed flat into the same top-level folder as core (`optional/schedules/scripts/x.py` -> `<home>/scripts/x.py`); a module hook finds `_aodd_paths.py` next to itself when installed and in the repo's `hooks/` when run from here
 - `docs/` skill-learning procedure
 - `scripts/git-hooks/` `pre-commit` (neutrality scan) and an optional `post-merge` (re-install after main changes, then `AODD_POST_INSTALL`; active only when `core.hooksPath` points here AND `AODD_AUTO_INSTALL=1`)
-- `install.sh` installer (`--dry-run`, `--detect`, `--claude-md`, `--codex`, `--agy`, `--with <modules>`, `--all`, `--core-only`, `--yes`)
+- `install.sh` installer (`--dry-run`, `--detect`, `--claude-md`, `--codex`, `--agy`, `--with <modules>`, `--all`, `--core-only`, `--yes`; `--project <repo>` deploys the same files into that repo's `.claude/` instead, see README)
 
 ## Check your change
 

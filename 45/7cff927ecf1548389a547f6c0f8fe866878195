@@ -1,0 +1,44 @@
+AGENTS.md
+  s_6ac8318813031e::t_0401dcb8c5eaaf 15
+install.sh
+  s_6ac8318813031e::t_0564cd764acb11 4-6
+  s_6ac8318813031e::t_34ce2570dad32c 8
+  s_6ac8318813031e::t_6a4fe4748cc6f8 357
+  s_6ac8318813031e::t_f3a438363f396e 52,60-63,68-74,76-82
+  s_6ac8318813031e::t_a29834bd62dcd0 113
+  s_6ac8318813031e::t_9514b77de993c8 64-67
+  s_6ac8318813031e::t_6ff3329eb32005 199-201,204-206
+  s_6ac8318813031e::t_e00b2df07deead 75
+  s_6ac8318813031e::t_edf04afc7e96c7 290-311,314-315
+  s_6ac8318813031e::t_6401bfd0c9c7fb 336-342
+  s_6ac8318813031e::t_9f98194e5a9b48 375
+  s_6ac8318813031e::t_d609ad17550a82 331-335,343-348
+  s_6ac8318813031e::t_bcbcb4361bd59b 26,31
+  s_6ac8318813031e::t_da280a31fd5a43 7
+  s_6ac8318813031e::t_be4ba76527c12d 53-59
+README.md
+  s_6ac8318813031e::t_8515f4a05f2092 86
+  s_6ac8318813031e::t_adbb8f8ec4661d 80-85,88-89,91
+  s_6ac8318813031e::t_d03286df343784 90
+  s_6ac8318813031e::t_2e3b74321f6f1f 87
+scripts/test_install.py
+  s_6ac8318813031e::t_3bbc1cf0ec30ef 104-120,125-131,133,135,137-138,140-142,148,150-165,173-176
+  s_6ac8318813031e::t_7a410a5bf33caf 121-124,132,139,143-147,149,166-172
+  s_6ac8318813031e::t_80cd8c5ee61361 134,136
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "457cff927ecf1548389a547f6c0f8fe866878195",
+  "prompts": {},
+  "sessions": {
+    "s_6ac8318813031e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "23d47917-ff86-465e-b27f-692fecdc39e1",
+        "model": "claude-haiku-5-5"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

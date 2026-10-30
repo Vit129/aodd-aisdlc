@@ -8,7 +8,14 @@ import subprocess
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+def find_repo_root(start: Path) -> Path:
+    for directory in (start, *start.parents):
+        if (directory / ".git").exists() and (directory / "VERSION").is_file() and (directory / "cliff.toml").is_file():
+            return directory
+    raise RuntimeError("Run the release command from inside an aodd-aisdlc checkout.")
+
+
+ROOT = find_repo_root(Path.cwd())
 VERSION_FILE = ROOT / "VERSION"
 CHANGELOG_FILE = ROOT / "CHANGELOG.md"
 VERSION_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
@@ -77,6 +84,9 @@ def main() -> int:
     branch = output("git", "branch", "--show-current")
     if branch != "main":
         raise RuntimeError(f"Release must run from main (current branch: {branch}).")
+    remote_url = output("git", "remote", "get-url", "origin").lower()
+    if "aodd-aisdlc" not in remote_url:
+        raise RuntimeError(f"Refusing to release from an unexpected origin: {remote_url}")
     run(["git", "fetch", "origin", "main", "--tags"])
 
     version = VERSION_FILE.read_text().strip()

@@ -12,6 +12,9 @@ SPEC.loader.exec_module(release)
 
 
 class ReleaseVersionTests(unittest.TestCase):
+    def test_finds_checkout_root_from_nested_directory(self):
+        self.assertEqual(release.find_repo_root(Path(__file__).parent), Path(__file__).resolve().parents[1])
+
     def test_patch_bump(self):
         self.assertEqual(release.next_version("0.6.1", "patch"), "0.6.2")
 

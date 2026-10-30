@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 # Install aodd-aisdlc into a Claude Code home (default ~/.claude, override with CLAUDE_HOME).
 #   ./install.sh [--dry-run] [--detect] [--no-backup] [--claude-md] [--codex] [--agy] [--with agent-memory,schedules | --all | --core-only] [--yes]
+#   ./install.sh --project <repo> [--project <repo> ...] [--dry-run] [--with agent-memory | --core-only]   # per repository, see below
+# Project mode: the same files go into <repo>/.claude/, hooks are registered in its settings.json with paths
+# relative to $CLAUDE_PROJECT_DIR (committable), AGENTS.md gets the aodd block (Codex / Antigravity read it), and
+# the machine-wide parts (schedules, rea, Codex, Antigravity) are skipped. Every repo gets the same files, hooks and
+# block, so the result is identical wherever it runs. Paths matching AODD_COMPANY_PATHS are refused unless AODD_ALLOW_COMPANY=1. Backups are off (git is the backup).
 # Core (always): skills, agents, rules, hooks, scripts, docs; hooks registered in settings.json (additive,
 # idempotent, fail-open). Optional modules (optional/<name>/): agent-memory, schedules. Asked one by one
 # when run in a terminal; --with / --all / --core-only answer for you, --yes asks nothing (default: core only,
@@ -18,10 +23,12 @@ set -euo pipefail
 
 DRY=0; DETECT=0; AGENTS_SET=0; CLAUDE_MD=0; CODEX_ON=0; AGY_ON=0; YES=0; MODS_SET=0; MODS=""
 ALL_MODULES="agent-memory schedules"
+ORIG=("$@"); PROJECTS=()
 add_mod() { case " $MODS " in *" $1 "*) ;; *) MODS="${MODS:+$MODS }$1" ;; esac; }
 while [ $# -gt 0 ]; do
   a="$1"; shift
   case "$a" in
+    --project) [ $# -gt 0 ] || { echo "--project needs a repository path" >&2; exit 2; }; PROJECTS+=("$1"); shift ;;
     --dry-run) DRY=1 ;;
     --no-backup) export AODD_NO_BACKUP=1 ;;
     --claude-md) CLAUDE_MD=1 ;;
@@ -41,6 +48,37 @@ while [ $# -gt 0 ]; do
 done
 
 SRC="$(cd "$(dirname "$0")" && pwd)"
+
+# ---- project mode: one child run per repository (AODD_PROJECT_ROOT tells the child which) -------------
+company_path() {  # company_path <resolved dir>: true when it matches a glob in AODD_COMPANY_PATHS (colon-separated, set in your shell; none by default)
+  local g
+  while IFS= read -r g; do
+    [ -n "$g" ] && case "$1" in $g) return 0 ;; esac
+  done < <(printf '%s\n' "${AODD_COMPANY_PATHS:-}" | tr ':' '\n')
+  return 1
+}
+if [ "${#PROJECTS[@]}" -gt 0 ] && [ -z "${AODD_PROJECT_ROOT:-}" ]; then
+  RC=0
+  for p in "${PROJECTS[@]}"; do
+    [ -d "$p" ] && [ -e "$p/.git" ] || { echo "skip    $p: not a git repository (project mode deploys into repositories)" >&2; RC=2; continue; }
+    p="$(cd "$p" && pwd -P)"
+    if company_path "$p"; then
+      [ "${AODD_ALLOW_COMPANY:-0}" = 1 ] || { echo "skip    $p: company work stays out of AODD (set AODD_ALLOW_COMPANY=1 to override)" >&2; RC=2; continue; }
+    fi
+    echo "project $p"
+    AODD_PROJECT_ROOT="$p" bash "$0" ${ORIG[@]+"${ORIG[@]}"} || RC=$?
+  done
+  exit "$RC"
+fi
+PROJECT_ROOT="${AODD_PROJECT_ROOT:-}"
+if [ -n "$PROJECT_ROOT" ]; then
+  export AODD_NO_BACKUP=1   # git is the backup
+  [ "$MODS_SET" = 1 ] || add_mod agent-memory   # full by default: every module that works per repository
+  MODS=$(for m in $MODS; do [ "$m" = schedules ] || printf '%s ' "$m"; done); MODS="${MODS% }"
+  MODS_SET=1; AGENTS_SET=1; CODEX_ON=0; AGY_ON=0   # Codex, Antigravity and the schedules/rea steps are machine-wide
+  [ "$CLAUDE_MD" = 1 ] && echo "note    --claude-md has no effect in project mode (AGENTS.md is written instead)"
+  echo "skip    schedules and rea: machine-wide (crontab, LaunchAgents, the rea MCP entry); run ./install.sh once for those"
+fi
 
 # ---- agent detection -----------------------------------------------------------------------------
 # name|binaries|home dir (relative to $HOME, "-" for none). Supported targets: claude, codex, agy.
@@ -72,6 +110,7 @@ OTHER=""; for a in $FOUND; do case "$a" in claude|codex|agy) ;; *) OTHER="${OTHE
 found agy || found codex || echo "warn    no agy or codex CLI: the cross-family audit (scripts/audit.py) will fall back to a Claude auditor"
 [ "$DETECT" = 1 ] && exit 0
 DEST="${CLAUDE_HOME:-$HOME/.claude}"
+[ -n "$PROJECT_ROOT" ] && DEST="$PROJECT_ROOT/.claude"
 [ "$DRY" = 1 ] && echo "[dry-run] nothing will be written"
 echo "install into: $DEST"
 
@@ -157,9 +196,14 @@ settings = dest / os.environ["HFILE"]
 mods = os.environ["MODS"].split()
 
 
+PROJECT = os.environ.get("AODD_PROJECT_ROOT", "")
+
+
 def cmd(script, *args):
-    f = dest / "hooks" / script
     tail = f" {' '.join(args)}" if args else ""
+    if PROJECT:  # committed with the repo, so no machine path; CLAUDE_HOME points the hooks at the repo's own rules
+        return f'f="$CLAUDE_PROJECT_DIR/.claude/hooks/{script}"; [ -f "$f" ] || exit 0; CLAUDE_HOME="$CLAUDE_PROJECT_DIR/.claude" exec python3 "$f"{tail}'
+    f = dest / "hooks" / script
     return f'f="{f}"; [ -f "$f" ] || exit 0; exec python3 "$f"{tail}'
 
 
@@ -243,10 +287,32 @@ if changed and not dry:
     settings.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
 PY
 }
-register_hooks "$DEST" settings.json 1
+write_aodd_block() {  # write_aodd_block <AGENTS.md> [header line]: the aodd block between markers; a re-run replaces it in place
+  local AG="$1" HEAD="${2:-}" BLOCK
+  BLOCK="$(printf '<!-- aodd:begin -->\n'; [ -n "$HEAD" ] && printf '%s\n\n' "$HEAD"; cat "$SRC/rules/aodd.md"; printf '\n'; cat "$SRC/rules/ai-sdlc-workflow.md"; printf '\n<!-- aodd:end -->\n')"
+  if [ "$DRY" = 1 ]; then echo "AGENTS  $AG <- aodd block (would write)"; return 0; fi
+  mkdir -p "$(dirname "$AG")"
+  [ "${AODD_NO_BACKUP:-0}" != 1 ] && [ -f "$AG" ] && [ ! -e "$AG.aodd-bak" ] && ! grep -q "aodd:begin" "$AG" && cp "$AG" "$AG.aodd-bak" && echo "backup  $AG.aodd-bak"
+  AG="$AG" BLOCK="$BLOCK" python3 - <<'PY'
+import os, re
+from pathlib import Path
+f, block = Path(os.environ["AG"]), os.environ["BLOCK"].rstrip("\n") + "\n"
+old = f.read_text() if f.is_file() else ""
+pat = re.compile(r"<!-- aodd:begin -->.*?<!-- aodd:end -->\n?", re.S)
+new = pat.sub(lambda _: block, old) if pat.search(old) else (old + ("\n" if old and not old.endswith("\n\n") else "") + block)
+if new != old:
+    f.write_text(new)
+    print(f"AGENTS  {f} <- aodd block")
+else:
+    print(f"AGENTS  {f}: aodd block up to date")
+PY
+}
+
+register_hooks "$DEST" settings.json "$([ -n "$PROJECT_ROOT" ] && echo 0 || echo 1)"
 
 IMPORT='@rules/aodd.md'
-if [ "$CLAUDE_MD" = 1 ]; then
+if [ -n "$PROJECT_ROOT" ]; then :
+elif [ "$CLAUDE_MD" = 1 ]; then
   if [ -f "$DEST/CLAUDE.md" ] && grep -qxF "$IMPORT" "$DEST/CLAUDE.md"; then
     echo "CLAUDE.md already imports $IMPORT"
   else
@@ -262,25 +328,24 @@ if [ "$CODEX_ON" = 1 ]; then
   for d in skills agents hooks scripts docs; do copy_tree "$d" "$CDEST"; done
   for m in $MODS; do copy_module "$m" "$CDEST"; done
   register_hooks "$CDEST" hooks.json
-  # AGENTS.md: replace the aodd block in place (or append it), so a re-run never duplicates it
-  AG="$CDEST/AGENTS.md"
-  BLOCK="$(printf '<!-- aodd:begin -->\n'; cat "$SRC/rules/aodd.md"; printf '\n'; cat "$SRC/rules/ai-sdlc-workflow.md"; printf '\n<!-- aodd:end -->\n')"
-  if [ "$DRY" = 1 ]; then echo "AGENTS  $AG <- aodd block (would write)"; else
-    mkdir -p "$CDEST"
-    [ "${AODD_NO_BACKUP:-0}" != 1 ] && [ -f "$AG" ] && [ ! -e "$AG.aodd-bak" ] && ! grep -q "aodd:begin" "$AG" && cp "$AG" "$AG.aodd-bak" && echo "backup  $AG.aodd-bak"
-    AG="$AG" BLOCK="$BLOCK" python3 - <<'PY'
-import os, re
-from pathlib import Path
-f, block = Path(os.environ["AG"]), os.environ["BLOCK"].rstrip("\n") + "\n"
-old = f.read_text() if f.is_file() else ""
-pat = re.compile(r"<!-- aodd:begin -->.*?<!-- aodd:end -->\n?", re.S)
-new = pat.sub(lambda _: block, old) if pat.search(old) else (old + ("\n" if old and not old.endswith("\n\n") else "") + block)
-if new != old:
-    f.write_text(new)
-    print(f"AGENTS  {f} <- aodd block")
-else:
-    print(f"AGENTS  {f}: aodd block up to date")
-PY
+  write_aodd_block "$CDEST/AGENTS.md"
+fi
+if [ -n "$PROJECT_ROOT" ]; then
+  # Claude Code loads .claude/rules/ itself; AGENTS.md carries the same contract for Codex, Antigravity and other readers
+  write_aodd_block "$PROJECT_ROOT/AGENTS.md" "> Managed by aodd-aisdlc (install.sh --project). The rules/, skills/, hooks/, scripts/, agents/ and docs/ paths here live under this repo's .claude/ folder (~/.claude means the same)."
+  CM="$PROJECT_ROOT/CLAUDE.md"   # Claude Code reads CLAUDE.md, so it imports the AGENTS.md contract too
+  if [ -f "$CM" ] && grep -qxF '@AGENTS.md' "$CM"; then :
+  elif [ "$DRY" = 1 ]; then echo "CLAUDE  $CM <- @AGENTS.md (would add)"
+  else
+    [ -s "$CM" ] && [ -n "$(tail -c1 "$CM")" ] && printf '\n' >> "$CM"
+    printf '@AGENTS.md\n' >> "$CM"; echo "CLAUDE  $CM <- @AGENTS.md"
+  fi
+  GI="$PROJECT_ROOT/.gitignore"   # Python writes __pycache__ beside the hooks it imports
+  if [ -f "$GI" ] && grep -qxF '__pycache__/' "$GI"; then :
+  elif [ "$DRY" = 1 ]; then echo "gitignore $GI <- __pycache__/ (would add)"
+  else
+    [ -s "$GI" ] && [ -n "$(tail -c1 "$GI")" ] && printf '\n' >> "$GI"
+    printf '__pycache__/\n' >> "$GI"; echo "gitignore $GI <- __pycache__/"
   fi
 fi
 if has_mod schedules; then
@@ -289,7 +354,7 @@ if has_mod schedules; then
   if [ "$DRY" = 1 ] || [ "${AODD_SCHEDULES_DRY_RUN:-0}" = 1 ]; then SP="$SRC/optional/schedules/scripts/install-schedules.py"; SDRY=(--dry-run); fi
   python3 "$SP" ${SDRY[@]+"${SDRY[@]}"} --modules "${MODS// /,}" ${SCHED_ARGS[@]+"${SCHED_ARGS[@]}"} || echo "warn    schedules were not installed (see above); re-run ./install.sh --with schedules"
 fi
-if :; then  # core, not a module: REA's own `rea setup` registers its MCP server (and skill) per client; AODD_REA_CMD replaces the launcher (tests)
+if [ -z "$PROJECT_ROOT" ]; then  # core, not a module: REA's own `rea setup` registers its MCP server (and skill) per client; AODD_REA_CMD replaces the launcher (tests)
   if [ -n "${AODD_REA_CMD:-}" ]; then read -r -a REA <<<"$AODD_REA_CMD"
   elif command -v rea >/dev/null 2>&1; then REA=(rea)
   elif command -v npx >/dev/null 2>&1; then REA=(npx -y rea-agents@6.8.0)
@@ -307,4 +372,5 @@ if [ "$AGY_ON" = 1 ]; then  # Antigravity: its own installer (skills, agents, AG
   if [ "$DRY" = 1 ]; then bash "$SRC/install-agy.sh" --dry-run; else bash "$SRC/install-agy.sh"; fi
 fi
 echo "state   reports, plans and hook state live under \${AODD_HOME:-~/.aodd} (override: AODD_REPORTS, AODD_STATE, AODD_PLANS, AODD_WORKLOG, AODD_MEMORY; see README)"
+if [ -n "$PROJECT_ROOT" ]; then echo "review  git -C $PROJECT_ROOT status && git -C $PROJECT_ROOT diff   (nothing was committed)"; fi
 echo "done"

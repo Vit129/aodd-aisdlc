@@ -77,6 +77,18 @@ In a terminal the installer asks about each optional module (one line each, defa
 
 Modules are additive: add one later with `./install.sh --with <module>`; modules you do not name are left as they are.
 
+### Per repository (`--project`)
+
+`./install.sh --project <repo> [--project <repo> ...]` deploys the whole system into each repository instead of the Claude home, so the repo carries its own copy:
+
+- the same skills, agents, rules, hooks, scripts and docs go into `<repo>/.claude/` (Claude Code loads `.claude/rules/` and project skills itself);
+- hooks are registered in `<repo>/.claude/settings.json` with paths relative to `$CLAUDE_PROJECT_DIR`, so the committed file has no machine path, and each hook gets `CLAUDE_HOME` pointed at the repo's own `.claude/`;
+- every repo gets the same full hook set, so the result is identical wherever it runs. Claude Code also runs the global `~/.claude` hooks, so a machine that has the global install runs each AODD hook twice in that repo until the global AODD hooks are removed (`~/.claude/settings.json`, restored from `.aodd-bak` if needed);
+- the aodd contract is written as a block between `aodd:begin`/`aodd:end` markers into the repo's `AGENTS.md` (created if missing; hand-written content is kept). Codex and Antigravity read that file; `CLAUDE.md` gets an `@AGENTS.md` line (created, or appended if missing; the rest of the file is kept) so Claude reads the same block;
+- `.gitignore` gets `__pycache__/`; no `.aodd-bak` files (git is the backup), so review with `git -C <repo> status && git -C <repo> diff`. Nothing is committed.
+
+Full by default: every module that works per repository (agent-memory). `--core-only` skips modules. Skipped with a printed reason: `schedules` (crontab / LaunchAgents are per machine), `rea setup` (per machine), Codex and Antigravity (their homes are global). Paths matching `AODD_COMPANY_PATHS` (colon-separated globs, set in your shell, e.g. `AODD_COMPANY_PATHS="$HOME/work/*"`; the package ships none) are refused unless `AODD_ALLOW_COMPANY=1`, and a path that is not a git repository is refused. `--dry-run` shows the plan and writes nothing.
+
 - Target is `~/.claude`; set `CLAUDE_HOME` for another location.
 - Existing files that differ are printed as `UPDATE` and the old content is kept as `<file>.aodd-bak`. Nothing is deleted. `--no-backup` (or `AODD_NO_BACKUP=1`, e.g. when another tool already mirrors these files) makes no `.aodd-bak` files at all.
 - Hooks are added to `settings.json` additively and idempotently (a `settings.json.aodd-bak` is made once). Each command is fail-open: `f=...; [ -f "$f" ] || exit 0; exec python3 "$f"`, so removing a hook file never breaks Claude Code.

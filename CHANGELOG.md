@@ -8,6 +8,7 @@ All notable changes to aodd-aisdlc are documented here. The format is based on
 ### Added
 - Add rea module so reverse engineering is one install away on every agent (`c7022dd`)
 - Make REA core and add rea_check.py to check and update it (`9f0acfc`)
+- Automate versioned releases (`6164012`)
 
 ### Changed
 - Consolidate decoupled pattern into single dev-qa-pattern canonical file (`e6cb28c`)

@@ -110,6 +110,19 @@ def main() -> int:
             publish(tag)
             return 0
 
+    if args.resume:
+        if tag_commit:
+            tagged_version = output("git", "show", f"{tag}:VERSION")
+            if tagged_version != version:
+                raise RuntimeError(f"Tag {tag} contains VERSION {tagged_version}, expected {version}; resolve the tag mismatch manually.")
+            if args.dry_run:
+                print(f"Would resume the existing {tag} release.")
+                return 0
+            publish(tag)
+            return 0
+        if version_tuple(version) <= version_tuple(latest_tag_version):
+            raise RuntimeError(f"No pending release for VERSION {version}; latest tag is v{latest_tag_version}.")
+
     if output("git", "status", "--porcelain"):
         raise RuntimeError("Release requires a clean working tree; preserve and resolve all edits first.")
     if head != remote:

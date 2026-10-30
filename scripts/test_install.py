@@ -101,3 +101,76 @@ out = run("--dry-run", "--core-only", extra=det)
 assert "add --codex" in out and "(codex)" not in out, out
 out = run("--detect", extra={"PATH": "/usr/bin:/bin", "HOME": str(T / "fakehome")})
 assert "warn    no agy or codex CLI" in out, out
+
+# --- project mode: the same files under one repository's .claude/, nothing machine-wide ----------
+def repo(name, files):
+    r = T / "projects" / name
+    r.mkdir(parents=True)
+    subprocess.run(["git", "init", "-q", str(r)], check=True)
+    for rel, text in files.items():
+        (r / rel).parent.mkdir(parents=True, exist_ok=True)
+        (r / rel).write_text(text)
+    return r
+
+
+def tree(*roots):  # every file in the repos (not .git): equal before and after means nothing changed
+    return {p: p.read_bytes() for r in roots for p in r.rglob("*") if p.is_file() and ".git" not in p.relative_to(r).parts}
+
+
+SKILL_HOOK = {"UserPromptSubmit": [{"hooks": [{"type": "command", "command": "python3 .claude/hooks/skill-trigger.py"}]}]}
+alpha = repo("alpha", {".claude/settings.json": json.dumps({"hooks": SKILL_HOOK}), "AGENTS.md": "# mine\n", "CLAUDE.md": "@AGENTS.md\n"})
+beta = repo("beta", {".claude/aidlc.json": '{"artifactPath": "agent-memory/plans"}\n'})
+gamma = repo("gamma", {"CLAUDE.md": "# guidelines\n"})
+REPOS = [alpha, beta, gamma]
+flags = [f for r in REPOS for f in ("--project", str(r))]
+LA = {"AODD_LAUNCHAGENTS_DIR": str(T / "la-proj")}
+global_before = {p: p.read_bytes() for p in (T / "claude").rglob("*") if p.is_file()}
+out = run(*flags, extra=LA)
+assert "skip    schedules and rea" in out and not list((T / "la-proj").glob("*"))
+assert {p: p.read_bytes() for p in (T / "claude").rglob("*") if p.is_file()} == global_before, "the Claude home is read, never written"
+
+settings = (alpha / ".claude/settings.json").read_text()
+ours = [h["command"] for ev in json.loads(settings)["hooks"].values() for g in ev for h in g["hooks"] if "$CLAUDE_PROJECT_DIR" in h["command"]]
+assert len(ours) == 16 and all('CLAUDE_HOME="$CLAUDE_PROJECT_DIR/.claude"' in c for c in ours), ours   # core (12) + subagent-rules + agent-memory (3): the same set in every repo
+assert "skill-trigger.py" in settings                                                                    # the repo's own hook stays
+assert "done-gate" in settings and "coding-rules-gate" in settings
+assert str(T) not in settings                                                                            # committable: no machine path
+smoke = next(c for c in ours if "memory-recall.py" in c)
+assert subprocess.run(["sh", "-c", smoke], env={**env, "CLAUDE_PROJECT_DIR": str(gamma)}, input="{}", capture_output=True, text=True).returncode == 0
+no_dir = {k: v for k, v in env.items() if k != "CLAUDE_PROJECT_DIR"}
+assert subprocess.run(["sh", "-c", smoke], env=no_dir, input="{}", capture_output=True, text=True).returncode == 0, "no project dir: fail-open"
+
+assert (beta / ".claude/aidlc.json").read_text() == '{"artifactPath": "agent-memory/plans"}\n'         # a repo's own files are not touched
+assert (beta / ".claude/hooks/done-gate.py").is_file() and (gamma / ".claude/skills/ai-sdlc/SKILL.md").is_file()
+assert (gamma / "CLAUDE.md").read_text() == "# guidelines\n@AGENTS.md\n"          # the import is appended, the guidelines kept
+assert (alpha / "CLAUDE.md").read_text() == "@AGENTS.md\n" and (beta / "CLAUDE.md").read_text() == "@AGENTS.md\n"   # already imported / created
+ag = (alpha / "AGENTS.md").read_text()
+assert ag.startswith("# mine\n") and ag.count("<!-- aodd:begin -->") == 1 and "this repo's .claude/ folder" in ag
+assert (alpha / ".gitignore").read_text() == "__pycache__/\n" and (gamma / ".gitignore").read_text() == "__pycache__/\n"
+assert not list((T / "projects").rglob("*.aodd-bak")), "git is the backup: no .aodd-bak inside a repo"
+snap = tree(*REPOS)
+second = run(*flags, extra=LA)
+assert tree(*REPOS) == snap and ": registered" not in second and "UPDATE" not in second, second
+
+fresh = repo("fresh", {"AGENTS.md": "# fresh\n"})
+run("--dry-run", "--project", str(fresh))
+assert tree(fresh) == {fresh / "AGENTS.md": b"# fresh\n"} and not (fresh / ".claude").exists()
+
+lite = repo("lite", {})
+run("--project", str(lite), "--core-only")
+assert not (lite / ".claude/hooks/memory-recall.py").exists() and (lite / ".claude/hooks/done-gate.py").is_file()
+out = run("--project", str(lite), "--with", "schedules", extra=LA)
+assert "skip    schedules" in out and not (lite / ".claude/scripts/install-schedules.py").exists() and not list((T / "la-proj").glob("*"))
+
+home = T / "home"
+(home / "work").mkdir(parents=True)
+subprocess.run(["git", "init", "-q", str(home / "work/acme")], check=True)
+COMPANY = {"AODD_COMPANY_PATHS": str((home / "work").resolve()) + "/*"}
+company = subprocess.run(["bash", str(ROOT / "install.sh"), "--project", str(home / "work/acme")], capture_output=True, text=True, env={**env, **COMPANY})
+assert company.returncode == 2 and "company work" in company.stderr and not (home / "work/acme/.claude").exists()
+run("--project", str(home / "work/acme"), extra={**COMPANY, "AODD_ALLOW_COMPANY": "1"})   # explicit override
+assert (home / "work/acme/.claude/hooks/done-gate.py").is_file()
+plain = T / "plain"
+plain.mkdir()
+notgit = subprocess.run(["bash", str(ROOT / "install.sh"), "--project", str(plain)], capture_output=True, text=True, env=env)
+assert notgit.returncode == 2 and "not a git repository" in notgit.stderr and not (plain / ".claude").exists()

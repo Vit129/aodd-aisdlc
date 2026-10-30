@@ -1,0 +1,74 @@
+skills/delivery-workflow/references/commit-push.md
+  s_89f5f791915385::t_e9de012619c6e0 3,9,13-17,21-23,25
+  s_3f9beff91c01f6::t_4b8438ee7de75b 1-2,4,11-12,18-20,24
+  s_3f9beff91c01f6::t_9768c705b3aa13 5-6,8,10
+  s_89f5f791915385::t_771f83d65ccf0a 7
+skills/delivery-workflow/references/release-deploy.md
+  s_3f9beff91c01f6::t_13a1b35512a080 49
+  s_89f5f791915385::t_295b544d7d2c65 1,3,5,7-11,13,15,17,19-21,23,25-27,29,31,33-36,38,40-44,46,48,50
+  s_3f9beff91c01f6::t_3dcb59fbf11dd8 18,22
+  s_3f9beff91c01f6::t_4b8438ee7de75b 2,4,6,12,24,28,30,32,37,39,45
+  s_3f9beff91c01f6::t_52ca03037a69d1 14,16,47
+skills/delivery-workflow/references/dev-test.md
+  s_3f9beff91c01f6::t_3dcb59fbf11dd8 18
+  s_3f9beff91c01f6::t_4b8438ee7de75b 2,4,6,14
+  s_89f5f791915385::t_e232517d12fbdd 1,3,5,7-13,15,17,19-23
+  s_3f9beff91c01f6::t_9768c705b3aa13 16
+skills/delivery-workflow/SKILL.md
+  s_89f5f791915385::t_7c0c1ec3311bb3 3,10,12,14,16-21,23,25,27,29-34,36-37,39,41,43-49,53-54,58-60,63,65-66,69,71-73,75-77,80-86,89-91
+  s_89f5f791915385::t_578e175da9104c 55
+  s_3f9beff91c01f6::t_e17341dbfdf2e2 28,64
+  s_89f5f791915385::t_49f75066ad8e4e 56
+  s_89f5f791915385::t_b20fd1e029fda0 61
+  s_89f5f791915385::t_08329c390bfe04 67
+  s_89f5f791915385::t_c9394cad84bb20 51
+  s_3f9beff91c01f6::t_4b8438ee7de75b 1-2,4-9,11,13,15,22,24,26,68,70,74,87-88,92-94,100
+  s_3f9beff91c01f6::t_46032bd583cfad 38,52,57,62
+  s_89f5f791915385::t_a76ba48f67e398 95-99
+  s_89f5f791915385::t_f6cb1c814eefbe 78
+  s_89f5f791915385::t_b8e477987a3371 79
+  s_89f5f791915385::t_9f242fb53d6328 35
+  s_89f5f791915385::t_9f6ecc2eede300 40,42,50
+rules/coding/release.md
+  s_89f5f791915385::t_c0210f0b53446d 5,7,9-13,15-23,25,27
+skills/delivery-workflow/references/script-tracing.md
+  s_3f9beff91c01f6::t_22da11cc24d503 32,39,41
+  s_89f5f791915385::t_bd7c8346da8938 52
+  s_3f9beff91c01f6::t_36aaf4ee495e4b 2,4,6,12,14,16,18,43,49,51
+  s_89f5f791915385::t_f6ff20fde3b098 1,3,5,7-11,13,15,17,19-31,33-38,40,42,44-48,50
+skills/delivery-workflow/references/full-cycle.md
+  s_3f9beff91c01f6::t_03280f4ffc463a 2,4,6,10,12,14,16,21,23,29,35,41,43
+  s_89f5f791915385::t_0897d7adf49c1d 20
+  s_89f5f791915385::t_839d628b7f1c4e 37
+  s_89f5f791915385::t_7bc22bb830a251 13
+  s_89f5f791915385::t_47509016edd54e 1,3,5,7-9,11,15,17-19,22,24-26,28,30-34,36,38-40,42,44
+  s_3f9beff91c01f6::t_7f606dc239a902 27
+skills/delivery-workflow/references/recovery.md
+  s_89f5f791915385::t_dd7458baef8b1c 1,3,5,7-12,14,16,18-23,25,27-30,32-34
+  s_3f9beff91c01f6::t_4b8438ee7de75b 2,4,6,13,17,24,26,31
+  s_3f9beff91c01f6::t_ac44939d3fdcf1 15
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "180a8a552dcf6bf704a551ddd96fc020cd70cfac",
+  "prompts": {},
+  "sessions": {
+    "s_3f9beff91c01f6": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a18bf3-8983-71a3-b62f-66d0cc32d15e",
+        "model": "gpt-6-luna"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    },
+    "s_89f5f791915385": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "71f245e3-991f-46d2-bf7e-0164bbfb1ab3",
+        "model": "unknown"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+AGENTS.md
+  s_8976d1170c7b5f::t_3f4bddd42fc08f 51
+README.md
+  s_8976d1170c7b5f::t_3f4bddd42fc08f 155
+scripts/release.py
+  s_8976d1170c7b5f::t_3f4bddd42fc08f 68,88-95,97-98,103-110
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "ed931af6ad1d72f5ef22dc9b52079e65ce0c1f38",
+  "prompts": {},
+  "sessions": {
+    "s_8976d1170c7b5f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a18af1-d9e5-7001-b222-bb9ac941c9cb",
+        "model": "gpt-6-luna"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

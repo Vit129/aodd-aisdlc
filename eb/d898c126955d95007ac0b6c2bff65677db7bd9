@@ -1,0 +1,21 @@
+CHANGELOG.md
+  s_8a9a65489537cb::t_b49eac789f2273 6-10
+VERSION
+  s_8a9a65489537cb::t_84d82bdf0ea226 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "ebd898c126955d95007ac0b6c2bff65677db7bd9",
+  "prompts": {},
+  "sessions": {
+    "s_8a9a65489537cb": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "f0078983-6a1a-4af0-875f-4f230a6d4df7",
+        "model": "deepseek"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

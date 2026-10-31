@@ -3,6 +3,7 @@
 
 import argparse
 import json
+import os
 import re
 import subprocess
 import sys
@@ -40,8 +41,8 @@ def version_tuple(version: str) -> tuple[int, int, int]:
     return tuple(map(int, match.groups()))
 
 
-def run(args: list[str], *, capture: bool = False, check: bool = True) -> subprocess.CompletedProcess:
-    result = subprocess.run(args, cwd=ROOT, text=True, capture_output=capture)
+def run(args: list[str], *, capture: bool = False, check: bool = True, env: dict[str, str] | None = None) -> subprocess.CompletedProcess:
+    result = subprocess.run(args, cwd=ROOT, text=True, capture_output=capture, env=env)
     if check and result.returncode:
         detail = (result.stderr or result.stdout or "").strip()
         raise RuntimeError(f"Command failed ({' '.join(args)}): {detail}")
@@ -72,6 +73,13 @@ def publish(tag: str, *, push_main: bool = True) -> None:
     if len(notes) > 125_000:
         raise RuntimeError("Generated release notes exceed GitHub's 125000-character limit.")
     run(["gh", "release", "create", tag, "--title", tag, "--notes", notes])
+
+
+def release_gate() -> None:
+    """Run the repository's documented checks before any release publication."""
+    env = os.environ.copy()
+    env["GIT_CONFIG_GLOBAL"] = os.devnull
+    run(["make", "start"], env=env)
 
 
 def main() -> int:
@@ -109,6 +117,7 @@ def main() -> int:
             if args.dry_run:
                 print(f"Would tag and publish the pending release {tag} from {head}.")
                 return 0
+            release_gate()
             run(["git", "tag", tag])
             publish(tag)
             return 0
@@ -120,9 +129,11 @@ def main() -> int:
             print(f"Would {action} {tag}.")
             return 0
         if args.resume:
+            release_gate()
             publish(tag)
             return 0
         if not release_exists(tag):
+            release_gate()
             publish(tag)
             return 0
 
@@ -134,6 +145,7 @@ def main() -> int:
             if args.dry_run:
                 print(f"Would resume the existing {tag} release.")
                 return 0
+            release_gate()
             publish(tag, push_main=False)
             return 0
         if version_tuple(version) <= version_tuple(latest_tag_version):
@@ -162,6 +174,7 @@ def main() -> int:
     run(["git", "add", "VERSION", "CHANGELOG.md"])
     if output("git", "diff", "--cached", "--name-only"):
         run(["git", "commit", "-m", f"chore(release): {new_tag}"])
+    release_gate()
     run(["git", "tag", new_tag])
     publish(new_tag)
     return 0

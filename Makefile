@@ -1,4 +1,5 @@
 .PHONY: start
+.SHELLFLAGS := -e -c
 
 start:
 	for t in hooks/test_*.py scripts/test_*.py adapters/test_*.py optional/*/hooks/test_*.py optional/*/scripts/test_*.py; do python3 "$$t"; done

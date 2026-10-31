@@ -1,7 +1,7 @@
 # Graph Report - delivery-workflow-completion  (2026-10-31)
 
 ## Corpus Check
-- 240 files · ~173,425 words
+- 240 files · ~173,440 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `77084625`
+- Built from commit: `2350c97f`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -136,8 +136,8 @@ Cohesion: 0.08
 Nodes (24): 1. Global Standards & Tooling Facts, 1. Hybrid Setup (API + Mobile), 2. Automation Strategy, 2. Expert Locators Fallback, 3. Screen Record on Failure, 4. Advanced Data Orchestration (Python Integration), 4. Mobile Expert Patterns & Gems, 5. Mobile Platform Differences (Android vs iOS) (+16 more)
 
 ### Community 19 - "design_system.py"
-Cohesion: 0.11
-Nodes (26): ansi_ljust(), _detect_page_type(), _filter_anti_patterns_for_mode(), format_ascii_box(), format_markdown(), format_master_md(), format_page_override_md(), generate_design_system() (+18 more)
+Cohesion: 0.12
+Nodes (24): ansi_ljust(), _detect_page_type(), format_ascii_box(), format_markdown(), format_master_md(), format_page_override_md(), generate_design_system(), _generate_intelligent_overrides() (+16 more)
 
 ### Community 20 - "Reasoning Engine: 4-Stage Design System Generation"
 Cohesion: 0.08
@@ -156,8 +156,8 @@ Cohesion: 0.20
 Nodes (20): _arch_key(), _bare(), bash_target(), decide_pre(), _drop_data_heredocs(), find_arch(), is_code_write(), main() (+12 more)
 
 ### Community 24 - ".generate"
-Cohesion: 0.14
-Nodes (11): DesignSystemGenerator, Generates design system recommendations from aggregated searches., Load reasoning rules from CSV., Execute searches across multiple domains., Find matching reasoning rule for a category., Apply reasoning rules to search results., Select best matching result based on priority keywords., Extract results list from search result dict. (+3 more)
+Cohesion: 0.12
+Nodes (13): DesignSystemGenerator, _filter_anti_patterns_for_mode(), Drop "avoid dark mode" advice once dark mode is the resolved answer., Generates design system recommendations from aggregated searches., Load reasoning rules from CSV., Execute searches across multiple domains., Find matching reasoning rule for a category., Apply reasoning rules to search results. (+5 more)
 
 ### Community 25 - "Web Frameworks"
 Cohesion: 0.10

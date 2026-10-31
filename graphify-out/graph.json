@@ -1670,7 +1670,7 @@
       "file_type": "code",
       "source_file": "hooks/test_graphify_guard.py",
       "source_location": "L1",
-      "end_line": 87,
+      "end_line": 88,
       "_origin": "ast",
       "id": "hooks_test_graphify_guard",
       "community": 181,
@@ -4448,7 +4448,7 @@
       "end_line": 179,
       "_origin": "ast",
       "id": "skills_uxui_designer_scripts_design_system_filter_anti_patterns_for_mode",
-      "community": 19,
+      "community": 24,
       "norm_label": "_filter_anti_patterns_for_mode()"
     },
     {
@@ -4759,7 +4759,7 @@
       "source_location": "L172",
       "_origin": "ast",
       "id": "skills_uxui_designer_scripts_design_system_rationale_172",
-      "community": 19,
+      "community": 24,
       "norm_label": "drop \"avoid dark mode\" advice once dark mode is the resolved answer."
     },
     {
@@ -53165,5 +53165,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "770846257a56ff3776e68704658457a0c529e1d5"
+  "built_at_commit": "2350c97f1787228b97b431af0ffa9cbd93f6072a"
 }

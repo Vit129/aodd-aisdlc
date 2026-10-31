@@ -74,6 +74,7 @@ assert g.changed_since_graph(proj) == ["a.py"]
 assert g.changed_since_graph(proj) == ["a.py"]                                  # docs and graphify-out never count
 calls = []
 g.run_update = lambda root: (calls.append(root) or (0, ""))                     # no real graphify in unit tests
+g.shutil.which = lambda name: "/fake/graphify" if name == "graphify" else None  # stub availability too
 out = g.decide_stop({"cwd": str(proj), "session_id": "s1"})
 assert calls == [proj] and "refreshed" in out["systemMessage"]
 assert g.decide_stop({"cwd": str(proj), "stop_hook_active": True}) is None and calls == [proj]

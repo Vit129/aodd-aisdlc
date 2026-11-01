@@ -1,0 +1,19 @@
+Makefile
+  s_5da5069f1fb275::t_d1bdaefc1877f4 1,8-11
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "97d8087947249dc71611859db44a53cfebc42dec",
+  "prompts": {},
+  "sessions": {
+    "s_5da5069f1fb275": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0575ed29-8a7f-4017-a825-daa5e6a56e4c",
+        "model": "claude-haiku-5-5"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

@@ -17,4 +17,12 @@ Verified (Codex CLI 0.154, live run in a throwaway `CODEX_HOME`, `codex exec --d
 - Codex may ask you to trust newly added hooks on first run.
 - Transcript detection, auditor selection, the auditor command, install and re-install: `scripts/test_audit.py`, `scripts/test_install.py`.
 
+## Running `codex exec` from an agent
+
+Always close stdin when the prompt is an argument: `codex exec ... "<prompt>" </dev/null`. When stdin is not a terminal, `codex exec` also reads it and appends it to the prompt as a `<stdin>` block (`codex exec --help`), so it waits for EOF. A background shell can hold stdin open forever, and the run then hangs before it starts.
+
+Seen with Codex CLI 0.166 on a background Bash call: 36 minutes at 0% CPU, stdin was an open unix socket (`lsof`), no new `~/.codex/sessions` file and no file changed. The same prompt with `</dev/null` finished in minutes. A prompt passed on stdin with `-` is fine once the writer closes it, as `scripts/audit.py` does.
+
+After starting any background agent, check it within a few minutes: a new session file or changed files. Do not wait for its completion notice alone.
+
 Limits: Codex tool errors are not counted by the skill-capture hook (they are not a nudge signal anyway); a file written by a shell command (not `apply_patch`) is not counted toward the done-gate "medium" file count, same as under Claude.

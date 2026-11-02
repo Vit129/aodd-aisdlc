@@ -79,6 +79,7 @@ Routing table: search with Haiku, check with Sonnet, escalate to the advisor.
 - **Big model keeps:** writing and changing code, debugging, design, plans, judgment, reviewing every Haiku result.
 - Tiers: **big model** = Fable/Opus/Sonnet (plans, judges, controls Haiku); **advisor** = Fable/Opus only (second opinion via the `advisor` subagent, never Sonnet/Haiku): Fable for more capability than the main model, Opus for a cold view not anchored on the transcript; at most two advisor calls per task before telling the CEO.
 - The subagent sees none of this conversation: pass it the facts it needs in the prompt.
+- A CLI agent started in the background (`codex exec`, and the like) gets `</dev/null` so it cannot hang waiting on stdin (`docs/codex.md`), and main checks within a few minutes that it is working: a new session file or changed files.
 
 ## Haiku ops runner
 

@@ -1,6 +1,6 @@
 ---
 name: chief-of-staff
-version: 0.1.2
+version: 0.1.3
 description: >
   AODD orchestrator ("Human as a judge"). Takes ONE brief from the user (CEO),
   dispatches it to the right skills/subagents (team leads), checks results against
@@ -11,7 +11,7 @@ description: >
 
 # Chief of Staff — one brief in, one report out
 
-Entered from the AODD triage in `rules/aodd.md`: **micro** (small logic fixes) = no brief question: state a one-line Done yourself, run the tests, check the diff against design docs/README, report in the step 4.2 shape; **light** (medium tasks) = steps 1-2 and 4, auditor included; **full** (large tasks) = everything. `hooks/done-gate.py` blocks Done without an auditor once a session edits 5+ files.
+Entered from the AODD triage in `rules/aodd.md`: **micro** (small logic fixes) = no brief question: state a one-line Done yourself, run the tests, check the diff against design docs/README, report in the step 4.2 shape; **light** (medium tasks) = steps 1-2 and 4; **full** (large tasks) = everything.
 
 **Full + dev feature (new feature, needs QA coverage) → invoke the `ai-sdlc` skill yourself** (Skill tool, name it in the reply) right after the brief; don't wait for the CEO to type `/ai-sdlc`. Research, finance, design-only or ops jobs stay plain full.
 
@@ -21,9 +21,9 @@ Entered from the AODD triage in `rules/aodd.md`: **micro** (small logic fixes) =
 - a bug that was "fixed" once and is still broken
 - behavior that crosses modules or processes (daemon ↔ app ↔ mobile)
 
-ai-sdlc then collapses by size: **small + hard** = Phase 2 in a few lines against the design docs → a failing (RED) test first → fix → audit (`scripts/audit.py`), no gates; **medium + hard** = the same plus one gate (CEO approves the plan before code); **large** = all 5 phases and 3 gates.
+ai-sdlc then collapses by size: **small + hard** = Phase 2 in a few lines against the design docs → a failing (RED) test first → fix → propose the audit, no gates; **medium + hard** = the same plus one gate (CEO approves the plan before code); **large** = all 5 phases and 3 gates.
 
-With `ai-sdlc` (invoked by you or by the CEO): the ai-sdlc phases ARE the dispatch plan. Phase 1 interview = step 1 (save `brief.md` next to the progress file), Phases 2-5 = step 2, the 3 approval gates are the CEO check-back points, and step 4 (auditor + report) closes the run.
+With `ai-sdlc` (invoked by you or by the CEO): the ai-sdlc phases ARE the dispatch plan. Phase 1 interview = step 1 (save `brief.md` next to the progress file), Phases 2-5 = step 2, the 3 approval gates are the CEO check-back points, and step 4 (report) closes the run.
 
 The CEO touches the work twice: the brief, and the final decision. Everything between is yours.
 
@@ -68,7 +68,7 @@ Spending money · anything sent to a customer or outside party (email, post, PR 
 
 ## 4. Check, then report
 
-0. Non-trivial job → ask the CEO whether to audit, with a one-line view of whether it is worth the tokens. On yes run `python3 scripts/audit.py` `--transcript <this session> --repo <repo> --claims "<Done claims>" --confirmed` before reporting; on no, say the CEO skipped it. It builds the brief from the CEO's own words + the diff, so do not write a brief for it; quote its verdict line and table as-is, never paraphrase a FAIL/DISPUTED.
+0. Audit on demand: the CEO asks, or you propose it in one line when a mistake would be expensive (`rules/aodd.md` § Audit and Done). On yes run `python3 scripts/audit.py` `--transcript <this session> --repo <repo> --claims "<Done claims>" --confirmed` before reporting. It builds the brief from the CEO's own words + the diff, so do not write a brief for it; quote its verdict line and table as-is, never paraphrase a FAIL/DISPUTED.
 1. Verify every output against "Done looks like" — evidence (test run, file, link), not claims. Fail → send back once with the specific gap.
 2. Report to the CEO in this shape:
    - **Result** — one line + links/paths

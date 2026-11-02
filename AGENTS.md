@@ -1,6 +1,6 @@
 # Working on aodd-aisdlc
 
-This repo is an installable package for Claude Code and OpenAI Codex: AODD (an operating contract where a human decides, cheap models do mechanics, and an independent cross-family auditor checks every "Done") plus ai-sdlc (a Dev/QA feature workflow with three approval gates). `./install.sh` copies it into an agent home; the files here are what gets installed. See `README.md`.
+This repo is an installable package for Claude Code and OpenAI Codex: AODD (an operating contract where a human decides, cheap models do mechanics, and an independent cross-family auditor checks the work on demand) plus ai-sdlc (a Dev/QA feature workflow with three approval gates). `./install.sh` copies it into an agent home; the files here are what gets installed. See `README.md`.
 
 ## Layout
 

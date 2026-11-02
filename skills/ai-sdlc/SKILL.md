@@ -15,8 +15,8 @@ Read `rules/ai-sdlc-workflow.md` (installed under your Claude home, `~/.claude/r
 - `hooks/done-gate.py` blocks stopping while that progress file still has `- [ ]` boxes,
   so keep checkboxes current as you go, not at the end.
 - Runs as `chief-of-staff` full: Phase 1 output is the brief (`$AODD_PLANS/<slug>/brief.md`),
-  each phase dispatches to its team, and the run ends with the `auditor` + the CEO report shape
-  (Result / Evidence / Needs your decision / Cost). `hooks/done-gate.py` blocks Done until the auditor ran.
+  each phase dispatches to its team, and the run ends with the audit question to the CEO + the CEO report shape
+  (Result / Evidence / Needs your decision / Cost). `hooks/done-gate.py` raises the audit question once.
 - Skill-by-situation routing: `references/skill-routing.md`.
 
 ## Read before each phase (memory dir from the `agent-memory` skill; open only matching sections)

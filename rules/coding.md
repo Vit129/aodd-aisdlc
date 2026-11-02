@@ -174,7 +174,7 @@ Each step names what to read or call next. **[hook]** means the step is enforced
 | 4. Place code | Logic vs UI vs Tests split (§6) & Anti-Monolith pattern (target 300–400 lines); structure work → blueprint | `rules/coding/project-blueprint.md`, `project-blueprint` skill |
 | 5. Domain skill | Web/mobile UI → `frontend-dev` (+ `uxui-designer` if no design tokens); API/DB → `backend-dev`; SwiftUI → `macos-swiftui`; bug → trace the failing path and falsify your hypothesis before fixing; auth/input/secrets → `security`; UI layout bug → `rules/gui-fixes.md` | the skill |
 | 6. Verify | Tests + the language's type/syntax checker; UI change → look at it in a browser/screenshot | `rules/coding/programming-language.md` |
-| 7. Review | Medium+: review the diff against the brief (an independent reviewer if available); tracked feature or 5+ files: `scripts/audit.py` (independent, cross-family) **[done-gate hook reads its verdict; only PASS allows Done]** | `rules/coding/review-report.md` |
+| 7. Review | Medium+: review the diff against the brief (an independent reviewer if available); tracked feature or 5+ files: ask the CEO, then `scripts/audit.py --confirmed` on yes (independent, cross-family) **[done-gate hook raises the question and reads any verdict]** | `rules/coding/review-report.md` |
 | 8. Close | Tick progress boxes **[done-gate hook]**, skill patch **[skill-capture-nudge hook, at 20+ tool calls with a learning signal]**, graph refresh if used | `docs/skill-learning.md` |
 
 - **Read before write:** understand existing code before modifying it.

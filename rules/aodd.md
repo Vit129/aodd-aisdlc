@@ -72,6 +72,7 @@ Routing table: search with Haiku, check with Sonnet, escalate to the advisor.
 
 "Check it" is never skipped: a Haiku result is input, not a conclusion. Go to step 3 only with a curated brief (decision, options, constraints, evidence); the advisor sees none of the conversation.
 
+- **When not to delegate:** one command with short output, one lookup, or a file main must read anyway: main does it. A helper starts cold and re-reads, so the hand-off can cost more than the job.
 - **Default: anything that is not writing/reasoning about code goes to Haiku** (`Agent(model: "haiku", effort: "medium")`; `effort: "high"` when the result feeds a decision). This includes: run a dev server / build / test / lint and report, verify a result, summarize logs/files/transcripts, classify/extract facts, scheduled jobs (`claude -p --model haiku`), running an already-approved deploy and reporting. Several in parallel when independent.
 - **Big data stays out of main context:** any ingest, scrape, PDF/HTML dump or data extract over ~300 lines or 40KB goes to a Haiku subagent, or is parsed with a local script that prints a short structured summary. Main never reads the raw dump.
 - **Code lookup is Haiku too:** "which file holds X, who calls Y" is lookup, not reasoning. Haiku returns file paths + edges only; then the big model reads in full every file it will edit, debug or review.
@@ -96,6 +97,6 @@ How main dispatches: numbered steps, one Bash call per git step, STOP on a failu
 
 ## Audit and Done
 
-- Only Medium+ work is audited: a tracked feature, or one task that edits 5+ deliverable files (scratch and memory files don't count; after an audit, only files edited since it count, so a small follow-up needs none). Run `python3 scripts/audit.py --transcript <session.jsonl> --repo <repo> --claims "<Done claims>"`; name in the claims any item the CEO deferred. The worker never writes the auditor's brief and never edits its verdict. `hooks/done-gate.py` enforces it, and puts a non-PASS verdict to the worker once per report.
+- Only Medium+ work is audited: a tracked feature, or one task that edits 5+ deliverable files (scratch and memory files don't count; after an audit, only files edited since it count, so a small follow-up needs none). The audit spends tokens on other models and is not always needed, so ask the CEO first, with a one-line view of whether it is worth it here; never run it without their yes. On yes run `python3 scripts/audit.py --transcript <session.jsonl> --repo <repo> --claims "<Done claims>" --confirmed`; on no report Done and say the CEO skipped the audit. Name in the claims any item the CEO deferred. The worker never writes the auditor's brief and never edits its verdict. `hooks/done-gate.py` raises the question once per piece of work, and puts a non-PASS verdict to the worker once per report.
 - A FAIL or DISPUTED verdict is reported to the CEO as it is, with the report's table. Never paraphrase it away.
 - Lessons from the work are patched into the skill that governs it (`docs/skill-learning.md`), not into a loose notes file.

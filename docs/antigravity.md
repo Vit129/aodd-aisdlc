@@ -17,7 +17,7 @@ The adapter translates Antigravity lifecycle events to the payload format expect
 - **`PreToolUse`**: Maps Antigravity tool names to standard names (`run_command` -> `Bash`, `view_file` -> `Read`, `write_to_file` -> `Write`, `replace_file_content` -> `Edit`). When an auditor run is active (`AODD_AUDITOR=1`), `auditor-readonly.py` blocks write operations with `{"decision": "deny"}`.
 - **`PostToolUse`**: Records tool executions for post-tool hooks (such as `coding-rules-gate.py` if installed).
 - **`Stop`**:
-  - `done-gate.py`: Scans Antigravity transcript tool calls. If a progress file (`ai-sdlc-task-progress.md`) was touched and still has open `[ ]` tasks, or if 5+ files were edited without an independent audit report, it blocks turn completion with `{"decision": "continue"}`.
+  - `done-gate.py`: Scans Antigravity transcript tool calls. If a progress file (`ai-sdlc-task-progress.md`) was touched and still has open `[ ]` tasks, or if 5+ files were edited without an independent audit report (to ask the user once whether to audit), it blocks turn completion with `{"decision": "continue"}`.
   - `skill-capture-nudge.py`: Scans the session transcript for learning signals (user corrections or fix commits). If >= 20 tool calls have run since the last nudge, it guides the model to file an `agy-proposal` with evidence before stopping.
 - **Fail-open**: If any hook module is missing from the installed hooks directory or encounters an error, the adapter allows execution to proceed normally (`{"decision": "allow"}`).
 

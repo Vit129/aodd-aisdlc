@@ -8,6 +8,8 @@ All boxes ticked but no audit report for this session -> block once too:
 a tracked feature is the AODD "large" size, and its Done must be audited before
 the CEO sees it (skills/chief-of-staff step 4.0). Same for AODD "medium": the session
 edited MEDIUM_FILES+ distinct files (Edit/Write/MultiEdit, Codex apply_patch) with no auditor -> block once.
+The block asks the worker to put the audit to the user: it costs tokens and may not be needed, so it runs only on
+the user's yes. A no is a valid answer, so these asks fire once per piece of work.
 "Audited" = scripts/audit.py wrote $AODD_REPORTS/audit-*-<sid8>.md for this session
 (the worker never picks the auditor's brief or relays its verdict). verdict FAIL/UNVERIFIABLE -> block:
 the CEO must hear it failed. Disable with DONE_GATE_AUDIT=0.
@@ -125,7 +127,13 @@ def medium_asked(transcript: Path, report, n: int) -> bool:
 
 
 AUDIT_SCRIPT = Path(__file__).resolve().parent.parent / "scripts" / "audit.py"
-AUDIT_CMD = "python3 " + str(AUDIT_SCRIPT) + " --transcript {t} --repo <repo> --claims \"<your Done claims>\""
+AUDIT_CMD = "python3 " + str(AUDIT_SCRIPT) + " --transcript {t} --repo <repo> --claims \"<your Done claims>\" --confirmed"
+
+
+def audit_ask(transcript) -> str:
+    return ("Ask the user whether to run the independent audit (it spends tokens on other models), with your one-line view of "
+            "whether it is worth it here. Do not run it without their yes. Yes: run " + AUDIT_CMD.format(t=transcript) +
+            " and put its table in your report. No: report Done and say the audit was skipped by the user.")
 
 
 def decide(payload: dict, reports: Path = REPORTS):
@@ -151,13 +159,11 @@ def decide(payload: dict, reports: Path = REPORTS):
                 "failed rows and re-run the audit, or tell the user plainly it is " + ("DISPUTED (the other-family auditor found a failure the "
                 "verifier rejected: the CEO decides)" if verdict == "DISPUTED" else "FAILED") + ", quoting the report's table.")
     if not open_items:
-        if paths and not audited and audit_on:
+        if paths and not audited and audit_on and not medium_asked(transcript, report, len(edited)):
             return ("[done-gate] Every box is ticked in " + ", ".join(map(str, paths)) + " but no independent audit ran for this "
-                    "session. Before reporting Done, run: " + AUDIT_CMD.format(t=transcript) + " and put its table in your report.")
+                    "session. " + audit_ask(transcript))
         if not paths and audit_on and len(edited) >= MEDIUM_FILES and not medium_asked(transcript, report, len(edited)):
-            return (f"[done-gate] This session edited {len(edited)} files (AODD medium+) and no independent audit ran. Before "
-                    "reporting Done, run: " + AUDIT_CMD.format(t=transcript) + " and put its table in your report. "
-                    "Trivial wording/color edits: say so in one line instead.")
+            return (f"[done-gate] This session edited {len(edited)} files (AODD medium+) and no independent audit ran. " + audit_ask(transcript))
         return None
     shown = "\n".join(open_items[:8])
     return ("[done-gate] Progress file(s) touched this session still have unchecked items:\n" + shown +

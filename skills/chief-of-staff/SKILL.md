@@ -1,6 +1,6 @@
 ---
 name: chief-of-staff
-version: 0.1.1
+version: 0.1.2
 description: >
   AODD orchestrator ("Human as a judge"). Takes ONE brief from the user (CEO),
   dispatches it to the right skills/subagents (team leads), checks results against
@@ -54,7 +54,10 @@ Save it as `$AODD_PLANS/<feature>/brief.md` when the work spans sessions.
 | Experts | `advisor` subagent |
 | Agent Ops | `agent-ops` skill (monthly) |
 
-- Independent pieces → parallel subagents; mechanical pieces → Haiku (see `rules/aodd.md` Cheap-model delegation).
+- Default is one agent. Split only when one holds: (a) the pieces run in parallel without needing each other's results AND speed is worth the extra tokens; (b) the data would flood the main context; (c) you have seen quality drop here (wrong tools, instructions contradicting), not just a long chat. A team buys speed, not judgment. Independent checks (audit, advisor) are exempt: their point is independence.
+- Subagents building separate parts agree the shared interface first; work breaks at the hand-off.
+- An extra reviewer must differ from the existing ones in model or lens (for example, from the requirement rather than the diff). More copies of the same reviewer share its blind spots.
+- Mechanical pieces → Haiku (see `rules/aodd.md` Cheap-model delegation).
 - Each subagent gets a mini-brief (goal, done, scope, limits) — it sees none of this conversation.
 - Cross-team handoff goes through a file (`$AODD_PLANS/<feature>/handoff.md`), not through your memory.
 - No skill fits → do it yourself; propose a new team only if the same gap shows up again (add teams when work needs them, not to fill the chart).
@@ -65,7 +68,7 @@ Spending money · anything sent to a customer or outside party (email, post, PR 
 
 ## 4. Check, then report
 
-0. Non-trivial job → run `python3 scripts/audit.py` `--transcript <this session> --repo <repo> --claims "<Done claims>"` before reporting. It builds the brief from the CEO's own words + the diff, so do not write a brief for it; quote its verdict line and table as-is, never paraphrase a FAIL/DISPUTED.
+0. Non-trivial job → ask the CEO whether to audit, with a one-line view of whether it is worth the tokens. On yes run `python3 scripts/audit.py` `--transcript <this session> --repo <repo> --claims "<Done claims>" --confirmed` before reporting; on no, say the CEO skipped it. It builds the brief from the CEO's own words + the diff, so do not write a brief for it; quote its verdict line and table as-is, never paraphrase a FAIL/DISPUTED.
 1. Verify every output against "Done looks like" — evidence (test run, file, link), not claims. Fail → send back once with the specific gap.
 2. Report to the CEO in this shape:
    - **Result** — one line + links/paths

@@ -15,13 +15,13 @@ tracking), `dev-qa-handoff.md` (dev↔QA handoff), `ai-sdlc-workflow-guide.md`
 | Dev Lead | Phase 2 dev half (design, Existing Asset Scan), Phase 4; dispatches stack-specific skills if you have them, mechanical pieces to Haiku | Writing scenarios; declaring QA pass | Phase 2: Dev design subagent; Phase 4: the implementation subagent | Phase 5 failures sent back to Phase 4 |
 | QA Lead | Phase 2 QA half, Phase 3 (RED), Phase 5 (GREEN sign-off); dispatches your scenario, test-framework and performance skills if you have them | Patching product code to make a test pass | Phase 2: QA design subagent | Defects found after Phase 5 sign-off |
 | Reviewer | Built-in `/code-review` on the Phase 4 diff before Phase 5 | — | — | — |
-| Auditor | `scripts/audit.py` after Phase 5 (cross-family, writes its own report): re-checks evidence vs. the brief, reports to the CEO | Fixing | — | Defects after audit PASS |
+| Auditor | `scripts/audit.py` after Phase 5 when the CEO says yes (cross-family, writes its own report): re-checks evidence vs. the brief, reports to the CEO | Fixing | — | Defects after audit PASS |
 
 Each role follows the same SOP: read brief + progress file → ask once, everything at once → do →
 check vs. Definition of Done → hand back to the next owner via the progress/handoff file → leave the record (checkbox).
 
 **Subagents: many eyes for design, one pair of hands for code.**
-- **Phase 2 design (Requirement path):** two subagents in parallel, so the views stay independent and the phase stays fast. Dev: structure, file separation, reuse, stack, the invariants that must always hold. QA: failure modes, edge and boundary cases, security boundaries (where untrusted input enters), mocks, testability. The main thread merges both into one plan (plan mode, or a plan file in `$AODD_PLANS/[FEATURE]/`). Logic and UX/UI paths: the main thread designs alone.
+- **Phase 2 design (Requirement path):** two subagents in parallel, so the views stay independent and the phase stays fast. Dev: structure, file separation, reuse, stack, the invariants that must always hold. QA: failure modes, edge and boundary cases, security boundaries (where untrusted input enters), mocks, testability. Both get the same brief. The main thread merges both into one plan, listing each conflict and how it was decided (plan mode, or a plan file in `$AODD_PLANS/[FEATURE]/`). Logic and UX/UI paths: the main thread designs alone.
 - **Phase 4 code:** one subagent by default, so no two agents write the same or a shared file. More than one only when the work splits into parts that touch disjoint files, each given an explicit scope (the files it may edit, the interface it must meet); shared files stay with one owner.
 
 **Documents: plan first, living docs after Gate 1.** Until Gate 1 everything stays in the plan; no repo doc or product code changes. After approval, write the durable decisions into four living docs at the repo root, one owner each, kept short:

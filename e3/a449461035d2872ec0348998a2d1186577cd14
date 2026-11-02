@@ -1,0 +1,21 @@
+docs/codex.md
+  s_c12c8fff08ec3b::t_1f3834b2b3cfdb 20-27
+rules/aodd.md
+  s_c12c8fff08ec3b::t_eb406b69f99eb1 82
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "e3a449461035d2872ec0348998a2d1186577cd14",
+  "prompts": {},
+  "sessions": {
+    "s_c12c8fff08ec3b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "s_c12c8fff08ec3b",
+        "model": "unknown"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

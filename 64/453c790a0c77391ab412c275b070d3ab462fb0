@@ -1,0 +1,21 @@
+scripts/test_audit.py
+  s_dced1fc0f145aa::t_1862df0680591a 63-64
+scripts/test_check_agy_proposal.py
+  s_dced1fc0f145aa::t_b9c5b844b01f0e 12-13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "64453c790a0c77391ab412c275b070d3ab462fb0",
+  "prompts": {},
+  "sessions": {
+    "s_dced1fc0f145aa": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a19a96-f439-7f11-a4f4-73f1b1080c5e",
+        "model": "gpt-6.1-terra"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

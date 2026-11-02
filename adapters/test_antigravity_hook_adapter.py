@@ -78,11 +78,10 @@ def test_done_gate_integration():
     assert res.get("decision") == "continue", f"expected continue, got {res}"
     assert "- [ ] task two" in res.get("reason", "")
 
-    # When all progress items checked but not audited -> still blocks for audit
+    # When all progress items checked but not audited -> allowed, audit is on demand
     prog_file.write_text("- [x] task one\n- [x] task two\n")
     res_aud = adapter.handle_stop(payload)
-    assert res_aud.get("decision") == "continue", f"expected continue, got {res_aud}"
-    assert "audit.py" in res_aud.get("reason", "")
+    assert res_aud.get("decision") != "continue", f"expected no block, got {res_aud}"
 
 
 # 3. Calls skill-capture-nudge on Antigravity transcript

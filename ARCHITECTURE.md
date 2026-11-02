@@ -1,6 +1,6 @@
 # Architecture
 
-aodd-aisdlc is an installable package for Claude Code and OpenAI Codex. AODD is the operating contract (a human decides, cheap models do the mechanics, an independent cross-family auditor checks every "Done"); ai-sdlc is the Dev/QA feature workflow with three approval gates. `./install.sh` copies the files into an agent home; the files in this repo are what gets installed.
+aodd-aisdlc is an installable package for Claude Code and OpenAI Codex. AODD is the operating contract (a human decides, cheap models do the mechanics, an independent cross-family auditor checks the work on demand); ai-sdlc is the Dev/QA feature workflow with three approval gates. `./install.sh` copies the files into an agent home; the files in this repo are what gets installed.
 
 ## Layout
 

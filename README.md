@@ -2,7 +2,7 @@
 
 Two things for Claude Code that work together:
 
-- **AODD** (AI Orchestration Driven Development): an operating contract. You are the CEO. The main agent is your chief of staff / orchestrator. Cheap models do the mechanics. An independent auditor from another model family checks every claim of "Done" before it reaches you.
+- **AODD** (AI Orchestration Driven Development): an operating contract. You are the CEO. The main agent is your chief of staff / orchestrator. Cheap models do the mechanics. An independent auditor from another model family checks the work when you ask, or when the agent proposes it for risky work.
 - **ai-sdlc**: a Dev/QA feature workflow. Interview, architect, QA design (tests RED), dev (GREEN), QA verify, with three real approval gates.
 
 ## The flow
@@ -14,7 +14,7 @@ you (CEO) ── one brief ──> chief-of-staff ──> ai-sdlc phases (large 
                        lookups, test runs               │
                                 └── Done claim ──> scripts/audit.py (other model family, read-only)
                                                           │
-                          hooks/done-gate.py asks the user about the audit, reports any non-PASS
+                          hooks/done-gate.py reports any non-PASS; audit runs on demand
                                                           │
                                   Result / Evidence / Needs your decision ──> you
 ```
@@ -30,7 +30,7 @@ Size decides ceremony (`rules/aodd.md`): small work is just done; medium work ge
 | `skills/chief-of-staff`, `skills/ai-sdlc` (+ `references/`), `skills/agent-ops` | orchestrator, workflow, monthly team review |
 | `skills/reverse-engineer-anything` | [REA](https://github.com/morluto/rea) skill for shipped binaries, Electron/JS apps, Android, firmware; the installer also runs `rea setup --client <claude_code, codex, antigravity> --yes` for each agent you install into (`rea` on PATH, else `npx -y rea-agents@6.8.0`, needs Node; `--dry-run` passes `--dry-run`). Later, no reinstall needed: `python3 scripts/rea_check.py` reports installed vs latest and `rea doctor` per agent, `--update` upgrades `rea-agents` and re-registers what is stale |
 | `agents/auditor.md`, `agents/advisor.md` | independent auditor, second-opinion expert |
-| `hooks/done-gate.py` | Stop hook: no "Done" with open checkboxes; asks the user whether to audit |
+| `hooks/done-gate.py` | Stop hook: no "Done" with open checkboxes; relays a non-PASS audit |
 | `hooks/auditor-readonly.py` | PreToolUse hook: an auditor run cannot write |
 | `hooks/skill-capture-nudge.py` | Stop/PostToolUse hook: turns a user correction or fix commit into a skill patch |
 | `hooks/secret-read-guard.py` | PreToolUse hook: secret files (`.env`, keys, configs with tokens) are never printed or edited by the agent; `--show <file>` gives a masked view |
@@ -152,7 +152,7 @@ Not included: cross-session full-text search (`session_search`) and the unified 
 
 ## How the audit works
 
-Every Medium+ Done claim is checked by an independent auditor that never sees the worker's argument (a different model: another family for Opus/Fable work, Opus for Sonnet/Haiku work); the brief is built from your own messages and the diff, and a FAIL or DISPUTED verdict goes to you as is. Details, auditor selection and the report format: [docs/audit.md](docs/audit.md).
+On your yes, the work is checked by an independent auditor that never sees the worker's argument (a different model: another family for Opus/Fable work, Opus for Sonnet/Haiku work); the brief is built from your own messages and the diff, and a FAIL or DISPUTED verdict goes to you as is. Details, auditor selection and the report format: [docs/audit.md](docs/audit.md).
 
 ## Skill capture (self-improving skills)
 

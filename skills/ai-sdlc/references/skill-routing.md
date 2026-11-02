@@ -31,5 +31,5 @@ do the step directly.
 | Session handoff to another agent/session | Write `$AODD_PLANS/[FEATURE]/handoff.md` (sibling of, not the same file as, `ai-sdlc-task-progress.md`; format in `references/ai-sdlc-progress-spec.md` § Resume protocol) |
 | Bug investigation | `9arm-skills:debug-mantra` (companion) |
 | Post-incident RCA | `9arm-skills:post-mortem` (companion) |
-| Independent audit of a "Done" claim | ask the CEO, then `python3 scripts/audit.py --confirmed` (never a worker-briefed subagent) |
+| Independent audit of a "Done" claim | on the CEO's yes, `python3 scripts/audit.py --confirmed` (never a worker-briefed subagent) |
 | Cross-provider second opinion or stuck investigation | The `agy` / `codex` Claude Code plugins if installed; brief with a curated summary, not the raw transcript |

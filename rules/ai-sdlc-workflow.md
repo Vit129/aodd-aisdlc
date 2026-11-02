@@ -15,7 +15,7 @@ tracking), `dev-qa-handoff.md` (dev↔QA handoff), `ai-sdlc-workflow-guide.md`
 | Dev Lead | Phase 2 dev half (design, Existing Asset Scan), Phase 4; dispatches stack-specific skills if you have them, mechanical pieces to Haiku | Writing scenarios; declaring QA pass | Phase 2: Dev design subagent; Phase 4: the implementation subagent | Phase 5 failures sent back to Phase 4 |
 | QA Lead | Phase 2 QA half, Phase 3 (RED), Phase 5 (GREEN sign-off); dispatches your scenario, test-framework and performance skills if you have them | Patching product code to make a test pass | Phase 2: QA design subagent | Defects found after Phase 5 sign-off |
 | Reviewer | Built-in `/code-review` on the Phase 4 diff before Phase 5 | — | — | — |
-| Auditor | `scripts/audit.py` after Phase 5 when the CEO says yes (cross-family, writes its own report): re-checks evidence vs. the brief, reports to the CEO | Fixing | — | Defects after audit PASS |
+| Auditor | `scripts/audit.py` after Phase 5 only on the CEO's yes, proposed when the work is risky (cross-family, writes its own report): re-checks evidence vs. the brief, reports to the CEO | Fixing | — | Defects after audit PASS |
 
 Each role follows the same SOP: read brief + progress file → ask once, everything at once → do →
 check vs. Definition of Done → hand back to the next owner via the progress/handoff file → leave the record (checkbox).

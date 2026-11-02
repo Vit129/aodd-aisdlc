@@ -4,28 +4,18 @@ still has unchecked boxes. Only checks progress files this session actually
 wrote to (so an unrelated old plan never blocks). Blocks at most once per
 stop cycle (stop_hook_active), fails open on any error.
 
-All boxes ticked but no audit report for this session -> block once too:
-a tracked feature is the AODD "large" size, and its Done must be audited before
-the CEO sees it (skills/chief-of-staff step 4.0). Same for AODD "medium": the session
-edited MEDIUM_FILES+ distinct files (Edit/Write/MultiEdit, Codex apply_patch) with no auditor -> block once.
-The block asks the worker to put the audit to the user: it costs tokens and may not be needed, so it runs only on
-the user's yes. A no is a valid answer, so these asks fire once per piece of work.
-"Audited" = scripts/audit.py wrote $AODD_REPORTS/audit-*-<sid8>.md for this session
-(the worker never picks the auditor's brief or relays its verdict). verdict FAIL/UNVERIFIABLE -> block:
-the CEO must hear it failed. Disable with DONE_GATE_AUDIT=0.
+The audit is on demand: the user asks for it, or the worker proposes it for risky work (rules/aodd.md),
+so this hook never asks for one. "Audited" = scripts/audit.py wrote $AODD_REPORTS/audit-*-<sid8>.md for this
+session. When a tracked or AODD "medium" session (MEDIUM_FILES+ files via Edit/Write/MultiEdit, Codex apply_patch;
+scratch files never count) has a FAIL/DISPUTED/UNVERIFIABLE verdict -> block once per report: the worker relays
+it, then may stop. Disable with DONE_GATE_AUDIT=0.
 
-"Medium" is per task, not per session: once an audit report exists, only files edited after it
-count, so small follow-ups after an audit don't re-trigger one. Scratch files (scratchpad, /tmp)
-never count. A non-PASS verdict blocks once per report: the worker relays it, then may stop.
-
-Known limit: "medium" = file count of the agent's own Edit/Write calls; edits made through Bash
-are not counted. Upgrade path: count files in `git diff --stat` of the session's repo."""
+Known limit: edits made through Bash are not counted."""
 import hashlib
 import json
 import os
 import re
 import sys
-from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -33,7 +23,7 @@ import _aodd_paths  # noqa: E402
 REPORTS = _aodd_paths.reports()
 VERDICT = re.compile(r"^verdict:\s*(\w+)", re.M)
 PROGRESS = re.compile(r"(ai-sdlc|dev|qa)-task-progress\.md$")
-MEDIUM_FILES = 5  # below this the micro/light self-check is enough
+MEDIUM_FILES = 5  # below this a non-PASS report does not gate
 NOT_WORK = re.compile(r"(/agent-memory[^/]*/|/memory/|/\.aodd/|/\.claude/plans/|/scratchpad/|^/tmp/|^/private/(tmp|var)/)")  # notes/scratch, not deliverables
 EDIT_TOOLS = {"Edit", "Write", "MultiEdit", "write_to_file", "replace_file_content", "multi_replace_file_content"}
 PATCH_FILE = re.compile(r"^\*\*\* (?:Add|Update|Delete) File: (.+?)\s*$", re.M)  # Codex apply_patch headers
@@ -110,32 +100,6 @@ def already_raised(transcript: Path, report: Path) -> bool:
     return False
 
 
-def medium_asked(transcript: Path, report, n: int) -> bool:
-    """True if the medium-audit ask was already made for this work; records it otherwise.
-    Asks again only after MEDIUM_FILES more files, or once a newer audit report starts a new task."""
-    mark = _aodd_paths.state() / f"done-gate-medium-{_aodd_paths.session_id(transcript)}"
-    key = report.name if report else "-"
-    try:
-        k, prev = mark.read_text().split(":")
-        if k == key and n < int(prev) + MEDIUM_FILES:
-            return True
-    except (OSError, ValueError):
-        pass
-    mark.parent.mkdir(parents=True, exist_ok=True)
-    mark.write_text(f"{key}:{n}")
-    return False
-
-
-AUDIT_SCRIPT = Path(__file__).resolve().parent.parent / "scripts" / "audit.py"
-AUDIT_CMD = "python3 " + str(AUDIT_SCRIPT) + " --transcript {t} --repo <repo> --claims \"<your Done claims>\" --confirmed"
-
-
-def audit_ask(transcript) -> str:
-    return ("Ask the user whether to run the independent audit (it spends tokens on other models), with your one-line view of "
-            "whether it is worth it here. Do not run it without their yes. Yes: run " + AUDIT_CMD.format(t=transcript) +
-            " and put its table in your report. No: report Done and say the audit was skipped by the user.")
-
-
 def decide(payload: dict, reports: Path = REPORTS):
     if payload.get("stop_hook_active"):
         return None
@@ -146,9 +110,6 @@ def decide(payload: dict, reports: Path = REPORTS):
     report, verdict = audit_report(transcript, reports)
     audited = report is not None
     medium_session = len(edited) >= MEDIUM_FILES
-    if audited:  # per task: only work done after the newest audit can call for another one
-        since = datetime.fromtimestamp(report.stat().st_mtime, timezone.utc).strftime("%Y-%m-%dT%H:%M:%S")
-        edited = {f: t for f, t in edited.items() if t[:19] > since}
     audit_on = os.environ.get("DONE_GATE_AUDIT") != "0"
     paths = [p for p in sorted(paths) if p.is_file()]
     open_items = []
@@ -159,11 +120,6 @@ def decide(payload: dict, reports: Path = REPORTS):
                 "failed rows and re-run the audit, or tell the user plainly it is " + ("DISPUTED (the other-family auditor found a failure the "
                 "verifier rejected: the CEO decides)" if verdict == "DISPUTED" else "FAILED") + ", quoting the report's table.")
     if not open_items:
-        if paths and not audited and audit_on and not medium_asked(transcript, report, len(edited)):
-            return ("[done-gate] Every box is ticked in " + ", ".join(map(str, paths)) + " but no independent audit ran for this "
-                    "session. " + audit_ask(transcript))
-        if not paths and audit_on and len(edited) >= MEDIUM_FILES and not medium_asked(transcript, report, len(edited)):
-            return (f"[done-gate] This session edited {len(edited)} files (AODD medium+) and no independent audit ran. " + audit_ask(transcript))
         return None
     shown = "\n".join(open_items[:8])
     return ("[done-gate] Progress file(s) touched this session still have unchecked items:\n" + shown +

@@ -2,7 +2,7 @@
 
 AODD = AI Orchestration Driven Development. The human is the CEO / judge; the main agent is the chief of
 staff / orchestrator; cheap models do the mechanics; an independent auditor, from another model family, checks
-every claim of Done. This file is the always-on contract. The full feature workflow lives in
+the work on demand. This file is the always-on contract. The full feature workflow lives in
 `rules/ai-sdlc-workflow.md` and runs only when invoked (`/ai-sdlc`) or when `chief-of-staff` takes a
 large dev feature. Coding principles live in `rules/coding.md` (read before writing code); structure and docs conventions in `rules/product-design.md`.
 
@@ -16,9 +16,9 @@ audit reports, agent-ops reports, agy proposals; decided ones in `done/`), `$AOD
 | Size | Signals | Do |
 |---|---|---|
 | Small | question, wording, color, typo, spacing | Just do it |
-| Small logic | 1-5 line fix or one clear bug that changes behavior | `chief-of-staff` micro: write a one-line Done yourself (no question to the CEO), run the tests, check the diff against the project's design docs/README, report Result / Evidence / Needs your decision. Hard (daemon/concurrency/security/network, another agent's unreviewed work, a re-broken fix, cross-module behavior) → `chief-of-staff` invokes `ai-sdlc` at Small size: design check, RED test first, fix, `auditor` |
-| Medium | multi-file change, needs 2+ skills, refactor, test suite | State the file separation plan first when the change adds or splits files (one file per concern, no monolith); `chief-of-staff` light: fill brief gaps in ONE question, dispatch, `auditor` before reporting (`hooks/done-gate.py` enforces at 5+ edited files) |
-| Large | new feature, needs QA coverage, "do it all and report back" | `chief-of-staff` full: brief, dispatch, `auditor` before reporting; a dev feature → `chief-of-staff` invokes `ai-sdlc` itself, which picks its path by what changes (logic, UX/UI, requirement); the Requirement path's 3 gates stay real stops |
+| Small logic | 1-5 line fix or one clear bug that changes behavior | `chief-of-staff` micro: write a one-line Done yourself (no question to the CEO), run the tests, check the diff against the project's design docs/README, report Result / Evidence / Needs your decision. Hard (daemon/concurrency/security/network, another agent's unreviewed work, a re-broken fix, cross-module behavior) → `chief-of-staff` invokes `ai-sdlc` at Small size: design check, RED test first, fix, propose the audit |
+| Medium | multi-file change, needs 2+ skills, refactor, test suite | State the file separation plan first when the change adds or splits files (one file per concern, no monolith); `chief-of-staff` light: fill brief gaps in ONE question, dispatch, self-check before reporting |
+| Large | new feature, needs QA coverage, "do it all and report back" | `chief-of-staff` full: brief, dispatch, self-check before reporting; a dev feature → `chief-of-staff` invokes `ai-sdlc` itself, which picks its path by what changes (logic, UX/UI, requirement); the Requirement path's 3 gates stay real stops |
 | Any size | spends money, reaches a customer/outside party, irreversible | Stop and ask the CEO first, always |
 
 When unsure between two sizes, pick the smaller (token overuse is the known failure mode).
@@ -97,6 +97,6 @@ How main dispatches: numbered steps, one Bash call per git step, STOP on a failu
 
 ## Audit and Done
 
-- Only Medium+ work is audited: a tracked feature, or one task that edits 5+ deliverable files (scratch and memory files don't count; after an audit, only files edited since it count, so a small follow-up needs none). The audit spends tokens on other models and is not always needed, so ask the CEO first, with a one-line view of whether it is worth it here; never run it without their yes. On yes run `python3 scripts/audit.py --transcript <session.jsonl> --repo <repo> --claims "<Done claims>" --confirmed`; on no report Done and say the CEO skipped the audit. Name in the claims any item the CEO deferred. The worker never writes the auditor's brief and never edits its verdict. `hooks/done-gate.py` raises the question once per piece of work, and puts a non-PASS verdict to the worker once per report.
+- The audit is on demand; most work needs none, whatever its size. Run it when the CEO asks. Propose it in one line, with why, only when a mistake would be expensive: security, production data or migration, concurrency, a release, another agent's unreviewed work. Never run it without the CEO's yes. On yes run `python3 scripts/audit.py --transcript <session.jsonl> --repo <repo> --claims "<Done claims>" --confirmed`; on no just report. Name in the claims any item the CEO deferred. The worker never writes the auditor's brief and never edits its verdict. `hooks/done-gate.py` puts a non-PASS verdict to the worker once per report.
 - A FAIL or DISPUTED verdict is reported to the CEO as it is, with the report's table. Never paraphrase it away.
 - Lessons from the work are patched into the skill that governs it (`docs/skill-learning.md`), not into a loose notes file.

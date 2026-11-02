@@ -77,12 +77,14 @@ a.REPORTS = d / "reports"
 a.CODEX = sys.executable  # an existing binary, so the codex path is taken
 a.run_model = lambda who, prompt, r: (calls.append((who, prompt)) or
                                       ("OVERALL: PASS" if who == "codex" else "OVERALL: FAIL\nOverturned codex rows: 1"))
-assert a.main(["--transcript", str(tr), "--repo", str(repo)]) == 1
+n = len(calls)
+assert a.main(["--transcript", str(tr), "--repo", str(repo)]) == 2 and len(calls) == n  # no user yes -> no model runs
+assert a.main(["--transcript", str(tr), "--repo", str(repo), "--confirmed"]) == 1
 assert "verdict: FAIL" in next((d / "reports").glob("audit-*-s.md")).read_text()
 calls.clear()
 a.run_model = lambda who, prompt, r: (calls.append((who, prompt)) or
                                       ("OVERALL: FAIL" if who == "codex" else "OVERALL: PASS\nOverturned codex rows: 1"))
-assert a.main(["--transcript", str(tr), "--repo", str(repo)]) == 1
+assert a.main(["--transcript", str(tr), "--repo", str(repo), "--confirmed"]) == 1
 assert [c[0] for c in calls] == ["codex", "claude-opus"] and "แก้ทุกข้อ" in calls[0][1]
 assert "OVERALL: FAIL" in calls[1][1]                               # verifier sees codex's audit
 rep = next(a.REPORTS.glob("audit-*-s.md")).read_text()
@@ -91,10 +93,10 @@ assert any("verdict: FAIL" in f.read_text() for f in (a.REPORTS / "done").glob("
 
 calls.clear()
 a.run_model = lambda who, prompt, r: ((repo / "f").write_text("tampered") and "OVERALL: PASS")
-assert a.main(["--transcript", str(tr), "--repo", str(repo), "--auditor", "claude-opus"]) == 1
+assert a.main(["--transcript", str(tr), "--repo", str(repo), "--confirmed", "--auditor", "claude-opus"]) == 1
 assert "Audit void" in next(a.REPORTS.glob("audit-*-s.md")).read_text()
 a.run_model = lambda who, prompt, r: ((a.REPORTS / "stray-x.md").write_text("x") and "OVERALL: PASS")
-assert a.main(["--transcript", str(tr), "--repo", str(repo), "--auditor", "claude-opus"]) == 1
+assert a.main(["--transcript", str(tr), "--repo", str(repo), "--confirmed", "--auditor", "claude-opus"]) == 1
 assert "stray-x.md" in next(a.REPORTS.glob("audit-*-s.md")).read_text()   # wrote outside the repo
 # codex not installed -> same-family Opus audits and the report says so
 for f in a.REPORTS.glob("audit-*"):
@@ -102,7 +104,7 @@ for f in a.REPORTS.glob("audit-*"):
 a.CODEX = "definitely-not-installed-codex"
 calls.clear()
 a.run_model = lambda who, prompt, r: (calls.append(who) or "OVERALL: PASS")
-assert a.main(["--transcript", str(tr), "--repo", str(repo)]) == 0
+assert a.main(["--transcript", str(tr), "--repo", str(repo), "--confirmed"]) == 0
 assert calls == ["claude-opus"]
 assert "auditor: claude-opus (codex not installed, same-family)" in next(a.REPORTS.glob("audit-*-s.md")).read_text()
 
@@ -112,7 +114,7 @@ for f in a.REPORTS.glob("audit-*"):
 a.CODEX = sys.executable
 calls.clear()
 a.run_model = lambda who, prompt, r: (calls.append(who) or ("OVERALL: FAIL" if who == "codex" else "OVERALL: PASS"))
-assert a.main(["--transcript", str(tr), "--repo", str(repo)]) == 1
+assert a.main(["--transcript", str(tr), "--repo", str(repo), "--confirmed"]) == 1
 assert calls == ["codex", "claude-opus"]
 rep = next(a.REPORTS.glob("audit-*-s.md")).read_text()
 assert "verdict: DISPUTED" in rep and "auditor: codex" in rep and "verifier: claude-opus" in rep and "codex's original audit" in rep
@@ -120,6 +122,6 @@ assert "verdict: DISPUTED" in rep and "auditor: codex" in rep and "verifier: cla
 tr.write_text("\n".join(map(json.dumps, crows)))
 calls.clear()
 a.run_model = lambda who, prompt, r: (calls.append(who) or "OVERALL: PASS")
-assert a.main(["--transcript", str(tr), "--repo", str(repo)]) == 0 and calls == ["claude-opus"]
+assert a.main(["--transcript", str(tr), "--repo", str(repo), "--confirmed"]) == 0 and calls == ["claude-opus"]
 assert "worker: codex" in next(a.REPORTS.glob("audit-*-s.md")).read_text()
 print("ok")

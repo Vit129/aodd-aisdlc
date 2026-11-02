@@ -14,7 +14,7 @@ you (CEO) ── one brief ──> chief-of-staff ──> ai-sdlc phases (large 
                        lookups, test runs               │
                                 └── Done claim ──> scripts/audit.py (other model family, read-only)
                                                           │
-                          hooks/done-gate.py blocks "Done" until the audit ran and passed
+                          hooks/done-gate.py asks the user about the audit, reports any non-PASS
                                                           │
                                   Result / Evidence / Needs your decision ──> you
 ```
@@ -30,7 +30,7 @@ Size decides ceremony (`rules/aodd.md`): small work is just done; medium work ge
 | `skills/chief-of-staff`, `skills/ai-sdlc` (+ `references/`), `skills/agent-ops` | orchestrator, workflow, monthly team review |
 | `skills/reverse-engineer-anything` | [REA](https://github.com/morluto/rea) skill for shipped binaries, Electron/JS apps, Android, firmware; the installer also runs `rea setup --client <claude_code, codex, antigravity> --yes` for each agent you install into (`rea` on PATH, else `npx -y rea-agents@6.8.0`, needs Node; `--dry-run` passes `--dry-run`). Later, no reinstall needed: `python3 scripts/rea_check.py` reports installed vs latest and `rea doctor` per agent, `--update` upgrades `rea-agents` and re-registers what is stale |
 | `agents/auditor.md`, `agents/advisor.md` | independent auditor, second-opinion expert |
-| `hooks/done-gate.py` | Stop hook: no "Done" with open checkboxes or without a passing audit |
+| `hooks/done-gate.py` | Stop hook: no "Done" with open checkboxes; asks the user whether to audit |
 | `hooks/auditor-readonly.py` | PreToolUse hook: an auditor run cannot write |
 | `hooks/skill-capture-nudge.py` | Stop/PostToolUse hook: turns a user correction or fix commit into a skill patch |
 | `hooks/secret-read-guard.py` | PreToolUse hook: secret files (`.env`, keys, configs with tokens) are never printed or edited by the agent; `--show <file>` gives a masked view |

@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Independent AODD audit: the worker never writes the brief, never sees the verdict first, never edits it.
 
-    python3 scripts/audit.py --transcript <session.jsonl> [--repo .] [--base <ref>] [--claims "..."]
+    python3 scripts/audit.py --transcript <session.jsonl> [--repo .] [--base <ref>] [--claims "..."] --confirmed
+
+--confirmed = the user said yes to running this audit in this session. It spends tokens on other models, so without it nothing runs.
 
 1. Brief is built here, not by the worker: the user's own messages (verbatim, from the transcript),
    the git log + diff of the session, and the worker's claims (labelled untrusted).
@@ -158,7 +160,11 @@ def main(argv=None) -> int:
     ap.add_argument("--base")
     ap.add_argument("--claims", default="")
     ap.add_argument("--auditor", choices=["codex", "claude-opus"], help="override the cross-family pick")
+    ap.add_argument("--confirmed", action="store_true", help="the user approved running this audit")
     a = ap.parse_args(argv)
+    if not a.confirmed:
+        print("audit: not run. Ask the user first; pass --confirmed only after they say yes.", file=sys.stderr)
+        return 2
     tr, repo = Path(a.transcript), Path(a.repo).resolve()
     if not tr.is_file():
         print(f"audit: transcript not found: {tr}", file=sys.stderr)

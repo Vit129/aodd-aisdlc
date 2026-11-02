@@ -17,10 +17,13 @@ prog.write_text("- [x] a\n- [ ] b\n")
 assert "- [ ] b" in decide()                                       # open item -> block
 assert decide(stop_hook_active=True) is None
 prog.write_text("- [x] a\n- [x] b\n")
-assert "audit.py" in decide()                                      # all done, not audited -> block
+msg = decide(); assert "audit.py" in msg and "--confirmed" in msg and "Ask the user" in msg  # all done, not audited -> ask
+assert decide() is None                                            # user may say no: asked once, no block loop
+unmark()
 sub = {"message": {"content": [{"type": "tool_use", "name": "Agent", "input": {"subagent_type": "auditor"}}]}}
 tr.write_text(tr.read_text() + "\n" + json.dumps(sub))
 assert "audit.py" in decide()                                      # a worker-briefed subagent no longer counts
+unmark()
 audit("PASS"); assert decide() is None                             # independent PASS -> allow
 (rep / "done").mkdir(); (rep / "audit-2000-01-01-abcdef12.md").rename(rep / "done/audit-2000-01-01-abcdef12.md")
 assert decide() is None                                            # PASS filed to done/ still counts (resumed session)

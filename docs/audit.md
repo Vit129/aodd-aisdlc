@@ -1,6 +1,8 @@
 # How the audit works
 
-`python3 scripts/audit.py --transcript <session.jsonl> --repo <repo> --claims "<your Done claims>"`
+`python3 scripts/audit.py --transcript <session.jsonl> --repo <repo> --claims "<your Done claims>" --confirmed`
+
+Ask the user first; without `--confirmed` nothing runs (exit 2). The flag records the worker's word, it does not prove the user said yes.
 
 1. **The worker never writes the brief.** `audit.py` builds it from the CEO's own messages (verbatim, from the transcript), the git log and diff of the session (including uncommitted and untracked files), and the worker's claims, labelled untrusted.
 2. **Cross-family auditor.** The auditor is a different model family than the worker:
@@ -21,8 +23,8 @@
 `hooks/done-gate.py` is a Stop hook. It blocks stopping once per stop cycle, and only for progress files this session wrote to:
 
 - a touched `ai-sdlc-task-progress.md` still has `- [ ]` boxes: finish them or say plainly the feature is not done;
-- every box is ticked but no audit report exists for this session: run `audit.py` first;
-- no progress file but the session edited 5 or more files (AODD medium): same audit requirement;
+- every box is ticked but no audit report exists for this session: ask the user once whether to run `audit.py`; a no is a valid answer;
+- no progress file but the session edited 5 or more files (AODD medium): same question;
 - the audit verdict is FAIL / UNVERIFIABLE / DISPUTED: report it to the CEO as it is.
 
 It fails open on any error. `DONE_GATE_AUDIT=0` disables the audit requirement.

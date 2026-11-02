@@ -1,0 +1,19 @@
+scripts/test_install.py
+  s_e6179c9ccbf2a7::t_3f6def58751456 12-13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "795290f3a67755b1e803d92d28eeaf634c50c8fc",
+  "prompts": {},
+  "sessions": {
+    "s_e6179c9ccbf2a7": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a19aa4-9c37-76f1-89ae-00e2bac255af",
+        "model": "gpt-6.1-terra"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

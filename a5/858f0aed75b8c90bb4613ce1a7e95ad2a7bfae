@@ -1,0 +1,29 @@
+skills/project-blueprint/SKILL.md
+  s_8976d1170c7b5f::t_e19d31e4f53d21 18-19,25
+  s_8976d1170c7b5f::t_b2ade9757b6950 8
+  s_8976d1170c7b5f::t_2e7762aa75033a 17
+rules/coding/project-blueprint.md
+  s_8976d1170c7b5f::t_e19d31e4f53d21 75-83
+  s_8976d1170c7b5f::t_b2ade9757b6950 36,133
+scripts/test_install.py
+  s_8976d1170c7b5f::t_2e7762aa75033a 42-43
+skills/project-blueprint/references/release-profiles.md
+  s_8976d1170c7b5f::t_e19d31e4f53d21 1-18,21-23,26-44
+  s_8976d1170c7b5f::t_2e7762aa75033a 19-20,24-25
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "a5858f0aed75b8c90bb4613ce1a7e95ad2a7bfae",
+  "prompts": {},
+  "sessions": {
+    "s_8976d1170c7b5f": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a18af1-d9e5-7001-b222-bb9ac941c9cb",
+        "model": "gpt-6-luna"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

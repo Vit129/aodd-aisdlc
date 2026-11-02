@@ -1,0 +1,48 @@
+docs/antigravity.md
+  s_221f8fb0a57fd8::t_bc2188d50fd959 20
+scripts/audit.py
+  s_221f8fb0a57fd8::t_bc2188d50fd959 4-6,163,165-167
+rules/ai-sdlc-workflow.md
+  s_221f8fb0a57fd8::t_bc2188d50fd959 18,24
+rules/coding.md
+  s_221f8fb0a57fd8::t_bc2188d50fd959 177
+skills/ai-sdlc/references/skill-routing.md
+  s_221f8fb0a57fd8::t_7ca3dcbc005bf8 34
+rules/aodd.md
+  s_221f8fb0a57fd8::t_bc2188d50fd959 75,100
+CONTEXT.md
+  s_221f8fb0a57fd8::t_bc2188d50fd959 12
+docs/audit.md
+  s_221f8fb0a57fd8::t_bc2188d50fd959 3-5,26-27
+skills/ai-sdlc/SKILL.md
+  s_221f8fb0a57fd8::t_bc2188d50fd959 18-19
+skills/chief-of-staff/SKILL.md
+  s_221f8fb0a57fd8::t_bc2188d50fd959 3,57-60,71
+hooks/done-gate.py
+  s_221f8fb0a57fd8::t_bc2188d50fd959 11-12,130-136,162,164,166
+README.md
+  s_221f8fb0a57fd8::t_bc2188d50fd959 17,33
+rules/coding/release.md
+  s_221f8fb0a57fd8::t_bc2188d50fd959 12-13
+scripts/test_audit.py
+  s_221f8fb0a57fd8::t_bc2188d50fd959 80-82,87,96,99,107,117,125
+hooks/test_done_gate.py
+  s_221f8fb0a57fd8::t_bc2188d50fd959 20-22
+  s_221f8fb0a57fd8::t_7ca3dcbc005bf8 26
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "8dc0bf7daa38ab6a89a495225653120a875cc62b",
+  "prompts": {},
+  "sessions": {
+    "s_221f8fb0a57fd8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f282a7e8-af62-4d0b-bf24-8b0b12ffc15d",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

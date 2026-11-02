@@ -9,7 +9,8 @@ T = Path(tempfile.mkdtemp())
 env = {k: v for k, v in os.environ.items() if not k.startswith("AODD_")}
 REA_LOG = T / "rea.log"                                                          # stub REA launcher: never npx/network
 (T / "rea").write_text(f'#!/bin/sh\necho "$@" >> "{REA_LOG}"\n'); (T / "rea").chmod(0o755)
-env.update(CLAUDE_HOME=str(T / "claude"), CODEX_HOME=str(T / "codex"), AODD_SCHEDULES_DRY_RUN="1", AODD_REA_CMD=str(T / "rea"))
+(T / "claude-cli").write_text('#!/bin/sh\nexit 0\n'); (T / "claude-cli").chmod(0o755)
+env.update(CLAUDE_HOME=str(T / "claude"), CODEX_HOME=str(T / "codex"), CLAUDE_BIN=str(T / "claude-cli"), AODD_SCHEDULES_DRY_RUN="1", AODD_REA_CMD=str(T / "rea"))
 
 
 def run(*flags, extra=None, home=None):

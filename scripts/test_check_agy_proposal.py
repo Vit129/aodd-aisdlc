@@ -9,7 +9,8 @@ spec.loader.exec_module(c)
 
 repo = Path(tempfile.mkdtemp())
 g = lambda *a: subprocess.run(["git", "-C", str(repo), *a], capture_output=True, text=True).stdout.strip()
-g("init", "-q", "-b", "main"); (repo / "f").write_text("1"); g("add", "."); g("-c", "core.hooksPath=/dev/null", "commit", "-qm", "fix")
+g("init", "-q", "-b", "main"); (repo / "f").write_text("1"); g("add", ".")
+subprocess.run(["git", "-C", str(repo), "-c", "user.name=Test", "-c", "user.email=test@example.invalid", "-c", "core.hooksPath=/dev/null", "commit", "-qm", "fix"], check=True, capture_output=True)
 sha = g("rev-parse", "--short", "HEAD")
 
 good = f"""# agy-proposal: x

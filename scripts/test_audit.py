@@ -60,7 +60,8 @@ assert a.combine("UNVERIFIABLE", "PASS") == "UNVERIFIABLE"
 # end to end with stub models: codex audits, opus verifies and overturns; repo change voids the audit
 repo = d / "r"; repo.mkdir()
 g = lambda *c: subprocess.run(["git", "-C", str(repo), *c], capture_output=True)
-g("init", "-q", "-b", "main"); (repo / "f").write_text("1"); g("add", "."); g("-c", "core.hooksPath=/dev/null", "commit", "-qm", "x")
+g("init", "-q", "-b", "main"); (repo / "f").write_text("1"); g("add", ".")
+g("-c", "user.name=Test", "-c", "user.email=test@example.invalid", "-c", "core.hooksPath=/dev/null", "commit", "-qm", "x").check_returncode()
 tr.write_text(json.dumps(rows[0]) + "\n" + json.dumps({"message": {"model": "claude-opus-5-5"}}))
 (repo / "new.py").write_text("print('new')\n")
 (repo / "f").write_text("x" * (a.MAX_DIFF + 5000))

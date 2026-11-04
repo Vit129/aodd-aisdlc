@@ -40,6 +40,8 @@ assert (T / "codex/AGENTS.md").read_text() == first
 hooks = json.loads((T / "codex/hooks.json").read_text())["hooks"]
 assert set(hooks) == {"Stop", "PreToolUse", "PostToolUse"} and len(hooks["Stop"]) == 5   # theirs + four of ours (graphify-guard, skill-capture, done-gate, work-log), once
 assert (T / "codex/skills/ai-sdlc/SKILL.md").is_file() and (T / "codex/agents/auditor.md").is_file()
+assert (T / "codex/skills/project-blueprint/references/release-profiles.md").is_file()
+assert (T / "claude/skills/project-blueprint/references/release-profiles.md").is_file()
 assert (T / "codex/hooks/done-gate.py").is_file() and (T / "claude/settings.json").is_file()   # --codex is in addition to the Claude install
 assert (T / "claude/skills/ai-sdlc/phases/phase1-interview.md").is_file() and not (T / "claude/rules/ai-sdlc").exists()   # phase files are on-demand: under the skill, never under rules/ (Claude Code auto-loads rules/)
 assert (T / "claude/hooks/_aodd_paths.py").is_file() and (T / "codex/hooks/_aodd_paths.py").is_file()   # the shared resolver rides along

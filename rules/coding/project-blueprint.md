@@ -33,7 +33,7 @@ constraints, not convenience.
 **MUST:** one dir = one role (§1) · dependency direction (§4) · no hardcoded colors/thresholds outside config (§6) ·
 secrets and runtime cache gitignored (§6) · **`tests/` exists, outside source (§1)** · framework's `<source-root>` name kept (§2) ·
 `README.md`, `.gitignore`, `ARCHITECTURE.md` at root (§2) · **project `.claude/settings*.json` never excludes the installed rules**
-(no `**/.claude/rules/**` in `claudeMdExcludes`; it silently drops them).
+(no `**/.claude/rules/**` in `claudeMdExcludes`; it silently drops them) · **publishable projects have a local release profile, entry point, and plan/retry test (§2.2)**.
 **STRONG:** size matches the file count (§3, including which size to start at) · `[layer]/[feature]` nesting inside a role dir (§3) ·
 no stray files at root (§2) · deterministic JSON (§6) · `CLAUDE.md`, `AGENTS.md`, `CONTEXT.md` present.
 **SHOULD:** canonical role names over aliases (§1) · `docs/` and `scripts/` exist · naming conventions (§5; root docs are UPPERCASE.md) ·
@@ -71,6 +71,15 @@ One entry point so neither a person nor an agent has to guess ports or chain com
 - **Three servers:** dev (hot reload), test (fixtures/mocks, its own port, what Playwright and QA run against), preview/prod build.
 - **Runner** (`npm start`, `make start`, `scripts/start.*`): an arrow-key menu for people (commit/push/merge, dev, test, release gate, release + deploy, showing the current and next versions) that also takes the choice as an argument or env var (`npm start 2`, `START_CHOICE=dev`, `--yes` / `CI` for no prompts), so agents and CI never hit the menu. Falls back to a numbered prompt when stdin is not a TTY.
 - **Desktop launcher (optional):** a double-click file (`.command` on macOS, `.bat` on Windows) that sets up the env, frees the port, starts the server, waits for a health check and opens the browser.
+
+### 2.2 Release and deployment scaffold (MUST for publishable projects)
+
+During a new-project scaffold, identify whether the project creates a versioned artifact or deploys to a production target. If yes, select a release profile from `skills/project-blueprint/references/release-profiles.md` and create project-local release tooling. If no, do not add a release script just for uniformity.
+
+- Add or adapt one project-local entry point (`scripts/release.*` or the existing runner), one project-local profile/config, and a test that exercises its plan/retry paths with fake commands. The script must call the project's own build, signing, packaging, and deployment tools; do not copy AODD's self-release script into a project.
+- Keep the shared release contract from the reference, while adapting version source, artifact, target, credentials, verification, and human approval gates to this project. A profile is a starting point, not permission to submit an app or publish externally.
+- Add a menu/CLI route to the release entry point when the project uses §2.1. Support a non-interactive invocation for agents and CI, and make dry-run the reviewable first step.
+- For an existing project, map its current workflow to a profile and preserve working project-specific behavior. Report gaps and make the smallest migration; do not replace its pipeline wholesale.
 
 ## 3. Source layout by size
 
@@ -121,7 +130,7 @@ logic: NO import of ui/integrations/features.  models, config: import nothing.
 
 Report each line as `PASS` / `FAIL` (MUST, or STRONG with nothing recorded) / `WARN` (SHOULD) / `ACCEPTED` (deviation recorded), with file evidence:
 1. §1 one home per role.  2. §2 root files; stray files (STRONG).  3. §3 size and nesting (STRONG).
-4. §4 no forbidden import.  5. `tests/` exists and sits outside source (always MUST; the only way to waive it is a recorded deviation).  6. §6 principles (including target file size ~300–400 lines and role separation).  7. Deviations section exists if any deviation is claimed.  8. `claudeMdExcludes` in the project's `.claude/settings*.json` does not match the installed `rules/**`.
+4. §4 no forbidden import.  5. `tests/` exists and sits outside source (always MUST; the only way to waive it is a recorded deviation).  6. §6 principles (including target file size ~300–400 lines and role separation).  7. Deviations section exists if any deviation is claimed.  8. `claudeMdExcludes` in the project's `.claude/settings*.json` does not match the installed `rules/**`.  9. If publishable, §2.2 release profile, local entry point, fake-command test, and retry/verification paths exist.
 
 ## 8. Not applicable
 

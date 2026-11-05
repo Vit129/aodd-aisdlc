@@ -1,0 +1,25 @@
+CHANGELOG.md
+  s_c6a0d69572236c::t_e017857b6f2d0a 6-10
+rules/aodd.md
+  s_c6a0d69572236c::t_5ef3e4fdfd16b6 58-59
+  s_c6a0d69572236c::t_0beae86521fc12 62-78,80
+  s_c6a0d69572236c::t_9375966351a02f 79
+skills/ai-sdlc/references/ai-sdlc-progress-spec.md
+  s_c6a0d69572236c::t_687f1d04659643 46
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "db318e13a17f1f71c23fd6755a2bd2ff5feda80d",
+  "prompts": {},
+  "sessions": {
+    "s_c6a0d69572236c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1ffb8ee6-1821-4ad9-960d-9625a28ba597",
+        "model": "claude-haiku-5-5"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

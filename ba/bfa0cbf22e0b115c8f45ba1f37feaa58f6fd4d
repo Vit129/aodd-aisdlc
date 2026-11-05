@@ -1,0 +1,32 @@
+rules/agy-codex-effort.md
+  s_c6a0d69572236c::t_2967c7f3be54af 1-17
+rules/claude-effort.md
+  s_c6a0d69572236c::t_fa3ff3d162c14c 16
+  s_c6a0d69572236c::t_604f62962a3c0a 1-15,17-22
+rules/aodd.md
+  s_c6a0d69572236c::t_9375966351a02f 77
+  s_c6a0d69572236c::t_2427dde3fe90e6 62
+  s_c6a0d69572236c::t_546039d17605c5 64
+  s_c6a0d69572236c::t_0beae86521fc12 60-61,63,65-76,78
+CHANGELOG.md
+  s_c6a0d69572236c::t_e017857b6f2d0a 6-8,11
+  s_c6a0d69572236c::t_65844aa60fd652 9-10
+skills/ai-sdlc/references/ai-sdlc-progress-spec.md
+  s_c6a0d69572236c::t_687f1d04659643 46
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "babfa0cbf22e0b115c8f45ba1f37feaa58f6fd4d",
+  "prompts": {},
+  "sessions": {
+    "s_c6a0d69572236c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1ffb8ee6-1821-4ad9-960d-9625a28ba597",
+        "model": "claude-haiku-5-5"
+      },
+      "human_author": null
+    }
+  }
+}

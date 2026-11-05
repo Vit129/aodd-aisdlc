@@ -57,6 +57,25 @@ No task is complete until the build passes and the relevant tests pass. If tests
 | Implementation of a ChatGPT design | **ChatGPT `luna`** at effort `medium` (default) or `high` (when the task failed twice or the design is hard to reverse); keeps working until the assigned task is finished: every acceptance check passes, or it reports one concrete blocker. It does not stop after a partial step. Main session reviews the diff before Done |
 | Bounded templated runs: one ingest, a ≤9-item research/decision batch, a single-script edit, data dumps, summaries | **Haiku** subagents, in parallel when independent; main checks the result, then Haiku commits/pushes (§ Haiku ops runner) |
 
+## Effort ladder and tier choice (every agent, every vendor)
+
+Five levels, shared by all vendors: `low` < `medium` < `high` < `xhigh` < `max`. Each vendor maps them to its own setting in its own file, loaded only where that tool is used: `rules/claude-effort.md` (Claude Code), `rules/agy-effort.md` (agy) and `rules/codex-effort.md` (Codex). A setup uses only the files for the tools it runs. ก่อน dispatch ไปหาเจ้าไหน ให้อ่านไฟล์ของเจ้านั้นก่อน (รวมถึง Claude: `rules/claude-effort.md`).
+
+- **Start:** the ticket's `Effort:` line. Without one, use the row's default above: `medium` for code and mechanical work, `high` for plans and design.
+- **Escalate:** 3 failing checks in a row raise the effort one level, capped at `high`.
+- **`xhigh` and `max` are never raised automatically.** They run only when a ticket says `Effort: xhigh` or `Effort: max`, or when the review stage of ai-sdlc requires `xhigh`.
+- **Still failing at `high`:** switch to another vendor family before raising further. The advisor rule still applies (at most two calls per task).
+- **A passing check** returns the task to its starting level.
+
+**A tier change is decided by measurement, not by guess.** Before a model or a default effort changes for a work type, run a bake-off:
+
+1. Pick 3–5 past tickets with known outcomes from `$AODD_PLANS`. Use the same tickets for every candidate.
+2. Run each candidate on them. Record the pass rate on the acceptance checks, the rework rounds, and the total tokens and cost (from `work-log`).
+3. Choose the higher pass rate when the costs are within 20% of each other. When the pass rates are equal, choose the cheaper one. (The 20% figure is a proposal and needs CEO confirmation.)
+4. Until a bake-off exists, keep the table default.
+
+Under this section, **Haiku still writes no code.** A Haiku row for code work needs a bake-off result, and changing the rule needs CEO approval. Anecdotal good results (a few tasks that came out correct) are not a bake-off. Any Haiku code trial runs with an explicit brief: the files it may touch, the acceptance checks it must pass, and "stop and report one blocker" instead of guessing. Main (or Sonnet) reviews every diff before it is counted.
+
 Main never reports a subagent's result as done without reviewing it. Deploys, writes to production data stores, PR merges and rewriting existing records always go back to the CEO first. A project's own workflow file may refine this split.
 
 ## Cheap-model delegation

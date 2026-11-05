@@ -3,6 +3,12 @@
 All notable changes to aodd-aisdlc are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and it follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [Unreleased]
+
+### Added
+- Shared effort ladder and bake-off rule in `rules/aodd.md`, per-ticket `Agent:` / `Model:` / `Effort:` lines in `ai-sdlc-progress-spec.md`
+- Vendor mappings in their own files: `rules/claude-effort.md` (Claude Code), `rules/agy-effort.md` (agy) and `rules/codex-effort.md` (Codex), each only where that tool is used
+
 ## [0.7.0] - 2026-10-30
 
 ### Added

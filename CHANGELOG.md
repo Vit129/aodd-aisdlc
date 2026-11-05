@@ -3,7 +3,7 @@
 All notable changes to aodd-aisdlc are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and it follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-## [Unreleased]
+## [0.8.0] - 2026-11-05
 
 ### Added
 - Shared effort ladder and bake-off rule in `rules/aodd.md`, per-ticket `Agent:` / `Model:` / `Effort:` lines in `ai-sdlc-progress-spec.md`

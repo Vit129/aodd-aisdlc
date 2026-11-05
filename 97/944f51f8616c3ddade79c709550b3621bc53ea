@@ -1,0 +1,35 @@
+CHANGELOG.md
+  s_c6a0d69572236c::t_b3570728adf1b3 10
+  s_c6a0d69572236c::t_e017857b6f2d0a 6-8,11
+  s_c6a0d69572236c::t_65844aa60fd652 9
+rules/agy-effort.md
+  s_c6a0d69572236c::t_e327542b34dfd8 1-16
+skills/ai-sdlc/references/ai-sdlc-progress-spec.md
+  s_c6a0d69572236c::t_687f1d04659643 46
+rules/codex-effort.md
+  s_c6a0d69572236c::t_daecc018c814dd 1-17
+rules/claude-effort.md
+  s_c6a0d69572236c::t_604f62962a3c0a 1-15,17-22
+  s_c6a0d69572236c::t_fa3ff3d162c14c 16
+rules/aodd.md
+  s_c6a0d69572236c::t_9375966351a02f 77
+  s_c6a0d69572236c::t_0beae86521fc12 60-61,63,65-76,78
+  s_c6a0d69572236c::t_546039d17605c5 64
+  s_c6a0d69572236c::t_03f834b9d3c7ea 62
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "97944f51f8616c3ddade79c709550b3621bc53ea",
+  "prompts": {},
+  "sessions": {
+    "s_c6a0d69572236c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1ffb8ee6-1821-4ad9-960d-9625a28ba597",
+        "model": "claude-haiku-5-5"
+      },
+      "human_author": null
+    }
+  }
+}

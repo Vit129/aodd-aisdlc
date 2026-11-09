@@ -8,7 +8,8 @@ description: >
   Triggers: "security", "OWASP", "auth test", "permission matrix", "injection",
   "secure coding", "security hardening", "security scenarios", security concern flagged during architecture/QA-design,
   "scan Docker image", "Trivy", "CodeQL", "secret detection", "Gitleaks", "SAST", "SCA", "security gate in pipeline", "shift-left security".
-version: 2.2.1
+version: 2.2.2
+last_improved: 2026-11-09
 ---
 
 # Security
@@ -34,6 +35,7 @@ version: 2.2.1
 - **Dev implementation:** `backend-dev` — RBAC, token management, validation-layer code the Dev half of this skill governs.
 - **QA automation:** `playwright-testing` / `robotframework-testing` — automate the auth/permission-matrix scenarios the QA half designs.
 - **Pre-merge audit:** a code review of the diff — run alongside this skill's own checklist for injection/auth/PII vectors.
+- **Full codebase audit or pen test:** pair this skill with `security-audit` (Cloudflare, MIT, install from `github.com/cloudflare/security-audit-skill`, folder `skills/security-audit`). It runs a multi-phase audit with verified, machine-readable findings; this skill stays the build-and-test rules. If it is not installed, run this skill's checklist and say a full audit was not run.
 
 ## When to Load This Skill
 

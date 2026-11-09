@@ -1,7 +1,7 @@
 # Graph Report - aodd-aisdlc  (2026-11-09)
 
 ## Corpus Check
-- 250 files · ~177,403 words
+- 250 files · ~177,414 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary

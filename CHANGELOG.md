@@ -3,6 +3,14 @@
 All notable changes to aodd-aisdlc are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and it follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+### Changed
+- Every file-changing request runs `ai-sdlc` (`rules/aodd.md`, `rules/ai-sdlc-workflow.md`): size picks the entry phase, but the testing and dev steps never skip; only a pure question is answered without the workflow
+- Every bug goes through the debugging skill (`9arm-skills:debug-mantra` when installed) before a fix, then the Logic path with a regression test first
+- Small triage row and `chief-of-staff` micro now point at the `ai-sdlc` Light / Logic paths instead of "just do it"; `CONTEXT.md` and `rules/coding.md` updated to match
+
 ## [0.8.0] - 2026-11-05
 
 ### Added

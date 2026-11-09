@@ -11,7 +11,7 @@ description: >
 
 # Chief of Staff — one brief in, one report out
 
-Entered from the AODD triage in `rules/aodd.md`: **micro** (small logic fixes) = no brief question: state a one-line Done yourself, run the tests, check the diff against design docs/README, report in the step 4.2 shape; **light** (medium tasks) = steps 1-2 and 4; **full** (large tasks) = everything.
+Entered from the AODD triage in `rules/aodd.md`: **micro** (small logic fixes) = no brief question; runs the `ai-sdlc` Logic path from Phase 3 (debugging skill first for a bug, RED test, fix to GREEN): state a one-line Done yourself, run the tests, check the diff against design docs/README, report in the step 4.2 shape; **light** (medium tasks) = steps 1-2 and 4; **full** (large tasks) = everything.
 
 **Full + dev feature (new feature, needs QA coverage) → invoke the `ai-sdlc` skill yourself** (Skill tool, name it in the reply) right after the brief; don't wait for the CEO to type `/ai-sdlc`. Research, finance, design-only or ops jobs stay plain full.
 

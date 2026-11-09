@@ -1,23 +1,23 @@
-# Graph Report - aodd-aisdlc  (2026-11-09)
+# Graph Report - always-sdlc  (2026-11-09)
 
 ## Corpus Check
-- 250 files · ~177,414 words
+- 249 files · ~177,738 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2455 nodes · 2642 edges · 242 communities (216 shown, 26 thin omitted)
+- 2452 nodes · 2640 edges · 243 communities (214 shown, 29 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 12 edges (avg confidence: 0.6)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `f939820d`
+- Built from commit: `1be95bc4`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## God Nodes (most connected - your core abstractions)
 1. `Fix Generated Playwright Files (Postman Migration)` - 33 edges
 2. `UX/UI Designer` - 21 edges
-3. `Changelog` - 17 edges
+3. `Changelog` - 18 edges
 4. `Browser Automation with playwright-cli` - 17 edges
 5. `Frontend Development` - 16 edges
 6. `AI-SDLC Progress Spec — Task Breakdown & Progress Tracking` - 15 edges
@@ -31,10 +31,10 @@ A high-degree node isn't always architecturally central - a widely-used
 utility/config file can rack up more edges than a real coupler while only
 ever touching one area. This ranks by how many DIFFERENT communities a
 node's neighbors span, not by raw edge count.
-1. `Changelog` - bridges 10 areas (17 edges)
-2. `Test generation (plan → generate → heal)` - bridges 3 areas (6 edges)
-3. `search()` - bridges 2 areas (10 edges)
-4. `generate_design_system()` - bridges 2 areas (8 edges)
+1. `Changelog` - bridges 11 areas (18 edges)
+2. `search()` - bridges 2 areas (10 edges)
+3. `generate_design_system()` - bridges 2 areas (8 edges)
+4. `Tracing` - bridges 2 areas (8 edges)
 5. `_resolve_color_mode()` - bridges 2 areas (5 edges)
 6. `_select_palette_for_mode()` - bridges 2 areas (4 edges)
 7. `Browser Automation with playwright-cli` - bridges 1 areas (17 edges)
@@ -57,11 +57,11 @@ node's neighbors span, not by raw edge count.
 ## Import Cycles
 - None detected.
 
-## Communities (242 total, 26 thin omitted)
+## Communities (243 total, 29 thin omitted)
 
 ### Community 0 - "_aodd_paths.py"
-Cohesion: 0.05
-Nodes (80): claude_home(), home(), memory(), memory_dirs(), plans(), project(), Path, Where AODD keeps its files. Standard library only; every variable is optional. (+72 more)
+Cohesion: 0.07
+Nodes (60): claude_home(), home(), memory(), memory_dirs(), plans(), project(), Path, Where AODD keeps its files. Standard library only; every variable is optional. (+52 more)
 
 ### Community 1 - "Fix Generated Playwright Files (Postman Migration)"
 Cohesion: 0.04
@@ -69,7 +69,7 @@ Nodes (47): 10. Request Body Types 📦, 11. Response Headers 📋, 12. Path Par
 
 ### Community 2 - "Changelog"
 Cohesion: 0.14
-Nodes (13): [0.1.0] - 2026-10-16, [0.3.1] - 2026-10-17, [0.3.3] - 2026-10-17, [0.5.0] - 2026-10-22, [0.6.2] - 2026-10-30, [0.8.0] - 2026-11-05, Added, Added (+5 more)
+Nodes (13): [0.1.0] - 2026-10-16, [0.3.3] - 2026-10-17, [0.5.0] - 2026-10-22, [0.7.0] - 2026-10-30, [0.8.0] - 2026-11-05, Added, Added, Added (+5 more)
 
 ### Community 3 - "SKILL.md"
 Cohesion: 0.05
@@ -144,8 +144,8 @@ Cohesion: 0.08
 Nodes (23): 161 Industry Rules, Accessibility Check (WCAG AA), BM25 Ranking, Deliverables, Example Flow, Five Search Domains, Input, Integration (+15 more)
 
 ### Community 21 - "3. Heal"
-Cohesion: 0.15
-Nodes (13): 0. How generation works, 3.1 Find failing tests, 3.2 Debug one failure, 3.3 Apply the fix, 3.4 Reconcile with the spec, 3.5 Iteration and giving up, 3. Heal, Add assertions manually (+5 more)
+Cohesion: 0.09
+Nodes (23): 0. How generation works, 1.1 Prerequisite: workspace, 1.2 Prerequisite: seed test, 1.3 Explore the app, 1.4 Write the spec file, 1. Planning, 2.1 Inputs, 2.2 Generate one scenario (+15 more)
 
 ### Community 22 - "The `study` Trigger — Extracting Design DNA from a Screenshot or URL"
 Cohesion: 0.09
@@ -267,17 +267,13 @@ Nodes (12): 1. `memory-curator`, 2. `memory-bootstrapper`, 3. `knowledge-promote
 Cohesion: 0.14
 Nodes (13): 0. Enforcement: three levels, no optional tier, 1. Roles (fixed vocabulary), 2.1 Project runner (MAY), 2.2 Release and deployment scaffold (MUST for publishable projects), 2. Root layout (every project), 3. Source layout by size, 4. Dependency direction, 5. Naming (+5 more)
 
-### Community 52 - "SKILL.md"
-Cohesion: 0.21
-Nodes (4): Examples, Inspecting Element Attributes, Debugging Playwright Tests, Running Playwright Tests
-
 ### Community 53 - "Running Custom Playwright Code"
 Cohesion: 0.15
 Nodes (13): Clipboard, Complex Workflows, Error Handling, File Downloads, Frames and Iframes, Geolocation, JavaScript Execution, Media Emulation (+5 more)
 
 ### Community 54 - "Tracing"
-Cohesion: 0.12
-Nodes (16): 1. Start Tracing Before the Problem, 2. Clean Up Old Traces, Analyzing Performance, Basic Usage, Best Practices, Capturing Evidence, Debugging Failed Actions, Limitations (+8 more)
+Cohesion: 0.17
+Nodes (12): 1. Start Tracing Before the Problem, 2. Clean Up Old Traces, Analyzing Performance, Basic Usage, Best Practices, Capturing Evidence, Debugging Failed Actions, Limitations (+4 more)
 
 ### Community 55 - "Accessibility Testing — Playwright + axe-core"
 Cohesion: 0.15
@@ -740,8 +736,8 @@ Cohesion: 0.40
 Nodes (5): [0.4.0] - 2026-10-22, Added, Changed, Documentation, Fixed
 
 ### Community 174 - "Trace Output Files"
-Cohesion: 0.40
-Nodes (4): Answer, Outcome, Q: commit push release graphify, Source Nodes
+Cohesion: 0.20
+Nodes (20): _arch_key(), _bare(), bash_target(), decide_pre(), _drop_data_heredocs(), find_arch(), is_code_write(), main() (+12 more)
 
 ### Community 175 - "Scheduled jobs (cron / launchd)"
 Cohesion: 0.50
@@ -811,18 +807,14 @@ Nodes (3): [0.3.5] - 2026-10-17, Documentation, Fixed
 Cohesion: 0.67
 Nodes (3): [0.6.0] - 2026-10-23, Added, Documentation
 
-### Community 240 - "Best Practices"
-Cohesion: 0.40
-Nodes (5): 1.1 Prerequisite: workspace, 1.2 Prerequisite: seed test, 1.3 Explore the app, 1.4 Write the spec file, 1. Planning
-
-### Community 241 - "2. Generate"
-Cohesion: 0.40
-Nodes (5): 2.1 Inputs, 2.2 Generate one scenario, 2.3 Generate multiple scenarios, 2.4 Run generated tests, 2. Generate
+### Community 237 - "[0.7.0] - 2026-10-30"
+Cohesion: 0.50
+Nodes (4): `resources/`, Trace Output Files, `trace-{timestamp}.network`, `trace-{timestamp}.trace`
 
 ## Knowledge Gaps
-- **1440 isolated node(s):** `name`, `pull_request`, `push`, `contents`, `check` (+1435 more)
+- **1438 isolated node(s):** `name`, `pull_request`, `push`, `contents`, `check` (+1433 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **26 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **29 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 - **15 possibly unreachable function(s):** `_size()`, `ask_model()`, `git()`, `housekeeping_scan()`, `job_agent_ops()` (+10 more)
   Not reached from any recognized entry point - could be dead code, or dynamically dispatched/decorator-registered.
 
@@ -836,9 +828,9 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `_get_bm25()` connect `core.py` to `BM25`?**
   _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **What connects `name`, `pull_request`, `push` to the rest of the system?**
-  _1534 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1532 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `_aodd_paths.py` be split into smaller, more focused modules?**
-  _Cohesion score 0.050156739811912224 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06648575305291723 - nodes in this community are weakly interconnected._
 - **Should `Fix Generated Playwright Files (Postman Migration)` be split into smaller, more focused modules?**
   _Cohesion score 0.041666666666666664 - nodes in this community are weakly interconnected._
 - **Should `Changelog` be split into smaller, more focused modules?**

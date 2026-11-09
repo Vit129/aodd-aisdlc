@@ -27,3 +27,7 @@ Other tools load these hooks by path, so the names are a contract. `hooks/test_p
 ## Structure deviations
 
 - §1 tests: tests sit next to each hook and script (`hooks/test_*.py`, `scripts/test_*.py`, `adapters/test_*.py`, `optional/*/hooks/test_*.py`) instead of a `tests/` directory. The installer copies hooks flat into the agent home, so a separate `tests/` tree would have to be excluded from every install. Revisit when `install.sh` can skip a test directory without special-casing.
+
+## Commit preparation
+
+`scripts/graphify_commit.py` provides synchronous refresh, tracked graph staging, and a prepared-index commit. The release runner reuses its preparation after version/changelog edits. Delivery and ai-sdlc use the same-commit contract for normal, docs, GREEN, and release commits. Refresh failure blocks commit/push; only the redundant Graphify post-commit hook is suppressed.

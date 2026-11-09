@@ -142,3 +142,5 @@ No mechanical hook enforces these — treat "the user hasn't objected" as differ
 ## Status
 
 Default route for new/unclear-scope Dev/QA feature work. Stack-specific coding skills (`backend-dev`, `frontend-dev`, `macos-swiftui`) and `rules/coding.md` still own coding conventions.
+
+**Commit preparation (normal and full cycle):** After final code/docs/version edits, await the repository Graphify refresh (`PYTHONHASHSEED=0`); failure stops commit/push. Stage tracked graph artifacts by explicit path with `git add --update` and include them in the same commit as those edits, including ai-sdlc docs/GREEN and release metadata commits. Do not create a separate graph-only commit or a post-commit background refresh. Preserve unrelated hooks and local query/cache outputs. See `skills/delivery-workflow/references/commit-push.md`.

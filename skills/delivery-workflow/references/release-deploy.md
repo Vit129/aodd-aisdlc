@@ -16,7 +16,7 @@ Before any version file changes, record the candidate: baseline, semver, build (
 
 ## 3. Validate the exact commit
 
-1. Prepare the metadata (version fields, build number, changelog, generated notes) and commit it as a local candidate commit. Stage explicit paths only.
+1. Prepare the metadata (version fields, build number, changelog, generated notes) then await Graphify and commit metadata plus tracked graph artifacts as one local candidate commit. Stop on refresh failure. Stage explicit paths only; see [commit-push.md](commit-push.md).
 2. Run the release gates on that exact commit: build, the test command the repo declares as its release gate, and any security or audit check the repo requires.
 3. A failed gate stops the publish. Keep the candidate. Fix the source and metadata, make a new local candidate commit, and rerun the affected gates. Do not roll back metadata and bump again.
 

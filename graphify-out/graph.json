@@ -6517,6 +6517,64 @@
       "norm_label": "proposals from other agents (evidence gate)"
     },
     {
+      "label": "query_20261109_014759_commit_push_release_graphify.md",
+      "file_type": "document",
+      "source_file": "graphify-out/memory/query_20261109_014759_commit_push_release_graphify.md",
+      "source_location": "L1",
+      "frontmatter": {
+        "type": "mcp_result",
+        "date": "2026-11-09T01:47:59.171865+00:00",
+        "question": "commit push release graphify",
+        "contributor": "graphify",
+        "outcome": "useful",
+        "source_nodes": "[\"commit-push.md\", \"Commit and Push\"]"
+      },
+      "_origin": "ast",
+      "id": "graphify_out_memory_query_20261109_014759_commit_push_release_graphify",
+      "community": 174,
+      "norm_label": "query_20261109_014759_commit_push_release_graphify.md"
+    },
+    {
+      "label": "Q: commit push release graphify",
+      "file_type": "document",
+      "source_file": "graphify-out/memory/query_20261109_014759_commit_push_release_graphify.md",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "graphify_out_memory_query_20261109_014759_commit_push_release_graphify_q_commit_push_release_graphify",
+      "community": 174,
+      "norm_label": "q: commit push release graphify"
+    },
+    {
+      "label": "Answer",
+      "file_type": "document",
+      "source_file": "graphify-out/memory/query_20261109_014759_commit_push_release_graphify.md",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "graphify_out_memory_query_20261109_014759_commit_push_release_graphify_answer",
+      "community": 174,
+      "norm_label": "answer"
+    },
+    {
+      "label": "Outcome",
+      "file_type": "document",
+      "source_file": "graphify-out/memory/query_20261109_014759_commit_push_release_graphify.md",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "graphify_out_memory_query_20261109_014759_commit_push_release_graphify_outcome",
+      "community": 174,
+      "norm_label": "outcome"
+    },
+    {
+      "label": "Source Nodes",
+      "file_type": "document",
+      "source_file": "graphify-out/memory/query_20261109_014759_commit_push_release_graphify.md",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "graphify_out_memory_query_20261109_014759_commit_push_release_graphify_source_nodes",
+      "community": 174,
+      "norm_label": "source nodes"
+    },
+    {
       "label": "SKILL.md",
       "file_type": "document",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
@@ -14062,7 +14120,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_request_mocking",
-      "community": 52,
+      "community": 122,
       "norm_label": "request-mocking.md"
     },
     {
@@ -14462,7 +14520,7 @@
       "source_location": "L195",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_session_management_best_practices",
-      "community": 240,
+      "community": 40,
       "norm_label": "best practices"
     },
     {
@@ -14472,7 +14530,7 @@
       "source_location": "L197",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_session_management_1_name_browser_sessions_semantically",
-      "community": 240,
+      "community": 40,
       "norm_label": "1. name browser sessions semantically"
     },
     {
@@ -14482,7 +14540,7 @@
       "source_location": "L208",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_session_management_2_always_clean_up",
-      "community": 240,
+      "community": 40,
       "norm_label": "2. always clean up"
     },
     {
@@ -14492,7 +14550,7 @@
       "source_location": "L222",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_session_management_3_delete_stale_browser_data",
-      "community": 240,
+      "community": 40,
       "norm_label": "3. delete stale browser data"
     },
     {
@@ -14932,7 +14990,7 @@
       "source_location": "L142",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_1_planning",
-      "community": 21,
+      "community": 240,
       "norm_label": "1. planning"
     },
     {
@@ -14942,7 +15000,7 @@
       "source_location": "L146",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_1_1_prerequisite_workspace",
-      "community": 21,
+      "community": 240,
       "norm_label": "1.1 prerequisite: workspace"
     },
     {
@@ -14952,7 +15010,7 @@
       "source_location": "L162",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_1_2_prerequisite_seed_test",
-      "community": 21,
+      "community": 240,
       "norm_label": "1.2 prerequisite: seed test"
     },
     {
@@ -14962,7 +15020,7 @@
       "source_location": "L203",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_1_3_explore_the_app",
-      "community": 21,
+      "community": 240,
       "norm_label": "1.3 explore the app"
     },
     {
@@ -14972,7 +15030,7 @@
       "source_location": "L234",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_1_4_write_the_spec_file",
-      "community": 21,
+      "community": 240,
       "norm_label": "1.4 write the spec file"
     },
     {
@@ -14982,7 +15040,7 @@
       "source_location": "L281",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_2_generate",
-      "community": 21,
+      "community": 241,
       "norm_label": "2. generate"
     },
     {
@@ -14992,7 +15050,7 @@
       "source_location": "L285",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_2_1_inputs",
-      "community": 21,
+      "community": 241,
       "norm_label": "2.1 inputs"
     },
     {
@@ -15002,7 +15060,7 @@
       "source_location": "L291",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_2_2_generate_one_scenario",
-      "community": 21,
+      "community": 241,
       "norm_label": "2.2 generate one scenario"
     },
     {
@@ -15012,7 +15070,7 @@
       "source_location": "L350",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_2_3_generate_multiple_scenarios",
-      "community": 21,
+      "community": 241,
       "norm_label": "2.3 generate multiple scenarios"
     },
     {
@@ -15022,7 +15080,7 @@
       "source_location": "L354",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_2_4_run_generated_tests",
-      "community": 21,
+      "community": 241,
       "norm_label": "2.4 run generated tests"
     },
     {
@@ -15132,7 +15190,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_trace_output_files",
-      "community": 174,
+      "community": 54,
       "norm_label": "trace output files"
     },
     {
@@ -15142,7 +15200,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_trace_timestamp_trace",
-      "community": 174,
+      "community": 54,
       "norm_label": "`trace-{timestamp}.trace`"
     },
     {
@@ -15152,7 +15210,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_trace_timestamp_network",
-      "community": 174,
+      "community": 54,
       "norm_label": "`trace-{timestamp}.network`"
     },
     {
@@ -15162,7 +15220,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_resources",
-      "community": 174,
+      "community": 54,
       "norm_label": "`resources/`"
     },
     {
@@ -19101,7 +19159,8 @@
         "Dev": "secure coding (OWASP prevention, input validation, auth patterns).",
         "QA": "security test scenario design + automation patterns (Playwright, RF).",
         "Triggers": "security\", \"OWASP\", \"auth test\", \"permission matrix\", \"injection\",",
-        "version": "2.2.1"
+        "version": "2.2.2",
+        "last_improved": "2026-11-09"
       },
       "_origin": "ast",
       "id": "skills_security_skill",
@@ -19112,7 +19171,7 @@
       "label": "Security",
       "file_type": "document",
       "source_file": "skills/security/SKILL.md",
-      "source_location": "L14",
+      "source_location": "L15",
       "_origin": "ast",
       "id": "skills_security_skill_security",
       "community": 124,
@@ -19122,7 +19181,7 @@
       "label": "Load",
       "file_type": "document",
       "source_file": "skills/security/SKILL.md",
-      "source_location": "L18",
+      "source_location": "L19",
       "_origin": "ast",
       "id": "skills_security_skill_load",
       "community": 124,
@@ -19132,7 +19191,7 @@
       "label": "Required Context",
       "file_type": "document",
       "source_file": "skills/security/SKILL.md",
-      "source_location": "L25",
+      "source_location": "L26",
       "_origin": "ast",
       "id": "skills_security_skill_required_context",
       "community": 124,
@@ -19142,7 +19201,7 @@
       "label": "Related Skills",
       "file_type": "document",
       "source_file": "skills/security/SKILL.md",
-      "source_location": "L32",
+      "source_location": "L33",
       "_origin": "ast",
       "id": "skills_security_skill_related_skills",
       "community": 124,
@@ -19152,7 +19211,7 @@
       "label": "When to Load This Skill",
       "file_type": "document",
       "source_file": "skills/security/SKILL.md",
-      "source_location": "L38",
+      "source_location": "L40",
       "_origin": "ast",
       "id": "skills_security_skill_when_to_load_this_skill",
       "community": 124,
@@ -19162,7 +19221,7 @@
       "label": "Secret handling in an agent session (verified)",
       "file_type": "document",
       "source_file": "skills/security/SKILL.md",
-      "source_location": "L49",
+      "source_location": "L51",
       "_origin": "ast",
       "id": "skills_security_skill_secret_handling_in_an_agent_session_verified",
       "community": 124,
@@ -19172,7 +19231,7 @@
       "label": "Self-Update (after every use)",
       "file_type": "document",
       "source_file": "skills/security/SKILL.md",
-      "source_location": "L55",
+      "source_location": "L57",
       "_origin": "ast",
       "id": "skills_security_skill_self_update_after_every_use",
       "community": 124,
@@ -35789,6 +35848,50 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "graphify-out/memory/query_20261109_014759_commit_push_release_graphify.md",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "graphify_out_memory_query_20261109_014759_commit_push_release_graphify",
+      "target": "graphify_out_memory_query_20261109_014759_commit_push_release_graphify_q_commit_push_release_graphify",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "graphify-out/memory/query_20261109_014759_commit_push_release_graphify.md",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "graphify_out_memory_query_20261109_014759_commit_push_release_graphify_q_commit_push_release_graphify",
+      "target": "graphify_out_memory_query_20261109_014759_commit_push_release_graphify_answer",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "graphify-out/memory/query_20261109_014759_commit_push_release_graphify.md",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "graphify_out_memory_query_20261109_014759_commit_push_release_graphify_q_commit_push_release_graphify",
+      "target": "graphify_out_memory_query_20261109_014759_commit_push_release_graphify_outcome",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "graphify-out/memory/query_20261109_014759_commit_push_release_graphify.md",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "graphify_out_memory_query_20261109_014759_commit_push_release_graphify_q_commit_push_release_graphify",
+      "target": "graphify_out_memory_query_20261109_014759_commit_push_release_graphify_source_nodes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
       "source_location": "L13",
       "weight": 1.0,
@@ -48363,7 +48466,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "skills/security/SKILL.md",
-      "source_location": "L14",
+      "source_location": "L15",
       "weight": 1.0,
       "_origin": "ast",
       "source": "skills_security_skill",
@@ -48374,7 +48477,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "skills/security/SKILL.md",
-      "source_location": "L18",
+      "source_location": "L19",
       "weight": 1.0,
       "_origin": "ast",
       "source": "skills_security_skill_security",
@@ -48385,7 +48488,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "skills/security/SKILL.md",
-      "source_location": "L32",
+      "source_location": "L33",
       "weight": 1.0,
       "_origin": "ast",
       "source": "skills_security_skill_security",
@@ -48396,7 +48499,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "skills/security/SKILL.md",
-      "source_location": "L25",
+      "source_location": "L26",
       "weight": 1.0,
       "_origin": "ast",
       "source": "skills_security_skill_security",
@@ -48407,7 +48510,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "skills/security/SKILL.md",
-      "source_location": "L49",
+      "source_location": "L51",
       "weight": 1.0,
       "_origin": "ast",
       "source": "skills_security_skill_security",
@@ -48418,7 +48521,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "skills/security/SKILL.md",
-      "source_location": "L55",
+      "source_location": "L57",
       "weight": 1.0,
       "_origin": "ast",
       "source": "skills_security_skill_security",
@@ -48429,7 +48532,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "skills/security/SKILL.md",
-      "source_location": "L38",
+      "source_location": "L40",
       "weight": 1.0,
       "_origin": "ast",
       "source": "skills_security_skill_security",
@@ -54510,5 +54613,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "106da5c9429a385ffad40e23aae46f1cfc49e60a"
+  "built_at_commit": "f939820d7ce426b6c0d2cc95437e5dc3d80e791f"
 }

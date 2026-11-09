@@ -1,16 +1,16 @@
 # Graph Report - aodd-aisdlc  (2026-11-09)
 
 ## Corpus Check
-- 250 files · ~178,152 words
+- 250 files · ~178,317 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2455 nodes · 2643 edges · 245 communities (215 shown, 30 thin omitted)
+- 2456 nodes · 2644 edges · 244 communities (216 shown, 28 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 12 edges (avg confidence: 0.6)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `1458b5a4`
+- Built from commit: `8247bfff`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -31,7 +31,7 @@ A high-degree node isn't always architecturally central - a widely-used
 utility/config file can rack up more edges than a real coupler while only
 ever touching one area. This ranks by how many DIFFERENT communities a
 node's neighbors span, not by raw edge count.
-1. `Changelog` - bridges 12 areas (18 edges)
+1. `Changelog` - bridges 11 areas (18 edges)
 2. `Test generation (plan → generate → heal)` - bridges 3 areas (6 edges)
 3. `search()` - bridges 2 areas (10 edges)
 4. `generate_design_system()` - bridges 2 areas (8 edges)
@@ -57,7 +57,7 @@ node's neighbors span, not by raw edge count.
 ## Import Cycles
 - None detected.
 
-## Communities (245 total, 30 thin omitted)
+## Communities (244 total, 28 thin omitted)
 
 ### Community 0 - "_aodd_paths.py"
 Cohesion: 0.07
@@ -68,8 +68,8 @@ Cohesion: 0.04
 Nodes (47): 10. Request Body Types 📦, 11. Response Headers 📋, 12. Path Parameters & Query Parameters 🔗, 13. Postman Dynamic Variables 🎲, 14. Folder-level Auth Inheritance 🔐, 15. Folder-level Pre-request Script → beforeAll / beforeEach 🔧, 16. Nested Folders → File Structure 📁, 17. Collection Runner + Data File (Data-Driven) 📊 (+39 more)
 
 ### Community 2 - "Changelog"
-Cohesion: 0.15
-Nodes (12): [0.1.0] - 2026-10-16, [0.3.3] - 2026-10-17, [0.3.4] - 2026-10-17, [0.5.0] - 2026-10-22, [0.8.0] - 2026-11-05, Added, Added, Changelog (+4 more)
+Cohesion: 0.14
+Nodes (13): [0.1.0] - 2026-10-16, [0.3.3] - 2026-10-17, [0.5.0] - 2026-10-22, [0.7.0] - 2026-10-30, [0.8.0] - 2026-11-05, Added, Added, Added (+5 more)
 
 ### Community 3 - "SKILL.md"
 Cohesion: 0.05
@@ -428,8 +428,8 @@ Cohesion: 0.20
 Nodes (9): Log Levels, Logging Standards — Backend (All Languages), Node.js — Winston, Platform Implementation, Python — structlog / logging, Request ID (Mandatory), Rules, Security Rules (+1 more)
 
 ### Community 92 - "Delivery Workflow"
-Cohesion: 0.20
-Nodes (10): Approval and external effects, Candidate and rollback, Delivery Workflow, Done means, Gates and failures, References, Required in every repo, Stages (+2 more)
+Cohesion: 0.18
+Nodes (11): Approval and external effects, Candidate and rollback, Delivery Workflow, Done means, Gates and failures, References, Required in every repo, Stages (+3 more)
 
 ### Community 93 - "Platform Implementation"
 Cohesion: 0.20
@@ -815,10 +815,14 @@ Nodes (5): 1.1 Prerequisite: workspace, 1.2 Prerequisite: seed test, 1.3 Explore
 Cohesion: 0.40
 Nodes (5): 2.1 Inputs, 2.2 Generate one scenario, 2.3 Generate multiple scenarios, 2.4 Run generated tests, 2. Generate
 
+### Community 243 - "[0.7.0] - 2026-10-30"
+Cohesion: 0.67
+Nodes (3): [0.3.4] - 2026-10-17, Documentation, Fixed
+
 ## Knowledge Gaps
-- **1439 isolated node(s):** `name`, `pull_request`, `push`, `contents`, `check` (+1434 more)
+- **1440 isolated node(s):** `name`, `pull_request`, `push`, `contents`, `check` (+1435 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **30 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **28 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 - **15 possibly unreachable function(s):** `_size()`, `ask_model()`, `git()`, `housekeeping_scan()`, `job_agent_ops()` (+10 more)
   Not reached from any recognized entry point - could be dead code, or dynamically dispatched/decorator-registered.
 
@@ -832,10 +836,10 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `_get_bm25()` connect `core.py` to `BM25`?**
   _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **What connects `name`, `pull_request`, `push` to the rest of the system?**
-  _1533 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1534 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `_aodd_paths.py` be split into smaller, more focused modules?**
   _Cohesion score 0.06648575305291723 - nodes in this community are weakly interconnected._
 - **Should `Fix Generated Playwright Files (Postman Migration)` be split into smaller, more focused modules?**
   _Cohesion score 0.041666666666666664 - nodes in this community are weakly interconnected._
-- **Should `SKILL.md` be split into smaller, more focused modules?**
-  _Cohesion score 0.05128205128205128 - nodes in this community are weakly interconnected._
+- **Should `Changelog` be split into smaller, more focused modules?**
+  _Cohesion score 0.14285714285714285 - nodes in this community are weakly interconnected._

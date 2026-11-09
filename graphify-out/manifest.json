@@ -305,8 +305,8 @@
     "semantic_hash": ""
   },
   "CHANGELOG.md": {
-    "mtime": 1794228562.1314573,
-    "ast_hash": "70270117a633fdb78a051964aa87f646",
+    "mtime": 1794230992.0106797,
+    "ast_hash": "6e8940c3c91c5c860105fafa2ee54c93",
     "semantic_hash": ""
   },
   "CLAUDE.md": {
@@ -620,8 +620,8 @@
     "semantic_hash": ""
   },
   "skills/delivery-workflow/SKILL.md": {
-    "mtime": 1794228498.619571,
-    "ast_hash": "af794559ac4f133783f4be0a9a2ced4d",
+    "mtime": 1794230975.312253,
+    "ast_hash": "fd66598bbeaba050d6b5ab12d76ed8b7",
     "semantic_hash": ""
   },
   "skills/delivery-workflow/references/commit-push.md": {
@@ -1245,7 +1245,7 @@
     "semantic_hash": ""
   },
   "skills/delivery-workflow/references/project-adapters.md": {
-    "mtime": 1794228549.522049,
+    "mtime": 1794230975.2514548,
     "ast_hash": "a855a8839adc89d51dcbcde7e61b97f3",
     "semantic_hash": ""
   }

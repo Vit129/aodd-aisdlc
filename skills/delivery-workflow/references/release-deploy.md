@@ -34,6 +34,7 @@ Before any version file changes, record the candidate: baseline, semver, build (
 2. Deploy the artifact built from the same commit as the candidate. Do not deploy a different commit under the same identity.
 3. A local app install or a service restart counts as production-like. Warn before any restart that stops running work, and get approval if the request did not clearly include it.
 4. Do not run an install that replaces the running app without a backup of the old one, unless the repo's install path makes one.
+5. After the deploy, run `git status --porcelain`; it must be empty. A predeploy hook that runs `npm install` rewrites a lockfile, and the next release then refuses the dirty tree. Use `npm ci` in deploy hooks (it never writes the lockfile).
 
 ## 6. Verify the live target
 

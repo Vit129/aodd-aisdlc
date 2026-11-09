@@ -40,12 +40,14 @@ implementation code — dev implements against a known RED state and drives it t
 GREEN, QA re-verifies GREEN at the end. TDD applied at the feature level, not just
 the unit level.
 
+**Every change runs this workflow; testing and dev always run.** Enter at the phase the work needs (Phase 1–2 only when scope or design is open), but no path skips its testing step or its dev step. A bug enters through the debugging skill (`9arm-skills:debug-mantra` when installed) before Phase 3.
+
 **Pick the path by what changes, not by size.** Every task, small or large, takes the path for the kind of change; only that path's phases run. A change can carry more than one kind (a new requirement with a new screen runs both). If it is not clear which kind it is, Phase 1 decides that first.
 
 | What changes | Path | Dev | QA | Gates | Living docs |
 |---|---|---|---|---|---|
-| Wording, typo, config value | Just do it | edit | existing tests still pass | — | — |
-| **Logic**: a bug, a rule inside an existing requirement, a refactor | TDD | Phase 4 unit loop: failing test first → GREEN → refactor; Existing Asset Scan when it adds a helper | a regression test that fails without the fix; the cases next to it (boundary, null, error path); callers in the blast radius still pass | — | `ARCHITECTURE.md` only if a seam or the data model changes |
+| Wording, typo, config value | Light | edit | run the existing tests and show they pass; a config value that changes behavior adds a test | — | — |
+| **Logic**: a bug, a rule inside an existing requirement, a refactor | TDD | bug: debugging skill first (reproduce, trace, falsify); then Phase 4 unit loop: failing test first → GREEN → refactor; Existing Asset Scan when it adds a helper | a regression test that fails without the fix; the cases next to it (boundary, null, error path); callers in the blast radius still pass | — | `ARCHITECTURE.md` only if a seam or the data model changes |
 | **UX/UI**: look, layout, an on-screen flow | Design | read `DESIGN.md` → change | look at every affected screen in a browser/screenshot (sizes, long text, dark mode); a Playwright test when a user flow changes | show the mock or screenshot first for a new screen | `DESIGN.md` |
 | **Requirement**: a new or changed capability, a rule users see, a new integration | Full | Phase 2 Dev subagent, Phase 4 | Phase 2 QA subagent (NFRs), Phase 3 scenarios RED, Phase 5 traceability + sign-off | Gates 1-3 | `PRODUCT.md`, `ARCHITECTURE.md`, `CONTEXT.md` (+ `DESIGN.md` with UI) |
 | Unclear which | Interview | Phase 1 resolves the kind, then the path above | | — | — |

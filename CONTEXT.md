@@ -5,7 +5,7 @@ Terms used across this repo, as defined by `rules/aodd.md` and `rules/ai-sdlc-wo
 - **AODD (AI Orchestration Driven Development):** the operating contract. The human is the CEO and judge; the main agent is the chief of staff; cheap models do the mechanics; an independent auditor from another model family checks every claim of Done.
 - **CEO / judge:** the human who approves plans, makes executive calls and decides on merges, deploys and irreversible actions.
 - **Chief of staff:** the main agent (or the `chief-of-staff` skill) that owns a brief end to end and reports one result.
-- **Triage size:** Small (just do it), Small logic (one-line fix with a micro Done), Medium (multi-file, audited), Large (new feature, audited, may invoke ai-sdlc). Unsure: pick the smaller size.
+- **Triage size:** Small (ai-sdlc Light path: edit + existing tests), Small logic (ai-sdlc Logic path from Phase 3, debugging skill first, micro Done), Medium (multi-file, audited), Large (new feature, audited, may invoke ai-sdlc). Unsure: pick the smaller size.
 - **Auditor:** the independent `auditor` agent that re-checks the evidence for a Done claim. Only Medium+ work is audited. Its FAIL or DISPUTED verdict is reported as it is.
 - **Advisor:** the second-opinion agent (Fable or Opus) for a hard or irreversible decision.
 - **ai-sdlc:** the full Dev/QA feature workflow with three approval gates. A gate is passed only on an explicit answer, never on silent consent.

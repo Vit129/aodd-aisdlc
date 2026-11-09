@@ -169,7 +169,7 @@ Each step names what to read or call next. **[hook]** means the step is enforced
 | Step | Do | Read / call |
 |---|---|---|
 | 1. Orient | Project root `ARCHITECTURE.md`, `CONTEXT.md`; find code via graphify if the project has `graphify-out/`; past decisions in the project's memory (`knowledge/`, `plans/`) | `rules/product-design.md` |
-| 2. Size it | AODD triage in `rules/aodd.md`. Small: just do it. Medium: Architecture-First (§1, § Anti-Monolith), `chief-of-staff` light. Large: suggest `/ai-sdlc` in one line, `chief-of-staff` full | `skills/chief-of-staff` |
+| 2. Size it | AODD triage in `rules/aodd.md`. Small: `ai-sdlc` Light path (edit + run existing tests). Medium: Architecture-First (§1, § Anti-Monolith), `chief-of-staff` light. Large: suggest `/ai-sdlc` in one line, `chief-of-staff` full | `skills/chief-of-staff` |
 | 3. Branch | New branch from `main` before the first edit (rule only; the hook blocks switching away from uncommitted work, not editing on `main`) | your project's git conventions |
 | 4. Place code | Logic vs UI vs Tests split (§6) & Anti-Monolith pattern (target 300–400 lines); structure work → blueprint | `rules/coding/project-blueprint.md`, `project-blueprint` skill |
 | 5. Domain skill | Web/mobile UI → `frontend-dev` (+ `uxui-designer` if no design tokens); API/DB → `backend-dev`; SwiftUI → `macos-swiftui`; bug → trace the failing path and falsify your hypothesis before fixing; auth/input/secrets → `security`; UI layout bug → `rules/gui-fixes.md` | the skill |

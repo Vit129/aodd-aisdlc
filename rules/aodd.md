@@ -15,13 +15,18 @@ audit reports, agent-ops reports, agy proposals; decided ones in `done/`), `$AOD
 
 | Size | Signals | Do |
 |---|---|---|
-| Small | question, wording, color, typo, spacing | Just do it |
-| Small logic | 1-5 line fix or one clear bug that changes behavior | `chief-of-staff` micro: write a one-line Done yourself (no question to the CEO), run the tests, check the diff against the project's design docs/README, report Result / Evidence / Needs your decision. Hard (daemon/concurrency/security/network, another agent's unreviewed work, a re-broken fix, cross-module behavior) → `chief-of-staff` invokes `ai-sdlc` at Small size: design check, RED test first, fix, propose the audit |
+| Question | a question or explanation, no file changes | Answer it |
+| Small | wording, color, typo, spacing | `ai-sdlc` Light path: edit (dev) + run the existing tests (testing) |
+| Small logic | 1-5 line fix or one clear bug that changes behavior | `ai-sdlc` Logic path entered at Phase 3: debugging skill first, RED test, fix to GREEN, verify; `chief-of-staff` micro reports Result / Evidence / Needs your decision. Hard (daemon/concurrency/security/network, another agent's unreviewed work, a re-broken fix, cross-module behavior) → add the design check and propose the audit |
 | Medium | multi-file change, needs 2+ skills, refactor, test suite | State the file separation plan first when the change adds or splits files (one file per concern, no monolith); `chief-of-staff` light: fill brief gaps in ONE question, dispatch, self-check before reporting |
 | Large | new feature, needs QA coverage, "do it all and report back" | `chief-of-staff` full: brief, dispatch, self-check before reporting; a dev feature → `chief-of-staff` invokes `ai-sdlc` itself, which picks its path by what changes (logic, UX/UI, requirement); the Requirement path's 3 gates stay real stops |
 | Any size | spends money, reaches a customer/outside party, irreversible | Stop and ask the CEO first, always |
 
 When unsure between two sizes, pick the smaller (token overuse is the known failure mode).
+
+**Every change runs `ai-sdlc`; testing and dev never skip.** Any request that changes files (code, config, tests, UI) follows `rules/ai-sdlc-workflow.md`. Size picks where it enters, not whether it runs: it may start at the phase the work actually needs (no Phase 1 interview or Phase 2 design when the change is already clear), but it always has a testing step and a dev step, in that order where a test can fail first (RED → GREEN → verify). Only a pure question with no file change skips it.
+
+**Every bug goes through the debugging skill.** A bug report, a failing test, an error, a crash, unexpected output, or a fix that did not hold: invoke the project's debugging skill (`9arm-skills:debug-mantra` when installed, else the stack's own) before proposing a fix, and name it in the reply. The fix then follows the Logic path (regression test RED first).
 
 ## Human as a Judge / Boss Mode
 

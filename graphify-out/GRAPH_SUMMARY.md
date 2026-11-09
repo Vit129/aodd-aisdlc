@@ -1,15 +1,15 @@
-# Graph Summary — always-sdlc
+# Graph Summary — aodd-aisdlc
 _Auto-generated from GRAPH_REPORT.md · do not edit manually_
 _Regen: `graphify update .`_
 
 ## Summary
-- 2452 nodes · 2640 edges · 243 communities (214 shown, 29 thin omitted)
+- 2455 nodes · 2643 edges · 245 communities (215 shown, 30 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 12 edges (avg confidence: 0.6)
 - Token cost: 0 input · 0 output
 
 
 ## Graph Freshness
-- Built from commit: `1be95bc4`
+- Built from commit: `1458b5a4`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -32,10 +32,10 @@ A high-degree node isn't always architecturally central - a widely-used
 utility/config file can rack up more edges than a real coupler while only
 ever touching one area. This ranks by how many DIFFERENT communities a
 node's neighbors span, not by raw edge count.
-1. `Changelog` - bridges 11 areas (18 edges)
-2. `search()` - bridges 2 areas (10 edges)
-3. `generate_design_system()` - bridges 2 areas (8 edges)
-4. `Tracing` - bridges 2 areas (8 edges)
+1. `Changelog` - bridges 12 areas (18 edges)
+2. `Test generation (plan → generate → heal)` - bridges 3 areas (6 edges)
+3. `search()` - bridges 2 areas (10 edges)
+4. `generate_design_system()` - bridges 2 areas (8 edges)
 5. `_resolve_color_mode()` - bridges 2 areas (5 edges)
 6. `_select_palette_for_mode()` - bridges 2 areas (4 edges)
 7. `Browser Automation with playwright-cli` - bridges 1 areas (17 edges)

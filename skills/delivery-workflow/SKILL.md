@@ -15,12 +15,14 @@ These are the setup targets. A repo that lacks one is fixed in its own repo, not
 
 1. Entrypoint: `make start` or `npm start` (or the repo's documented equivalent).
 2. Graphify: `graphify-out/` present and refreshed synchronously after final edits before every commit, with tracked graph artifacts in that same commit (normal and full cycle). Refresh failure blocks commit/push.
-3. Dev/preview: a local dev or isolated preview that has no release side effects.
+3. Dev / test server: a local dev server and, where the repo has one, a separate test server on its own port. Neither has release side effects.
 4. Release gate: a declared test command (and build) that must pass before anything is published. If QA exists, its test layers are named in the repo's adapter.
 5. Version scheme: semver in every surface that shows it, plus a build number where the app needs one.
 6. Living docs (PRODUCT / ARCHITECTURE / DESIGN / CONTEXT) updated before a release starts when the change affects them.
+7. Changelog: `CHANGELOG.md` exists, and its generator is declared (`cliff.toml` / git-cliff or the repo's own tool). Every commit that changes behaviour adds its entry; a semver release generates the version heading, `skip` writes under `Unreleased`. Only one generator per repo.
+8. Debugging skill: the `9arm-skills` plugin is installed (`debug-mantra`). Check `~/.claude/plugins/installed_plugins.json` for `9arm-skills@9arm-marketplace`; if it is missing, install it with `npx skills add thananon/9arm-skills -g -y` before the first bug fix, and report that the install happened.
 
-If the repo is missing one of these, report it as a gap. Do not invent the missing piece.
+If the repo is missing one of these, report it as a gap. Do not invent the missing piece. Per-repo values (commands, ports, version files, changelog generator) and the gaps found in real repos are in [references/project-adapters.md](references/project-adapters.md).
 
 ## Stages
 
@@ -56,6 +58,7 @@ Compute the candidates with the repo's own function (for example the repo's own 
 | `skip` | unchanged | +1 if present | add entry under `Unreleased`; no version heading | **no** | yes, if requested | merged + deployed + live matches the intended commit |
 
 Rules that follow from this:
+- Choose by what changed. Docs-only (README, docs/, CHANGELOG wording, comments) → `skip`. Code, config that ships, or a behaviour change → `patch` / `minor` / `major`, picked by the user. A missing choice is asked once.
 - `skip` never creates or moves a tag and never creates a release page. The deployed build is identified by its commit SHA and build number.
 - A published tag is never moved or deleted. `git tag -f` and `git push --force` on a tag are not allowed.
 - A repo whose helper cannot express `skip` (for example, patch-only) reports `skip` as unsupported, not as an approximation.

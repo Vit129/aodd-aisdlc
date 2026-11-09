@@ -11,6 +11,7 @@ All notable changes to aodd-aisdlc are documented here. The format is based on
 - Every bug goes through the debugging skill (`9arm-skills:debug-mantra` when installed) before a fix, then the Logic path with a regression test first
 - Small triage row and `chief-of-staff` micro now point at the `ai-sdlc` Light / Logic paths instead of "just do it"; `CONTEXT.md` and `rules/coding.md` updated to match
 - `delivery-workflow` skill: required setup now names the test server, the changelog generator (one per repo) and the `9arm-skills` debugging plugin (with a check and install step); docs-only changes take `skip`; a per-repo adapter template in `references/project-adapters.md`
+- `delivery-workflow` skill: a "Tag and GitHub release" section with the remote-tag and release-page checks, the question of whether CI or a local helper creates the release, and the rule that a helper moving a tag is a gap
 
 ## [0.8.0] - 2026-11-05
 

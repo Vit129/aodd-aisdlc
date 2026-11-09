@@ -81,6 +81,12 @@ Before publishing, every surface that shows the version must match the candidate
 - Shared package: the pinned commit matches the one the release was built against.
 - App and daemon: the marketing version, build, and daemon/IPC protocol match what is installed. A mismatch blocks the release.
 
+## Tag and GitHub release
+
+- Verify the tag on the remote: `git ls-remote --tags origin <tag>` must show the release commit. Verify the release page: `gh release view <tag>` must show the same tag and the changelog notes.
+- Find out where the release is created before relying on it. If the repo has no workflow that runs on tag push, the release page exists only when the machine that ran the helper completed it. Check the repo's workflows for a tag trigger, and do not assume CI published it.
+- A helper that moves an existing tag (`git tag -f`, `git push --force` of a tag) breaks the version contract. Report it as a gap in the repo's adapter and do not run it.
+
 ## Done means
 
 - Semver release (`patch`/`minor`/`major`): remote tag points to the release commit, the GitHub release exists with the same tag, and the deployed build reports the candidate version. Check the live target, not only the command's exit code.

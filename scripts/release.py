@@ -9,6 +9,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+from graphify_commit import prepare_graph
+
 def find_repo_root(start: Path) -> Path:
     for directory in (start, *start.parents):
         if (directory / ".git").exists() and (directory / "VERSION").is_file() and (directory / "cliff.toml").is_file():
@@ -165,15 +167,17 @@ def main() -> int:
     changelog = output("git", "cliff", "--tag", new_tag)
     if args.dry_run:
         action = "complete" if pending_version else "create"
-        print(f"Would {action} {new_tag}, update VERSION/CHANGELOG.md if needed, commit, push, and create a GitHub Release.")
+        print(f"Would {action} {new_tag}, update VERSION/CHANGELOG.md if needed, refresh Graphify, commit metadata + tracked graph together, push, and create a GitHub Release.")
         return 0
 
     if not pending_version:
         VERSION_FILE.write_text(f"{new_version}\n")
     CHANGELOG_FILE.write_text(changelog)
+    prepare_graph(ROOT)
     run(["git", "add", "VERSION", "CHANGELOG.md"])
     if output("git", "diff", "--cached", "--name-only"):
-        run(["git", "commit", "-m", f"chore(release): {new_tag}"])
+        run(["git", "commit", "-m", f"chore(release): {new_tag}"],
+            env={**os.environ, "GRAPHIFY_SKIP_HOOK": "1"})
     release_gate()
     run(["git", "tag", new_tag])
     publish(new_tag)

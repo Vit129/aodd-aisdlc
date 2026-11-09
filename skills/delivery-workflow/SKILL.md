@@ -14,7 +14,7 @@ Run the delivery stages the user asked for, through the repository's own entrypo
 These are the setup targets. A repo that lacks one is fixed in its own repo, not worked around in the skill.
 
 1. Entrypoint: `make start` or `npm start` (or the repo's documented equivalent).
-2. Graphify: `graphify-out/` present and refreshed before any commit or release.
+2. Graphify: `graphify-out/` present and refreshed synchronously after final edits before every commit, with tracked graph artifacts in that same commit (normal and full cycle). Refresh failure blocks commit/push.
 3. Dev/preview: a local dev or isolated preview that has no release side effects.
 4. Release gate: a declared test command (and build) that must pass before anything is published. If QA exists, its test layers are named in the repo's adapter.
 5. Version scheme: semver in every surface that shows it, plus a build number where the app needs one.

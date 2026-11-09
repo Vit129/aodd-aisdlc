@@ -214,3 +214,5 @@ Subject answers "why" — the diff shows "what".
 - Cutting a release / changelog → `coding/release.md`
 - Folder structure → `coding/project-blueprint.md`
 - Per-language checks (type/syntax checker per extension) → `coding/programming-language.md`
+
+**Commit preparation (normal and full cycle):** After final code/docs/version edits, await the repository Graphify refresh (`PYTHONHASHSEED=0`); failure stops commit/push. Stage tracked graph artifacts by explicit path with `git add --update` and include them in the same commit as those edits, including ai-sdlc docs/GREEN and release metadata commits. Do not create a separate graph-only commit or a post-commit background refresh. Preserve unrelated hooks and local query/cache outputs. See `skills/delivery-workflow/references/commit-push.md`.

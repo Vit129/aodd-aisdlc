@@ -17,11 +17,11 @@ Update the living docs the change affects (for example product, architecture, de
 1. Implement the approved change. Keep its tests with it.
 2. Run the dev or preview path for a person to inspect, if the repo has one.
 3. Run the repo's required checks. If the repo has no automated QA, record that and get the named human acceptance.
-4. Refresh Graphify before the commit (required setup; see commit-push.md).
+4. Await Graphify after the final changes and before each commit (required setup; see commit-push.md). Stop before commit/push on failure, including version/changelog commits later in the cycle.
 
 ## 4. Commit and merge
 
-1. Commit the feature with explicit paths (see [commit-push.md](commit-push.md)). Commit graph output separately.
+1. Commit the feature with explicit paths (see [commit-push.md](commit-push.md)). Include refreshed tracked graph output in that same commit.
 2. Push the feature branch. Merge to main only through the repo's review or CI path, and only after its required checks pass. Never use an admin or bypass flag.
 3. Fetch main and confirm the merged commit is the one you expect. Everything after this step works from that commit.
 

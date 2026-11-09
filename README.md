@@ -190,3 +190,7 @@ Developed and maintained by the **aodd-aisdlc contributors** and **Claude** (Ant
 
 Apache License 2.0, see `LICENSE` and `NOTICE`. Releases up to v0.3.6 were published under MIT and remain
 available under those terms (`LICENSE-MIT`).
+
+### Graphify in commit and release flows
+
+Normal commit+push, ai-sdlc docs/GREEN commits, and full-cycle version/changelog commits await Graphify after final edits and include existing tracked graph artifacts in that same commit. Refresh failure stops commit/push. Stage owned product paths first; `python3 scripts/graphify_commit.py -m "fix: ..."` prepares the graph and commits the index for standard Graphify repositories. Use a repository-specific helper when it also renders curated outputs. New queries/caches stay local; unrelated Git hooks remain active. The release runner uses the same preparation before its metadata commit.

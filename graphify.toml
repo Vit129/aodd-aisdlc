@@ -1,0 +1,2 @@
+# Delivery preparation keeps the graph as source artifacts, without generated HTML.
+no_viz = true

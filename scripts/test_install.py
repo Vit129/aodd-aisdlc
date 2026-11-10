@@ -53,7 +53,7 @@ assert not (T / "claude/scripts/git-hooks").exists(), "repo git hooks are never 
 assert not (T / "claude/hooks/memory-recall.py").exists() and not (T / "claude/scripts/install-schedules.py").exists()   # core only by default
 assert (T / "claude/hooks/secret-read-guard.py").is_file() and (T / "claude/hooks/_aodd_secrets.py").is_file()
 out = run("--dry-run", "--all")
-assert "modules core agent-memory schedules" in out and "rea     setup --client claude_code --dry-run" in out and "schedule agent-ops" in out and "delegation" not in out
+assert "modules core agent-memory schedules" in out and "rea     setup --client claude_code --dry-run" in out and "schedule agent-ops" in out and "delegation" not in next(l for l in out.splitlines() if l.startswith("modules"))   # no delegation module (the core delegation-nudge hook is fine)
 bad = subprocess.run(["bash", str(ROOT / "install.sh"), "--with", "nope"], capture_output=True, text=True, env=env)
 assert bad.returncode == 2 and "unknown module" in bad.stderr
 M = T / "m"
@@ -134,7 +134,7 @@ assert {p: p.read_bytes() for p in (T / "claude").rglob("*") if p.is_file()} == 
 
 settings = (alpha / ".claude/settings.json").read_text()
 ours = [h["command"] for ev in json.loads(settings)["hooks"].values() for g in ev for h in g["hooks"] if "$CLAUDE_PROJECT_DIR" in h["command"]]
-assert len(ours) == 16 and all('CLAUDE_HOME="$CLAUDE_PROJECT_DIR/.claude"' in c for c in ours), ours   # core (12) + subagent-rules + agent-memory (3): the same set in every repo
+assert len(ours) == 17 and all('CLAUDE_HOME="$CLAUDE_PROJECT_DIR/.claude"' in c for c in ours), ours   # core (13) + subagent-rules + agent-memory (3): the same set in every repo
 assert "skill-trigger.py" in settings                                                                    # the repo's own hook stays
 assert "done-gate" in settings and "coding-rules-gate" in settings
 assert str(T) not in settings                                                                            # committable: no machine path

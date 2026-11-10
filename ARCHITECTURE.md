@@ -7,7 +7,7 @@ aodd-aisdlc is an installable package for Claude Code and OpenAI Codex. AODD is 
 - `rules/`: the AODD contract and the ai-sdlc workflow spine (inlined into Codex `AGENTS.md`, imported by Claude `CLAUDE.md`).
 - `skills/`: chief-of-staff, ai-sdlc (with `references/`), agent-ops, reverse-engineer-anything.
 - `agents/`: auditor and advisor subagent definitions.
-- `hooks/`: core hooks (done-gate, auditor-readonly, skill-capture-nudge, secret-read-guard, coding-rules-gate, dirty-branch-switch-guard, graphify-guard, work-log, subagent-rules). `_aodd_paths.py` (path resolver) and `_aodd_secrets.py` (credential shapes) are imported by the others.
+- `hooks/`: core hooks (done-gate, auditor-readonly, skill-capture-nudge, secret-read-guard, coding-rules-gate, dirty-branch-switch-guard, graphify-guard, work-log, delegation-nudge, subagent-rules). `_aodd_paths.py` (path resolver) and `_aodd_secrets.py` (credential shapes) are imported by the others.
 - `scripts/`: `audit.py` (cross-family audit), `check_agy_proposal.py`, `skill_learning_report.py` (curator), `agent_ops_gather.py`, `rea_check.py`, and the install test.
 - `optional/<module>/{skills,rules,hooks,scripts,schedules}/`: modules the installer adds only when chosen (`agent-memory`, `schedules`). A core file never imports from `optional/`.
 - `adapters/`: other-tool adapters that load the hooks by path.

@@ -8,7 +8,7 @@ The audit is on demand: the user asks for it, or the worker proposes it for risk
 so this hook never asks for one. "Audited" = scripts/audit.py wrote $AODD_REPORTS/audit-*-<sid8>.md for this
 session. When a tracked or AODD "medium" session (MEDIUM_FILES+ files via Edit/Write/MultiEdit, Codex apply_patch;
 scratch files never count) has a FAIL/DISPUTED/UNVERIFIABLE verdict -> block once per report: the worker relays
-it, then may stop. Disable with DONE_GATE_AUDIT=0.
+it, then may stop. Disable with DONE_GATE_AUDIT=0; DONE_GATE_ITEMS=0 turns off the open-items reminder.
 
 Known limit: edits made through Bash are not counted."""
 import hashlib
@@ -120,7 +120,7 @@ def decide(payload: dict, reports: Path = REPORTS):
                 "failed rows and re-run the audit, or tell the user plainly it is " + ("DISPUTED (the other-family auditor found a failure the "
                 "verifier rejected: the CEO decides)" if verdict == "DISPUTED" else "FAILED") + ", quoting the report's table.")
     # Same list as last time -> the worker already relayed it; repeating it every stop only adds noise.
-    if not open_items or already_raised(transcript, kind="items", text="\n".join(open_items)):
+    if not open_items or os.environ.get("DONE_GATE_ITEMS") == "0" or already_raised(transcript, kind="items", text="\n".join(open_items)):
         return None
     shown = "\n".join(open_items[:8])
     return ("[done-gate] Progress file(s) touched this session still have unchecked items:\n" + shown +

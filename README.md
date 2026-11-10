@@ -35,6 +35,7 @@ Size decides ceremony (`rules/aodd.md`): small work is just done; medium work ge
 | `hooks/skill-capture-nudge.py` | Stop/PostToolUse hook: turns a user correction or fix commit into a skill patch |
 | `hooks/secret-read-guard.py` | PreToolUse hook: secret files (`.env`, keys, configs with tokens) are never printed or edited by the agent; `--show <file>` gives a masked view |
 | `hooks/coding-rules-gate.py` | PreToolUse/PostToolUse hook: the first code edit of a session waits until `rules/coding.md` (if you have one) and the project's `ARCHITECTURE.md` were read |
+| `hooks/delegation-nudge.py` | PostToolUse hook: reminds the main session to hand lookups and big outputs to a Haiku subagent (`AODD_DELEGATION_NUDGE=0` turns it off) |
 | `hooks/dirty-branch-switch-guard.py` | PreToolUse hook: no branch switch or new worktree while earlier work is uncommitted |
 | `hooks/graphify-guard.py` | graph-first lookup gate and graph refresh; a silent no-op unless `graphify-out/graph.json` exists |
 | `hooks/work-log.py` | Stop hook: one record per session (tokens, tool calls, rework signals); `--report YYYY-MM` |
@@ -178,7 +179,7 @@ Tests point `AODD_HOME` at a temp directory and use stub models; no network, no 
 
 Delete the files this repo copied (for Codex: from `$CODEX_HOME`, also the block between the `aodd:begin` and `aodd:end` markers in `AGENTS.md` and the hook entries in `hooks.json`) from your Claude home, remove the matching hook entries from `settings.json` (or restore `settings.json.aodd-bak`) and the `@rules/aodd.md` line from `CLAUDE.md`, and optionally delete `~/.aodd`. Because the hook commands are fail-open, deleting only the hook files already makes them inert.
 
-- **Core**: `skills/{chief-of-staff,ai-sdlc,agent-ops,reverse-engineer-anything}`, `agents/{auditor,advisor}.md`, `rules/{aodd,ai-sdlc-workflow}.md`, `hooks/{done-gate,auditor-readonly,skill-capture-nudge,secret-read-guard,coding-rules-gate,dirty-branch-switch-guard,graphify-guard,work-log,_aodd_paths,_aodd_secrets}.py`, `scripts/{audit,check_agy_proposal,skill_learning_report,agent_ops_gather}.py`, `docs/skill-learning.md`, plus the `env` keys you had it write.
+- **Core**: `skills/{chief-of-staff,ai-sdlc,agent-ops,reverse-engineer-anything}`, `agents/{auditor,advisor}.md`, `rules/{aodd,ai-sdlc-workflow}.md`, `hooks/{done-gate,auditor-readonly,skill-capture-nudge,secret-read-guard,coding-rules-gate,dirty-branch-switch-guard,graphify-guard,work-log,delegation-nudge,_aodd_paths,_aodd_secrets}.py`, `scripts/{audit,check_agy_proposal,skill_learning_report,agent_ops_gather}.py`, `docs/skill-learning.md`, plus the `env` keys you had it write.
 - **agent-memory**: `hooks/{memory-recall,memory-write-scan,session-start-recent}.py` and the three entries (`UserPromptSubmit`, `SessionStart`, and `memory-write-scan` under `PreToolUse`) in `settings.json`. Your `$AODD_MEMORY` notes are yours; the installer never touches them.
 - **schedules**: first `python3 <claude home>/scripts/install-schedules.py --uninstall` (removes the `# aodd:begin` ... `# aodd:end` cron block or the `com.aodd.*` launch agents; `--dry-run` previews), then delete `scripts/{install-schedules,aodd_job}.py` and `schedules/`.
 

@@ -221,6 +221,7 @@ CORE = [  # (event, matcher, script, args)
     ("Stop", "*", "done-gate.py", ()),
     ("Stop", "*", "work-log.py", ()),
     ("PostToolUse", "Bash", "skill-capture-nudge.py", ("post",)),
+    ("PostToolUse", "Read|Grep|Glob|Bash|Agent|Task", "delegation-nudge.py", ()),
 ]
 MODULE = {
     "agent-memory": [

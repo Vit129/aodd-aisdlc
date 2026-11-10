@@ -531,7 +531,7 @@
       "end_line": 87,
       "_origin": "ast",
       "id": "hooks_aodd_paths_session_id",
-      "community": 0,
+      "community": 243,
       "norm_label": "session_id()"
     },
     {
@@ -561,7 +561,7 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "hooks_aodd_paths_rationale_79",
-      "community": 0,
+      "community": 243,
       "norm_label": "short session key for audit filenames: disambiguates antigravity transcript.json"
     },
     {
@@ -824,6 +824,50 @@
       "norm_label": "first absolute (or ~) code path in a bash command: the shell's cwd is often anot"
     },
     {
+      "label": "delegation-nudge.py",
+      "file_type": "code",
+      "source_file": "hooks/delegation-nudge.py",
+      "source_location": "L1",
+      "end_line": 86,
+      "_origin": "ast",
+      "id": "hooks_delegation_nudge",
+      "community": 244,
+      "norm_label": "delegation-nudge.py"
+    },
+    {
+      "label": "_size()",
+      "file_type": "code",
+      "source_file": "hooks/delegation-nudge.py",
+      "source_location": "L36",
+      "end_line": 39,
+      "_origin": "ast",
+      "id": "hooks_delegation_nudge_size",
+      "community": 244,
+      "norm_label": "_size()"
+    },
+    {
+      "label": "decide()",
+      "file_type": "code",
+      "source_file": "hooks/delegation-nudge.py",
+      "source_location": "L42",
+      "end_line": 71,
+      "_origin": "ast",
+      "id": "hooks_delegation_nudge_decide",
+      "community": 244,
+      "norm_label": "decide()"
+    },
+    {
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "hooks/delegation-nudge.py",
+      "source_location": "L74",
+      "end_line": 81,
+      "_origin": "ast",
+      "id": "hooks_delegation_nudge_main",
+      "community": 244,
+      "norm_label": "main()"
+    },
+    {
       "label": "dirty-branch-switch-guard.py",
       "file_type": "code",
       "source_file": "hooks/dirty-branch-switch-guard.py",
@@ -960,7 +1004,7 @@
       "end_line": 141,
       "_origin": "ast",
       "id": "hooks_done_gate",
-      "community": 0,
+      "community": 243,
       "norm_label": "done-gate.py"
     },
     {
@@ -971,7 +1015,7 @@
       "end_line": 75,
       "_origin": "ast",
       "id": "hooks_done_gate_scan",
-      "community": 0,
+      "community": 243,
       "norm_label": "scan()"
     },
     {
@@ -981,7 +1025,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "hooks_done_gate_py_path",
-      "community": 0,
+      "community": 243,
       "norm_label": "path"
     },
     {
@@ -992,7 +1036,7 @@
       "end_line": 86,
       "_origin": "ast",
       "id": "hooks_done_gate_audit_report",
-      "community": 0,
+      "community": 243,
       "norm_label": "audit_report()"
     },
     {
@@ -1003,7 +1047,7 @@
       "end_line": 100,
       "_origin": "ast",
       "id": "hooks_done_gate_already_raised",
-      "community": 0,
+      "community": 243,
       "norm_label": "already_raised()"
     },
     {
@@ -1014,7 +1058,7 @@
       "end_line": 127,
       "_origin": "ast",
       "id": "hooks_done_gate_decide",
-      "community": 0,
+      "community": 243,
       "norm_label": "decide()"
     },
     {
@@ -1025,7 +1069,7 @@
       "end_line": 136,
       "_origin": "ast",
       "id": "hooks_done_gate_main",
-      "community": 0,
+      "community": 243,
       "norm_label": "main()"
     },
     {
@@ -1035,7 +1079,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "hooks_done_gate_rationale_33",
-      "community": 0,
+      "community": 243,
       "norm_label": "(progress files written this session, whether an auditor subagent ran, files edi"
     },
     {
@@ -1045,7 +1089,7 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "hooks_done_gate_rationale_79",
-      "community": 0,
+      "community": 243,
       "norm_label": "(report path, verdict) of the newest audit for this session, or (none, none)."
     },
     {
@@ -1055,7 +1099,7 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "hooks_done_gate_rationale_90",
-      "community": 0,
+      "community": 243,
       "norm_label": "true if this exact report's verdict was already put to the worker; records it ot"
     },
     {
@@ -1632,6 +1676,28 @@
       "norm_label": "test_coding_rules_gate.py"
     },
     {
+      "label": "test_delegation_nudge.py",
+      "file_type": "code",
+      "source_file": "hooks/test_delegation_nudge.py",
+      "source_location": "L1",
+      "end_line": 58,
+      "_origin": "ast",
+      "id": "hooks_test_delegation_nudge",
+      "community": 0,
+      "norm_label": "test_delegation_nudge.py"
+    },
+    {
+      "label": "call()",
+      "file_type": "code",
+      "source_file": "hooks/test_delegation_nudge.py",
+      "source_location": "L11",
+      "end_line": 13,
+      "_origin": "ast",
+      "id": "hooks_test_delegation_nudge_call",
+      "community": 0,
+      "norm_label": "call()"
+    },
+    {
       "label": "test_dirty_branch_switch_guard.py",
       "file_type": "code",
       "source_file": "hooks/test_dirty_branch_switch_guard.py",
@@ -2141,7 +2207,7 @@
       "label": "write_aodd_block()",
       "file_type": "code",
       "source_file": "install.sh",
-      "source_location": "L290",
+      "source_location": "L291",
       "metadata": {
         "language": "bash",
         "kind": "bash_function"
@@ -2549,7 +2615,7 @@
       "end_line": 223,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job",
-      "community": 0,
+      "community": 237,
       "norm_label": "aodd_job.py"
     },
     {
@@ -2560,7 +2626,7 @@
       "end_line": 36,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_log",
-      "community": 0,
+      "community": 237,
       "norm_label": "log()"
     },
     {
@@ -2571,7 +2637,7 @@
       "end_line": 54,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_ask_model",
-      "community": 0,
+      "community": 237,
       "norm_label": "ask_model()"
     },
     {
@@ -2582,7 +2648,7 @@
       "end_line": 62,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_write_report",
-      "community": 0,
+      "community": 237,
       "norm_label": "write_report()"
     },
     {
@@ -2592,7 +2658,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_py_path",
-      "community": 0,
+      "community": 237,
       "norm_label": "path"
     },
     {
@@ -2603,7 +2669,7 @@
       "end_line": 69,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_template",
-      "community": 0,
+      "community": 237,
       "norm_label": "template()"
     },
     {
@@ -2614,7 +2680,7 @@
       "end_line": 79,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_sop",
-      "community": 0,
+      "community": 237,
       "norm_label": "sop()"
     },
     {
@@ -2625,7 +2691,7 @@
       "end_line": 93,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_job_agent_ops",
-      "community": 0,
+      "community": 237,
       "norm_label": "job_agent_ops()"
     },
     {
@@ -2636,7 +2702,7 @@
       "end_line": 104,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_size",
-      "community": 0,
+      "community": 237,
       "norm_label": "_size()"
     },
     {
@@ -2647,7 +2713,7 @@
       "end_line": 122,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_housekeeping_scan",
-      "community": 0,
+      "community": 237,
       "norm_label": "housekeeping_scan()"
     },
     {
@@ -2658,7 +2724,7 @@
       "end_line": 131,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_job_housekeeping",
-      "community": 0,
+      "community": 237,
       "norm_label": "job_housekeeping()"
     },
     {
@@ -2669,7 +2735,7 @@
       "end_line": 136,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_git",
-      "community": 0,
+      "community": 237,
       "norm_label": "git()"
     },
     {
@@ -2680,7 +2746,7 @@
       "end_line": 144,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_repo_list",
-      "community": 0,
+      "community": 237,
       "norm_label": "repo_list()"
     },
     {
@@ -2691,7 +2757,7 @@
       "end_line": 165,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_pending_work",
-      "community": 0,
+      "community": 237,
       "norm_label": "pending_work()"
     },
     {
@@ -2702,7 +2768,7 @@
       "end_line": 178,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_job_pending_work",
-      "community": 0,
+      "community": 237,
       "norm_label": "job_pending_work()"
     },
     {
@@ -2713,7 +2779,7 @@
       "end_line": 202,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_job_memory_backup",
-      "community": 0,
+      "community": 237,
       "norm_label": "job_memory_backup()"
     },
     {
@@ -2724,7 +2790,7 @@
       "end_line": 218,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_main",
-      "community": 0,
+      "community": 237,
       "norm_label": "main()"
     },
     {
@@ -2735,7 +2801,7 @@
       "end_line": 246,
       "_origin": "ast",
       "id": "optional_schedules_scripts_install_schedules",
-      "community": 0,
+      "community": 240,
       "norm_label": "install-schedules.py"
     },
     {
@@ -2746,7 +2812,7 @@
       "end_line": 45,
       "_origin": "ast",
       "id": "optional_schedules_scripts_install_schedules_load_jobs",
-      "community": 0,
+      "community": 240,
       "norm_label": "load_jobs()"
     },
     {
@@ -2757,7 +2823,7 @@
       "end_line": 60,
       "_origin": "ast",
       "id": "optional_schedules_scripts_install_schedules_parse_time",
-      "community": 0,
+      "community": 240,
       "norm_label": "parse_time()"
     },
     {
@@ -2768,7 +2834,7 @@
       "end_line": 64,
       "_origin": "ast",
       "id": "optional_schedules_scripts_install_schedules_describe",
-      "community": 0,
+      "community": 240,
       "norm_label": "describe()"
     },
     {
@@ -2779,7 +2845,7 @@
       "end_line": 80,
       "_origin": "ast",
       "id": "optional_schedules_scripts_install_schedules_baked_env",
-      "community": 0,
+      "community": 240,
       "norm_label": "baked_env()"
     },
     {
@@ -2790,7 +2856,7 @@
       "end_line": 84,
       "_origin": "ast",
       "id": "optional_schedules_scripts_install_schedules_argv",
-      "community": 0,
+      "community": 240,
       "norm_label": "argv()"
     },
     {
@@ -2801,7 +2867,7 @@
       "end_line": 94,
       "_origin": "ast",
       "id": "optional_schedules_scripts_install_schedules_cron_block",
-      "community": 0,
+      "community": 240,
       "norm_label": "cron_block()"
     },
     {
@@ -2812,7 +2878,7 @@
       "end_line": 101,
       "_origin": "ast",
       "id": "optional_schedules_scripts_install_schedules_merge_cron",
-      "community": 0,
+      "community": 240,
       "norm_label": "merge_cron()"
     },
     {
@@ -2823,7 +2889,7 @@
       "end_line": 113,
       "_origin": "ast",
       "id": "optional_schedules_scripts_install_schedules_plist_for",
-      "community": 0,
+      "community": 240,
       "norm_label": "plist_for()"
     },
     {
@@ -2834,7 +2900,7 @@
       "end_line": 117,
       "_origin": "ast",
       "id": "optional_schedules_scripts_install_schedules_run",
-      "community": 0,
+      "community": 240,
       "norm_label": "run()"
     },
     {
@@ -2845,7 +2911,7 @@
       "end_line": 121,
       "_origin": "ast",
       "id": "optional_schedules_scripts_install_schedules_crontab_bin",
-      "community": 0,
+      "community": 240,
       "norm_label": "crontab_bin()"
     },
     {
@@ -2856,7 +2922,7 @@
       "end_line": 218,
       "_origin": "ast",
       "id": "optional_schedules_scripts_install_schedules_main",
-      "community": 0,
+      "community": 240,
       "norm_label": "main()"
     },
     {
@@ -2867,7 +2933,7 @@
       "end_line": 241,
       "_origin": "ast",
       "id": "optional_schedules_scripts_install_schedules_uninstall",
-      "community": 0,
+      "community": 240,
       "norm_label": "uninstall()"
     },
     {
@@ -2877,7 +2943,7 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "optional_schedules_scripts_install_schedules_rationale_49",
-      "community": 0,
+      "community": 240,
       "norm_label": "-> (weekday or none for daily, hour, minute). a bare hh:mm keeps the default's d"
     },
     {
@@ -5401,7 +5467,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "changelog_unreleased",
-      "community": 2,
+      "community": 248,
       "norm_label": "[unreleased]"
     },
     {
@@ -5411,7 +5477,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "changelog_changed",
-      "community": 2,
+      "community": 248,
       "norm_label": "changed"
     },
     {
@@ -5441,7 +5507,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "changelog_0_7_0_2026_10_30",
-      "community": 2,
+      "community": 247,
       "norm_label": "[0.7.0] - 2026-10-30"
     },
     {
@@ -5451,7 +5517,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "changelog_added_24",
-      "community": 2,
+      "community": 247,
       "norm_label": "added"
     },
     {
@@ -5711,7 +5777,7 @@
       "source_location": "L130",
       "_origin": "ast",
       "id": "changelog_0_3_4_2026_10_17",
-      "community": 243,
+      "community": 2,
       "norm_label": "[0.3.4] - 2026-10-17"
     },
     {
@@ -5721,7 +5787,7 @@
       "source_location": "L132",
       "_origin": "ast",
       "id": "changelog_documentation_132",
-      "community": 243,
+      "community": 2,
       "norm_label": "documentation"
     },
     {
@@ -5731,7 +5797,7 @@
       "source_location": "L136",
       "_origin": "ast",
       "id": "changelog_fixed_136",
-      "community": 243,
+      "community": 2,
       "norm_label": "fixed"
     },
     {
@@ -6098,7 +6164,7 @@
       "label": "Requirements",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L49",
+      "source_location": "L50",
       "_origin": "ast",
       "id": "readme_requirements",
       "community": 6,
@@ -6108,7 +6174,7 @@
       "label": "Install",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L57",
+      "source_location": "L58",
       "_origin": "ast",
       "id": "readme_install",
       "community": 6,
@@ -6118,7 +6184,7 @@
       "label": "Per repository (`--project`)",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L80",
+      "source_location": "L81",
       "_origin": "ast",
       "id": "readme_per_repository_project",
       "community": 6,
@@ -6128,7 +6194,7 @@
       "label": "Companion plugins (optional, installed separately, not copied here)",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L121",
+      "source_location": "L122",
       "_origin": "ast",
       "id": "readme_companion_plugins_optional_installed_separately_not_copied_here",
       "community": 6,
@@ -6138,7 +6204,7 @@
       "label": "Optional modules",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L126",
+      "source_location": "L127",
       "_origin": "ast",
       "id": "readme_optional_modules",
       "community": 6,
@@ -6148,7 +6214,7 @@
       "label": "Schedules",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L139",
+      "source_location": "L140",
       "_origin": "ast",
       "id": "readme_schedules",
       "community": 6,
@@ -6158,7 +6224,7 @@
       "label": "How the audit works",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L153",
+      "source_location": "L154",
       "_origin": "ast",
       "id": "readme_how_the_audit_works",
       "community": 6,
@@ -6168,7 +6234,7 @@
       "label": "Skill capture (self-improving skills)",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L157",
+      "source_location": "L158",
       "_origin": "ast",
       "id": "readme_skill_capture_self_improving_skills",
       "community": 6,
@@ -6178,7 +6244,7 @@
       "label": "Codex",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L161",
+      "source_location": "L162",
       "_origin": "ast",
       "id": "readme_codex",
       "community": 6,
@@ -6188,7 +6254,7 @@
       "label": "Release",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L165",
+      "source_location": "L166",
       "_origin": "ast",
       "id": "readme_release",
       "community": 6,
@@ -6198,7 +6264,7 @@
       "label": "Tests",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L169",
+      "source_location": "L170",
       "_origin": "ast",
       "id": "readme_tests",
       "community": 6,
@@ -6208,7 +6274,7 @@
       "label": "Uninstall",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L177",
+      "source_location": "L178",
       "_origin": "ast",
       "id": "readme_uninstall",
       "community": 6,
@@ -6218,7 +6284,7 @@
       "label": "Contributors",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L185",
+      "source_location": "L186",
       "_origin": "ast",
       "id": "readme_contributors",
       "community": 6,
@@ -6228,7 +6294,7 @@
       "label": "License",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L189",
+      "source_location": "L190",
       "_origin": "ast",
       "id": "readme_license",
       "community": 6,
@@ -6238,7 +6304,7 @@
       "label": "Graphify in commit and release flows",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L194",
+      "source_location": "L195",
       "_origin": "ast",
       "id": "readme_graphify_in_commit_and_release_flows",
       "community": 6,
@@ -7155,7 +7221,7 @@
       "label": "Haiku ops runner",
       "file_type": "document",
       "source_file": "rules/aodd.md",
-      "source_location": "L108",
+      "source_location": "L109",
       "_origin": "ast",
       "id": "rules_aodd_haiku_ops_runner",
       "community": 101,
@@ -7165,7 +7231,7 @@
       "label": "Audit and Done",
       "file_type": "document",
       "source_file": "rules/aodd.md",
-      "source_location": "L123",
+      "source_location": "L124",
       "_origin": "ast",
       "id": "rules_aodd_audit_and_done",
       "community": 101,
@@ -14122,7 +14188,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_request_mocking",
-      "community": 122,
+      "community": 52,
       "norm_label": "request-mocking.md"
     },
     {
@@ -14522,7 +14588,7 @@
       "source_location": "L195",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_session_management_best_practices",
-      "community": 40,
+      "community": 245,
       "norm_label": "best practices"
     },
     {
@@ -14532,7 +14598,7 @@
       "source_location": "L197",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_session_management_1_name_browser_sessions_semantically",
-      "community": 40,
+      "community": 245,
       "norm_label": "1. name browser sessions semantically"
     },
     {
@@ -14542,7 +14608,7 @@
       "source_location": "L208",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_session_management_2_always_clean_up",
-      "community": 40,
+      "community": 245,
       "norm_label": "2. always clean up"
     },
     {
@@ -14552,7 +14618,7 @@
       "source_location": "L222",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_session_management_3_delete_stale_browser_data",
-      "community": 40,
+      "community": 245,
       "norm_label": "3. delete stale browser data"
     },
     {
@@ -14992,7 +15058,7 @@
       "source_location": "L142",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_1_planning",
-      "community": 237,
+      "community": 21,
       "norm_label": "1. planning"
     },
     {
@@ -15002,7 +15068,7 @@
       "source_location": "L146",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_1_1_prerequisite_workspace",
-      "community": 237,
+      "community": 21,
       "norm_label": "1.1 prerequisite: workspace"
     },
     {
@@ -15012,7 +15078,7 @@
       "source_location": "L162",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_1_2_prerequisite_seed_test",
-      "community": 237,
+      "community": 21,
       "norm_label": "1.2 prerequisite: seed test"
     },
     {
@@ -15022,7 +15088,7 @@
       "source_location": "L203",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_1_3_explore_the_app",
-      "community": 237,
+      "community": 21,
       "norm_label": "1.3 explore the app"
     },
     {
@@ -15032,7 +15098,7 @@
       "source_location": "L234",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_1_4_write_the_spec_file",
-      "community": 237,
+      "community": 21,
       "norm_label": "1.4 write the spec file"
     },
     {
@@ -15042,7 +15108,7 @@
       "source_location": "L281",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_2_generate",
-      "community": 240,
+      "community": 21,
       "norm_label": "2. generate"
     },
     {
@@ -15052,7 +15118,7 @@
       "source_location": "L285",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_2_1_inputs",
-      "community": 240,
+      "community": 21,
       "norm_label": "2.1 inputs"
     },
     {
@@ -15062,7 +15128,7 @@
       "source_location": "L291",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_2_2_generate_one_scenario",
-      "community": 240,
+      "community": 21,
       "norm_label": "2.2 generate one scenario"
     },
     {
@@ -15072,7 +15138,7 @@
       "source_location": "L350",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_2_3_generate_multiple_scenarios",
-      "community": 240,
+      "community": 21,
       "norm_label": "2.3 generate multiple scenarios"
     },
     {
@@ -15082,7 +15148,7 @@
       "source_location": "L354",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_2_4_run_generated_tests",
-      "community": 240,
+      "community": 21,
       "norm_label": "2.4 run generated tests"
     },
     {
@@ -15192,7 +15258,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_trace_output_files",
-      "community": 54,
+      "community": 246,
       "norm_label": "trace output files"
     },
     {
@@ -15202,7 +15268,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_trace_timestamp_trace",
-      "community": 54,
+      "community": 246,
       "norm_label": "`trace-{timestamp}.trace`"
     },
     {
@@ -15212,7 +15278,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_trace_timestamp_network",
-      "community": 54,
+      "community": 246,
       "norm_label": "`trace-{timestamp}.network`"
     },
     {
@@ -15222,7 +15288,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_resources",
-      "community": 54,
+      "community": 246,
       "norm_label": "`resources/`"
     },
     {
@@ -25888,6 +25954,18 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "hooks/delegation-nudge.py",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "hooks_delegation_nudge",
+      "target": "hooks_aodd_paths",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "hooks/done-gate.py",
       "source_location": "L22",
       "weight": 1.0,
@@ -26249,11 +26327,35 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
+      "source_file": "hooks/delegation-nudge.py",
+      "source_location": "L48",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "hooks_delegation_nudge_decide",
+      "target": "hooks_aodd_paths_state"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
       "source_file": "hooks/done-gate.py",
       "source_location": "L91",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_done_gate_already_raised",
+      "target": "hooks_aodd_paths_state"
+    },
+    {
+      "relation": "indirect_call",
+      "context": "argument",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "hooks/test_delegation_nudge.py",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "hooks_test_delegation_nudge_call",
       "target": "hooks_aodd_paths_state"
     },
     {
@@ -27058,6 +27160,63 @@
       "_origin": "ast",
       "source": "hooks_coding_rules_gate_main",
       "target": "hooks_coding_rules_gate_record_post",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "hooks/delegation-nudge.py",
+      "source_location": "L42",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "hooks_delegation_nudge",
+      "target": "hooks_delegation_nudge_decide",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "hooks/delegation-nudge.py",
+      "source_location": "L74",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "hooks_delegation_nudge",
+      "target": "hooks_delegation_nudge_main",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "hooks/delegation-nudge.py",
+      "source_location": "L36",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "hooks_delegation_nudge",
+      "target": "hooks_delegation_nudge_size",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "hooks/delegation-nudge.py",
+      "source_location": "L60",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "hooks_delegation_nudge_decide",
+      "target": "hooks_delegation_nudge_size",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "hooks/delegation-nudge.py",
+      "source_location": "L76",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "hooks_delegation_nudge_main",
+      "target": "hooks_delegation_nudge_decide",
       "confidence_score": 1.0
     },
     {
@@ -28499,6 +28658,17 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "hooks/test_delegation_nudge.py",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "hooks_test_delegation_nudge",
+      "target": "hooks_test_delegation_nudge_call",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "hooks/test_dirty_branch_switch_guard.py",
       "source_location": "L6",
       "weight": 1.0,
@@ -28986,7 +29156,7 @@
       "relation": "defines",
       "confidence": "EXTRACTED",
       "source_file": "install.sh",
-      "source_location": "L290",
+      "source_location": "L291",
       "weight": 1.0,
       "_origin": "ast",
       "source": "install",
@@ -29081,7 +29251,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "install.sh",
-      "source_location": "L311",
+      "source_location": "L312",
       "weight": 1.0,
       "context": "call",
       "_origin": "ast",
@@ -29093,7 +29263,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "install.sh",
-      "source_location": "L331",
+      "source_location": "L332",
       "weight": 1.0,
       "context": "call",
       "_origin": "ast",
@@ -35400,7 +35570,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L155",
+      "source_location": "L156",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme",
@@ -35411,7 +35581,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L163",
+      "source_location": "L164",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme",
@@ -35422,7 +35592,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L159",
+      "source_location": "L160",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme",
@@ -35444,7 +35614,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L161",
+      "source_location": "L162",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_aodd_aisdlc",
@@ -35455,7 +35625,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L185",
+      "source_location": "L186",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_aodd_aisdlc",
@@ -35466,7 +35636,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L153",
+      "source_location": "L154",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_aodd_aisdlc",
@@ -35477,7 +35647,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L57",
+      "source_location": "L58",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_aodd_aisdlc",
@@ -35488,7 +35658,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L189",
+      "source_location": "L190",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_aodd_aisdlc",
@@ -35499,7 +35669,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L126",
+      "source_location": "L127",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_aodd_aisdlc",
@@ -35510,7 +35680,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L165",
+      "source_location": "L166",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_aodd_aisdlc",
@@ -35521,7 +35691,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L49",
+      "source_location": "L50",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_aodd_aisdlc",
@@ -35532,7 +35702,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L157",
+      "source_location": "L158",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_aodd_aisdlc",
@@ -35543,7 +35713,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L169",
+      "source_location": "L170",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_aodd_aisdlc",
@@ -35565,7 +35735,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L177",
+      "source_location": "L178",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_aodd_aisdlc",
@@ -35587,7 +35757,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L121",
+      "source_location": "L122",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_install",
@@ -35598,7 +35768,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L80",
+      "source_location": "L81",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_install",
@@ -35609,7 +35779,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L139",
+      "source_location": "L140",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_optional_modules",
@@ -35620,7 +35790,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L194",
+      "source_location": "L195",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_license",
@@ -36379,7 +36549,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "rules/aodd.md",
-      "source_location": "L123",
+      "source_location": "L124",
       "weight": 1.0,
       "_origin": "ast",
       "source": "rules_aodd_aodd_the_operating_contract",
@@ -36423,7 +36593,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "rules/aodd.md",
-      "source_location": "L108",
+      "source_location": "L109",
       "weight": 1.0,
       "_origin": "ast",
       "source": "rules_aodd_aodd_the_operating_contract",
@@ -54637,5 +54807,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "8247bfffa9bf0f4da7062b9c39f4acd5dd584542"
+  "built_at_commit": "91d205fdf808335240f36a4e559bcadb7eb1439b"
 }

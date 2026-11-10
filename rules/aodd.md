@@ -96,6 +96,7 @@ Routing table: search with Haiku, check with Sonnet, escalate to the advisor.
 
 "Check it" is never skipped: a Haiku result is input, not a conclusion. Go to step 3 only with a curated brief (decision, options, constraints, evidence); the advisor sees none of the conversation.
 
+- **Enforced by `hooks/delegation-nudge.py`:** 8 lookups in a row in the main session, or one output over 300 lines / 40KB, adds a reminder to delegate.
 - **When not to delegate:** one command with short output, one lookup, or a file main must read anyway: main does it. A helper starts cold and re-reads, so the hand-off can cost more than the job.
 - **Default: anything that is not writing/reasoning about code goes to Haiku** (`Agent(model: "haiku", effort: "medium")`; `effort: "high"` when the result feeds a decision). This includes: run a dev server / build / test / lint and report, verify a result, summarize logs/files/transcripts, classify/extract facts, scheduled jobs (`claude -p --model haiku`), running an already-approved deploy and reporting. Several in parallel when independent.
 - **Big data stays out of main context:** any ingest, scrape, PDF/HTML dump or data extract over ~300 lines or 40KB goes to a Haiku subagent, or is parsed with a local script that prints a short structured summary. Main never reads the raw dump.

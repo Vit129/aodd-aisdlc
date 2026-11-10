@@ -1,5 +1,5 @@
 import os as _o, tempfile as _t
-[_o.environ.pop(k, None) for k in ("AODD_REPORTS", "AODD_STATE", "AODD_PLANS", "DONE_GATE_AUDIT")]
+[_o.environ.pop(k, None) for k in ("AODD_REPORTS", "AODD_STATE", "AODD_PLANS", "DONE_GATE_AUDIT", "DONE_GATE_ITEMS")]
 _o.environ["AODD_HOME"] = _t.mkdtemp()  # tests never touch the real AODD_HOME
 import json, importlib.util, tempfile, pathlib, os
 spec = importlib.util.spec_from_file_location("h", os.path.join(os.path.dirname(os.path.abspath(__file__)), "done-gate.py"))
@@ -13,6 +13,7 @@ audit = lambda v: (rep / "audit-2000-01-01-abcdef12.md").write_text(f"---\nverdi
 unaudit = lambda: [p.unlink() for p in rep.glob("*") if p.is_file()]
 tr.write_text(json.dumps({"message": {"content": [{"type": "tool_use", "name": "Edit", "input": {"file_path": str(prog)}}]}}))
 prog.write_text("- [x] a\n- [ ] b\n")
+os.environ["DONE_GATE_ITEMS"] = "0"; assert decide() is None; del os.environ["DONE_GATE_ITEMS"]  # switch off -> open items never shown
 assert "- [ ] b" in decide()                                       # open item -> block
 assert decide(stop_hook_active=True) is None
 assert decide() is None                                            # same open items again -> told once, not every stop

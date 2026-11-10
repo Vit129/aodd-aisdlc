@@ -1,4 +1,4 @@
-# Graph Summary — codex-delegation
+# Graph Summary — done-gate-once
 _Auto-generated from GRAPH_REPORT.md · do not edit manually_
 _Regen: `graphify update .`_
 
@@ -9,7 +9,7 @@ _Regen: `graphify update .`_
 
 
 ## Graph Freshness
-- Built from commit: `fdfd6a3a`
+- Built from commit: `145c805f`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 

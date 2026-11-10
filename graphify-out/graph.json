@@ -1022,7 +1022,7 @@
       "file_type": "code",
       "source_file": "hooks/done-gate.py",
       "source_location": "L1",
-      "end_line": 141,
+      "end_line": 142,
       "_origin": "ast",
       "id": "hooks_done_gate",
       "community": 243,
@@ -1076,7 +1076,7 @@
       "file_type": "code",
       "source_file": "hooks/done-gate.py",
       "source_location": "L103",
-      "end_line": 127,
+      "end_line": 128,
       "_origin": "ast",
       "id": "hooks_done_gate_decide",
       "community": 243,
@@ -1086,8 +1086,8 @@
       "label": "main()",
       "file_type": "code",
       "source_file": "hooks/done-gate.py",
-      "source_location": "L130",
-      "end_line": 136,
+      "source_location": "L131",
+      "end_line": 137,
       "_origin": "ast",
       "id": "hooks_done_gate_main",
       "community": 243,
@@ -1114,14 +1114,14 @@
       "norm_label": "(report path, verdict) of the newest audit for this session, or (none, none)."
     },
     {
-      "label": "True if this exact report's verdict was already put to the worker; records it ot",
+      "label": "True if this exact report (or open-items text) was already put to the worker; re",
       "file_type": "rationale",
       "source_file": "hooks/done-gate.py",
       "source_location": "L90",
       "_origin": "ast",
       "id": "hooks_done_gate_rationale_90",
       "community": 243,
-      "norm_label": "true if this exact report's verdict was already put to the worker; records it ot"
+      "norm_label": "true if this exact report (or open-items text) was already put to the worker; re"
     },
     {
       "label": "graphify-guard.py",
@@ -1745,7 +1745,7 @@
       "file_type": "code",
       "source_file": "hooks/test_done_gate.py",
       "source_location": "L1",
-      "end_line": 85,
+      "end_line": 89,
       "_origin": "ast",
       "id": "hooks_test_done_gate",
       "community": 208,
@@ -27562,7 +27562,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "hooks/done-gate.py",
-      "source_location": "L130",
+      "source_location": "L131",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_done_gate",
@@ -27702,7 +27702,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "hooks/done-gate.py",
-      "source_location": "L132",
+      "source_location": "L133",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_done_gate_main",
@@ -54883,5 +54883,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "fdfd6a3adf136e1c9033bd37108b7bd2da990afe"
+  "built_at_commit": "145c805f3848325059d587a5e501b151fe80c756"
 }

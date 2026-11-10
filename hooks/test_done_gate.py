@@ -1,5 +1,5 @@
 import os as _o, tempfile as _t
-[_o.environ.pop(k, None) for k in ("AODD_REPORTS", "AODD_STATE", "AODD_PLANS")]
+[_o.environ.pop(k, None) for k in ("AODD_REPORTS", "AODD_STATE", "AODD_PLANS", "DONE_GATE_AUDIT")]
 _o.environ["AODD_HOME"] = _t.mkdtemp()  # tests never touch the real AODD_HOME
 import json, importlib.util, tempfile, pathlib, os
 spec = importlib.util.spec_from_file_location("h", os.path.join(os.path.dirname(os.path.abspath(__file__)), "done-gate.py"))
@@ -15,6 +15,10 @@ tr.write_text(json.dumps({"message": {"content": [{"type": "tool_use", "name": "
 prog.write_text("- [x] a\n- [ ] b\n")
 assert "- [ ] b" in decide()                                       # open item -> block
 assert decide(stop_hook_active=True) is None
+assert decide() is None                                            # same open items again -> told once, not every stop
+prog.write_text("- [x] a\n- [ ] b\n- [ ] c\n")
+assert "- [ ] c" in decide()                                       # the list changed -> told again
+assert decide() is None
 prog.write_text("- [x] a\n- [x] b\n")
 assert decide() is None                                            # all done, not audited -> allow: audit is on demand
 sub = {"message": {"content": [{"type": "tool_use", "name": "Agent", "input": {"subagent_type": "auditor"}}]}}

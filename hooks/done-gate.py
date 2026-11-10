@@ -86,10 +86,10 @@ def audit_report(transcript: Path, reports: Path = REPORTS):
     return found[-1], (m.group(1).upper() if m else "UNVERIFIABLE")
 
 
-def already_raised(transcript: Path, report: Path) -> bool:
-    """True if this exact report's verdict was already put to the worker; records it otherwise."""
-    mark = _aodd_paths.state() / f"done-gate-raised-{_aodd_paths.session_id(transcript)}"
-    digest = hashlib.sha1(report.read_bytes()).hexdigest()
+def already_raised(transcript: Path, report: "Path | None" = None, kind: str = "raised", text: str = "") -> bool:
+    """True if this exact report (or open-items text) was already put to the worker; records it otherwise."""
+    mark = _aodd_paths.state() / f"done-gate-{kind}-{_aodd_paths.session_id(transcript)}"
+    digest = hashlib.sha1(report.read_bytes() if report else text.encode()).hexdigest()
     try:
         if mark.read_text() == digest:
             return True
@@ -119,7 +119,8 @@ def decide(payload: dict, reports: Path = REPORTS):
         return (f"[done-gate] The independent audit says {verdict}: {report}. Do not report Done. Either fix the "
                 "failed rows and re-run the audit, or tell the user plainly it is " + ("DISPUTED (the other-family auditor found a failure the "
                 "verifier rejected: the CEO decides)" if verdict == "DISPUTED" else "FAILED") + ", quoting the report's table.")
-    if not open_items:
+    # Same list as last time -> the worker already relayed it; repeating it every stop only adds noise.
+    if not open_items or already_raised(transcript, kind="items", text="\n".join(open_items)):
         return None
     shown = "\n".join(open_items[:8])
     return ("[done-gate] Progress file(s) touched this session still have unchecked items:\n" + shown +

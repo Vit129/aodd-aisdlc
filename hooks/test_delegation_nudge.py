@@ -39,6 +39,20 @@ assert call("Read", out={"file": {"content": "y\n" * (d.MAX_LINES + 1)}}, sid="s
 for _ in range(d.STREAK * 2):
     assert call("Read", sid="s6", agent_id="a1", out="z" * (d.MAX_BYTES + 1)) is None
 
+# ---- Codex: same rule, Codex tool names and tiers (Sol=Opus, Terra=Sonnet, Luna=Haiku) ----
+tmpc = Path(tempfile.mkdtemp())
+main_ro = tmpc / "rollout-main.jsonl"; main_ro.write_text(json.dumps({"type": "session_meta", "payload": {"source": "vscode"}}) + "\n")
+sub_ro = tmpc / "rollout-sub.jsonl"; sub_ro.write_text(json.dumps({"type": "session_meta", "payload": {"source": {"subagent": {"thread_spawn": {"parent_thread_id": "p"}}}}}) + "\n")
+for _ in range(d.STREAK - 1):
+    assert call("Bash", sid="c1", transcript_path=str(main_ro)) is None
+assert call("spawn_agent", sid="c1", transcript_path=str(main_ro)) is None        # Codex delegation resets the streak
+assert call("Bash", sid="c1", transcript_path=str(main_ro)) is None
+m = call("Bash", out="x" * (d.MAX_BYTES + 1), sid="c2", transcript_path=str(main_ro))
+assert m and "luna" in m and "Haiku" not in m                                    # Codex wording names its own tier
+for _ in range(d.STREAK * 2):                                                    # a Codex subagent thread is never nudged
+    assert call("Bash", sid="c3", transcript_path=str(sub_ro), out="z" * (d.MAX_BYTES + 1)) is None
+assert call("Bash", sid="c4", transcript_path=str(tmpc / "rollout-missing.jsonl"), out="z" * (d.MAX_BYTES + 1))   # unreadable rollout -> treated as main
+
 # switch off
 os.environ["AODD_DELEGATION_NUDGE"] = "0"
 assert call("Bash", out="x" * (d.MAX_BYTES + 1), sid="s7") is None

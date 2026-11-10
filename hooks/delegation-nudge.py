@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""delegation-nudge: PostToolUse(Read|Grep|Glob|Bash|Agent|Task) reminder to hand mechanical work to a cheap model.
+"""delegation-nudge: PostToolUse(Read|Grep|Glob|Bash|Agent|Task; Codex exec|spawn_agent|followup_task) reminder to hand mechanical work to a cheap model.
 
 The model split in rules/aodd.md is text only; in practice the main session keeps doing lookups itself.
-This hook watches the MAIN session (tool calls carrying `agent_id` come from a subagent and are ignored):
+This hook watches the MAIN session (Claude tool calls carrying `agent_id`, and Codex threads whose rollout
+says `source.subagent`, are ignored). Codex gets the same rule with its tiers (Sol/Terra/Luna = Opus/Sonnet/Haiku):
 
 - one tool output over MAX_BYTES or MAX_LINES (a dump that now rides along in every later turn), or
 - STREAK lookups in a row (Read/Grep/Glob/Bash) without an Agent/Task call,
@@ -24,13 +25,30 @@ MAX_BYTES = 40_000   # same threshold as rules/aodd.md "Big data stays out of ma
 MAX_LINES = 300
 STREAK = 8
 COOLDOWN = 10
-LOOKUP = {"Read", "Grep", "Glob", "Bash"}
-DELEGATE = {"Agent", "Task"}
+LOOKUP = {"Read", "Grep", "Glob", "Bash", "exec"}
+DELEGATE = {"Agent", "Task", "spawn_agent", "followup_task"}   # Claude, then Codex
+# Same tiers on both tools: Claude Opus/Sonnet/Haiku == Codex Sol/Terra/Luna
+TIER = {
+    "claude": 'a Haiku subagent (Agent model: "haiku")',
+    "codex": 'a luna subagent (spawn_agent with model luna; terra for code, sol stays the main session)',
+}
 MSG = (
     "[delegation-nudge] {why}. Per rules/aodd.md (cheap-model delegation): send the next search, file sweep, "
-    "log read or test run to a Haiku subagent (Agent model: \"haiku\") that returns paths and a short excerpt, "
+    "log read or test run to {tier} that returns paths and a short excerpt, "
     "and keep the main session for code, decisions and review. Ignore if the next step is one short command."
 )
+
+
+def _codex_meta(transcript):
+    """(is_codex, is_subagent) from a Codex rollout's first record; Claude transcripts -> (False, False)."""
+    if not transcript or "rollout-" not in os.path.basename(transcript):
+        return False, False
+    try:
+        with open(transcript, encoding="utf-8") as fh:
+            src = (json.loads(fh.readline()).get("payload") or {}).get("source")
+    except (OSError, ValueError, AttributeError):
+        return True, False
+    return True, isinstance(src, dict) and "subagent" in src
 
 
 def _size(resp):
@@ -44,6 +62,9 @@ def decide(payload, state_dir=None):
         return None
     tool, sid = payload.get("tool_name"), payload.get("session_id")
     if not sid or (tool not in LOOKUP and tool not in DELEGATE):
+        return None
+    codex, sub = _codex_meta(payload.get("transcript_path"))
+    if sub:
         return None
     d = Path(state_dir or _aodd_paths.state() / "delegation-nudge")
     f = d / re.sub(r"[^\w.-]", "_", sid)
@@ -68,7 +89,7 @@ def decide(payload, state_dir=None):
         streak, last = 0, calls
     d.mkdir(parents=True, exist_ok=True)
     f.write_text(json.dumps({"calls": calls, "streak": streak, "last": last, "nudges": st.get("nudges", 0) + bool(why)}))
-    return MSG.format(why=why) if why else None
+    return MSG.format(why=why, tier=TIER["codex" if codex else "claude"]) if why else None
 
 
 def main():

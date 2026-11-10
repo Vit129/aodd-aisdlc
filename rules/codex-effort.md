@@ -14,4 +14,14 @@ Scope: only for setups that use Codex. The shared ladder, bake-off and escalatio
 |---|---|---|---|
 | Second opinion, rescue, or an independent check from another family | Codex (`codex:rescue` or `codex exec`) | `medium` | returns a diff or findings; main reviews before anything is reported |
 
+## Tiers (same roles as Claude)
+
+| Codex | Claude row | Does |
+|---|---|---|
+| `sol` | Opus/Fable | main session: plan, design, review every diff |
+| `terra` | Sonnet | writes and changes code, in its own worktree |
+| `luna` | Haiku | search, lookup, run build/test, summaries; writes no code |
+
+Delegate with `spawn_agent` (model per the table, effort per the ladder).
+
 Escalation follows the shared ladder: 3 failing checks raise one level, capped at `high`. Then switch vendor family, then the advisor rule. `xhigh` and `max` only when a ticket says so.

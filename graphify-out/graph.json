@@ -828,18 +828,29 @@
       "file_type": "code",
       "source_file": "hooks/delegation-nudge.py",
       "source_location": "L1",
-      "end_line": 86,
+      "end_line": 107,
       "_origin": "ast",
       "id": "hooks_delegation_nudge",
       "community": 244,
       "norm_label": "delegation-nudge.py"
     },
     {
+      "label": "_codex_meta()",
+      "file_type": "code",
+      "source_file": "hooks/delegation-nudge.py",
+      "source_location": "L42",
+      "end_line": 51,
+      "_origin": "ast",
+      "id": "hooks_delegation_nudge_codex_meta",
+      "community": 244,
+      "norm_label": "_codex_meta()"
+    },
+    {
       "label": "_size()",
       "file_type": "code",
       "source_file": "hooks/delegation-nudge.py",
-      "source_location": "L36",
-      "end_line": 39,
+      "source_location": "L54",
+      "end_line": 57,
       "_origin": "ast",
       "id": "hooks_delegation_nudge_size",
       "community": 244,
@@ -849,8 +860,8 @@
       "label": "decide()",
       "file_type": "code",
       "source_file": "hooks/delegation-nudge.py",
-      "source_location": "L42",
-      "end_line": 71,
+      "source_location": "L60",
+      "end_line": 92,
       "_origin": "ast",
       "id": "hooks_delegation_nudge_decide",
       "community": 244,
@@ -860,12 +871,22 @@
       "label": "main()",
       "file_type": "code",
       "source_file": "hooks/delegation-nudge.py",
-      "source_location": "L74",
-      "end_line": 81,
+      "source_location": "L95",
+      "end_line": 102,
       "_origin": "ast",
       "id": "hooks_delegation_nudge_main",
       "community": 244,
       "norm_label": "main()"
+    },
+    {
+      "label": "(is_codex, is_subagent) from a Codex rollout's first record; Claude transcripts",
+      "file_type": "rationale",
+      "source_file": "hooks/delegation-nudge.py",
+      "source_location": "L43",
+      "_origin": "ast",
+      "id": "hooks_delegation_nudge_rationale_43",
+      "community": 244,
+      "norm_label": "(is_codex, is_subagent) from a codex rollout's first record; claude transcripts"
     },
     {
       "label": "dirty-branch-switch-guard.py",
@@ -1680,7 +1701,7 @@
       "file_type": "code",
       "source_file": "hooks/test_delegation_nudge.py",
       "source_location": "L1",
-      "end_line": 58,
+      "end_line": 72,
       "_origin": "ast",
       "id": "hooks_test_delegation_nudge",
       "community": 0,
@@ -7201,7 +7222,7 @@
       "label": "Effort ladder and tier choice (every agent, every vendor)",
       "file_type": "document",
       "source_file": "rules/aodd.md",
-      "source_location": "L65",
+      "source_location": "L67",
       "_origin": "ast",
       "id": "rules_aodd_effort_ladder_and_tier_choice_every_agent_every_vendor",
       "community": 101,
@@ -7211,7 +7232,7 @@
       "label": "Cheap-model delegation",
       "file_type": "document",
       "source_file": "rules/aodd.md",
-      "source_location": "L86",
+      "source_location": "L88",
       "_origin": "ast",
       "id": "rules_aodd_cheap_model_delegation",
       "community": 101,
@@ -7221,7 +7242,7 @@
       "label": "Haiku ops runner",
       "file_type": "document",
       "source_file": "rules/aodd.md",
-      "source_location": "L109",
+      "source_location": "L111",
       "_origin": "ast",
       "id": "rules_aodd_haiku_ops_runner",
       "community": 101,
@@ -7231,7 +7252,7 @@
       "label": "Audit and Done",
       "file_type": "document",
       "source_file": "rules/aodd.md",
-      "source_location": "L124",
+      "source_location": "L126",
       "_origin": "ast",
       "id": "rules_aodd_audit_and_done",
       "community": 101,
@@ -7326,6 +7347,16 @@
       "id": "rules_codex_effort_row",
       "community": 232,
       "norm_label": "row"
+    },
+    {
+      "label": "Tiers (same roles as Claude)",
+      "file_type": "document",
+      "source_file": "rules/codex-effort.md",
+      "source_location": "L17",
+      "_origin": "ast",
+      "id": "rules_codex_effort_tiers_same_roles_as_claude",
+      "community": 232,
+      "norm_label": "tiers (same roles as claude)"
     },
     {
       "label": "coding.md",
@@ -13818,7 +13849,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_commands",
-      "community": 15,
+      "community": 245,
       "norm_label": "commands"
     },
     {
@@ -13828,7 +13859,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_core",
-      "community": 15,
+      "community": 245,
       "norm_label": "core"
     },
     {
@@ -13838,7 +13869,7 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_navigation",
-      "community": 15,
+      "community": 245,
       "norm_label": "navigation"
     },
     {
@@ -13848,7 +13879,7 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_keyboard",
-      "community": 15,
+      "community": 245,
       "norm_label": "keyboard"
     },
     {
@@ -13858,7 +13889,7 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_mouse",
-      "community": 15,
+      "community": 245,
       "norm_label": "mouse"
     },
     {
@@ -13868,7 +13899,7 @@
       "source_location": "L96",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_save_as",
-      "community": 15,
+      "community": 245,
       "norm_label": "save as"
     },
     {
@@ -13878,7 +13909,7 @@
       "source_location": "L106",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_tabs",
-      "community": 15,
+      "community": 245,
       "norm_label": "tabs"
     },
     {
@@ -13888,7 +13919,7 @@
       "source_location": "L117",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_storage",
-      "community": 15,
+      "community": 245,
       "norm_label": "storage"
     },
     {
@@ -13898,7 +13929,7 @@
       "source_location": "L148",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_network",
-      "community": 15,
+      "community": 245,
       "norm_label": "network"
     },
     {
@@ -13908,7 +13939,7 @@
       "source_location": "L158",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_devtools",
-      "community": 15,
+      "community": 245,
       "norm_label": "devtools"
     },
     {
@@ -13918,7 +13949,7 @@
       "source_location": "L196",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_webmcp",
-      "community": 15,
+      "community": 245,
       "norm_label": "webmcp"
     },
     {
@@ -14188,7 +14219,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_request_mocking",
-      "community": 52,
+      "community": 122,
       "norm_label": "request-mocking.md"
     },
     {
@@ -14588,7 +14619,7 @@
       "source_location": "L195",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_session_management_best_practices",
-      "community": 245,
+      "community": 40,
       "norm_label": "best practices"
     },
     {
@@ -14598,7 +14629,7 @@
       "source_location": "L197",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_session_management_1_name_browser_sessions_semantically",
-      "community": 245,
+      "community": 40,
       "norm_label": "1. name browser sessions semantically"
     },
     {
@@ -14608,7 +14639,7 @@
       "source_location": "L208",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_session_management_2_always_clean_up",
-      "community": 245,
+      "community": 40,
       "norm_label": "2. always clean up"
     },
     {
@@ -14618,7 +14649,7 @@
       "source_location": "L222",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_session_management_3_delete_stale_browser_data",
-      "community": 245,
+      "community": 40,
       "norm_label": "3. delete stale browser data"
     },
     {
@@ -15228,7 +15259,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing",
-      "community": 54,
+      "community": 52,
       "norm_label": "tracing.md"
     },
     {
@@ -15258,7 +15289,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_trace_output_files",
-      "community": 246,
+      "community": 54,
       "norm_label": "trace output files"
     },
     {
@@ -15268,7 +15299,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_trace_timestamp_trace",
-      "community": 246,
+      "community": 54,
       "norm_label": "`trace-{timestamp}.trace`"
     },
     {
@@ -15278,7 +15309,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_trace_timestamp_network",
-      "community": 246,
+      "community": 54,
       "norm_label": "`trace-{timestamp}.network`"
     },
     {
@@ -15288,7 +15319,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_resources",
-      "community": 246,
+      "community": 54,
       "norm_label": "`resources/`"
     },
     {
@@ -25955,7 +25986,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "hooks/delegation-nudge.py",
-      "source_location": "L21",
+      "source_location": "L22",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_delegation_nudge",
@@ -26328,7 +26359,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "hooks/delegation-nudge.py",
-      "source_location": "L48",
+      "source_location": "L69",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_delegation_nudge_decide",
@@ -27170,6 +27201,17 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_delegation_nudge",
+      "target": "hooks_delegation_nudge_codex_meta",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "hooks/delegation-nudge.py",
+      "source_location": "L60",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "hooks_delegation_nudge",
       "target": "hooks_delegation_nudge_decide",
       "confidence_score": 1.0
     },
@@ -27177,7 +27219,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "hooks/delegation-nudge.py",
-      "source_location": "L74",
+      "source_location": "L95",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_delegation_nudge",
@@ -27188,7 +27230,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "hooks/delegation-nudge.py",
-      "source_location": "L36",
+      "source_location": "L54",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_delegation_nudge",
@@ -27200,7 +27242,30 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "hooks/delegation-nudge.py",
-      "source_location": "L60",
+      "source_location": "L66",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "hooks_delegation_nudge_decide",
+      "target": "hooks_delegation_nudge_codex_meta",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "hooks/delegation-nudge.py",
+      "source_location": "L43",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "hooks_delegation_nudge_rationale_43",
+      "target": "hooks_delegation_nudge_codex_meta",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "hooks/delegation-nudge.py",
+      "source_location": "L81",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_delegation_nudge_decide",
@@ -27212,7 +27277,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "hooks/delegation-nudge.py",
-      "source_location": "L76",
+      "source_location": "L97",
       "weight": 1.0,
       "_origin": "ast",
       "source": "hooks_delegation_nudge_main",
@@ -36549,7 +36614,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "rules/aodd.md",
-      "source_location": "L124",
+      "source_location": "L126",
       "weight": 1.0,
       "_origin": "ast",
       "source": "rules_aodd_aodd_the_operating_contract",
@@ -36560,7 +36625,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "rules/aodd.md",
-      "source_location": "L86",
+      "source_location": "L88",
       "weight": 1.0,
       "_origin": "ast",
       "source": "rules_aodd_aodd_the_operating_contract",
@@ -36582,7 +36647,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "rules/aodd.md",
-      "source_location": "L65",
+      "source_location": "L67",
       "weight": 1.0,
       "_origin": "ast",
       "source": "rules_aodd_aodd_the_operating_contract",
@@ -36593,7 +36658,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "rules/aodd.md",
-      "source_location": "L109",
+      "source_location": "L111",
       "weight": 1.0,
       "_origin": "ast",
       "source": "rules_aodd_aodd_the_operating_contract",
@@ -36697,6 +36762,17 @@
       "_origin": "ast",
       "source": "rules_codex_effort_codex_effort_mapping",
       "target": "rules_codex_effort_setting_effort",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "rules/codex-effort.md",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "rules_codex_effort_codex_effort_mapping",
+      "target": "rules_codex_effort_tiers_same_roles_as_claude",
       "confidence_score": 1.0
     },
     {
@@ -54807,5 +54883,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "91d205fdf808335240f36a4e559bcadb7eb1439b"
+  "built_at_commit": "fdfd6a3adf136e1c9033bd37108b7bd2da990afe"
 }

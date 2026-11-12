@@ -4377,7 +4377,7 @@
       "file_type": "code",
       "source_file": "scripts/test_skill_invocation.py",
       "source_location": "L1",
-      "end_line": 27,
+      "end_line": 35,
       "_origin": "ast",
       "id": "scripts_test_skill_invocation",
       "community": 249,
@@ -13029,6 +13029,32 @@
     {
       "label": "SKILL.md",
       "file_type": "document",
+      "source_file": "skills/grill-plan/SKILL.md",
+      "source_location": "L1",
+      "frontmatter": {
+        "disable-model-invocation": "true",
+        "name": "grill-plan",
+        "version": "0.1.0",
+        "description": "Grill an idea or plan until every open fork has a decision. The user runs /grill-plan, or a workflow step routes here."
+      },
+      "_origin": "ast",
+      "id": "skills_grill_plan_skill",
+      "community": 248,
+      "norm_label": "skill.md"
+    },
+    {
+      "label": "Grill the plan",
+      "file_type": "document",
+      "source_file": "skills/grill-plan/SKILL.md",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "skills_grill_plan_skill_grill_the_plan",
+      "community": 248,
+      "norm_label": "grill the plan"
+    },
+    {
+      "label": "SKILL.md",
+      "file_type": "document",
       "source_file": "skills/hook-authoring/SKILL.md",
       "source_location": "L1",
       "frontmatter": {
@@ -13996,7 +14022,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_commands",
-      "community": 15,
+      "community": 246,
       "norm_label": "commands"
     },
     {
@@ -14006,7 +14032,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_core",
-      "community": 15,
+      "community": 246,
       "norm_label": "core"
     },
     {
@@ -14016,7 +14042,7 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_navigation",
-      "community": 15,
+      "community": 246,
       "norm_label": "navigation"
     },
     {
@@ -14026,7 +14052,7 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_keyboard",
-      "community": 15,
+      "community": 246,
       "norm_label": "keyboard"
     },
     {
@@ -14036,7 +14062,7 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_mouse",
-      "community": 15,
+      "community": 246,
       "norm_label": "mouse"
     },
     {
@@ -14046,7 +14072,7 @@
       "source_location": "L96",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_save_as",
-      "community": 15,
+      "community": 246,
       "norm_label": "save as"
     },
     {
@@ -14056,7 +14082,7 @@
       "source_location": "L106",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_tabs",
-      "community": 15,
+      "community": 246,
       "norm_label": "tabs"
     },
     {
@@ -14066,7 +14092,7 @@
       "source_location": "L117",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_storage",
-      "community": 15,
+      "community": 246,
       "norm_label": "storage"
     },
     {
@@ -14076,7 +14102,7 @@
       "source_location": "L148",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_network",
-      "community": 15,
+      "community": 246,
       "norm_label": "network"
     },
     {
@@ -14086,7 +14112,7 @@
       "source_location": "L158",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_devtools",
-      "community": 15,
+      "community": 246,
       "norm_label": "devtools"
     },
     {
@@ -14096,7 +14122,7 @@
       "source_location": "L196",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_webmcp",
-      "community": 15,
+      "community": 246,
       "norm_label": "webmcp"
     },
     {
@@ -14246,7 +14272,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_element_attributes",
-      "community": 248,
+      "community": 52,
       "norm_label": "element-attributes.md"
     },
     {
@@ -14256,7 +14282,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_element_attributes_inspecting_element_attributes",
-      "community": 248,
+      "community": 52,
       "norm_label": "inspecting element attributes"
     },
     {
@@ -14266,7 +14292,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_element_attributes_examples",
-      "community": 248,
+      "community": 52,
       "norm_label": "examples"
     },
     {
@@ -15436,7 +15462,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_trace_output_files",
-      "community": 246,
+      "community": 54,
       "norm_label": "trace output files"
     },
     {
@@ -15446,7 +15472,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_trace_timestamp_trace",
-      "community": 246,
+      "community": 54,
       "norm_label": "`trace-{timestamp}.trace`"
     },
     {
@@ -15456,7 +15482,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_trace_timestamp_network",
-      "community": 246,
+      "community": 54,
       "norm_label": "`trace-{timestamp}.network`"
     },
     {
@@ -15466,7 +15492,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_resources",
-      "community": 246,
+      "community": 54,
       "norm_label": "`resources/`"
     },
     {
@@ -42519,6 +42545,17 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "skills/grill-plan/SKILL.md",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "skills_grill_plan_skill",
+      "target": "skills_grill_plan_skill_grill_the_plan",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "skills/hook-authoring/SKILL.md",
       "source_location": "L9",
       "weight": 1.0,
@@ -55201,5 +55238,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "20240068a514db0e9c0bb733b037eb17fa0f8349"
+  "built_at_commit": "ced9436c7db21b6c1865df01777e1b880534e958"
 }

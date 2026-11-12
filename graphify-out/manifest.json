@@ -300,8 +300,8 @@
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1794475107.8168526,
-    "ast_hash": "e24d2565c8a3232eb5f95805d06b1532",
+    "mtime": 1794475405.4862652,
+    "ast_hash": "b5c1e5b9bb5267be58309ae2210d60e9",
     "semantic_hash": ""
   },
   "CHANGELOG.md": {
@@ -315,8 +315,8 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1794475118.287124,
-    "ast_hash": "a7c45bb2be895fe55b47be295bfbb423",
+    "mtime": 1794475405.4806945,
+    "ast_hash": "751662cdfe92d9fc101e2521c6abeac5",
     "semantic_hash": ""
   },
   "agents/advisor.md": {
@@ -495,8 +495,8 @@
     "semantic_hash": ""
   },
   "skills/ai-sdlc/phases/phase1-interview.md": {
-    "mtime": 1794474835.6891842,
-    "ast_hash": "a5cbf7b5cdb2ba68b5b502dd0924f068",
+    "mtime": 1794475292.7263577,
+    "ast_hash": "17b703c107675d87104444ed9ef430b4",
     "semantic_hash": ""
   },
   "skills/ai-sdlc/phases/phase2-architect.md": {
@@ -1260,8 +1260,8 @@
     "semantic_hash": ""
   },
   "scripts/test_skill_invocation.py": {
-    "mtime": 1794474878.5760534,
-    "ast_hash": "c628fc67773fad10bb24b2258d5bba5f",
+    "mtime": 1794475278.6637747,
+    "ast_hash": "7c16f945cfc051b9de19ef05ca6df19b",
     "semantic_hash": ""
   },
   "scripts/skill_trigger_eval.py": {
@@ -1277,6 +1277,11 @@
   "scripts/test_rule_duplicates.py": {
     "mtime": 1794475170.5902557,
     "ast_hash": "f919a9988afad82dc606df96987284b9",
+    "semantic_hash": ""
+  },
+  "skills/grill-plan/SKILL.md": {
+    "mtime": 1794475292.4448824,
+    "ast_hash": "22ae9f8b8ae34c059c88bd63d0199151",
     "semantic_hash": ""
   }
 }

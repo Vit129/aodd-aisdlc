@@ -6,7 +6,7 @@ import pathlib, re, sys
 
 root = pathlib.Path(__file__).resolve().parent.parent
 USER_INVOKED = {"ai-sdlc", "chief-of-staff", "agent-ops", "housekeeping", "delivery-workflow",
-                "test-scenario", "robotframework-testing", "performance-testing"}
+                "grill-plan", "test-scenario", "robotframework-testing", "performance-testing"}
 
 
 def frontmatter(path):
@@ -23,4 +23,12 @@ if bad:
 for f in [root / "rules/aodd.md", root / "skills/chief-of-staff/SKILL.md"]:
     if re.search(r"invoke the `ai-sdlc` skill yourself|\(Skill tool", f.read_text(encoding="utf-8")):
         sys.exit(f"{f.relative_to(root)} still tells the model to call a user-invoked skill through the Skill tool")
+# The grilling step hides what comes after it, so the model digs into the questions instead of rushing
+# to the deliverable it can see ahead.
+grill = (root / "skills/grill-plan/SKILL.md").read_text(encoding="utf-8")
+ahead = re.findall(r"(?i)\b(phase [2-5]|architect\w*|implement\w*|plan mode|write (the )?code|gate [123])\b", grill)
+if ahead:
+    sys.exit(f"skills/grill-plan/SKILL.md names later steps: {sorted({a[0] for a in ahead})}")
+if "skills/grill-plan/SKILL.md" not in (root / "skills/ai-sdlc/phases/phase1-interview.md").read_text(encoding="utf-8"):
+    sys.exit("phase1-interview.md does not route the grill case to skills/grill-plan/SKILL.md")
 print("ok - workflow skills are user-invoked")

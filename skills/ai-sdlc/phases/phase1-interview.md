@@ -5,10 +5,10 @@
 
 Route by situation:
 - Vague or underspecified idea, or a high-stakes / hard-to-reverse decision → **grill it**:
-  list the 3-5 weakest assumptions or open forks in the plan, then ask them one at a time
-  (`AskUserQuestion`, recommended answer first, with the why). Follow each answer to the next
-  dependent question; stop when every branch has a decision. Write the result as a short
-  markdown spec (goal, scope in/out, decisions, open assumptions).
+  open `skills/grill-plan/SKILL.md` and follow only that file until it hands back the spec
+  (save it as `brief.md` next to the progress file). It is a separate skill so the grilling
+  does not see the design and code that follow and rush toward them: while in it, draft no
+  design and touch no code.
 - Has codebase → read the code the plan touches first, so questions the code can answer are
   never asked; note where the plan's language drifts from what the code already calls things,
   and record any real ADR-worthy decision inline.

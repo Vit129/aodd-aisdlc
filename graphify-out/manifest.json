@@ -300,8 +300,8 @@
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1794474835.6530344,
-    "ast_hash": "75c6cf10754a0168aeccd3ec86341c8c",
+    "mtime": 1794475107.8168526,
+    "ast_hash": "e24d2565c8a3232eb5f95805d06b1532",
     "semantic_hash": ""
   },
   "CHANGELOG.md": {
@@ -315,8 +315,8 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1794474835.6552117,
-    "ast_hash": "511786d08643a300d95bb2bc605d7c21",
+    "mtime": 1794475118.287124,
+    "ast_hash": "a7c45bb2be895fe55b47be295bfbb423",
     "semantic_hash": ""
   },
   "agents/advisor.md": {
@@ -1215,8 +1215,8 @@
     "semantic_hash": ""
   },
   "ARCHITECTURE.md": {
-    "mtime": 1794474835.6532977,
-    "ast_hash": "a7190a687de6926e842ef81652781660",
+    "mtime": 1794475107.8172112,
+    "ast_hash": "1c0a7babf2e7cebba4bc3dd6ea8813ee",
     "semantic_hash": ""
   },
   "CONTEXT.md": {
@@ -1262,6 +1262,16 @@
   "scripts/test_skill_invocation.py": {
     "mtime": 1794474878.5760534,
     "ast_hash": "c628fc67773fad10bb24b2258d5bba5f",
+    "semantic_hash": ""
+  },
+  "scripts/skill_trigger_eval.py": {
+    "mtime": 1794475042.0375965,
+    "ast_hash": "b98a65298fbb9826f1b7e036c48f547e",
+    "semantic_hash": ""
+  },
+  "scripts/test_skill_trigger_eval.py": {
+    "mtime": 1794475025.5474854,
+    "ast_hash": "6243c4cd6759fe5e30e69b4d12f55a36",
     "semantic_hash": ""
   }
 }

@@ -3880,6 +3880,104 @@
       "norm_label": "(hits logged with a session id, hits whose file was read in that session, anchor"
     },
     {
+      "label": "skill_trigger_eval.py",
+      "file_type": "code",
+      "source_file": "scripts/skill_trigger_eval.py",
+      "source_location": "L1",
+      "end_line": 94,
+      "_origin": "ast",
+      "id": "scripts_skill_trigger_eval",
+      "community": 245,
+      "norm_label": "skill_trigger_eval.py"
+    },
+    {
+      "label": "cli()",
+      "file_type": "code",
+      "source_file": "scripts/skill_trigger_eval.py",
+      "source_location": "L19",
+      "end_line": 22,
+      "_origin": "ast",
+      "id": "scripts_skill_trigger_eval_cli",
+      "community": 245,
+      "norm_label": "cli()"
+    },
+    {
+      "label": "skills_opened()",
+      "file_type": "code",
+      "source_file": "scripts/skill_trigger_eval.py",
+      "source_location": "L25",
+      "end_line": 37,
+      "_origin": "ast",
+      "id": "scripts_skill_trigger_eval_skills_opened",
+      "community": 245,
+      "norm_label": "skills_opened()"
+    },
+    {
+      "label": "opened()",
+      "file_type": "code",
+      "source_file": "scripts/skill_trigger_eval.py",
+      "source_location": "L40",
+      "end_line": 42,
+      "_origin": "ast",
+      "id": "scripts_skill_trigger_eval_opened",
+      "community": 245,
+      "norm_label": "opened()"
+    },
+    {
+      "label": "leaks()",
+      "file_type": "code",
+      "source_file": "scripts/skill_trigger_eval.py",
+      "source_location": "L45",
+      "end_line": 46,
+      "_origin": "ast",
+      "id": "scripts_skill_trigger_eval_leaks",
+      "community": 245,
+      "norm_label": "leaks()"
+    },
+    {
+      "label": "run()",
+      "file_type": "code",
+      "source_file": "scripts/skill_trigger_eval.py",
+      "source_location": "L49",
+      "end_line": 65,
+      "_origin": "ast",
+      "id": "scripts_skill_trigger_eval_run",
+      "community": 245,
+      "norm_label": "run()"
+    },
+    {
+      "label": "report()",
+      "file_type": "code",
+      "source_file": "scripts/skill_trigger_eval.py",
+      "source_location": "L68",
+      "end_line": 79,
+      "_origin": "ast",
+      "id": "scripts_skill_trigger_eval_report",
+      "community": 245,
+      "norm_label": "report()"
+    },
+    {
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "scripts/skill_trigger_eval.py",
+      "source_location": "L82",
+      "end_line": 89,
+      "_origin": "ast",
+      "id": "scripts_skill_trigger_eval_main",
+      "community": 245,
+      "norm_label": "main()"
+    },
+    {
+      "label": "Skill names the session called through the Skill tool, from stream-json output.",
+      "file_type": "rationale",
+      "source_file": "scripts/skill_trigger_eval.py",
+      "source_location": "L26",
+      "_origin": "ast",
+      "id": "scripts_skill_trigger_eval_rationale_26",
+      "community": 245,
+      "norm_label": "skill names the session called through the skill tool, from stream-json output."
+    },
+    {
       "label": "test_agent_ops_gather.py",
       "file_type": "code",
       "source_file": "scripts/test_agent_ops_gather.py",
@@ -4339,6 +4437,17 @@
       "id": "scripts_test_skill_learning_report_mk",
       "community": 154,
       "norm_label": "mk()"
+    },
+    {
+      "label": "test_skill_trigger_eval.py",
+      "file_type": "code",
+      "source_file": "scripts/test_skill_trigger_eval.py",
+      "source_location": "L1",
+      "end_line": 36,
+      "_origin": "ast",
+      "id": "scripts_test_skill_trigger_eval",
+      "community": 250,
+      "norm_label": "test_skill_trigger_eval.py"
     },
     {
       "label": "core.py",
@@ -5510,7 +5619,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "changelog_unreleased",
-      "community": 248,
+      "community": 2,
       "norm_label": "[unreleased]"
     },
     {
@@ -5520,7 +5629,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "changelog_changed",
-      "community": 248,
+      "community": 2,
       "norm_label": "changed"
     },
     {
@@ -5550,7 +5659,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "changelog_0_7_0_2026_10_30",
-      "community": 247,
+      "community": 2,
       "norm_label": "[0.7.0] - 2026-10-30"
     },
     {
@@ -5560,7 +5669,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "changelog_added_24",
-      "community": 247,
+      "community": 2,
       "norm_label": "added"
     },
     {
@@ -5820,7 +5929,7 @@
       "source_location": "L130",
       "_origin": "ast",
       "id": "changelog_0_3_4_2026_10_17",
-      "community": 2,
+      "community": 247,
       "norm_label": "[0.3.4] - 2026-10-17"
     },
     {
@@ -5830,7 +5939,7 @@
       "source_location": "L132",
       "_origin": "ast",
       "id": "changelog_documentation_132",
-      "community": 2,
+      "community": 247,
       "norm_label": "documentation"
     },
     {
@@ -5840,7 +5949,7 @@
       "source_location": "L136",
       "_origin": "ast",
       "id": "changelog_fixed_136",
-      "community": 2,
+      "community": 247,
       "norm_label": "fixed"
     },
     {
@@ -6207,7 +6316,7 @@
       "label": "Requirements",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L50",
+      "source_location": "L51",
       "_origin": "ast",
       "id": "readme_requirements",
       "community": 6,
@@ -6217,7 +6326,7 @@
       "label": "Install",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L58",
+      "source_location": "L59",
       "_origin": "ast",
       "id": "readme_install",
       "community": 6,
@@ -6227,7 +6336,7 @@
       "label": "Per repository (`--project`)",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L81",
+      "source_location": "L82",
       "_origin": "ast",
       "id": "readme_per_repository_project",
       "community": 6,
@@ -6237,7 +6346,7 @@
       "label": "Companion plugins (optional, installed separately, not copied here)",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L122",
+      "source_location": "L123",
       "_origin": "ast",
       "id": "readme_companion_plugins_optional_installed_separately_not_copied_here",
       "community": 6,
@@ -6247,7 +6356,7 @@
       "label": "Optional modules",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L127",
+      "source_location": "L128",
       "_origin": "ast",
       "id": "readme_optional_modules",
       "community": 6,
@@ -6257,7 +6366,7 @@
       "label": "Schedules",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L140",
+      "source_location": "L141",
       "_origin": "ast",
       "id": "readme_schedules",
       "community": 6,
@@ -6267,7 +6376,7 @@
       "label": "How the audit works",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L154",
+      "source_location": "L155",
       "_origin": "ast",
       "id": "readme_how_the_audit_works",
       "community": 6,
@@ -6277,7 +6386,7 @@
       "label": "Skill capture (self-improving skills)",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L158",
+      "source_location": "L159",
       "_origin": "ast",
       "id": "readme_skill_capture_self_improving_skills",
       "community": 6,
@@ -6287,7 +6396,7 @@
       "label": "Codex",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L162",
+      "source_location": "L163",
       "_origin": "ast",
       "id": "readme_codex",
       "community": 6,
@@ -6297,7 +6406,7 @@
       "label": "Release",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L166",
+      "source_location": "L167",
       "_origin": "ast",
       "id": "readme_release",
       "community": 6,
@@ -6307,7 +6416,7 @@
       "label": "Tests",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L170",
+      "source_location": "L171",
       "_origin": "ast",
       "id": "readme_tests",
       "community": 6,
@@ -6317,7 +6426,7 @@
       "label": "Uninstall",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L178",
+      "source_location": "L179",
       "_origin": "ast",
       "id": "readme_uninstall",
       "community": 6,
@@ -6327,7 +6436,7 @@
       "label": "Contributors",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L186",
+      "source_location": "L187",
       "_origin": "ast",
       "id": "readme_contributors",
       "community": 6,
@@ -6337,7 +6446,7 @@
       "label": "License",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L190",
+      "source_location": "L191",
       "_origin": "ast",
       "id": "readme_license",
       "community": 6,
@@ -6347,7 +6456,7 @@
       "label": "Graphify in commit and release flows",
       "file_type": "document",
       "source_file": "README.md",
-      "source_location": "L195",
+      "source_location": "L196",
       "_origin": "ast",
       "id": "readme_graphify_in_commit_and_release_flows",
       "community": 6,
@@ -14126,7 +14235,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_element_attributes",
-      "community": 52,
+      "community": 248,
       "norm_label": "element-attributes.md"
     },
     {
@@ -14136,7 +14245,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_element_attributes_inspecting_element_attributes",
-      "community": 52,
+      "community": 248,
       "norm_label": "inspecting element attributes"
     },
     {
@@ -14146,7 +14255,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_element_attributes_examples",
-      "community": 52,
+      "community": 248,
       "norm_label": "examples"
     },
     {
@@ -15116,7 +15225,7 @@
       "source_location": "L142",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_1_planning",
-      "community": 245,
+      "community": 21,
       "norm_label": "1. planning"
     },
     {
@@ -15126,7 +15235,7 @@
       "source_location": "L146",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_1_1_prerequisite_workspace",
-      "community": 245,
+      "community": 21,
       "norm_label": "1.1 prerequisite: workspace"
     },
     {
@@ -15136,7 +15245,7 @@
       "source_location": "L162",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_1_2_prerequisite_seed_test",
-      "community": 245,
+      "community": 21,
       "norm_label": "1.2 prerequisite: seed test"
     },
     {
@@ -15146,7 +15255,7 @@
       "source_location": "L203",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_1_3_explore_the_app",
-      "community": 245,
+      "community": 21,
       "norm_label": "1.3 explore the app"
     },
     {
@@ -15156,7 +15265,7 @@
       "source_location": "L234",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_1_4_write_the_spec_file",
-      "community": 245,
+      "community": 21,
       "norm_label": "1.4 write the spec file"
     },
     {
@@ -15166,7 +15275,7 @@
       "source_location": "L281",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_2_generate",
-      "community": 246,
+      "community": 21,
       "norm_label": "2. generate"
     },
     {
@@ -15176,7 +15285,7 @@
       "source_location": "L285",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_2_1_inputs",
-      "community": 246,
+      "community": 21,
       "norm_label": "2.1 inputs"
     },
     {
@@ -15186,7 +15295,7 @@
       "source_location": "L291",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_2_2_generate_one_scenario",
-      "community": 246,
+      "community": 21,
       "norm_label": "2.2 generate one scenario"
     },
     {
@@ -15196,7 +15305,7 @@
       "source_location": "L350",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_2_3_generate_multiple_scenarios",
-      "community": 246,
+      "community": 21,
       "norm_label": "2.3 generate multiple scenarios"
     },
     {
@@ -15206,7 +15315,7 @@
       "source_location": "L354",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_2_4_run_generated_tests",
-      "community": 246,
+      "community": 21,
       "norm_label": "2.4 run generated tests"
     },
     {
@@ -15286,7 +15395,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing",
-      "community": 54,
+      "community": 52,
       "norm_label": "tracing.md"
     },
     {
@@ -15316,7 +15425,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_trace_output_files",
-      "community": 54,
+      "community": 246,
       "norm_label": "trace output files"
     },
     {
@@ -15326,7 +15435,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_trace_timestamp_trace",
-      "community": 54,
+      "community": 246,
       "norm_label": "`trace-{timestamp}.trace`"
     },
     {
@@ -15336,7 +15445,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_trace_timestamp_network",
-      "community": 54,
+      "community": 246,
       "norm_label": "`trace-{timestamp}.network`"
     },
     {
@@ -15346,7 +15455,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_resources",
-      "community": 54,
+      "community": 246,
       "norm_label": "`resources/`"
     },
     {
@@ -32594,6 +32703,166 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "scripts/skill_trigger_eval.py",
+      "source_location": "L19",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_skill_trigger_eval",
+      "target": "scripts_skill_trigger_eval_cli",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/skill_trigger_eval.py",
+      "source_location": "L45",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_skill_trigger_eval",
+      "target": "scripts_skill_trigger_eval_leaks",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/skill_trigger_eval.py",
+      "source_location": "L82",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_skill_trigger_eval",
+      "target": "scripts_skill_trigger_eval_main",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/skill_trigger_eval.py",
+      "source_location": "L40",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_skill_trigger_eval",
+      "target": "scripts_skill_trigger_eval_opened",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/skill_trigger_eval.py",
+      "source_location": "L68",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_skill_trigger_eval",
+      "target": "scripts_skill_trigger_eval_report",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/skill_trigger_eval.py",
+      "source_location": "L49",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_skill_trigger_eval",
+      "target": "scripts_skill_trigger_eval_run",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/skill_trigger_eval.py",
+      "source_location": "L25",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_skill_trigger_eval",
+      "target": "scripts_skill_trigger_eval_skills_opened",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/skill_trigger_eval.py",
+      "source_location": "L50",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_skill_trigger_eval_run",
+      "target": "scripts_skill_trigger_eval_cli",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/skill_trigger_eval.py",
+      "source_location": "L26",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_skill_trigger_eval_rationale_26",
+      "target": "scripts_skill_trigger_eval_skills_opened",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/skill_trigger_eval.py",
+      "source_location": "L61",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_skill_trigger_eval_run",
+      "target": "scripts_skill_trigger_eval_skills_opened",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/skill_trigger_eval.py",
+      "source_location": "L61",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_skill_trigger_eval_run",
+      "target": "scripts_skill_trigger_eval_opened",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/skill_trigger_eval.py",
+      "source_location": "L52",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_skill_trigger_eval_run",
+      "target": "scripts_skill_trigger_eval_leaks",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/skill_trigger_eval.py",
+      "source_location": "L89",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_skill_trigger_eval_main",
+      "target": "scripts_skill_trigger_eval_run",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/skill_trigger_eval.py",
+      "source_location": "L89",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_skill_trigger_eval_main",
+      "target": "scripts_skill_trigger_eval_report",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "scripts/test_graphify_commit.py",
       "source_location": "L14",
       "weight": 1.0,
@@ -35673,7 +35942,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L156",
+      "source_location": "L157",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme",
@@ -35684,7 +35953,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L164",
+      "source_location": "L165",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme",
@@ -35695,7 +35964,7 @@
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L160",
+      "source_location": "L161",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme",
@@ -35717,7 +35986,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L162",
+      "source_location": "L163",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_aodd_aisdlc",
@@ -35728,7 +35997,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L186",
+      "source_location": "L187",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_aodd_aisdlc",
@@ -35739,7 +36008,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L154",
+      "source_location": "L155",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_aodd_aisdlc",
@@ -35750,7 +36019,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L58",
+      "source_location": "L59",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_aodd_aisdlc",
@@ -35761,7 +36030,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L190",
+      "source_location": "L191",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_aodd_aisdlc",
@@ -35772,7 +36041,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L127",
+      "source_location": "L128",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_aodd_aisdlc",
@@ -35783,7 +36052,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L166",
+      "source_location": "L167",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_aodd_aisdlc",
@@ -35794,7 +36063,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L50",
+      "source_location": "L51",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_aodd_aisdlc",
@@ -35805,7 +36074,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L158",
+      "source_location": "L159",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_aodd_aisdlc",
@@ -35816,7 +36085,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L170",
+      "source_location": "L171",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_aodd_aisdlc",
@@ -35838,7 +36107,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L178",
+      "source_location": "L179",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_aodd_aisdlc",
@@ -35860,7 +36129,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L122",
+      "source_location": "L123",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_install",
@@ -35871,7 +36140,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L81",
+      "source_location": "L82",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_install",
@@ -35882,7 +36151,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L140",
+      "source_location": "L141",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_optional_modules",
@@ -35893,7 +36162,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "README.md",
-      "source_location": "L195",
+      "source_location": "L196",
       "weight": 1.0,
       "_origin": "ast",
       "source": "readme_license",
@@ -54921,5 +55190,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "fbf166b5d0d1dc60436ae6309622f2f0c9f30108"
+  "built_at_commit": "0a2a0e9af66c824eaf48ee7872846c1a5668e01c"
 }

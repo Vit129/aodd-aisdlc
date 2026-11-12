@@ -8,7 +8,9 @@ Route by situation:
   open `skills/grill-plan/SKILL.md` and follow only that file until it hands back the spec
   (save it as `brief.md` next to the progress file). It is a separate skill so the grilling
   does not see the design and code that follow and rush toward them: while in it, draft no
-  design and touch no code.
+  design and touch no code. When it hands back, **stop**: show the spec and wait for the user
+  to continue (`/ai-sdlc <slug>` again, or "continue"). Do not flow straight into the next
+  phase in the same turn; the stop is what keeps the grilling from seeing what comes after.
 - Has codebase → read the code the plan touches first, so questions the code can answer are
   never asked; note where the plan's language drifts from what the code already calls things,
   and record any real ADR-worthy decision inline.

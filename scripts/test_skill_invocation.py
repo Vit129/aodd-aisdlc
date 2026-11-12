@@ -31,4 +31,6 @@ if ahead:
     sys.exit(f"skills/grill-plan/SKILL.md names later steps: {sorted({a[0] for a in ahead})}")
 if "skills/grill-plan/SKILL.md" not in (root / "skills/ai-sdlc/phases/phase1-interview.md").read_text(encoding="utf-8"):
     sys.exit("phase1-interview.md does not route the grill case to skills/grill-plan/SKILL.md")
+if "**stop**" not in (root / "skills/ai-sdlc/phases/phase1-interview.md").read_text(encoding="utf-8"):
+    sys.exit("phase1-interview.md must stop after grill-plan hands back, so the grilling never sees the next phase")
 print("ok - workflow skills are user-invoked")

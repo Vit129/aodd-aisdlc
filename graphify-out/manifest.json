@@ -385,8 +385,8 @@
     "semantic_hash": ""
   },
   "rules/ai-sdlc-workflow.md": {
-    "mtime": 1794474835.6780236,
-    "ast_hash": "58f501e63c545bb7dcb8a05ad00a8582",
+    "mtime": 1794475160.929555,
+    "ast_hash": "bdb675f4df3c28d672756aaa7551be16",
     "semantic_hash": ""
   },
   "rules/aodd.md": {
@@ -395,8 +395,8 @@
     "semantic_hash": ""
   },
   "rules/coding.md": {
-    "mtime": 1794474835.6800287,
-    "ast_hash": "1f3a3632f969921ddba88d37964bea04",
+    "mtime": 1794475160.9298575,
+    "ast_hash": "7a89fabfc635833f4c1a36a84c35e100",
     "semantic_hash": ""
   },
   "rules/coding/output-and-workflow.md": {
@@ -1272,6 +1272,11 @@
   "scripts/test_skill_trigger_eval.py": {
     "mtime": 1794475025.5474854,
     "ast_hash": "6243c4cd6759fe5e30e69b4d12f55a36",
+    "semantic_hash": ""
+  },
+  "scripts/test_rule_duplicates.py": {
+    "mtime": 1794475170.5902557,
+    "ast_hash": "f919a9988afad82dc606df96987284b9",
     "semantic_hash": ""
   }
 }

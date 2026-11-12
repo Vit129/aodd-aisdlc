@@ -4351,6 +4351,17 @@
       "norm_label": ".test_version_order()"
     },
     {
+      "label": "test_rule_duplicates.py",
+      "file_type": "code",
+      "source_file": "scripts/test_rule_duplicates.py",
+      "source_location": "L1",
+      "end_line": 21,
+      "_origin": "ast",
+      "id": "scripts_test_rule_duplicates",
+      "community": 251,
+      "norm_label": "test_rule_duplicates.py"
+    },
+    {
       "label": "test_rule_links.py",
       "file_type": "code",
       "source_file": "scripts/test_rule_links.py",
@@ -55190,5 +55201,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "0a2a0e9af66c824eaf48ee7872846c1a5668e01c"
+  "built_at_commit": "20240068a514db0e9c0bb733b037eb17fa0f8349"
 }

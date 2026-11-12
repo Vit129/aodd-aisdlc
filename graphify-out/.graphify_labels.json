@@ -249,5 +249,6 @@
   "247": "[0.7.0] - 2026-10-30",
   "248": "[Unreleased]",
   "249": "test_skill_invocation.py",
-  "250": "test_skill_trigger_eval.py"
+  "250": "test_skill_trigger_eval.py",
+  "251": "test_rule_duplicates.py"
 }

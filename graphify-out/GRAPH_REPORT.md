@@ -1,16 +1,16 @@
 # Graph Report - skill-hygiene  (2026-11-12)
 
 ## Corpus Check
-- 255 files · ~180,534 words
+- 256 files · ~180,569 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2477 nodes · 2672 edges · 251 communities (221 shown, 30 thin omitted)
+- 2478 nodes · 2672 edges · 252 communities (222 shown, 30 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 13 edges (avg confidence: 0.62)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `0a2a0e9a`
+- Built from commit: `20240068`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -57,7 +57,7 @@ node's neighbors span, not by raw edge count.
 ## Import Cycles
 - None detected.
 
-## Communities (251 total, 30 thin omitted)
+## Communities (252 total, 30 thin omitted)
 
 ### Community 0 - "_aodd_paths.py"
 Cohesion: 0.16
@@ -843,7 +843,7 @@ _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `log()` connect `[0.7.0] - 2026-10-30` to `BM25`?**
   _High betweenness centrality (0.005) - this node is a cross-community bridge._
-- **Why does `BM25` connect `BM25` to `core.py`?**
+- **Why does `_get_bm25()` connect `core.py` to `BM25`?**
   _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **Why does `Test generation (plan → generate → heal)` connect `3. Heal` to `SKILL.md`?**
   _High betweenness centrality (0.002) - this node is a cross-community bridge._

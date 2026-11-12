@@ -3,13 +3,13 @@ _Auto-generated from GRAPH_REPORT.md · do not edit manually_
 _Regen: `graphify update .`_
 
 ## Summary
-- 2477 nodes · 2672 edges · 251 communities (221 shown, 30 thin omitted)
+- 2478 nodes · 2672 edges · 252 communities (222 shown, 30 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 13 edges (avg confidence: 0.62)
 - Token cost: 0 input · 0 output
 
 
 ## Graph Freshness
-- Built from commit: `0a2a0e9a`
+- Built from commit: `20240068`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 

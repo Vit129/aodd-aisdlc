@@ -1,0 +1,22 @@
+rules/aodd.md
+  s_93140921790e2e::t_6f73ee4b15c847 27
+  s_93140921790e2e::t_5df5b7736a087c 37
+graphify-out/manifest.json
+  s_93140921790e2e::t_308233e0749f0f 393-394
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "04de980e168dee6c669cb38dfae28ec657a31334",
+  "prompts": {},
+  "sessions": {
+    "s_93140921790e2e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2ab3d4e7-6a4e-48cc-b53d-aab8590ba317",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """Measure whether a model opens a model-invoked skill on its own.
 
+Only for skills that stay model-invoked (guards like git safety that must fire when nobody asks).
+The first answer to an unreliable trigger is to make the skill user-invoked, which removes the need
+for this eval; rewriting the description is the fallback for a skill that has to stay model-invoked.
+
 Each case is a request phrased the way a user really types it, never copied from the skill's
 description (tuning a description against the same sentences it is tested on overfits: it scores
 well on those and still misses new phrasings). Every case runs in a fresh, one-turn session, so no

@@ -1,7 +1,8 @@
 ---
 name: grill-plan
 version: 0.1.0
-description: Grill a plan or idea until every open fork has a decision. Use when a request is vague or underspecified, a decision is hard to reverse, or the user says grill me / stress-test this / ซักฉันหน่อย.
+description: >
+  Question an idea before building: "stress-test my plan" / "ช่วยท้าทายแผนนี้"; or resolve indecision: "help me choose" / "ยังตัดสินใจไม่ได้". Feature requests, even vague ones, belong to ai-sdlc, which calls this skill to clarify. Plain questions need a direct answer.
 ---
 
 # Grill the plan

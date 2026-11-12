@@ -2,11 +2,7 @@
 name: chief-of-staff
 version: 0.1.3
 description: >
-  AODD orchestrator ("Human as a judge"). Takes ONE brief from the user (CEO),
-  dispatches it to the right skills/subagents (team leads), checks results against
-  the Definition of Done, and returns a single report for the CEO to decide on.
-  Trigger: "chief of staff", "/chief-of-staff", "สั่งงานทีม", "มอบหมายงาน", "orchestrate this",
-  "ทำให้จบแล้วค่อยมารายงาน", multi-team requests (design + dev + QA, research + write-up).
+  Delegate a whole job across teams or kinds of work, with one final report: "handle design, dev and QA"; "research and write it up"; "ทำให้จบแล้วค่อยมารายงาน". A single dev feature belongs to ai-sdlc; small edits do not need this skill.
 ---
 
 # Chief of Staff — one brief in, one report out

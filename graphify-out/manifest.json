@@ -490,8 +490,8 @@
     "semantic_hash": ""
   },
   "skills/ai-sdlc/SKILL.md": {
-    "mtime": 1794489795.3964624,
-    "ast_hash": "84f81c6c9179142d36fc8839361c2441",
+    "mtime": 1794491820.6087255,
+    "ast_hash": "c28772b17fa238989b414ba2262929d2",
     "semantic_hash": ""
   },
   "skills/ai-sdlc/phases/phase1-interview.md": {
@@ -615,8 +615,8 @@
     "semantic_hash": ""
   },
   "skills/chief-of-staff/SKILL.md": {
-    "mtime": 1794489795.3982706,
-    "ast_hash": "925142b92fb80577cd68873fa31e593e",
+    "mtime": 1794491820.6093628,
+    "ast_hash": "9daad145be0e760f67a7a9835531744d",
     "semantic_hash": ""
   },
   "skills/delivery-workflow/SKILL.md": {
@@ -1280,8 +1280,8 @@
     "semantic_hash": ""
   },
   "skills/grill-plan/SKILL.md": {
-    "mtime": 1794489795.3988605,
-    "ast_hash": "d5d12b228d06cd52cd78e587c428d288",
+    "mtime": 1794491820.609832,
+    "ast_hash": "0b711343b199c63f3f36b0eab8a11e98",
     "semantic_hash": ""
   }
 }

@@ -34,7 +34,8 @@ def skills_opened(stream):
             ev = json.loads(line)
         except ValueError:
             continue
-        content = (ev.get("message") or {}).get("content") if isinstance(ev, dict) else None
+        msg = ev.get("message") if isinstance(ev, dict) else None
+        content = msg.get("content") if isinstance(msg, dict) else None  # some events carry a string message
         for item in content if isinstance(content, list) else []:
             if isinstance(item, dict) and item.get("type") == "tool_use" and item.get("name") == "Skill":
                 found.add(str((item.get("input") or {}).get("skill", "")))

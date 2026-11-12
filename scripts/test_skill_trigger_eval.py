@@ -17,6 +17,7 @@ with tempfile.TemporaryDirectory() as d:
         "print(json.dumps({'type':'result','result':'done'}))\n")
     os.environ["AODD_TRIGGER_CMD"] = f"{sys.executable} {stub}"
 
+    assert ste.skills_opened('{"type":"system","message":"plain string"}\n') == set()
     assert ste.skills_opened('{"type":"assistant","message":{"content":[{"type":"tool_use","name":"Skill","input":{"skill":"a:b"}}]}}\nnot json\n') == {"a:b"}
 
     cases = d / "cases.json"

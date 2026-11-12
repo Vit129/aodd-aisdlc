@@ -1,7 +1,7 @@
 # Graph Report - skill-hygiene  (2026-11-12)
 
 ## Corpus Check
-- 257 files · ~180,855 words
+- 257 files · ~180,915 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `ad5e9646`
+- Built from commit: `04de980e`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 

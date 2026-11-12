@@ -9,7 +9,7 @@ _Regen: `graphify update .`_
 
 
 ## Graph Freshness
-- Built from commit: `ad5e9646`
+- Built from commit: `04de980e`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 

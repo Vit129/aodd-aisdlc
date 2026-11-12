@@ -245,6 +245,8 @@
   "243": "[0.7.0] - 2026-10-30",
   "244": "delegation-nudge.py",
   "245": "Best Practices",
+  "246": "2. Generate",
   "247": "[0.7.0] - 2026-10-30",
-  "248": "[Unreleased]"
+  "248": "[Unreleased]",
+  "249": "test_skill_invocation.py"
 }

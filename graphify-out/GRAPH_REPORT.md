@@ -1,16 +1,16 @@
-# Graph Report - done-gate-items-switch  (2026-11-10)
+# Graph Report - skill-hygiene  (2026-11-12)
 
 ## Corpus Check
-- 252 files · ~179,643 words
+- 253 files · ~179,863 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2465 nodes · 2657 edges · 248 communities (218 shown, 30 thin omitted)
+- 2467 nodes · 2658 edges · 250 communities (220 shown, 30 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 13 edges (avg confidence: 0.62)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `9caeb292`
+- Built from commit: `fbf166b5`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -34,13 +34,13 @@ node's neighbors span, not by raw edge count.
 1. `Changelog` - bridges 12 areas (18 edges)
 2. `state()` - bridges 5 areas (10 edges)
 3. `claude_home()` - bridges 3 areas (9 edges)
-4. `Browser Automation with playwright-cli` - bridges 2 areas (17 edges)
+4. `Test generation (plan → generate → heal)` - bridges 3 areas (6 edges)
 5. `search()` - bridges 2 areas (10 edges)
 6. `generate_design_system()` - bridges 2 areas (8 edges)
 7. `session_id()` - bridges 2 areas (6 edges)
 8. `_resolve_color_mode()` - bridges 2 areas (5 edges)
 9. `_select_palette_for_mode()` - bridges 2 areas (4 edges)
-10. `main()` - bridges 1 areas (13 edges)
+10. `Browser Automation with playwright-cli` - bridges 1 areas (17 edges)
 
 ## Surprising Connections (you probably didn't know these)
 - `write_report()` --calls--> `reports()`  [EXTRACTED]
@@ -57,7 +57,7 @@ node's neighbors span, not by raw edge count.
 ## Import Cycles
 - None detected.
 
-## Communities (248 total, 30 thin omitted)
+## Communities (250 total, 30 thin omitted)
 
 ### Community 0 - "_aodd_paths.py"
 Cohesion: 0.16
@@ -120,8 +120,8 @@ Cohesion: 0.07
 Nodes (28): 10. Dense Information Display, 11. Trust & Stability (Blues), 12. Growth & Success (Greens), 13. Caution & Urgency (Reds/Oranges), 14. Sans-Serif + Monospace Combination, 15. Clear Hierarchy, 16. Readability Over Personality, 17. Consistent Font Weights (+20 more)
 
 ### Community 15 - "Browser Automation with playwright-cli"
-Cohesion: 0.12
-Nodes (16): Attaching screenshots and videos to pull requests, Browser Automation with playwright-cli, Browser Sessions, Example: Debugging with DevTools, Example: Form submission, Example: Interactive session, Example: Multi-tab workflow, Installation (+8 more)
+Cohesion: 0.07
+Nodes (27): Attaching screenshots and videos to pull requests, Browser Automation with playwright-cli, Browser Sessions, Commands, Core, DevTools, Example: Debugging with DevTools, Example: Form submission (+19 more)
 
 ### Community 16 - "Postman → Playwright Migration (AI-Driven)"
 Cohesion: 0.07
@@ -144,8 +144,8 @@ Cohesion: 0.08
 Nodes (23): 161 Industry Rules, Accessibility Check (WCAG AA), BM25 Ranking, Deliverables, Example Flow, Five Search Domains, Input, Integration (+15 more)
 
 ### Community 21 - "3. Heal"
-Cohesion: 0.09
-Nodes (23): 0. How generation works, 1.1 Prerequisite: workspace, 1.2 Prerequisite: seed test, 1.3 Explore the app, 1.4 Write the spec file, 1. Planning, 2.1 Inputs, 2.2 Generate one scenario (+15 more)
+Cohesion: 0.15
+Nodes (13): 0. How generation works, 3.1 Find failing tests, 3.2 Debug one failure, 3.3 Apply the fix, 3.4 Reconcile with the spec, 3.5 Iteration and giving up, 3. Heal, Add assertions manually (+5 more)
 
 ### Community 22 - "The `study` Trigger — Extracting Design DNA from a Screenshot or URL"
 Cohesion: 0.09
@@ -268,7 +268,7 @@ Cohesion: 0.14
 Nodes (13): 0. Enforcement: three levels, no optional tier, 1. Roles (fixed vocabulary), 2.1 Project runner (MAY), 2.2 Release and deployment scaffold (MUST for publishable projects), 2. Root layout (every project), 3. Source layout by size, 4. Dependency direction, 5. Naming (+5 more)
 
 ### Community 52 - "SKILL.md"
-Cohesion: 0.19
+Cohesion: 0.21
 Nodes (4): Examples, Inspecting Element Attributes, Debugging Playwright Tests, Running Playwright Tests
 
 ### Community 53 - "Running Custom Playwright Code"
@@ -824,8 +824,12 @@ Cohesion: 0.53
 Nodes (5): _codex_meta(), decide(), main(), (is_codex, is_subagent) from a Codex rollout's first record; Claude transcripts, _size()
 
 ### Community 245 - "Best Practices"
-Cohesion: 0.18
-Nodes (11): Commands, Core, DevTools, Keyboard, Mouse, Navigation, Network, Save as (+3 more)
+Cohesion: 0.40
+Nodes (5): 1.1 Prerequisite: workspace, 1.2 Prerequisite: seed test, 1.3 Explore the app, 1.4 Write the spec file, 1. Planning
+
+### Community 246 - "2. Generate"
+Cohesion: 0.40
+Nodes (5): 2.1 Inputs, 2.2 Generate one scenario, 2.3 Generate multiple scenarios, 2.4 Run generated tests, 2. Generate
 
 ## Knowledge Gaps
 - **1441 isolated node(s):** `name`, `pull_request`, `push`, `contents`, `check` (+1436 more)
@@ -838,11 +842,11 @@ Nodes (11): Commands, Core, DevTools, Keyboard, Mouse, Navigation, Network, Save
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `log()` connect `[0.7.0] - 2026-10-30` to `BM25`?**
-  _High betweenness centrality (0.006) - this node is a cross-community bridge._
-- **Why does `_get_bm25()` connect `core.py` to `BM25`?**
-  _High betweenness centrality (0.003) - this node is a cross-community bridge._
+  _High betweenness centrality (0.005) - this node is a cross-community bridge._
 - **Why does `BM25` connect `BM25` to `core.py`?**
   _High betweenness centrality (0.003) - this node is a cross-community bridge._
+- **Why does `Test generation (plan → generate → heal)` connect `3. Heal` to `SKILL.md`, `Best Practices`, `2. Generate`?**
+  _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **What connects `name`, `pull_request`, `push` to the rest of the system?**
   _1536 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Fix Generated Playwright Files (Postman Migration)` be split into smaller, more focused modules?**

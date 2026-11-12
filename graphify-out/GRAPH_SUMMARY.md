@@ -1,15 +1,15 @@
-# Graph Summary — done-gate-items-switch
+# Graph Summary — skill-hygiene
 _Auto-generated from GRAPH_REPORT.md · do not edit manually_
 _Regen: `graphify update .`_
 
 ## Summary
-- 2465 nodes · 2657 edges · 248 communities (218 shown, 30 thin omitted)
+- 2467 nodes · 2658 edges · 250 communities (220 shown, 30 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 13 edges (avg confidence: 0.62)
 - Token cost: 0 input · 0 output
 
 
 ## Graph Freshness
-- Built from commit: `9caeb292`
+- Built from commit: `fbf166b5`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -35,7 +35,7 @@ node's neighbors span, not by raw edge count.
 1. `Changelog` - bridges 12 areas (18 edges)
 2. `state()` - bridges 5 areas (10 edges)
 3. `claude_home()` - bridges 3 areas (9 edges)
-4. `Browser Automation with playwright-cli` - bridges 2 areas (17 edges)
+4. `Test generation (plan → generate → heal)` - bridges 3 areas (6 edges)
 5. `search()` - bridges 2 areas (10 edges)
 6. `generate_design_system()` - bridges 2 areas (8 edges)
 7. `session_id()` - bridges 2 areas (6 edges)

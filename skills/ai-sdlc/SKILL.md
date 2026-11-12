@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: ai-sdlc
 description: Full Dev/QA feature workflow (interview → architect → QA design RED → dev GREEN → QA verify, with 3 approval gates). Use when the user runs /ai-sdlc, says "ทำฟีเจอร์ใหม่", "new feature", "วางแผนฟีเจอร์", "เริ่มโปรเจกต์", "full workflow", or starts a multi-file feature/refactor that needs QA coverage and tracked progress.
 version: 1.0.1

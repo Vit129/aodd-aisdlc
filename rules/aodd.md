@@ -19,10 +19,12 @@ audit reports, agent-ops reports, agy proposals; decided ones in `done/`), `$AOD
 | Small | wording, color, typo, spacing | `ai-sdlc` Light path: edit (dev) + run the existing tests (testing) |
 | Small logic | 1-5 line fix or one clear bug that changes behavior | `ai-sdlc` Logic path entered at Phase 3: debugging skill first, RED test, fix to GREEN, verify; `chief-of-staff` micro reports Result / Evidence / Needs your decision. Hard (daemon/concurrency/security/network, another agent's unreviewed work, a re-broken fix, cross-module behavior) → add the design check and propose the audit |
 | Medium | multi-file change, needs 2+ skills, refactor, test suite | State the file separation plan first when the change adds or splits files (one file per concern, no monolith); `chief-of-staff` light: fill brief gaps in ONE question, dispatch, self-check before reporting |
-| Large | new feature, needs QA coverage, "do it all and report back" | `chief-of-staff` full: brief, dispatch, self-check before reporting; a dev feature → `chief-of-staff` invokes `ai-sdlc` itself, which picks its path by what changes (logic, UX/UI, requirement); the Requirement path's 3 gates stay real stops |
+| Large | new feature, needs QA coverage, "do it all and report back" | `chief-of-staff` full: brief, dispatch, self-check before reporting; a dev feature → `chief-of-staff` follows `ai-sdlc` itself, which picks its path by what changes (logic, UX/UI, requirement); the Requirement path's 3 gates stay real stops |
 | Any size | spends money, reaches a customer/outside party, irreversible | Stop and ask the CEO first, always |
 
 When unsure between two sizes, pick the smaller (token overuse is the known failure mode).
+
+**Workflow skills are user-invoked.** `chief-of-staff`, `ai-sdlc`, `agent-ops`, `housekeeping` and `delivery-workflow` carry `disable-model-invocation`: a model picks a skill by matching words in its description, which misses most real requests. The user types `/<name>`; when this contract routes work to one, open its `skills/<name>/SKILL.md` and follow it, naming it in the reply.
 
 **Every change runs `ai-sdlc`; testing and dev never skip.** Any request that changes files (code, config, tests, UI) follows `rules/ai-sdlc-workflow.md`. Size picks where it enters, not whether it runs: it may start at the phase the work actually needs (no Phase 1 interview or Phase 2 design when the change is already clear), but it always has a testing step and a dev step, in that order where a test can fail first (RED → GREEN → verify). Only a pure question with no file change skips it.
 

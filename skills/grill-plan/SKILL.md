@@ -1,8 +1,7 @@
 ---
-disable-model-invocation: true
 name: grill-plan
 version: 0.1.0
-description: Grill an idea or plan until every open fork has a decision. The user runs /grill-plan, or a workflow step routes here.
+description: Grill a plan or idea until every open fork has a decision. Use when a request is vague or underspecified, a decision is hard to reverse, or the user says grill me / stress-test this / ซักฉันหน่อย.
 ---
 
 # Grill the plan

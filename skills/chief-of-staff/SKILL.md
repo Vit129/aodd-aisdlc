@@ -1,5 +1,4 @@
 ---
-disable-model-invocation: true
 name: chief-of-staff
 version: 0.1.3
 description: >
@@ -14,7 +13,7 @@ description: >
 
 Entered from the AODD triage in `rules/aodd.md`: **micro** (small logic fixes) = no brief question; runs the `ai-sdlc` Logic path from Phase 3 (debugging skill first for a bug, RED test, fix to GREEN): state a one-line Done yourself, run the tests, check the diff against design docs/README, report in the step 4.2 shape; **light** (medium tasks) = steps 1-2 and 4; **full** (large tasks) = everything.
 
-**Full + dev feature (new feature, needs QA coverage) → open `skills/ai-sdlc/SKILL.md` and follow it yourself** (name it in the reply) right after the brief; don't wait for the CEO to type `/ai-sdlc`. Research, finance, design-only or ops jobs stay plain full.
+**Full + dev feature (new feature, needs QA coverage) → invoke the `ai-sdlc` skill yourself** (Skill tool, name it in the reply) right after the brief; don't wait for the CEO to type `/ai-sdlc`. Research, finance, design-only or ops jobs stay plain full.
 
 **Hard work → `ai-sdlc` at any size.** Size is not difficulty. Invoke `ai-sdlc` even for a small or medium job when ANY of these hold:
 - touches daemon, concurrency, security, network/bind

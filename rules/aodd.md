@@ -24,7 +24,7 @@ audit reports, agent-ops reports, agy proposals; decided ones in `done/`), `$AOD
 
 When unsure between two sizes, pick the smaller (token overuse is the known failure mode).
 
-**Workflow skills are user-invoked.** `chief-of-staff`, `ai-sdlc`, `agent-ops`, `housekeeping` and `delivery-workflow` carry `disable-model-invocation`: a model picks a skill by matching words in its description, which misses most real requests. The user types `/<name>`; when this contract routes work to one, open its `skills/<name>/SKILL.md` and follow it, naming it in the reply. `skills/` in these rules is the agent home's skills folder (`~/.claude/skills/`, `~/.codex/skills/`, or the repo's `.claude/skills/` for a project install), never the current repo's own `skills/`.
+**Who invokes which skill.** `chief-of-staff`, `ai-sdlc` and `grill-plan` are model-invoked: the agent reaches them on its own and other skills call them, and the user can still type `/<name>`. `agent-ops`, `housekeeping` and `delivery-workflow` carry `disable-model-invocation` (zero context load): only the user starts them with `/<name>`. When this contract routes work to a skill, invoke it and name it in the reply.
 
 **Every change runs `ai-sdlc`; testing and dev never skip.** Any request that changes files (code, config, tests, UI) follows `rules/ai-sdlc-workflow.md`. Size picks where it enters, not whether it runs: it may start at the phase the work actually needs (no Phase 1 interview or Phase 2 design when the change is already clear), but it always has a testing step and a dev step, in that order where a test can fail first (RED → GREEN → verify). Only a pure question with no file change skips it.
 

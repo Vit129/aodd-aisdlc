@@ -1,0 +1,35 @@
+scripts/test_skill_invocation.py
+  s_93140921790e2e::t_902c555b0c82e2 9,26-33
+skills/ai-sdlc/phases/phase1-interview.md
+  s_93140921790e2e::t_108f9e14f11331 8-11
+skills/grill-plan/SKILL.md
+  s_93140921790e2e::t_15ee7199e96bc6 1-18
+AGENTS.md
+  s_93140921790e2e::t_44e9f22f747c07 8
+README.md
+  s_93140921790e2e::t_7d678ebfdaa7f8 183
+graphify-out/GRAPH_REPORT.md
+  s_93140921790e2e::t_d64b24a18eaa87 4,8,13,37-39,43,60,123-124,270-273,279-280,831-832,839,841,855
+graphify-out/GRAPH_SUMMARY.md
+  s_93140921790e2e::t_22b13203a54573 6,12,38-40
+graphify-out/graph.json
+  s_93140921790e2e::t_359987dbe57f51 4380,13029-13054,14025,14035,14045,14055,14065,14075,14085,14095,14105,14115,14125,14275,14285,14295,15465,15475,15485,15495,42545-42555,55241
+graphify-out/manifest.json
+  s_93140921790e2e::t_9fdb5202347bfc 303-304,318-319,498-499,1263-1264,1281-1285
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "ad5e964665573d9770deb273b10f94d2d04477f8",
+  "prompts": {},
+  "sessions": {
+    "s_93140921790e2e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2ab3d4e7-6a4e-48cc-b53d-aab8590ba317",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

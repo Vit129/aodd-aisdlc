@@ -1,0 +1,19 @@
+scripts/skill_trigger_eval.py
+  s_93140921790e2e::t_d221dbf9d0a6ce 4-7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "03c18fa477870a71d86b0f2cb7ae6bfe78555134",
+  "prompts": {},
+  "sessions": {
+    "s_93140921790e2e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2ab3d4e7-6a4e-48cc-b53d-aab8590ba317",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

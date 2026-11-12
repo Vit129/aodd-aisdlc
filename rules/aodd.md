@@ -37,7 +37,6 @@ When unsure between two sizes, pick the smaller (token overuse is the known fail
   - **Triage and execute**: for Medium/Large jobs, don't ask five separate questions. If brief details are missing, group them into ONE concise question with recommendations. Once clear, execute autonomously without stopping for micro-approvals.
   - **Forks in the road**: when architectural choices or trade-offs arise, present structured options with the recommended path listed first (`(Recommended)`).
   - **Every proposal states its why**: any change an agent puts to the CEO for approval (agent-ops proposals, curator archive/merge candidates, agy proposals, a recommended option) carries the reason and the evidence behind it: numbers, file:line, error text, usage counts. A proposal without a why is not ready to be asked.
-  - **Evidence over claims**: never claim "Done" without re-running tests/builds and citing real output.
   - **Boss reporting shape**, always:
     1. **Result**: 1-line outcome + file links.
     2. **Evidence**: command output / verification proof.
@@ -64,11 +63,11 @@ No task is complete until the build passes and the relevant tests pass. If tests
 | Implementation of a ChatGPT design | **ChatGPT `terra`** at effort `medium` (default) or `high` (when the task failed twice or the design is hard to reverse); keeps working until the assigned task is finished: every acceptance check passes, or it reports one concrete blocker. It does not stop after a partial step. Main session reviews the diff before Done |
 | Bounded templated runs: one ingest, a ≤9-item research/decision batch, a single-script edit, data dumps, summaries | **Haiku** subagents, in parallel when independent; main checks the result, then Haiku commits/pushes (§ Haiku ops runner) |
 
-**On Codex the same split holds by tier:** `sol` = the Opus/Fable row (main session: plan, design, review), `terra` = the Sonnet row (writes code), `luna` = the Haiku row (search, lookup, run tests, summaries; writes no code). Codex delegates with `spawn_agent`; `hooks/delegation-nudge.py` applies the same reminder there.
+**On Codex** the same split holds by tier (`sol` / `terra` / `luna`, see `rules/codex-effort.md`); `hooks/delegation-nudge.py` applies the same reminder there.
 
 ## Effort ladder and tier choice (every agent, every vendor)
 
-Five levels, shared by all vendors: `low` < `medium` < `high` < `xhigh` < `max`. Each vendor maps them to its own setting in its own file, loaded only where that tool is used: `rules/claude-effort.md` (Claude Code), `rules/agy-effort.md` (agy) and `rules/codex-effort.md` (Codex). A setup uses only the files for the tools it runs. ก่อน dispatch ไปหาเจ้าไหน ให้อ่านไฟล์ของเจ้านั้นก่อน (รวมถึง Claude: `rules/claude-effort.md`).
+Five levels, shared by all vendors: `low` < `medium` < `high` < `xhigh` < `max`. Each vendor maps them to its own setting in its own file, loaded only where that tool is used: `rules/claude-effort.md` (Claude Code), `rules/agy-effort.md` (agy) and `rules/codex-effort.md` (Codex). A setup uses only the files for the tools it runs; read a vendor's file before dispatching to it.
 
 - **Start:** the ticket's `Effort:` line. Without one, use the row's default above: `medium` for code and mechanical work, `high` for plans and design.
 - **Escalate:** 3 failing checks in a row raise the effort one level, capped at `high`.
@@ -102,10 +101,8 @@ Routing table: search with Haiku, check with Sonnet, escalate to the advisor.
 
 - **Enforced by `hooks/delegation-nudge.py`:** 8 lookups in a row in the main session, or one output over 300 lines / 40KB, adds a reminder to delegate.
 - **When not to delegate:** one command with short output, one lookup, or a file main must read anyway: main does it. A helper starts cold and re-reads, so the hand-off can cost more than the job.
-- **Default: anything that is not writing/reasoning about code goes to Haiku** (`Agent(model: "haiku", effort: "medium")`; `effort: "high"` when the result feeds a decision). This includes: run a dev server / build / test / lint and report, verify a result, summarize logs/files/transcripts, classify/extract facts, scheduled jobs (`claude -p --model haiku`), running an already-approved deploy and reporting. Several in parallel when independent.
+- **Haiku calls:** `Agent(model: "haiku", effort: "medium")`; `effort: "high"` when the result feeds a decision; scheduled jobs `claude -p --model haiku`.
 - **Big data stays out of main context:** any ingest, scrape, PDF/HTML dump or data extract over ~300 lines or 40KB goes to a Haiku subagent, or is parsed with a local script that prints a short structured summary. Main never reads the raw dump.
-- **Code lookup is Haiku too:** "which file holds X, who calls Y" is lookup, not reasoning. Haiku returns file paths + edges only; then the big model reads in full every file it will edit, debug or review.
-- **Big model keeps:** writing and changing code, debugging, design, plans, judgment, reviewing every Haiku result.
 - Tiers: **big model** = Fable/Opus/Sonnet (plans, judges, controls Haiku); **advisor** = Fable/Opus only (second opinion via the `advisor` subagent, never Sonnet/Haiku): Fable for more capability than the main model, Opus for a cold view not anchored on the transcript; at most two advisor calls per task before telling the CEO.
 - The subagent sees none of this conversation: pass it the facts it needs in the prompt.
 - A CLI agent started in the background (`codex exec`, and the like) gets `</dev/null` so it cannot hang waiting on stdin (`docs/codex.md`), and main checks within a few minutes that it is working: a new session file or changed files.

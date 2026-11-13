@@ -17,4 +17,4 @@ Scope: only for setups that use Antigravity (`agy`). The shared ladder, bake-off
 
 - **Start:** every `agy -p` run starts at `low`, unless the ticket's `Effort:` line says otherwise.
 - **Announce before the run:** tell the user the model, the effort and how many runs, and wait for their yes. Usage limits are the user's to spend.
-- **Escalate one step at a time:** `low` → `medium` → `high`. 3 failing checks in a row raise one step; never skip a step; capped at `high`. Then switch vendor family, then the advisor rule. `xhigh` and `max` only when a ticket says so.
+- **Escalate one step at a time:** `low` → `medium` → `high`. 3 failing checks in a row raise one step; never skip a step; capped at `high`. `xhigh` and `max` only when a ticket says so.

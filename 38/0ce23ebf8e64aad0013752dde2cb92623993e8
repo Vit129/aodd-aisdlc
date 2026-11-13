@@ -1,0 +1,58 @@
+rules/coding.md
+  s_1020d9fcad6b30::t_3b77292a4e6bd7 105
+  s_1020d9fcad6b30::t_768d31850071d7 70
+  s_1020d9fcad6b30::t_831e68f2d01fa0 175
+  s_1020d9fcad6b30::t_211f54797f941d 173
+  s_1020d9fcad6b30::t_920c58bb99ffc6 174
+rules/aodd.md
+  s_1020d9fcad6b30::t_6d7cbd5e1e8b00 29
+  s_1020d9fcad6b30::t_ffd53a2df822cc 60-61
+  s_1020d9fcad6b30::t_1c8755cf290fc7 66
+  s_1020d9fcad6b30::t_e9114a8639ac8e 49
+  s_1020d9fcad6b30::t_e47bdae4607888 70
+  s_1020d9fcad6b30::t_b616329d7f1526 72
+  s_1020d9fcad6b30::t_fcf65b9be67faa 51
+  s_1020d9fcad6b30::t_660fc5580ef1eb 85
+  s_1020d9fcad6b30::t_1ce189ae94ec14 25
+  s_1020d9fcad6b30::t_1d4bc4ada4ddb5 117
+rules/ai-sdlc-workflow.md
+  s_1020d9fcad6b30::t_bb3ceb8d4a7955 114
+  s_1020d9fcad6b30::t_3daf6653e5e1cb 62-63
+  s_1020d9fcad6b30::t_ec49f39fb29ba1 43
+  s_1020d9fcad6b30::t_f3a2c1aec61e39 128
+  s_1020d9fcad6b30::t_e163fe02a0ee91 129
+rules/product-design.md
+  s_1020d9fcad6b30::t_ef9685e0063ac7 46
+rules/effort/agy.md
+  s_1020d9fcad6b30::t_c93405244aef82 5-6
+rules/playwright/web-ui.md
+  s_1020d9fcad6b30::t_28f743fb8a7ae0 29
+  s_1020d9fcad6b30::t_0ff45a334b7833 31
+  s_1020d9fcad6b30::t_d56a49e19583f6 37
+rules/coding/project-blueprint.md
+  s_1020d9fcad6b30::t_a188ad6152b372 133
+graphify-out/GRAPH_REPORT.md
+  s_1020d9fcad6b30::t_41a1eabb96d3b4 4,8,13,60,754-757,779-780,796,843,845,859
+graphify-out/GRAPH_SUMMARY.md
+  s_1020d9fcad6b30::t_4d727b0d9db87e 6,12
+graphify-out/graph.json
+  s_1020d9fcad6b30::t_e6d5780d844a82 7227,7237,7247,7257,7337,7347,7357,7380,7390,7400,7410,7420,7430,7440,7450,7460,7470,7480,7490,7500,7510,7520,7846-8005,36861,36872,36883,36894,36927,36938,36971,37004,37015,37026,37037,37048,37059,37070,37081,37092,37103,37114,37125,37136,37147,37158,37462-37604,55251
+graphify-out/manifest.json
+  s_1020d9fcad6b30::t_1887fb712f9186 388-389,393-394,398-399,408-409,458-459,463-464,1266-1280
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "380ce23ebf8e64aad0013752dde2cb92623993e8",
+  "prompts": {},
+  "sessions": {
+    "s_1020d9fcad6b30": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "14983d7a-5f0b-4455-a404-83e6b933a017",
+        "model": "unknown"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

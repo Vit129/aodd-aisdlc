@@ -7,7 +7,7 @@ description: >
 
 # Chief of Staff — one brief in, one report out
 
-Entered from the AODD triage in `rules/aodd.md`: **micro** (small logic fixes) = no brief question; runs the `ai-sdlc` Logic path from Phase 3 (debugging skill first for a bug, RED test, fix to GREEN): state a one-line Done yourself, run the tests, check the diff against design docs/README, report in the step 4.2 shape; **light** (medium tasks) = steps 1-2 and 4; **full** (large tasks) = everything.
+Entered from the AODD triage in `rules/ai-sdlc-workflow.md`: **micro** (small logic fixes) = no brief question; runs the `ai-sdlc` Logic path (`rules/ai-sdlc-workflow.md`): state a one-line Done yourself, run the tests, check the diff against design docs/README, report in the `rules/ai-sdlc-workflow.md` shape; **light** (medium tasks) = steps 1-2 and 4; **full** (large tasks) = everything.
 
 **Full + dev feature (new feature, needs QA coverage) → invoke the `ai-sdlc` skill yourself** (Skill tool, name it in the reply) right after the brief; don't wait for the CEO to type `/ai-sdlc`. Research, finance, design-only or ops jobs stay plain full.
 
@@ -17,7 +17,7 @@ Entered from the AODD triage in `rules/aodd.md`: **micro** (small logic fixes) =
 - a bug that was "fixed" once and is still broken
 - behavior that crosses modules or processes (daemon ↔ app ↔ mobile)
 
-ai-sdlc then collapses by size: **small + hard** = Phase 2 in a few lines against the design docs → a failing (RED) test first → fix → propose the audit, no gates; **medium + hard** = the same plus one gate (CEO approves the plan before code); **large** = all 5 phases and 3 gates.
+Add a short design check against the design docs, and propose the audit (`docs/audit.md`) before reporting. The path and its gates are the ones in `rules/ai-sdlc-workflow.md`.
 
 With `ai-sdlc` (invoked by you or by the CEO): the ai-sdlc phases ARE the dispatch plan. Phase 1 interview = step 1 (save `brief.md` next to the progress file), Phases 2-5 = step 2, the 3 approval gates are the CEO check-back points, and step 4 (report) closes the run.
 
@@ -53,7 +53,7 @@ Save it as `$AODD_PLANS/<feature>/brief.md` when the work spans sessions.
 - Default is one agent. Split only when one holds: (a) the pieces run in parallel without needing each other's results AND speed is worth the extra tokens; (b) the data would flood the main context; (c) you have seen quality drop here (wrong tools, instructions contradicting), not just a long chat. A team buys speed, not judgment. Independent checks (audit, advisor) are exempt: their point is independence.
 - Subagents building separate parts agree the shared interface first; work breaks at the hand-off.
 - An extra reviewer must differ from the existing ones in model or lens (for example, from the requirement rather than the diff). More copies of the same reviewer share its blind spots.
-- Mechanical pieces → Haiku (see `rules/aodd.md` Cheap-model delegation).
+- Mechanical pieces → Haiku (`rules/ai-sdlc/delegation.md`).
 - Each subagent gets a mini-brief (goal, done, scope, limits) — it sees none of this conversation.
 - Cross-team handoff goes through a file (`$AODD_PLANS/<feature>/handoff.md`), not through your memory.
 - No skill fits → do it yourself; propose a new team only if the same gap shows up again (add teams when work needs them, not to fill the chart).
@@ -64,22 +64,12 @@ Spending money · anything sent to a customer or outside party (email, post, PR 
 
 ## 4. Check, then report
 
-0. Audit on demand: the CEO asks, or you propose it in one line when a mistake would be expensive (`rules/aodd.md` § Audit and Done). On yes run `python3 scripts/audit.py` `--transcript <this session> --repo <repo> --claims "<Done claims>" --confirmed` before reporting. It builds the brief from the CEO's own words + the diff, so do not write a brief for it; quote its verdict line and table as-is, never paraphrase a FAIL/DISPUTED.
+0. Audit on demand only: the CEO asks, or you propose it in one line when a mistake would be expensive. Procedure and command: `docs/audit.md`. Never write the auditor's brief; quote its verdict line and table as-is, never paraphrase a FAIL/DISPUTED.
 1. Verify every output against "Done looks like" — evidence (test run, file, link), not claims. Fail → send back once with the specific gap.
-2. Report to the CEO in this shape:
-   - **Result** — one line + links/paths
-   - **Evidence** — what was run/checked
-   - **Needs your decision** — options with a recommendation
-   - **Cost** — rough tokens/time, anything that got redone
+2. Report to the CEO in the shape in `rules/ai-sdlc-workflow.md` (options with a recommendation under the decision part).
 3. Same mistake twice → fix the system (patch the skill or rule that allowed it, see `docs/skill-learning.md`), not just the output.
 
 ## Dispatch pitfalls (verified)
 
 - Subagents doing partial replacements in large files can drop imports. After merging subagent edits, the main session runs the build and checks imports before reporting.
 - Subagents can hang on a permission prompt for build/git commands. Let subagents write files; the main session runs build, graph refresh and `git commit/push`.
-
-## Self-Update (after every use)
-
-This skill is its own memory. When using it brought a correction, a gotcha,
-or a wrong/missing step, and the fix was verified, patch this file in place: a brief question the CEO had to answer twice, a dispatch that went to the wrong team, a Done check that missed a gap.
-Then bump `version` (patch). Procedure: `docs/skill-learning.md`.

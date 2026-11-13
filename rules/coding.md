@@ -67,7 +67,7 @@ If `graphify-out/graph.json` exists at or above the project root, **find and cha
 
 Raw `grep`/`find` are for the cases the graph cannot answer: confirming a caller list is exhaustive before changing a signature (the graph can miss dynamic or attribute calls), files graphify does not index, or editing a specific known line — say so when you use them. Skip all of this for trivial changes (typos, config values, docs).
 
-**After modifying code:** refresh the graph as `rules/aodd.md` § Audit and Done says.
+**After modifying code:** refresh the graph as the last step of `rules/ai-sdlc-workflow.md` says.
 
 ## 4. Surgical Changes
 
@@ -167,11 +167,11 @@ Each step names what to read or call next. **[hook]** means the step is enforced
 | Step | Do | Read / call |
 |---|---|---|
 | 1. Orient | Project root `ARCHITECTURE.md`, `CONTEXT.md`; find code via graphify if the project has `graphify-out/`; past decisions in the project's memory (`knowledge/`, `plans/`) | `rules/product-design.md` |
-| 2. Size it | AODD triage in `rules/aodd.md`. Small: `ai-sdlc` Light path (edit + run existing tests). Medium: Architecture-First (§1, § Anti-Monolith), `chief-of-staff` light. Large: suggest `/ai-sdlc` in one line, `chief-of-staff` full | `skills/chief-of-staff` |
+| 2. Size it | Medium: Architecture-First (§1, § Anti-Monolith), `chief-of-staff` light. AODD triage is in `rules/ai-sdlc-workflow.md`. Large: `chief-of-staff` full. Every change takes a path in `rules/ai-sdlc-workflow.md` | `skills/chief-of-staff` |
 | 3. Branch | New branch from `main` before the first edit (rule only; the hook blocks switching away from uncommitted work, not editing on `main`) | your project's git conventions |
 | 4. Place code | Logic vs UI vs Tests split (§6) & Anti-Monolith pattern (target 300–400 lines); structure work → blueprint | `rules/coding/project-blueprint.md`, `project-blueprint` skill |
 | 5. Domain skill | Web/mobile UI → `frontend-dev` (+ `uxui-designer` if no design tokens); API/DB → `backend-dev`; SwiftUI → `macos-swiftui`; auth/input/secrets → `security`; UI layout bug → `rules/gui-fixes.md` | the skill |
-| 6. Verify | Tests + the project's own static/type/syntax check (`rules/aodd.md` § Test-Before-Deliver) | — |
+| 6. Verify | Tests + the project's own static/type/syntax check (`rules/ai-sdlc-workflow.md` § Test-Before-Deliver) | — |
 | 7. Review | Medium+: review the diff against the brief (an independent reviewer if available); **[done-gate hook reports a non-PASS verdict]** | `rules/coding/review-report.md` |
 | 8. Close | Tick progress boxes **[done-gate hook]**, skill patch **[skill-capture-nudge hook, at 20+ tool calls with a learning signal]**, graph refresh if used | `docs/skill-learning.md` |
 

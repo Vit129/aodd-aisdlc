@@ -1,13 +1,7 @@
 ---
 name: backend-dev
 description: >
-  Thai triggers: "ออกแบบ API", "ทำ backend", "ออกแบบ database", "ทำ auth/login", "ทำ Docker".
-  This skill should be used when the user asks to "design an API",
-  "set up authentication", "design the database schema",
-  "build a backend service", "create a REST endpoint",
-  "dockerize the app", or needs guidance on API design, database schema
-  design, authentication, or Docker — language-agnostic backend architecture,
-  not language-specific implementation syntax.
+  Backend design, language-agnostic: "ออกแบบ API", "ทำ backend", "ออกแบบ database", "ทำ auth/login", "ทำ Docker", "design an API", "set up authentication", "design the database schema", "create a REST endpoint", "dockerize the app". Not language-specific syntax.
 version: 1.0.0
 ---
 
@@ -89,7 +83,7 @@ Write comments that AI agents can understand — not just humans:
 | Existing API patterns in codebase | Source code | Match conventions, avoid inconsistency |
 | DB schema / migrations folder | Database | Understand current data model |
 | `references/*.md` (one per concern) | Skill reference | API design, DB, auth, Docker — no framework-specific reference, see Inline Process step 1 |
-| `rules/coding.md` & `rules/aodd.md` | Rule | Core engineering principles and verification gates |
+| `rules/coding.md` & `rules/ai-sdlc-workflow.md` | Rule | Core engineering principles and verification gates |
 | `knowledge/` | Lessons learnt | Check before execute |
 
 Related: drive the implementation test-first (Red→Green), then review the diff before merge against `references/backend-code-review.md`'s checklist.
@@ -103,9 +97,3 @@ Related: drive the implementation test-first (Red→Green), then review the diff
 | After security review | Open field | Before deploying auth/data changes |
 
 **Rule:** At decision points, always present 2-3 options with tradeoffs — never a single answer.
-
-## Self-Update (after every use)
-
-This skill is its own memory. When using it brought a correction, a gotcha,
-or a wrong/missing step, and the fix was verified, patch this file in place: an API/DB pattern or pitfall goes in its section; depth goes to `references/<topic>.md`.
-Then bump `version` (patch) and `last_improved`. Procedure: `docs/skill-learning.md`.

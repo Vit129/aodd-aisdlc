@@ -145,7 +145,7 @@ Before declaring RF test implementation complete, confirm:
 | Appium config (capabilities, device farm) | Infrastructure | Target platform and device configuration |
 | `references/*.md` (one per task) | Workflow reference | Write, review, execute, heal, Browser Library |
 | YAML fixture files | Test data | All test data externalized to YAML |
-| `rules/coding.md` & `rules/aodd.md` | Rule | Core engineering principles and verification gates |
+| `rules/coding.md` & `rules/ai-sdlc-workflow.md` | Rule | Core engineering principles and verification gates |
 | `knowledge/` | Lessons learnt | Check before execute |
 
 Related: switch to root-cause debugging when self-heal is
@@ -161,9 +161,3 @@ review the diff before merge against `references/rf-code-review.md`.
 | After code review | Single select (APPROVED / NEEDS_FIX) | Before marking test implementation done |
 
 **Rule:** At decision points, always present 2-3 options with tradeoffs — never a single answer.
-
-## Self-Update (after every use)
-
-This skill is its own memory. When using it brought a correction, a gotcha,
-or a wrong/missing step, and the fix was verified, patch this file in place: an approved keyword pattern, or the cause of a rejected output.
-Then bump `version` (patch) and `last_improved`. Procedure: `docs/skill-learning.md`.

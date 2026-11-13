@@ -43,7 +43,7 @@ assert (T / "codex/skills/ai-sdlc/SKILL.md").is_file() and (T / "codex/agents/au
 assert (T / "codex/skills/project-blueprint/references/release-profiles.md").is_file()
 assert (T / "claude/skills/project-blueprint/references/release-profiles.md").is_file()
 assert (T / "codex/hooks/done-gate.py").is_file() and (T / "claude/settings.json").is_file()   # --codex is in addition to the Claude install
-assert (T / "claude/skills/ai-sdlc/phases/phase1-interview.md").is_file() and not (T / "claude/rules/ai-sdlc").exists()   # phase files are on-demand: under the skill, never under rules/ (Claude Code auto-loads rules/)
+assert (T / "claude/skills/ai-sdlc/phases/phase1-interview.md").is_file() and not (T / "claude/rules/ai-sdlc/phases").exists()   # phase files are on-demand: under the skill, never under rules/ (Claude Code auto-loads rules/)
 assert (T / "claude/hooks/_aodd_paths.py").is_file() and (T / "codex/hooks/_aodd_paths.py").is_file()   # the shared resolver rides along
 assert (mine.stat().st_mode & 0o777) == 0o644, "install must not chmod the host's own files"
 assert os.access(T / "claude/hooks/done-gate.py", os.X_OK)                 # its own hooks stay executable
@@ -177,3 +177,29 @@ plain = T / "plain"
 plain.mkdir()
 notgit = subprocess.run(["bash", str(ROOT / "install.sh"), "--project", str(plain)], capture_output=True, text=True, env=env)
 assert notgit.returncode == 2 and "not a git repository" in notgit.stderr and not (plain / ".claude").exists()
+
+# --- single always-loaded rule: import, old-import swap, claudeMdExcludes, Codex inline ----------------
+W = T / "wf"
+wenv = {"CLAUDE_HOME": str(W / "c"), "CODEX_HOME": str(W / "x")}
+run("--claude-md", "--codex", extra=wenv)
+cm = (W / "c/CLAUDE.md").read_text()
+assert cm.count("@rules/ai-sdlc-workflow.md") == 1 and "@rules/aodd.md" not in cm                      # (a)
+(W / "c2").mkdir()
+(W / "c2/CLAUDE.md").write_text("# mine\n@rules/aodd.md\nkeep me\n")
+run("--claude-md", extra={"CLAUDE_HOME": str(W / "c2")})
+cm2 = (W / "c2/CLAUDE.md").read_text()
+assert cm2 == "# mine\n@rules/ai-sdlc-workflow.md\nkeep me\n", cm2                                      # (b) replaced in place
+run("--claude-md", extra={"CLAUDE_HOME": str(W / "c2")})
+assert (W / "c2/CLAUDE.md").read_text() == cm2
+(W / "c3").mkdir()
+json.dump({"claudeMdExcludes": ["mine/**", "**/rules/ai-sdlc-workflow.md"]}, open(W / "c3/settings.json", "w"))
+run("--core-only", extra={"CLAUDE_HOME": str(W / "c3")})
+ex = json.loads((W / "c3/settings.json").read_text())["claudeMdExcludes"]                             # (c)
+assert "mine/**" in ex and "**/rules/ai-sdlc-workflow.md" not in ex and "**/rules/ai-sdlc/**" in ex and "**/rules/coding/**" in ex
+assert len(ex) == len(set(ex))
+snap = (W / "c3/settings.json").read_text()
+assert "claudeMdExcludes" not in run("--core-only", extra={"CLAUDE_HOME": str(W / "c3")}) and (W / "c3/settings.json").read_text() == snap
+ag = (W / "x/AGENTS.md").read_text()                                                                   # (d)
+wf = (ROOT / "rules/ai-sdlc-workflow.md").read_text().rstrip("\n")
+assert wf in ag and "# AODD: the operating contract" not in ag
+print("ok - single-rule install checks passed")

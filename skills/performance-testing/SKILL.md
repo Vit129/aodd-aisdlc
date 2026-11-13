@@ -84,7 +84,7 @@ Before declaring performance testing complete, confirm:
 | Target SLAs (p95, p99, error rate) | Performance criteria | Define pass/fail thresholds |
 | Infrastructure specs (server capacity, limits) | System context | Inform realistic load levels |
 | `references/*.md` (one per phase) | Skill reference | Scripting, CI integration, analysis |
-| `rules/coding.md` & `rules/aodd.md` | Rule | Core engineering principles and verification gates |
+| `rules/coding.md` & `rules/ai-sdlc-workflow.md` | Rule | Core engineering principles and verification gates |
 | `knowledge/` | Lessons learnt | Check before execute |
 
 Related: when a bottleneck needs falsification-driven root-cause triage (reproduce, trace the failing path, test one hypothesis at a time) go beyond `references/triage.md`'s layer isolation.
@@ -98,9 +98,3 @@ Related: when a bottleneck needs falsification-driven root-cause triage (reprodu
 | After analysis report | Open field | Before declaring performance testing complete |
 
 **Rule:** At decision points, always present 2-3 options with tradeoffs — never a single answer.
-
-## Self-Update (after every use)
-
-This skill is its own memory. When using it brought a correction, a gotcha,
-or a wrong/missing step, and the fix was verified, patch this file in place: a load-model, threshold or tooling pitfall goes in its section; depth to `references/<topic>.md`.
-Then bump `version` (patch) and `last_improved`. Procedure: `docs/skill-learning.md`.

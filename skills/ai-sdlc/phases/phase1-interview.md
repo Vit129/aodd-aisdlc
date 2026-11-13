@@ -8,7 +8,7 @@ Route by situation:
   invoke the `grill-plan` skill (`skills/grill-plan/SKILL.md`) and follow only it until it hands back the spec
   (save it as `brief.md` next to the progress file). While in it, draft no design and touch
   no code: the grilling ends when no fork is left open, not when there is enough to start.
-  When it hands back, **stop**: show the spec and wait for the user to continue
+  When it hands back, produce the `.html` file of the agreed requirement and plan (workflow § Every path), then **stop**: show it and wait for the user to continue
   (`/ai-sdlc <slug>` again, or "continue").
 - Has codebase → read the code the plan touches first, so questions the code can answer are
   never asked; note where the plan's language drifts from what the code already calls things,
@@ -16,7 +16,7 @@ Route by situation:
 - Framework/library specific, API version matters → a Haiku subagent fetches the primary
   docs and returns facts + sources; read the cited parts before relying on them.
 
-**Phase 1 also picks the path** (§ Pick the path in `rules/ai-sdlc-workflow.md`): name the kind of change (logic, UX/UI, requirement, or several). When the kind is unclear, that is the first question to settle; anything else still unclear is settled here too, before design.
+**Phase 1 also picks the path** (§ Paths in `rules/ai-sdlc-workflow.md`): name the kind of change (logic, UX/UI, requirement, or several). When the kind is unclear, that is the first question to settle; anything else still unclear is settled here too, before design.
 
 The scope check comes first, silently: if scope is already unambiguous from the request + visible context (typo fix, single clear bug, direct question, explain/summarize/search/diagnose), state the 1-line scope read and skip straight to the fitting phase/action — don't invoke any of the above.
 

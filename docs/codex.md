@@ -5,7 +5,7 @@
 | Part | Status under Codex |
 |---|---|
 | Skills (`skills/`) and agents (`agents/`) | copied; Codex reads skills from `$CODEX_HOME/skills` |
-| `rules/aodd.md` + `rules/ai-sdlc-workflow.md` | inlined in `$CODEX_HOME/AGENTS.md` between `<!-- aodd:begin -->` and `<!-- aodd:end -->` (Codex has no `@import`); a re-run replaces that block, text outside it is untouched; `AGENTS.md.aodd-bak` is made once |
+| `rules/ai-sdlc-workflow.md` | inlined in `$CODEX_HOME/AGENTS.md` between `<!-- aodd:begin -->` and `<!-- aodd:end -->` (Codex has no `@import`); a re-run replaces that block, text outside it is untouched; `rules/` is copied to `$CODEX_HOME/rules/` so the block's pointers (`rules/ai-sdlc/delegation.md`, `rules/ai-sdlc/git-ops.md`, `rules/effort/*.md`) resolve; `AGENTS.md.aodd-bak` is made once |
 | `scripts/audit.py` | supported: a Codex session transcript is detected (worker `codex`), and Codex can be the auditor (table above): `codex exec -s read-only --ephemeral -C <repo> -` with the prompt on stdin. Binary: `CODEX_BIN` (default `codex`). `--auditor codex` forces it |
 | Hooks in `$CODEX_HOME/hooks.json` | registered for `PreToolUse`, `Stop`, `PostToolUse` (same fail-open commands; `hooks.json.aodd-bak` made once). Codex hook input uses the same field names as Claude, so no adapter is needed (see Verified below) |
 

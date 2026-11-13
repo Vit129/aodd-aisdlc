@@ -36,19 +36,11 @@ SKILL_MD = re.compile(r"(/[^\s'\"]*/skills/([^/\s'\"]+)/SKILL\.md)")
 PATCH_FILE = re.compile(r"^\*\*\* (?:Add|Update|Delete) File: (.+?)\s*$", re.M)  # Codex apply_patch headers
 DOC = "docs/skill-learning.md (under your Claude home)"
 
-SKILL_PASS = """[skill-capture] This session had a learning signal ({sig}; {n} tool calls). If it taught a verified, reusable rule, patch the skill now; most sessions teach nothing new and "skill-capture: nothing" is a fine answer. Procedure: {doc}.
+SKILL_PASS = """[skill-capture] This session had a learning signal ({sig}; {n} tool calls). Follow {doc} (rung 0 first: find where the rule is already stated and edit it there). Nothing is a fine answer: reply "skill-capture: nothing" and carry on with the user's task{fix_note}.
 {loaded}
-Pick the FIRST rung that fits:
-1. Patch a skill loaded this session (above) if it covers the lesson — whoever wrote it.
-2. Patch an existing class-level skill (~/.claude/skills/ or this project's .claude/skills/): add a step/pitfall, widen its description.
-3. Add or extend references/<topic>.md or scripts/<name> under an existing skill.
-4. Only if nothing fits: new skill (project-specific -> the project's .claude/skills/), frontmatter name, description (what the user would say, Thai+English), version 0.1.0, origin: auto-captured, created: <today>.
+Say in one line which skill changed."""
 
-Write only what was verified here (test/build/command passed or the user confirmed) and how to check it. Generalize (placeholders, not this session's values). If a skill's rule caused the mistake, rewrite or delete that rule instead of appending. Bump version (patch) and last_improved. No secrets or company identifiers in global skills.
-Then tell the user in one line which skill changed.
-Nothing worth keeping: reply "skill-capture: nothing" and carry on with the user's task{fix_note}."""
-
-FIX_NOTE = "; a fix was committed, so its cause belongs in the skill that governs that code or workflow"
+FIX_NOTE = "; a fix was committed, so look for its cause in the governing skill"
 
 MID_FLIGHT = ("[skill-capture] You just committed a fix. While the cause is in context, patch the skill that governs "
               "this code/workflow (pitfall + how to check), per " + DOC + ".")

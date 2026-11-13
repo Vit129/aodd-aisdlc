@@ -15,13 +15,12 @@ Run the delivery stages the user asked for, through the repository's own entrypo
 These are the setup targets. A repo that lacks one is fixed in its own repo, not worked around in the skill.
 
 1. Entrypoint: `make start` or `npm start` (or the repo's documented equivalent).
-2. Graphify: `graphify-out/` present and refreshed synchronously after final edits before every commit, with tracked graph artifacts in that same commit (normal and full cycle). Refresh failure blocks commit/push.
-3. Dev / test server: a local dev server and, where the repo has one, a separate test server on its own port. Neither has release side effects.
-4. Release gate: a declared test command (and build) that must pass before anything is published. If QA exists, its test layers are named in the repo's adapter.
-5. Version scheme: semver in every surface that shows it, plus a build number where the app needs one.
-6. Living docs (PRODUCT / ARCHITECTURE / DESIGN / CONTEXT) updated before a release starts when the change affects them.
-7. Changelog: `CHANGELOG.md` exists, and its generator is declared (`cliff.toml` / git-cliff or the repo's own tool). Every commit that changes behaviour adds its entry; a semver release generates the version heading, `skip` writes under `Unreleased`. Only one generator per repo.
-8. Debugging skill: the `9arm-skills` plugin is installed (`debug-mantra`). Check `~/.claude/plugins/installed_plugins.json` for `9arm-skills@9arm-marketplace`; if it is missing, install it with `npx skills add thananon/9arm-skills -g -y` before the first bug fix, and report that the install happened.
+2. Dev / test server: a local dev server and, where the repo has one, a separate test server on its own port. Neither has release side effects.
+3. Release gate: a declared test command (and build) that must pass before anything is published. If QA exists, its test layers are named in the repo's adapter.
+4. Version scheme: semver in every surface that shows it, plus a build number where the app needs one.
+5. Living docs (PRODUCT / ARCHITECTURE / DESIGN / CONTEXT) updated before a release starts when the change affects them.
+6. Changelog: `CHANGELOG.md` exists, and its generator is declared (`cliff.toml` / git-cliff or the repo's own tool). Every commit that changes behaviour adds its entry; a semver release generates the version heading, `skip` writes under `Unreleased`. Only one generator per repo.
+7. Debugging skill: the `9arm-skills` plugin is installed (`debug-mantra`). Check `~/.claude/plugins/installed_plugins.json` for `9arm-skills@9arm-marketplace`; if it is missing, install it with `npx skills add thananon/9arm-skills -g -y` before the first bug fix, and report that the install happened.
 
 If the repo is missing one of these, report it as a gap. Do not invent the missing piece. Per-repo values (commands, ports, version files, changelog generator) and the gaps found in real repos are in [references/project-adapters.md](references/project-adapters.md).
 
@@ -33,7 +32,7 @@ Each stage is requestable on its own. A full cycle composes them and keeps each 
 |---|---|
 | Dev / preview | Local only. No commit, tag, or deploy. |
 | Test / QA | Runs the declared gates and reports evidence. Does not change code unless asked. |
-| Commit + push | Graphify refresh, then scoped commit and push to the intended branch. Stops before merge. |
+| Commit + push | Scoped commit and push to the intended branch. Stops before merge. |
 | Merge | Only in a full cycle or when asked. Uses the repo's review/CI policy. Never `--admin`. |
 | Release | Version candidate → metadata commit → checks on that exact commit → push + tag → GitHub release page. |
 | Deploy / install | Deploys the identified release to a named target, then verifies it is serving. |
@@ -90,9 +89,9 @@ Before publishing, every surface that shows the version must match the candidate
 
 ## Done means
 
-- Semver release (`patch`/`minor`/`major`): remote tag points to the release commit, the GitHub release exists with the same tag, and the deployed build reports the candidate version. Check the live target, not only the command's exit code.
+- Semver release (`patch`/`minor`/`major`): the remote tag is on the release commit, a GitHub release carries that tag, and the deployed build shows the candidate version. Check the live target, not only the command's exit code.
 - `skip`: the commit is merged to main, the deploy is verified against that commit, and no tag or release was created.
-- Report each stage as PASS, FAIL, BLOCKED, or NOT RUN, with the command and output. Finish with the last completed version and build, plus any pending candidate and its missing step.
+- Report every stage as PASS, FAIL, BLOCKED or NOT RUN with the command and its output, then the last completed version and build and any pending candidate.
 
 ## Approval and external effects
 

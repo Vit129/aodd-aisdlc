@@ -4,7 +4,7 @@ still has unchecked boxes. Only checks progress files this session actually
 wrote to (so an unrelated old plan never blocks). Blocks at most once per
 stop cycle (stop_hook_active), fails open on any error.
 
-The audit is on demand: the user asks for it, or the worker proposes it for risky work (rules/aodd.md),
+The audit is on demand: the user asks for it, or the worker proposes it for risky work (rules/ai-sdlc-workflow.md),
 so this hook never asks for one. "Audited" = scripts/audit.py wrote $AODD_REPORTS/audit-*-<sid8>.md for this
 session. When a tracked or AODD "medium" session (MEDIUM_FILES+ files via Edit/Write/MultiEdit, Codex apply_patch;
 scratch files never count) has a FAIL/DISPUTED/UNVERIFIABLE verdict -> block once per report: the worker relays

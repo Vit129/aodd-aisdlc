@@ -231,6 +231,7 @@
   "229": "[0.3.0] - 2026-10-17",
   "230": "[0.3.2] - 2026-10-17",
   "231": "agy effort mapping",
+  "232": "2. Generate",
   "233": "[0.2.0] - 2026-10-17",
   "234": "[0.3.4] - 2026-10-17",
   "235": "[0.3.5] - 2026-10-17",
@@ -242,13 +243,9 @@
   "241": "2. Generate",
   "242": "[0.6.2] - 2026-10-30",
   "243": "[0.7.0] - 2026-10-30",
-  "244": "delegation-nudge.py",
   "245": "Best Practices",
-  "246": "2. Generate",
-  "247": "[0.7.0] - 2026-10-30",
   "248": "[Unreleased]",
   "249": "test_skill_invocation.py",
   "250": "test_skill_trigger_eval.py",
-  "251": "test_rule_duplicates.py",
-  "252": "Trace Output Files"
+  "251": "test_rule_duplicates.py"
 }

@@ -128,8 +128,7 @@ otherwise-shared fixture (e.g. an `ApiSetup.ts` that Web UI uses to seed via API
 
 If Phase 2 design work resolves or challenges a domain term, note it in the plan's
 **Terms** list as it is resolved (challenge conflicting terms, propose canonical names, one
-term at a time, never batch). After Gate 1, write the list into `CONTEXT.md` (project root,
-or per-context under `src/{context}/CONTEXT.md` for multi-context repos) with the other living docs, rather than letting the
+term at a time, never batch). After Gate 1, write the list into `CONTEXT.md` (see `rules/product-design.md`) with the other living docs, rather than letting the
 term drift undocumented. For genuinely deep DDD work (multiple bounded contexts, explicit
 monolith-vs-microservices tradeoffs, aggregate/event modeling) beyond what a normal Phase 2
 pass needs, this is model judgment — apply DDD strategic/tactical design directly, there's

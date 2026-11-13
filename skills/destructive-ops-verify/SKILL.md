@@ -15,9 +15,3 @@ origin: auto-captured
 
 ## Check it worked
 A test that feeds `..`, an absolute path, the root, and a non-indexed id and asserts nothing is removed.
-
-## Self-Update (after every use)
-
-This skill is its own memory. When using it brought a correction, a gotcha,
-or a wrong/missing step, and the fix was verified, patch this file in place: add the new check as a numbered rule (keep ≤10).
-Then bump `version` (patch) and `last_improved`. Procedure: `docs/skill-learning.md`.

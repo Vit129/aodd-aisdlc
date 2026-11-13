@@ -12,12 +12,11 @@ Use when the user asks for the complete cycle: change → checks → commit → 
 
 Update the living docs the change affects (for example product, architecture, design, or context files) before running the start or release entrypoint. For a semver release, do not hand-edit CHANGELOG.md; the release step generates it. On `skip`, the `Unreleased` entry is written by hand (§5). If the change alters the release contract itself, update that contract first.
 
-## 3. Build, test, Graphify
+## 3. Build and test
 
 1. Implement the approved change. Keep its tests with it.
 2. Run the dev or preview path for a person to inspect, if the repo has one.
 3. Run the repo's required checks. If the repo has no automated QA, record that and get the named human acceptance.
-4. Await Graphify after the final changes and before each commit (required setup; see commit-push.md). Stop before commit/push on failure, including version/changelog commits later in the cycle.
 
 ## 4. Commit and merge
 
@@ -29,7 +28,7 @@ Update the living docs the change affects (for example product, architecture, de
 
 **Semver (`patch`, `minor`, `major`):**
 1. Prepare the candidate metadata and changelog as a local commit on the merged main (see [release-deploy.md](release-deploy.md) §3).
-2. Run the release gates on that exact commit.
+2. Run the release gates (release-deploy.md) on the candidate commit.
 3. Push the commit, create the tag, create the hosted release (§4).
 4. Deploy or install the same commit, then verify the live target (§5, §6).
 
@@ -37,8 +36,8 @@ Update the living docs the change affects (for example product, architecture, de
 1. On `skip`, add the change to CHANGELOG.md under an `Unreleased` heading, the same as any other change. Do not add a version heading, create a tag, or create a release page.
 2. Run the build and release-gate tests on the merged commit.
 3. Deploy or install that commit, then verify the live target reports it.
-4. Report the build number if the repo has one. No tag, no release page.
+4. Report the build number where the repo has one. No tag, no release page.
 
 ## 6. Report
 
-Report each stage PASS, FAIL, BLOCKED, or NOT RUN, with the commit, the version or build, the target, and the live evidence. End with the last completed version and build, and any pending candidate with its next missing step.
+Report each stage with its status, the commit, the version or build, the target and the live evidence; end with the pending candidate and its next step, if any (format: SKILL.md).

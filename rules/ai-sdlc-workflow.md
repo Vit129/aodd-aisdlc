@@ -40,8 +40,7 @@ implementation code — dev implements against a known RED state and drives it t
 GREEN, QA re-verifies GREEN at the end. TDD applied at the feature level, not just
 the unit level.
 
-**Every change runs this workflow; testing and dev always run.** Enter at the phase the work needs (Phase 1–2 only when scope or design is open), but no path skips its testing step or its dev step. A bug enters through the debugging skill (`9arm-skills:debug-mantra` when installed) before Phase 3.
-
+Enter at the phase the work needs (Phase 1–2 only when scope or design is open), but no path skips its testing step or its dev step.
 **Pick the path by what changes, not by size.** Every task, small or large, takes the path for the kind of change; only that path's phases run. A change can carry more than one kind (a new requirement with a new screen runs both). If it is not clear which kind it is, Phase 1 decides that first.
 
 | What changes | Path | Dev | QA | Gates | Living docs |
@@ -60,12 +59,8 @@ the unit level.
 Size still matters for orchestration and audit (`rules/aodd.md` triage): a change that adds or splits files states its file separation plan on any path.
 
 **Four independent baseline rules — a floor, not a free pass (single authoritative version — other files point back to this list):**
-1. **Only the Requirement path runs the full ceremony.** Any path that adds or splits files states the file separation plan before coding.
-2. **ARCHITECTURE.md never collapses.** Every project gets one regardless of task
-   size. This is a standing
-   per-project artifact, not a per-task ceremony step, so it isn't something a small
-   task "skips": if the project doesn't have one yet, this is where it gets created
-   (one bullet is enough), collapsed task or not.
+1. **Only the Requirement path runs the full ceremony.**
+2. **ARCHITECTURE.md never collapses.** Every project keeps an `ARCHITECTURE.md`: see `rules/product-design.md`.
 3. **The Existing Asset Scan never collapses** for any task that adds a new
    function/component/helper/query. § Existing Asset Scan (`skills/ai-sdlc/phases/phase2-existing-asset-scan.md`) and its
    Reuse-Table/Nth-Occurrence rule (`skills/ai-sdlc/phases/phase2-reuse-table.md`) run regardless of task size — exempt only when
@@ -116,7 +111,7 @@ No mechanical hook enforces these — treat "the user hasn't objected" as differ
   link between a scenario, its automation, and any tracker. Without it, nothing traces.
 - Scenario/test titles also carry a `[LAYER-KIND]` tag (`BE|FE` × `BL|UT|IT`, e.g. `[BE-BL]`) — layer/kind
   definitions and Dev + QA rules → `skills/ai-sdlc/references/dev-qa-pattern.md`.
-- Multi-step/multi-session work: track in `$AODD_PLANS/[FEATURE]/ai-sdlc-task-progress.md`
+- Multi-step/multi-session work: track in `ai-sdlc-task-progress.md` in the feature's plans folder (`$AODD_PLANS`, see `rules/aodd.md`)
   (legacy `dev-task-progress.md`/`qa-task-progress.md` supported), vertical slices not phases, resume at first unchecked `[ ]`.
   Skip entirely for single-sitting work. Full mechanics (tags, sensitive-data/mock rules,
   rollback, resume protocol) → `skills/ai-sdlc/references/ai-sdlc-progress-spec.md`.
@@ -130,8 +125,8 @@ No mechanical hook enforces these — treat "the user hasn't objected" as differ
   contract QA automation depends on existing, not something to rediscover per task. Full
   dev→QA handoff conventions (testid map, test-env requirements, schema consistency,
   DB strategy) → `skills/ai-sdlc/references/dev-qa-handoff.md`.
-- Graph-before-edit (if graphify is installed) and surgical changes (no drive-by refactors) apply in every phase.
-- **Skill visibility + Self-Update, every phase:** name every skill invoked in the response text — never call one silently. Every
+- Graph-before-edit (if graphify is installed) applies in every phase.
+- **Self-Update, every phase:** Every
   skill learns the same way: when a phase hit a correction, a gotcha, or a
   wrong/missing step in the invoked skill, and the fix was verified, patch that skill's
   `SKILL.md` (or its `references/`) in place and bump `version`/`last_improved` — see its
@@ -144,5 +139,3 @@ No mechanical hook enforces these — treat "the user hasn't objected" as differ
 ## Status
 
 Default route for new/unclear-scope Dev/QA feature work. Stack-specific coding skills (`backend-dev`, `frontend-dev`, `macos-swiftui`) and `rules/coding.md` still own coding conventions.
-
-**Commit preparation (normal and full cycle):** After final code/docs/version edits, await the repository Graphify refresh (`PYTHONHASHSEED=0`); failure stops commit/push. Stage tracked graph artifacts by explicit path with `git add --update` and include them in the same commit as those edits, including ai-sdlc docs/GREEN and release metadata commits. Do not create a separate graph-only commit or a post-commit background refresh. Preserve unrelated hooks and local query/cache outputs. See `skills/delivery-workflow/references/commit-push.md`.

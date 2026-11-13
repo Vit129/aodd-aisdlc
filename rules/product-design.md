@@ -43,7 +43,7 @@ Architecture Decision Records (`docs/adr/NNNN-title.md`) are NOT folded into ARC
 
 ### Feature & project planning: `$AODD_PLANS/<feature>/<feature>-architecture.md`
 
-When planning a new project or feature, create its architecture document and technical plan directly in `$AODD_PLANS/<feature>/<feature>-architecture.md` (or `<feature>-architecture/`), next to `ai-sdlc-task-progress.md` and the feature's other artifacts, so the whole context lives in one place. `ARCHITECTURE.md` at the project root stays the living overview of the whole system, updated with the main decisions.
+When planning a new project or feature, create its architecture document and technical plan directly in `$AODD_PLANS/<feature>/<feature>-architecture.md` (or `<feature>-architecture/`), next to `ai-sdlc-task-progress.md` and the feature's other artifacts. `ARCHITECTURE.md` at the project root stays the living overview of the whole system, updated with the main decisions.
 
 
 ## Same file everywhere, scale the content not the format

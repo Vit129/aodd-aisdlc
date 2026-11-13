@@ -1,6 +1,7 @@
 ---
 name: ai-sdlc
-description: Full Dev/QA feature workflow (interview → architect → QA design RED → dev GREEN → QA verify, with 3 approval gates). Use when the user runs /ai-sdlc, says "ทำฟีเจอร์ใหม่", "new feature", "วางแผนฟีเจอร์", "เริ่มโปรเจกต์", "full workflow", or starts a multi-file feature/refactor that needs QA coverage and tracked progress.
+description: >
+  Change behaviour with tests: "build a feature" / "เพิ่มฟีเจอร์" in new or existing code; "refactor across files" needing QA coverage. Vague feature requests stay here; calls grill-plan to clarify. Idea questioning only: grill-plan. Whole jobs across disciplines: chief-of-staff.
 version: 1.0.1
 ---
 

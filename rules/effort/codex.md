@@ -12,7 +12,7 @@ Scope: only for setups that use Codex. The shared ladder, bake-off and escalatio
 
 | Work | Who | Start effort | Rules |
 |---|---|---|---|
-| Second opinion, rescue, or an independent check from another family | Codex (`codex:rescue` or `codex exec`) | `medium` | returns a diff or findings; main reviews before anything is reported |
+| Second opinion, rescue, or an independent check from another family | Codex (`codex:rescue` or `codex exec`) | `low` | returns a diff or findings; main reviews before anything is reported |
 
 ## Tiers (same roles as Claude)
 
@@ -24,4 +24,8 @@ Scope: only for setups that use Codex. The shared ladder, bake-off and escalatio
 
 Delegate with `spawn_agent` (model per the table, effort per the ladder).
 
-Escalation follows the shared ladder: 3 failing checks raise one level, capped at `high`. Then switch vendor family, then the advisor rule. `xhigh` and `max` only when a ticket says so.
+## Start, announce, escalate
+
+- **Start:** every `codex exec` / `codex:rescue` / `spawn_agent` run starts at `low`, unless the ticket's `Effort:` line says otherwise.
+- **Announce before the run:** tell the user the model, the effort and how many runs, and wait for their yes. Usage limits are the user's to spend.
+- **Escalate one step at a time:** `low` → `medium` → `high`. 3 failing checks in a row raise one step; never skip a step; capped at `high`. `xhigh` and `max` only when a ticket says so.

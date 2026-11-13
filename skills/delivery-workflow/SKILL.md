@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: delivery-workflow
 description: Use when asked to carry a software project through delivery stages such as dev/preview, test, commit and push, release, deploy, or recovery. Runs only the requested stages, follows the repository's own entrypoint, and stops before publishing if a gate fails.
 metadata:

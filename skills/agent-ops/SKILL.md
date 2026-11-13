@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: agent-ops
 version: 0.2.1
 description: >

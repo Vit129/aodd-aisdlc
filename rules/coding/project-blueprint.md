@@ -130,7 +130,7 @@ logic: NO import of ui/integrations/features.  models, config: import nothing.
 
 Report each line as `PASS` / `FAIL` (MUST, or STRONG with nothing recorded) / `WARN` (SHOULD) / `ACCEPTED` (deviation recorded), with file evidence:
 1. §1 one home per role.  2. §2 root files; stray files (STRONG).  3. §3 size and nesting (STRONG).
-4. §4 no forbidden import.  5. `tests/` exists and sits outside source (always MUST; the only way to waive it is a recorded deviation).  6. §6 principles (including target file size ~300–400 lines and role separation).  7. Deviations section exists if any deviation is claimed.  8. `claudeMdExcludes` in the project's `.claude/settings*.json` does not match the installed `rules/**`.  9. If publishable, §2.2 release profile, local entry point, fake-command test, and retry/verification paths exist.
+4. §4 no forbidden import.  5. `tests/` exists and sits outside source (always MUST; the only way to waive it is a recorded deviation).  6. §6 principles (including size target: `rules/coding.md` § Anti-Monolith, and role separation).  7. Deviations section exists if any deviation is claimed.  8. `claudeMdExcludes` in the project's `.claude/settings*.json` does not match the installed `rules/**`.  9. If publishable, §2.2 release profile, local entry point, fake-command test, and retry/verification paths exist.
 
 ## 8. Not applicable
 

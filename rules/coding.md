@@ -1,5 +1,4 @@
 ---
-# Single place to register a language: add its extension here + one row in coding/programming-language.md
 paths:
   - "**/*.{swift,py,js,jsx,mjs,cjs,ts,tsx,go,rs,sh,c,h,m,java,kt,kts,cpp,cc,cxx,hpp,hh,cs,gd}"
 ---
@@ -20,7 +19,6 @@ Before implementing:
 - If something is unclear, stop. Name what's confusing. Ask.
 - **Scope = every place the change must reach:** read the task and the code it touches, then list the callers, tests, fixtures, config and exports the change affects, and what it could break for users (data it would destroy or expose, callers that stop working). That is scope; extra features are not.
 - **Architecture-First (Medium+ tasks, Dev & QA):** before writing code or tests that add or split files, state a short separation plan (where logic, UI/integration, and tests/fixtures go) — see § Anti-Monolith & Separation Pattern.
-- **Plan co-location:** when planning a project or feature, put the architecture document in `$AODD_PLANS/<feature>/<feature>-architecture.md` (or `<feature>-architecture/`), in the same folder as `ai-sdlc-task-progress.md`. Do not scatter planning documents.
 
 ## 2. Simplicity First
 
@@ -69,7 +67,7 @@ If `graphify-out/graph.json` exists at or above the project root, **find and cha
 
 Raw `grep`/`find` are for the cases the graph cannot answer: confirming a caller list is exhaustive before changing a signature (the graph can miss dynamic or attribute calls), files graphify does not index, or editing a specific known line — say so when you use them. Skip all of this for trivial changes (typos, config values, docs).
 
-**After modifying code:** run `graphify update .` (AST-only, no API cost) before declaring work done.
+**After modifying code:** refresh the graph as `rules/aodd.md` § Audit and Done says.
 
 ## 4. Surgical Changes
 
@@ -104,7 +102,7 @@ not a reason to split.
 **Boundary check** — most bugs hide where two things disagree about a contract: verify
 casing/shape consistency at serialization boundaries (camelCase vs snake_case, date formats),
 every `async` call that should be awaited actually is, and no `catch` block swallows an error
-silently (log or re-throw, never `catch (e) {}` / `except: pass` with nothing in it). A bug fix
+silently. A bug fix
 without a regression test that fails without the fix and passes with it isn't done.
 
 ## 5. Goal-Driven Execution
@@ -172,13 +170,12 @@ Each step names what to read or call next. **[hook]** means the step is enforced
 | 2. Size it | AODD triage in `rules/aodd.md`. Small: `ai-sdlc` Light path (edit + run existing tests). Medium: Architecture-First (§1, § Anti-Monolith), `chief-of-staff` light. Large: suggest `/ai-sdlc` in one line, `chief-of-staff` full | `skills/chief-of-staff` |
 | 3. Branch | New branch from `main` before the first edit (rule only; the hook blocks switching away from uncommitted work, not editing on `main`) | your project's git conventions |
 | 4. Place code | Logic vs UI vs Tests split (§6) & Anti-Monolith pattern (target 300–400 lines); structure work → blueprint | `rules/coding/project-blueprint.md`, `project-blueprint` skill |
-| 5. Domain skill | Web/mobile UI → `frontend-dev` (+ `uxui-designer` if no design tokens); API/DB → `backend-dev`; SwiftUI → `macos-swiftui`; bug → trace the failing path and falsify your hypothesis before fixing; auth/input/secrets → `security`; UI layout bug → `rules/gui-fixes.md` | the skill |
-| 6. Verify | Tests + the language's type/syntax checker; UI change → look at it in a browser/screenshot | `rules/coding/programming-language.md` |
-| 7. Review | Medium+: review the diff against the brief (an independent reviewer if available); risky work: propose `scripts/audit.py --confirmed`, run on the CEO's yes (independent, cross-family) **[done-gate hook reports a non-PASS verdict]** | `rules/coding/review-report.md` |
+| 5. Domain skill | Web/mobile UI → `frontend-dev` (+ `uxui-designer` if no design tokens); API/DB → `backend-dev`; SwiftUI → `macos-swiftui`; auth/input/secrets → `security`; UI layout bug → `rules/gui-fixes.md` | the skill |
+| 6. Verify | Tests + the project's own static/type/syntax check (`rules/aodd.md` § Test-Before-Deliver) | — |
+| 7. Review | Medium+: review the diff against the brief (an independent reviewer if available); **[done-gate hook reports a non-PASS verdict]** | `rules/coding/review-report.md` |
 | 8. Close | Tick progress boxes **[done-gate hook]**, skill patch **[skill-capture-nudge hook, at 20+ tool calls with a learning signal]**, graph refresh if used | `docs/skill-learning.md` |
 
 - **Read before write:** understand existing code before modifying it.
-- **New feature branch before coding** unless instructed otherwise. Never commit work-in-progress directly on `main`/`master`.
 - **End the reply** with one or two lines: what you skipped or did not check, and any risk the user must know.
 
 ## Citation Format
@@ -213,6 +210,3 @@ Subject answers "why" — the diff shows "what".
 - Choosing `.md` vs HTML/Artifact output, or using the Workflow tool → `coding/output-and-workflow.md`
 - Cutting a release / changelog → `coding/release.md`
 - Folder structure → `coding/project-blueprint.md`
-- Per-language checks (type/syntax checker per extension) → `coding/programming-language.md`
-
-**Commit preparation (normal and full cycle):** After final code/docs/version edits, await the repository Graphify refresh (`PYTHONHASHSEED=0`); failure stops commit/push. Stage tracked graph artifacts by explicit path with `git add --update` and include them in the same commit as those edits, including ai-sdlc docs/GREEN and release metadata commits. Do not create a separate graph-only commit or a post-commit background refresh. Preserve unrelated hooks and local query/cache outputs. See `skills/delivery-workflow/references/commit-push.md`.

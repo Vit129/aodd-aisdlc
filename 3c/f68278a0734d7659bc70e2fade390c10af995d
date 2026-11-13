@@ -1,0 +1,39 @@
+rules/aodd.md
+  s_1020d9fcad6b30::t_b29e221579e1d8 103
+  s_1020d9fcad6b30::t_9ba67d09134425 72
+  s_1020d9fcad6b30::t_6b463e67914173 63
+rules/agy-effort.md
+  s_1020d9fcad6b30::t_9ba67d09134425 16-20
+  s_1020d9fcad6b30::t_f58fb1a746f9a0 14
+rules/claude-effort.md
+  s_1020d9fcad6b30::t_9ba67d09134425 7,14,16,23-28
+rules/codex-effort.md
+  s_1020d9fcad6b30::t_9ba67d09134425 27-31
+  s_1020d9fcad6b30::t_60e0345354dd85 15
+graphify-out/.graphify_labels.json
+  s_1020d9fcad6b30::t_d2d8c15da243a8 253-254
+graphify-out/GRAPH_REPORT.md
+  s_1020d9fcad6b30::t_2f140bbe191a6b 1,4,8,13,37-38,43,60,123-124,223-224,271,279-280,547,775-776,791-792,795-796,831-832,838-841,843,859
+graphify-out/GRAPH_SUMMARY.md
+  s_1020d9fcad6b30::t_3eb5f8648b1308 6,12,38-39
+graphify-out/graph.json
+  s_1020d9fcad6b30::t_2a9e4dca96b201 7243-7252,7387,7397,7407,7463-7472,7523-7532,14054,14064,14074,14084,14094,14104,14114,14124,14134,14144,14154,14424,14824,14834,14844,14854,15464,15494,15504,15514,15524,36909-36919,37001,37012,37045,37118-37128,37162-37172,55303
+graphify-out/manifest.json
+  s_1020d9fcad6b30::t_d55a838d5be3f6 393-394,1228-1229,1233-1234,1238-1239
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "3cf68278a0734d7659bc70e2fade390c10af995d",
+  "prompts": {},
+  "sessions": {
+    "s_1020d9fcad6b30": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "14983d7a-5f0b-4455-a404-83e6b933a017",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

@@ -71,7 +71,6 @@ Five levels, shared by all vendors: `low` < `medium` < `high` < `xhigh` < `max`.
 
 - **Start, announce and escalate:** each vendor file says the start effort, what to tell the user before a run, and how effort steps up. A ticket's `Effort:` line overrides the start.
 - **`xhigh` and `max` are never raised automatically.** They run only when a ticket says `Effort: xhigh` or `Effort: max`, or when the review stage of ai-sdlc requires `xhigh`.
-- **Still failing at `high`:** switch to another vendor family before raising further. The advisor rule still applies (at most two calls per task).
 - **A passing check** returns the task to its starting level.
 
 **A tier change is decided by measurement, not by guess.** Before a model or a default effort changes for a work type, run a bake-off:

@@ -1,23 +1,23 @@
-# Graph Report - fix-skill-md-var  (2026-11-13)
+# Graph Report - aodd-aisdlc  (2026-11-13)
 
 ## Corpus Check
-- 259 files · ~176,581 words
+- 259 files · ~177,046 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2466 nodes · 2673 edges · 248 communities (217 shown, 31 thin omitted)
+- 2474 nodes · 2681 edges · 250 communities (222 shown, 28 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 13 edges (avg confidence: 0.62)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `7ce35e5e`
+- Built from commit: `6e0e8317`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## God Nodes (most connected - your core abstractions)
 1. `Fix Generated Playwright Files (Postman Migration)` - 33 edges
 2. `UX/UI Designer` - 20 edges
-3. `Changelog` - 18 edges
+3. `Changelog` - 17 edges
 4. `Browser Automation with playwright-cli` - 16 edges
 5. `Frontend Development` - 15 edges
 6. `aodd-aisdlc` - 14 edges
@@ -31,45 +31,45 @@ A high-degree node isn't always architecturally central - a widely-used
 utility/config file can rack up more edges than a real coupler while only
 ever touching one area. This ranks by how many DIFFERENT communities a
 node's neighbors span, not by raw edge count.
-1. `Changelog` - bridges 11 areas (18 edges)
-2. `Test generation (plan → generate → heal)` - bridges 3 areas (6 edges)
-3. `search()` - bridges 2 areas (10 edges)
-4. `generate_design_system()` - bridges 2 areas (8 edges)
-5. `_resolve_color_mode()` - bridges 2 areas (5 edges)
-6. `_select_palette_for_mode()` - bridges 2 areas (4 edges)
-7. `Browser Automation with playwright-cli` - bridges 1 areas (16 edges)
-8. `Running Custom Playwright Code` - bridges 1 areas (13 edges)
-9. `main()` - bridges 1 areas (11 edges)
-10. `DesignSystemGenerator` - bridges 1 areas (11 edges)
+1. `Changelog` - bridges 10 areas (17 edges)
+2. `state()` - bridges 5 areas (10 edges)
+3. `claude_home()` - bridges 3 areas (9 edges)
+4. `Browser Automation with playwright-cli` - bridges 2 areas (16 edges)
+5. `search()` - bridges 2 areas (10 edges)
+6. `generate_design_system()` - bridges 2 areas (8 edges)
+7. `session_id()` - bridges 2 areas (6 edges)
+8. `_resolve_color_mode()` - bridges 2 areas (5 edges)
+9. `_select_palette_for_mode()` - bridges 2 areas (4 edges)
+10. `main()` - bridges 1 areas (13 edges)
 
 ## Surprising Connections (you probably didn't know these)
+- `write_report()` --calls--> `reports()`  [EXTRACTED]
+  optional/schedules/scripts/aodd_job.py → hooks/_aodd_paths.py
+- `housekeeping_scan()` --calls--> `state()`  [EXTRACTED]
+  optional/schedules/scripts/aodd_job.py → hooks/_aodd_paths.py
+- `main()` --calls--> `state()`  [EXTRACTED]
+  optional/schedules/scripts/install-schedules.py → hooks/_aodd_paths.py
 - `candidates()` --calls--> `memory_dirs()`  [EXTRACTED]
   optional/agent-memory/hooks/memory-recall.py → hooks/_aodd_paths.py
-- `candidates()` --calls--> `project()`  [EXTRACTED]
-  optional/agent-memory/hooks/memory-recall.py → hooks/_aodd_paths.py
-- `main()` --calls--> `session_id()`  [EXTRACTED]
-  scripts/audit.py → hooks/_aodd_paths.py
-- `main()` --calls--> `reports()`  [EXTRACTED]
-  optional/agent-memory/hooks/session-start-recent.py → hooks/_aodd_paths.py
-- `write_report()` --calls--> `reports()`  [EXTRACTED]
+- `job_memory_backup()` --calls--> `memory()`  [EXTRACTED]
   optional/schedules/scripts/aodd_job.py → hooks/_aodd_paths.py
 
 ## Import Cycles
 - None detected.
 
-## Communities (248 total, 31 thin omitted)
+## Communities (250 total, 28 thin omitted)
 
 ### Community 0 - "_aodd_paths.py"
-Cohesion: 0.06
-Nodes (66): claude_home(), home(), memory(), memory_dirs(), plans(), project(), Path, Where AODD keeps its files. Standard library only; every variable is optional. (+58 more)
+Cohesion: 0.16
+Nodes (21): claude_home(), home(), memory(), memory_dirs(), plans(), project(), Path, Where AODD keeps its files. Standard library only; every variable is optional. (+13 more)
 
 ### Community 1 - "Fix Generated Playwright Files (Postman Migration)"
 Cohesion: 0.04
 Nodes (47): 10. Request Body Types 📦, 11. Response Headers 📋, 12. Path Parameters & Query Parameters 🔗, 13. Postman Dynamic Variables 🎲, 14. Folder-level Auth Inheritance 🔐, 15. Folder-level Pre-request Script → beforeAll / beforeEach 🔧, 16. Nested Folders → File Structure 📁, 17. Collection Runner + Data File (Data-Driven) 📊 (+39 more)
 
 ### Community 2 - "Changelog"
-Cohesion: 0.14
-Nodes (13): [0.1.0] - 2026-10-16, [0.3.3] - 2026-10-17, [0.5.0] - 2026-10-22, [0.7.0] - 2026-10-30, [0.8.0] - 2026-11-05, Added, Added, Added (+5 more)
+Cohesion: 0.13
+Nodes (14): [0.1.0] - 2026-10-16, [0.3.1] - 2026-10-17, [0.3.3] - 2026-10-17, [0.3.5] - 2026-10-17, [0.6.2] - 2026-10-30, [0.7.0] - 2026-10-30, Added, Added (+6 more)
 
 ### Community 3 - "SKILL.md"
 Cohesion: 0.05
@@ -120,8 +120,8 @@ Cohesion: 0.07
 Nodes (28): 10. Dense Information Display, 11. Trust & Stability (Blues), 12. Growth & Success (Greens), 13. Caution & Urgency (Reds/Oranges), 14. Sans-Serif + Monospace Combination, 15. Clear Hierarchy, 16. Readability Over Personality, 17. Consistent Font Weights (+20 more)
 
 ### Community 15 - "Browser Automation with playwright-cli"
-Cohesion: 0.08
-Nodes (26): Attaching screenshots and videos to pull requests, Browser Automation with playwright-cli, Browser Sessions, Commands, Core, DevTools, Example: Debugging with DevTools, Example: Form submission (+18 more)
+Cohesion: 0.13
+Nodes (15): Attaching screenshots and videos to pull requests, Browser Automation with playwright-cli, Browser Sessions, Example: Debugging with DevTools, Example: Form submission, Example: Interactive session, Example: Multi-tab workflow, Installation (+7 more)
 
 ### Community 16 - "Postman → Playwright Migration (AI-Driven)"
 Cohesion: 0.07
@@ -144,8 +144,8 @@ Cohesion: 0.08
 Nodes (23): 161 Industry Rules, Accessibility Check (WCAG AA), BM25 Ranking, Deliverables, Example Flow, Five Search Domains, Input, Integration (+15 more)
 
 ### Community 21 - "3. Heal"
-Cohesion: 0.15
-Nodes (13): 0. How generation works, 3.1 Find failing tests, 3.2 Debug one failure, 3.3 Apply the fix, 3.4 Reconcile with the spec, 3.5 Iteration and giving up, 3. Heal, Add assertions manually (+5 more)
+Cohesion: 0.09
+Nodes (23): 0. How generation works, 1.1 Prerequisite: workspace, 1.2 Prerequisite: seed test, 1.3 Explore the app, 1.4 Write the spec file, 1. Planning, 2.1 Inputs, 2.2 Generate one scenario (+15 more)
 
 ### Community 22 - "The `study` Trigger — Extracting Design DNA from a Screenshot or URL"
 Cohesion: 0.09
@@ -465,7 +465,7 @@ Nodes (8): Anti-Patterns, Constraints, Save Rubric (before patching a skill), Se
 
 ### Community 101 - "AODD: the operating contract"
 Cohesion: 0.40
-Nodes (5): 1.1 Prerequisite: workspace, 1.2 Prerequisite: seed test, 1.3 Explore the app, 1.4 Write the spec file, 1. Planning
+Nodes (4): Answer, Outcome, Q: grill-plan phase1 interview routing, Source Nodes
 
 ### Community 102 - "data-testid Naming Convention"
 Cohesion: 0.22
@@ -751,6 +751,10 @@ Nodes (4): Codex effort mapping, Setting effort, Start effort, Tiers (same roles
 Cohesion: 0.33
 Nodes (5): Design, Interaction principles, Interface model, Preview, Release gate
 
+### Community 195 - "phase1-interview.md"
+Cohesion: 0.50
+Nodes (3): Build the artifact until ready for coding, Interview, Phase 1 — Interview
+
 ### Community 223 - "How the audit works"
 Cohesion: 0.33
 Nodes (5): Out of scope, Product, Purpose, Supported delivery, Users and interface
@@ -764,8 +768,8 @@ Cohesion: 0.33
 Nodes (6): _palette_is_dark(), WCAG relative luminance of a #RRGGBB string, or None if unparseable., True when a colors.csv row's Background is a dark surface., Pick the highest-ranked palette matching the resolved mode.      Only the dark c, _relative_luminance(), _select_palette_for_mode()
 
 ### Community 226 - "[0.6.1] - 2026-10-30"
-Cohesion: 0.40
-Nodes (5): [0.6.1] - 2026-10-30, Added, Changed, Documentation, Fixed
+Cohesion: 0.33
+Nodes (6): [0.8.1] - 2026-11-13, Added, Changed, Documentation, Fixed, wip
 
 ### Community 227 - "Claude effort mapping"
 Cohesion: 0.50
@@ -788,16 +792,16 @@ Cohesion: 0.50
 Nodes (3): Claude Code effort syntax, Setting effort, Start effort
 
 ### Community 232 - "2. Generate"
-Cohesion: 0.40
-Nodes (5): 2.1 Inputs, 2.2 Generate one scenario, 2.3 Generate multiple scenarios, 2.4 Run generated tests, 2. Generate
+Cohesion: 0.27
+Nodes (16): ask_model(), git(), housekeeping_scan(), job_agent_ops(), job_housekeeping(), job_memory_backup(), job_pending_work(), log() (+8 more)
 
 ### Community 233 - "[0.2.0] - 2026-10-17"
 Cohesion: 0.67
 Nodes (3): [0.2.0] - 2026-10-17, Added, Fixed
 
 ### Community 235 - "[0.3.5] - 2026-10-17"
-Cohesion: 0.67
-Nodes (3): [0.3.5] - 2026-10-17, Documentation, Fixed
+Cohesion: 0.30
+Nodes (13): argv(), baked_env(), cron_block(), crontab_bin(), describe(), load_jobs(), main(), merge_cron() (+5 more)
 
 ### Community 236 - "[0.6.0] - 2026-10-23"
 Cohesion: 0.67
@@ -807,9 +811,25 @@ Nodes (3): [0.6.0] - 2026-10-23, Added, Documentation
 Cohesion: 0.50
 Nodes (3): Commit preparation, Git ops: the Haiku ops runner and commit preparation, Haiku ops runner
 
-### Community 240 - "Best Practices"
+### Community 240 - "[0.3.4] - 2026-10-17"
 Cohesion: 0.67
 Nodes (3): [0.3.4] - 2026-10-17, Documentation, Fixed
+
+### Community 241 - "2. Generate"
+Cohesion: 0.29
+Nodes (11): Short session key for audit filenames: disambiguates Antigravity transcript.json, session_id(), already_raised(), audit_report(), decide(), main(), Path, (progress files written this session, whether an auditor subagent ran, files edi (+3 more)
+
+### Community 242 - "[0.6.2] - 2026-10-30"
+Cohesion: 0.18
+Nodes (11): Commands, Core, DevTools, Keyboard, Mouse, Navigation, Network, Save as (+3 more)
+
+### Community 243 - "2. Generate"
+Cohesion: 0.53
+Nodes (5): _codex_meta(), decide(), main(), (is_codex, is_subagent) from a Codex rollout's first record; Claude transcripts, _size()
+
+### Community 244 - "[0.6.1] - 2026-10-30"
+Cohesion: 0.40
+Nodes (5): [0.6.1] - 2026-10-30, Added, Changed, Documentation, Fixed
 
 ### Community 245 - "Best Practices"
 Cohesion: 0.39
@@ -820,26 +840,26 @@ Cohesion: 0.21
 Nodes (9): hook_files(), hook_strings(), markdown_files(), norm_words(), _ok(), Shared file set for the rule guard tests: markdown rule text plus str constants, (lineno, text) for each str constant in a hook; docstrings=False drops them (nev, (relpath, lineno, text) for every line of markdown and every hook string constan (+1 more)
 
 ## Knowledge Gaps
-- **1414 isolated node(s):** `name`, `pull_request`, `push`, `contents`, `check` (+1409 more)
+- **1420 isolated node(s):** `name`, `pull_request`, `push`, `contents`, `check` (+1415 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **31 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **28 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 - **15 possibly unreachable function(s):** `_size()`, `ask_model()`, `git()`, `housekeeping_scan()`, `job_agent_ops()` (+10 more)
   Not reached from any recognized entry point - could be dead code, or dynamically dispatched/decorator-registered.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `log()` connect `_aodd_paths.py` to `BM25`?**
+- **Why does `log()` connect `2. Generate` to `BM25`?**
   _High betweenness centrality (0.004) - this node is a cross-community bridge._
+- **Why does `Test generation (plan → generate → heal)` connect `3. Heal` to `SKILL.md`?**
+  _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **Why does `_get_bm25()` connect `core.py` to `BM25`?**
   _High betweenness centrality (0.002) - this node is a cross-community bridge._
-- **Why does `BM25` connect `BM25` to `core.py`?**
-  _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **What connects `name`, `pull_request`, `push` to the rest of the system?**
-  _1513 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `_aodd_paths.py` be split into smaller, more focused modules?**
-  _Cohesion score 0.057297297297297295 - nodes in this community are weakly interconnected._
+  _1519 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Fix Generated Playwright Files (Postman Migration)` be split into smaller, more focused modules?**
   _Cohesion score 0.041666666666666664 - nodes in this community are weakly interconnected._
 - **Should `Changelog` be split into smaller, more focused modules?**
-  _Cohesion score 0.14285714285714285 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.13333333333333333 - nodes in this community are weakly interconnected._
+- **Should `SKILL.md` be split into smaller, more focused modules?**
+  _Cohesion score 0.05128205128205128 - nodes in this community are weakly interconnected._

@@ -8,8 +8,8 @@ root = pathlib.Path(__file__).resolve().parent.parent
 USER_INVOKED = {"agent-ops", "housekeeping", "delivery-workflow",
                 "test-scenario", "robotframework-testing", "performance-testing"}
 # The agent and other skills must reach these (triage routes to them; chief-of-staff calls ai-sdlc,
-# Phase 1 calls grill-plan). A user-invoked skill cannot be called by another skill.
-MODEL_INVOKED = {"ai-sdlc", "chief-of-staff", "grill-plan"}
+# Phase 1 handles questioning directly). A user-invoked skill cannot be called by another skill.
+MODEL_INVOKED = {"ai-sdlc", "chief-of-staff"}
 
 
 def frontmatter(path):
@@ -25,13 +25,12 @@ if bad:
 bad = [n for n in sorted(MODEL_INVOKED) if "disable-model-invocation" in frontmatter(root / "skills" / n / "SKILL.md")]
 if bad:
     sys.exit("skills other skills must reach are marked user-invoked: " + ", ".join(bad))
-# The grilling skill never names the steps after it, so it reads as the whole job.
-grill = (root / "skills/grill-plan/SKILL.md").read_text(encoding="utf-8")
-ahead = re.findall(r"(?i)\b(phase [2-5]|architect\w*|implement\w*|plan mode|write (the )?code|gate [123])\b", grill)
-if ahead:
-    sys.exit(f"skills/grill-plan/SKILL.md names later steps: {sorted({a[0] for a in ahead})}")
-if "skills/grill-plan/SKILL.md" not in (root / "skills/ai-sdlc/phases/phase1-interview.md").read_text(encoding="utf-8"):
-    sys.exit("phase1-interview.md does not route the grill case to skills/grill-plan/SKILL.md")
-if "**stop**" not in (root / "skills/ai-sdlc/phases/phase1-interview.md").read_text(encoding="utf-8"):
-    sys.exit("phase1-interview.md must stop after grill-plan hands back")
+# One interview leads to an HTML artifact ready for coding.
+interview = (root / "skills/ai-sdlc/phases/phase1-interview.md").read_text(encoding="utf-8")
+for instruction in ("weakest assumptions", "one at a time",
+                    "every branch has a decision", "brief.md", "plan.html", "ready for coding",
+                    "even when questions were skipped"):
+    assert instruction in interview, f"interview lost questioning behavior: {instruction}"
+assert "brief in the reply and **stop**" not in interview
+assert "**Short:**" not in interview and "**Full:**" not in interview
 print("ok - skill invocation split")

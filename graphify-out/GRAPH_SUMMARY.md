@@ -1,15 +1,15 @@
-# Graph Summary — rules-single-source
+# Graph Summary — fix-skill-md-var
 _Auto-generated from GRAPH_REPORT.md · do not edit manually_
 _Regen: `graphify update .`_
 
 ## Summary
-- 2466 nodes · 2673 edges · 249 communities (216 shown, 33 thin omitted)
+- 2466 nodes · 2673 edges · 248 communities (217 shown, 31 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 13 edges (avg confidence: 0.62)
 - Token cost: 0 input · 0 output
 
 
 ## Graph Freshness
-- Built from commit: `e077633f`
+- Built from commit: `7ce35e5e`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -32,7 +32,7 @@ A high-degree node isn't always architecturally central - a widely-used
 utility/config file can rack up more edges than a real coupler while only
 ever touching one area. This ranks by how many DIFFERENT communities a
 node's neighbors span, not by raw edge count.
-1. `Changelog` - bridges 12 areas (18 edges)
+1. `Changelog` - bridges 11 areas (18 edges)
 2. `Test generation (plan → generate → heal)` - bridges 3 areas (6 edges)
 3. `search()` - bridges 2 areas (10 edges)
 4. `generate_design_system()` - bridges 2 areas (8 edges)

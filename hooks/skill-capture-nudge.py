@@ -32,7 +32,7 @@ SKILL_FILE = re.compile(r"(?:^|[\s/'\"])skills/[^/\s]+/(SKILL\.md|references/|sc
 SKILL_BASH_WRITE = re.compile(r"(?<![0-9&])>>?\s*['\"]?\S*skills/[^/\s]+/"
                               r"|\b(sed\s+-i|tee|cp|mv|install)\b[^|;&]*skills/[^/\s]+/"
                               r"|open\([^)]*skills/[^)]*,\s*['\"][wa]")
-SKILL_MD = re.compile(r"(/[^\s'\"]*/skills/([^/\s'\"]+)/SKILL\.md)")
+SKILL_MD = re.compile(r"(/[^\s'\"$*?{}]*/skills/([A-Za-z0-9][\w.:-]*)/SKILL\.md)")  # a shell $var or glob is not a skill
 PATCH_FILE = re.compile(r"^\*\*\* (?:Add|Update|Delete) File: (.+?)\s*$", re.M)  # Codex apply_patch headers
 DOC = "docs/skill-learning.md (under your Claude home)"
 

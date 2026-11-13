@@ -1832,7 +1832,7 @@
       "file_type": "code",
       "source_file": "hooks/test_skill_capture_nudge.py",
       "source_location": "L1",
-      "end_line": 65,
+      "end_line": 69,
       "_origin": "ast",
       "id": "hooks_test_skill_capture_nudge",
       "community": 183,
@@ -4298,7 +4298,7 @@
       "file_type": "code",
       "source_file": "scripts/test_install.py",
       "source_location": "L1",
-      "end_line": 180,
+      "end_line": 206,
       "_origin": "ast",
       "id": "scripts_test_install",
       "community": 80,
@@ -5068,7 +5068,7 @@
       "end_line": 179,
       "_origin": "ast",
       "id": "skills_uxui_designer_scripts_design_system_filter_anti_patterns_for_mode",
-      "community": 19,
+      "community": 24,
       "norm_label": "_filter_anti_patterns_for_mode()"
     },
     {
@@ -5379,7 +5379,7 @@
       "source_location": "L172",
       "_origin": "ast",
       "id": "skills_uxui_designer_scripts_design_system_rationale_172",
-      "community": 19,
+      "community": 24,
       "norm_label": "drop \"avoid dark mode\" advice once dark mode is the resolved answer."
     },
     {
@@ -5825,7 +5825,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "changelog_unreleased",
-      "community": 243,
+      "community": 2,
       "norm_label": "[unreleased]"
     },
     {
@@ -5835,7 +5835,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "changelog_changed",
-      "community": 243,
+      "community": 2,
       "norm_label": "changed"
     },
     {
@@ -5865,7 +5865,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "changelog_0_7_0_2026_10_30",
-      "community": 240,
+      "community": 2,
       "norm_label": "[0.7.0] - 2026-10-30"
     },
     {
@@ -5875,7 +5875,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "changelog_added_24",
-      "community": 240,
+      "community": 2,
       "norm_label": "added"
     },
     {
@@ -6135,7 +6135,7 @@
       "source_location": "L130",
       "_origin": "ast",
       "id": "changelog_0_3_4_2026_10_17",
-      "community": 2,
+      "community": 240,
       "norm_label": "[0.3.4] - 2026-10-17"
     },
     {
@@ -6145,7 +6145,7 @@
       "source_location": "L132",
       "_origin": "ast",
       "id": "changelog_documentation_132",
-      "community": 2,
+      "community": 240,
       "norm_label": "documentation"
     },
     {
@@ -6155,7 +6155,7 @@
       "source_location": "L136",
       "_origin": "ast",
       "id": "changelog_fixed_136",
-      "community": 2,
+      "community": 240,
       "norm_label": "fixed"
     },
     {
@@ -55128,5 +55128,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "e077633f2b6b71a20f435f4fd365b2de197e55c2"
+  "built_at_commit": "7ce35e5e92715a2435e2424a3f4d3014edb70098"
 }

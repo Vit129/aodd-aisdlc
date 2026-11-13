@@ -62,3 +62,7 @@ assert h.FIX_NOTE in run("x3",cxreads(25)+[cxcall('git commit -m "fix(x): y"')])
 assert run("x4",cxreads(25)+[cxuser("wrong"),{"type":"response_item","payload":{"type":"custom_tool_call","name":"apply_patch",
     "input":"*** Begin Patch\n*** Update File: /u/skills/x/SKILL.md\n@@\n-a\n+b\n*** End Patch"}}]) is None   # skill patched via apply_patch
 print("ok")
+# a shell loop variable or glob is not a loaded skill name
+_r=run("var",reads(25)+[sig]+[use("Bash",{"command":"for s in a b; do diff x ~/.claude/skills/$s/SKILL.md; cat /h/.claude/skills/*/SKILL.md; done; cat /h/.claude/skills/grill-plan/SKILL.md"})])
+assert _r and "$s" not in _r and "  - *:" not in _r and "grill-plan" in _r, _r
+print("ok - shell variable is not a skill name")

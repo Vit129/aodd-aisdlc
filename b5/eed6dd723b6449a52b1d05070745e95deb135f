@@ -1,0 +1,27 @@
+rules/aodd.md
+  s_1020d9fcad6b30::t_60ad3c92f501b2 70
+graphify-out/GRAPH_REPORT.md
+  s_1020d9fcad6b30::t_677fb79c2e975d 13
+graphify-out/GRAPH_SUMMARY.md
+  s_1020d9fcad6b30::t_417cbf5ef6d1c8 12
+graphify-out/graph.json
+  s_1020d9fcad6b30::t_d51900820a9732 7897,7899,7902,7904,7909,7912,7919,7922,7929,7932,7939,7942,37509,37513-37514,37520,37524-37525,37531,37535-37536,37542,37546-37547,55251
+graphify-out/manifest.json
+  s_1020d9fcad6b30::t_e1bc61b61630ec 393-394,1276-1280
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "b5eed6dd723b6449a52b1d05070745e95deb135f",
+  "prompts": {},
+  "sessions": {
+    "s_1020d9fcad6b30": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "14983d7a-5f0b-4455-a404-83e6b933a017",
+        "model": "unknown"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

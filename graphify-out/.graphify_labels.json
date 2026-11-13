@@ -250,5 +250,6 @@
   "248": "[Unreleased]",
   "249": "test_skill_invocation.py",
   "250": "test_skill_trigger_eval.py",
-  "251": "test_rule_duplicates.py"
+  "251": "test_rule_duplicates.py",
+  "252": "Trace Output Files"
 }

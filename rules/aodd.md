@@ -60,7 +60,7 @@ No task is complete until the build passes and the relevant tests pass. If tests
 | Design on the ai-sdlc Requirement path (Phase 2) | **2 subagents** in parallel, Dev view + QA view; main merges them into one plan |
 | Multi-file feature or bug fix | **1 Sonnet** subagent in its own worktree from `origin/main` (more only for parts with disjoint files and an explicit scope each); commits, never pushes/deploys |
 | Design work, when delegated to ChatGPT | **ChatGPT `sol`** writes the design (the plan, interfaces, file split); main session reviews it before any code is written |
-| Implementation of a ChatGPT design | **ChatGPT `terra`** at effort `medium` (default) or `high` (when the task failed twice or the design is hard to reverse); keeps working until the assigned task is finished: every acceptance check passes, or it reports one concrete blocker. It does not stop after a partial step. Main session reviews the diff before Done |
+| Implementation of a ChatGPT design | **ChatGPT `terra`** at effort `low` (default), raised one step at a time to `medium` then `high` (when the task keeps failing or the design is hard to reverse); keeps working until the assigned task is finished: every acceptance check passes, or it reports one concrete blocker. It does not stop after a partial step. Main session reviews the diff before Done |
 | Bounded templated runs: one ingest, a ≤9-item research/decision batch, a single-script edit, data dumps, summaries | **Haiku** subagents, in parallel when independent; main checks the result, then Haiku commits/pushes (§ Haiku ops runner) |
 
 **On Codex** the same split holds by tier (`sol` / `terra` / `luna`, see `rules/codex-effort.md`); `hooks/delegation-nudge.py` applies the same reminder there.
@@ -69,8 +69,7 @@ No task is complete until the build passes and the relevant tests pass. If tests
 
 Five levels, shared by all vendors: `low` < `medium` < `high` < `xhigh` < `max`. Each vendor maps them to its own setting in its own file, loaded only where that tool is used: `rules/claude-effort.md` (Claude Code), `rules/agy-effort.md` (agy) and `rules/codex-effort.md` (Codex). A setup uses only the files for the tools it runs; read a vendor's file before dispatching to it.
 
-- **Start:** the ticket's `Effort:` line. Without one, use the row's default above: `medium` for code and mechanical work, `high` for plans and design.
-- **Escalate:** 3 failing checks in a row raise the effort one level, capped at `high`.
+- **Start, announce and escalate:** each vendor file says the start effort, what to tell the user before a run, and how effort steps up. A ticket's `Effort:` line overrides the start.
 - **`xhigh` and `max` are never raised automatically.** They run only when a ticket says `Effort: xhigh` or `Effort: max`, or when the review stage of ai-sdlc requires `xhigh`.
 - **Still failing at `high`:** switch to another vendor family before raising further. The advisor rule still applies (at most two calls per task).
 - **A passing check** returns the task to its starting level.
@@ -101,7 +100,7 @@ Routing table: search with Haiku, check with Sonnet, escalate to the advisor.
 
 - **Enforced by `hooks/delegation-nudge.py`:** 8 lookups in a row in the main session, or one output over 300 lines / 40KB, adds a reminder to delegate.
 - **When not to delegate:** one command with short output, one lookup, or a file main must read anyway: main does it. A helper starts cold and re-reads, so the hand-off can cost more than the job.
-- **Haiku calls:** `Agent(model: "haiku", effort: "medium")`; `effort: "high"` when the result feeds a decision; scheduled jobs `claude -p --model haiku`.
+- **Haiku calls:** `Agent(model: "haiku", effort: "low")`; scheduled jobs `claude -p --model haiku`.
 - **Big data stays out of main context:** any ingest, scrape, PDF/HTML dump or data extract over ~300 lines or 40KB goes to a Haiku subagent, or is parsed with a local script that prints a short structured summary. Main never reads the raw dump.
 - Tiers: **big model** = Fable/Opus/Sonnet (plans, judges, controls Haiku); **advisor** = Fable/Opus only (second opinion via the `advisor` subagent, never Sonnet/Haiku): Fable for more capability than the main model, Opus for a cold view not anchored on the transcript; at most two advisor calls per task before telling the CEO.
 - The subagent sees none of this conversation: pass it the facts it needs in the prompt.

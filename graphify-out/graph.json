@@ -7241,6 +7241,16 @@
       "norm_label": "row"
     },
     {
+      "label": "Start, announce, escalate",
+      "file_type": "document",
+      "source_file": "rules/agy-effort.md",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "rules_agy_effort_start_announce_escalate",
+      "community": 231,
+      "norm_label": "start, announce, escalate"
+    },
+    {
       "label": "ai-sdlc-workflow.md",
       "file_type": "document",
       "source_file": "rules/ai-sdlc-workflow.md",
@@ -7374,7 +7384,7 @@
       "label": "Cheap-model delegation",
       "file_type": "document",
       "source_file": "rules/aodd.md",
-      "source_location": "L89",
+      "source_location": "L88",
       "_origin": "ast",
       "id": "rules_aodd_cheap_model_delegation",
       "community": 101,
@@ -7384,7 +7394,7 @@
       "label": "Haiku ops runner",
       "file_type": "document",
       "source_file": "rules/aodd.md",
-      "source_location": "L110",
+      "source_location": "L109",
       "_origin": "ast",
       "id": "rules_aodd_haiku_ops_runner",
       "community": 101,
@@ -7394,7 +7404,7 @@
       "label": "Audit and Done",
       "file_type": "document",
       "source_file": "rules/aodd.md",
-      "source_location": "L125",
+      "source_location": "L124",
       "_origin": "ast",
       "id": "rules_aodd_audit_and_done",
       "community": 101,
@@ -7451,6 +7461,16 @@
       "norm_label": "limits"
     },
     {
+      "label": "Start, announce, escalate",
+      "file_type": "document",
+      "source_file": "rules/claude-effort.md",
+      "source_location": "L24",
+      "_origin": "ast",
+      "id": "rules_claude_effort_start_announce_escalate",
+      "community": 227,
+      "norm_label": "start, announce, escalate"
+    },
+    {
       "label": "codex-effort.md",
       "file_type": "document",
       "source_file": "rules/codex-effort.md",
@@ -7499,6 +7519,16 @@
       "id": "rules_codex_effort_tiers_same_roles_as_claude",
       "community": 232,
       "norm_label": "tiers (same roles as claude)"
+    },
+    {
+      "label": "Start, announce, escalate",
+      "file_type": "document",
+      "source_file": "rules/codex-effort.md",
+      "source_location": "L27",
+      "_origin": "ast",
+      "id": "rules_codex_effort_start_announce_escalate",
+      "community": 232,
+      "norm_label": "start, announce, escalate"
     },
     {
       "label": "coding.md",
@@ -14021,7 +14051,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_commands",
-      "community": 246,
+      "community": 15,
       "norm_label": "commands"
     },
     {
@@ -14031,7 +14061,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_core",
-      "community": 246,
+      "community": 15,
       "norm_label": "core"
     },
     {
@@ -14041,7 +14071,7 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_navigation",
-      "community": 246,
+      "community": 15,
       "norm_label": "navigation"
     },
     {
@@ -14051,7 +14081,7 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_keyboard",
-      "community": 246,
+      "community": 15,
       "norm_label": "keyboard"
     },
     {
@@ -14061,7 +14091,7 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_mouse",
-      "community": 246,
+      "community": 15,
       "norm_label": "mouse"
     },
     {
@@ -14071,7 +14101,7 @@
       "source_location": "L96",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_save_as",
-      "community": 246,
+      "community": 15,
       "norm_label": "save as"
     },
     {
@@ -14081,7 +14111,7 @@
       "source_location": "L106",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_tabs",
-      "community": 246,
+      "community": 15,
       "norm_label": "tabs"
     },
     {
@@ -14091,7 +14121,7 @@
       "source_location": "L117",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_storage",
-      "community": 246,
+      "community": 15,
       "norm_label": "storage"
     },
     {
@@ -14101,7 +14131,7 @@
       "source_location": "L148",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_network",
-      "community": 246,
+      "community": 15,
       "norm_label": "network"
     },
     {
@@ -14111,7 +14141,7 @@
       "source_location": "L158",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_devtools",
-      "community": 246,
+      "community": 15,
       "norm_label": "devtools"
     },
     {
@@ -14121,7 +14151,7 @@
       "source_location": "L196",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_webmcp",
-      "community": 246,
+      "community": 15,
       "norm_label": "webmcp"
     },
     {
@@ -14391,7 +14421,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_request_mocking",
-      "community": 122,
+      "community": 52,
       "norm_label": "request-mocking.md"
     },
     {
@@ -14791,7 +14821,7 @@
       "source_location": "L195",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_session_management_best_practices",
-      "community": 40,
+      "community": 246,
       "norm_label": "best practices"
     },
     {
@@ -14801,7 +14831,7 @@
       "source_location": "L197",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_session_management_1_name_browser_sessions_semantically",
-      "community": 40,
+      "community": 246,
       "norm_label": "1. name browser sessions semantically"
     },
     {
@@ -14811,7 +14841,7 @@
       "source_location": "L208",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_session_management_2_always_clean_up",
-      "community": 40,
+      "community": 246,
       "norm_label": "2. always clean up"
     },
     {
@@ -14821,7 +14851,7 @@
       "source_location": "L222",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_session_management_3_delete_stale_browser_data",
-      "community": 40,
+      "community": 246,
       "norm_label": "3. delete stale browser data"
     },
     {
@@ -15431,7 +15461,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing",
-      "community": 52,
+      "community": 54,
       "norm_label": "tracing.md"
     },
     {
@@ -15461,7 +15491,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_trace_output_files",
-      "community": 54,
+      "community": 252,
       "norm_label": "trace output files"
     },
     {
@@ -15471,7 +15501,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_trace_timestamp_trace",
-      "community": 54,
+      "community": 252,
       "norm_label": "`trace-{timestamp}.trace`"
     },
     {
@@ -15481,7 +15511,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_trace_timestamp_network",
-      "community": 54,
+      "community": 252,
       "norm_label": "`trace-{timestamp}.network`"
     },
     {
@@ -15491,7 +15521,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_resources",
-      "community": 54,
+      "community": 252,
       "norm_label": "`resources/`"
     },
     {
@@ -36879,6 +36909,17 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "rules/agy-effort.md",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "rules_agy_effort_agy_effort_mapping",
+      "target": "rules_agy_effort_start_announce_escalate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "rules/ai-sdlc-workflow.md",
       "source_location": "L1",
       "weight": 1.0,
@@ -36957,7 +36998,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "rules/aodd.md",
-      "source_location": "L125",
+      "source_location": "L124",
       "weight": 1.0,
       "_origin": "ast",
       "source": "rules_aodd_aodd_the_operating_contract",
@@ -36968,7 +37009,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "rules/aodd.md",
-      "source_location": "L89",
+      "source_location": "L88",
       "weight": 1.0,
       "_origin": "ast",
       "source": "rules_aodd_aodd_the_operating_contract",
@@ -37001,7 +37042,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "rules/aodd.md",
-      "source_location": "L110",
+      "source_location": "L109",
       "weight": 1.0,
       "_origin": "ast",
       "source": "rules_aodd_aodd_the_operating_contract",
@@ -37077,6 +37118,17 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "rules/claude-effort.md",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "rules_claude_effort_claude_effort_mapping",
+      "target": "rules_claude_effort_start_announce_escalate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "rules/codex-effort.md",
       "source_location": "L1",
       "weight": 1.0,
@@ -37105,6 +37157,17 @@
       "_origin": "ast",
       "source": "rules_codex_effort_codex_effort_mapping",
       "target": "rules_codex_effort_setting_effort",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "rules/codex-effort.md",
+      "source_location": "L27",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "rules_codex_effort_codex_effort_mapping",
+      "target": "rules_codex_effort_start_announce_escalate",
       "confidence_score": 1.0
     },
     {
@@ -55237,5 +55300,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "f13d4bb57fd49933485b7e29bf388a20bca9bbae"
+  "built_at_commit": "ae4d40dc7aaf8c158ff4a8d3afa61ee190bc6aa1"
 }

@@ -161,9 +161,3 @@ review the diff before merge against `references/rf-code-review.md`.
 | After code review | Single select (APPROVED / NEEDS_FIX) | Before marking test implementation done |
 
 **Rule:** At decision points, always present 2-3 options with tradeoffs — never a single answer.
-
-## Self-Update (after every use)
-
-This skill is its own memory. When using it brought a correction, a gotcha,
-or a wrong/missing step, and the fix was verified, patch this file in place: an approved keyword pattern, or the cause of a rejected output.
-Then bump `version` (patch) and `last_improved`. Procedure: `docs/skill-learning.md`.

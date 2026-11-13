@@ -1,13 +1,7 @@
 ---
 name: uxui-designer
 description: >
-  Use when: design UI, ออกแบบ UI, UX/UI, create design system, make it look better, polish UI,
-  audit design, redesign a page, study a design reference/screenshot/URL, improve colors,
-  fix typography, add animations, avoid generic design, recommend colors for industry,
-  industry rules, compliance design rules, healthcare design, finance design, ecommerce rules,
-  build landing page, define design tokens.
-  Covers design decisions (what to build) AND implementation quality (how it looks/feels).
-  Industry-validated patterns (8 sectors in references/industry-rules/) + pbakaus/impeccable anti-slop principles.
+  UI/UX design and polish: "design UI", "ออกแบบ UI", "make it look better", "polish UI", "audit design", "redesign a page", "study a design reference", "design system", "design tokens", colors, typography, animations, industry rules (8 sectors), landing page. Covers what to build and how it looks.
 credit: See "Credits" section below for the full source list.
 version: 2.4.0
 ---
@@ -336,9 +330,3 @@ Before declaring complete, confirm:
 - [ ] Pre-delivery checklist passed (responsive, touch targets, dark mode, focus states)
 - [ ] Tokens defined BEFORE component design
 - [ ] Diversification check run against `.ui-designer/log.json` and the pick stamped/logged (Design Mode only — skip on a locked `DESIGN.md`/`MASTER.md` project)
-
-## Self-Update (after every use)
-
-This skill is its own memory. When using it brought a correction, a gotcha,
-or a wrong/missing step, and the fix was verified, patch this file in place: a new anti-slop pattern, an industry rule not yet covered (`references/industry-rules/`), a diversification finding.
-Then bump `version` (patch) and `last_improved`. Procedure: `docs/skill-learning.md`.

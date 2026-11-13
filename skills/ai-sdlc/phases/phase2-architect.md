@@ -28,7 +28,7 @@ requirements, schema consistency) → `skills/ai-sdlc/references/dev-qa-handoff.
 ## Closing Phase 2 (always, whichever Phase 2 files you loaded)
 
 **Approval Gate 1 applies here on the Requirement path** — see § Approval Gates in `rules/ai-sdlc-workflow.md`: don't start Phase 3/4
-until the user has approved this phase's design/implementation plan. Logic and UX/UI paths skip the gate and only state a file separation plan when they add or split files (§ Pick the path).
+until the user has approved this phase's design/implementation plan. Logic and UX/UI paths skip the gate and only state a file separation plan when they add or split files (§ Paths).
 
 **After Gate 1:** write the approved decisions into the living docs (owners and contents: § Documents in `rules/ai-sdlc-workflow.md`): `PRODUCT.md`, `ARCHITECTURE.md`, `DESIGN.md` (UI only), `CONTEXT.md`. Keep each short; record decisions, not the discussion. Then propose a `docs:` commit before Phase 3.
 

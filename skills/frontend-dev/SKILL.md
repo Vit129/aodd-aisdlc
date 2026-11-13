@@ -1,15 +1,7 @@
 ---
 name: frontend-dev
 description: >
-  Thai triggers: "ทำหน้าเว็บ", "เขียน component", "ทำ UI ตาม design", "ทำแอป React/Flutter".
-  This skill should be used when the user asks to "build a React app",
-  "create a Flutter widget", "set up Tailwind",
-  "configure Vite", "build Android Kotlin UI",
-  "build iOS Swift UI", "write a component",
-  "implement this design in code", "implement design", "set up Next.js",
-  "use Server Components", "use React 19 hooks", "use useActionState", "use useOptimistic",
-  or needs frontend development guidance for web or mobile applications.
-  Use this for IMPLEMENTATION (how to code it), not design decisions (what to build).
+  Frontend implementation, how to code it (not what to design): "ทำหน้าเว็บ", "เขียน component", "ทำ UI ตาม design", "build a React app", "create a Flutter widget", "set up Tailwind/Vite/Next.js", "implement this design", React 19 hooks, Android Kotlin or iOS Swift UI.
 version: 1.0.1
 ---
 
@@ -165,9 +157,3 @@ Related: drive the implementation test-first (Red→Green), then review the diff
 - **Chart.js plugins:** register per chart (`plugins: [plugin]` / `plugins={[plugin]}`), not globally — global plugin ids collide.
 - **iOS Safari modal:** lock `overflow` on both `document.documentElement` and `document.body` on mount, restore on unmount, or the page behind scrolls.
 - **Mobile full-height drawer:** use `100dvh` (not `100vh`) and `flex-shrink: 0` on children so it can scroll on short screens; only block touch-move when `scrollHeight == clientHeight`.
-
-## Self-Update (after every use)
-
-This skill is its own memory. When using it brought a correction, a gotcha,
-or a wrong/missing step, and the fix was verified, patch this file in place: a UI/state pattern or pitfall goes in its section; depth goes to `references/<topic>.md`.
-Then bump `version` (patch) and `last_improved`. Procedure: `docs/skill-learning.md`.

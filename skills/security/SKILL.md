@@ -1,13 +1,7 @@
 ---
 name: security
 description: >
-  Thai triggers: "เช็คความปลอดภัย", "ช่องโหว่", "ทำ auth ให้ปลอดภัย", "สแกน secret".
-  Unified security rules for Dev + QA — all platforms (API, Web UI, Mobile).
-  Dev: secure coding (OWASP prevention, input validation, auth patterns).
-  QA: security test scenario design + automation patterns (Playwright, RF).
-  Triggers: "security", "OWASP", "auth test", "permission matrix", "injection",
-  "secure coding", "security hardening", "security scenarios", security concern flagged during architecture/QA-design,
-  "scan Docker image", "Trivy", "CodeQL", "secret detection", "Gitleaks", "SAST", "SCA", "security gate in pipeline", "shift-left security".
+  Security for Dev and QA on every platform: "เช็คความปลอดภัย", "ช่องโหว่", "security", "OWASP", "auth test", "permission matrix", "injection", "secure coding", "security scenarios", "Trivy", "CodeQL", "Gitleaks", "SAST", "SCA", "security gate in pipeline", "สแกน secret".
 version: 2.2.2
 last_improved: 2026-11-09
 ---
@@ -53,9 +47,3 @@ last_improved: 2026-11-09
 - Never `cat`/`sed`/`head` a secret-bearing file to look at it or "redact" it — a pattern like `s/KEY=.*//` misses `export X_API_KEY="..."` and prints the key. Read only the variable you need in-process, or check presence with `grep -c` / `test -f`.
 - To see a config's shape, print keys only (`jq 'paths'`, `python -c 'print(list(json.load(f)))'`), never values. Gitignored does not mean safe to print.
 - If a secret was printed into a session, say so at once and tell the user which key to rotate.
-
-## Self-Update (after every use)
-
-This skill is its own memory. When using it brought a correction, a gotcha,
-or a wrong/missing step, and the fix was verified, patch this file in place: a missed vulnerability class, a scanner false-positive pattern, a new OWASP/CI-scanning fact (`references/rules.md`, `references/pipeline-scanning.md`).
-Then bump `version` (patch) and `last_improved`. Procedure: `docs/skill-learning.md`.

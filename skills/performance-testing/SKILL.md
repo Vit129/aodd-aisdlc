@@ -98,9 +98,3 @@ Related: when a bottleneck needs falsification-driven root-cause triage (reprodu
 | After analysis report | Open field | Before declaring performance testing complete |
 
 **Rule:** At decision points, always present 2-3 options with tradeoffs — never a single answer.
-
-## Self-Update (after every use)
-
-This skill is its own memory. When using it brought a correction, a gotcha,
-or a wrong/missing step, and the fix was verified, patch this file in place: a load-model, threshold or tooling pitfall goes in its section; depth to `references/<topic>.md`.
-Then bump `version` (patch) and `last_improved`. Procedure: `docs/skill-learning.md`.

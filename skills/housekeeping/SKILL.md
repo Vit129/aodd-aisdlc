@@ -26,9 +26,3 @@ description: >
 3. Show the human: per-step summary, flagged items, estimated MB. Ask once: apply?
 4. Approved → run the script with `--apply`, report MB freed + failed steps.
 5. A step that fails twice in a row → fix the script (system), not just this run.
-
-## Self-Update (after every use)
-
-This skill is its own memory. When using it brought a correction, a gotcha,
-or a wrong/missing step, and the fix was verified, patch this file in place: a new cleanup target or a path that must never be touched.
-Then bump `version` (patch) and `last_improved`. Procedure: `docs/skill-learning.md`.

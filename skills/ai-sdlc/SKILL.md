@@ -16,9 +16,9 @@ Read `rules/ai-sdlc-workflow.md` (installed under your Claude home, `~/.claude/r
 - `hooks/done-gate.py` blocks stopping while that progress file still has `- [ ]` boxes,
   so keep checkboxes current as you go, not at the end.
 - Runs as `chief-of-staff` full: Phase 1 output is the brief (`$AODD_PLANS/<slug>/brief.md`),
-  each phase dispatches to its team, and the run ends with the CEO report shape
-  (Result / Evidence / Needs your decision / Cost). Risky work: propose the audit first (`rules/aodd.md`).
-- Skill-by-situation routing: `references/skill-routing.md`.
+  each phase dispatches to its team, and the run ends with the report in `rules/aodd.md`. Risky work: propose the audit (`docs/audit.md`).
+- Which skill for which task: `references/skill-routing.md`.
+- Resume = read the progress file and continue at its first `- [ ]`.
 
 ## Read before each phase (memory dir from the `agent-memory` skill; open only matching sections)
 
@@ -29,9 +29,3 @@ Read `rules/ai-sdlc-workflow.md` (installed under your Claude home, `~/.claude/r
 | 2 Architect | `PRODUCT.md` / `ARCHITECTURE.md`, `knowledge/` decision records, the governing skills' pitfalls |
 | 3 QA design | `knowledge/` notes on known bugs in this area (each one gets a regression test) |
 | 4 Dev / 5 Verify | the governing skills' pitfalls, `knowledge/` notes on known bugs |
-
-## Self-Update (after every use)
-
-This skill is its own memory. When using it brought a correction, a gotcha,
-or a wrong/missing step, and the fix was verified, patch this file in place: a phase rule or pitfall goes in the phase's section or the matching `references/` file.
-Then bump `version` (patch). Procedure: `docs/skill-learning.md`.

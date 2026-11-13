@@ -8,10 +8,9 @@
 - [Sensitive data classification (QA, before writing fixture data)](#sensitive-data-classification-qa-before-writing-fixture-data)
 - [Mock strategy (QA, before writing mock/interceptor tasks)](#mock-strategy-qa-before-writing-mockinterceptor-tasks)
 - [Progress file — required sections](#progress-file--required-sections)
-- [File behavior & master index](#file-behavior--master-index)
-- [Resume protocol ("ทำต่อ" / "continue" / "resume")](#resume-protocol-ทำตอ--continue--resume)
-- [Incremental update rule — update in real time, never batch at the end](#incremental-update-rule--update-in-real-time-never-batch-at-the-end)
-- [Session task mirroring (MANDATORY when running the full phase spine)](#session-task-mirroring-mandatory-when-running-the-full-phase-spine)
+- [File behavior](#file-behavior)
+- [Resume protocol](#resume-protocol)
+- [Incremental update rule](#incremental-update-rule)
 - [Rollback protocol](#rollback-protocol)
 - [When all tasks complete](#when-all-tasks-complete)
 - [Lessons learnt](#lessons-learnt)
@@ -43,12 +42,11 @@ below. Load this file when actually breaking a design into tasks.
   expand-contract as their own slice: add the new form → migrate call sites in batches →
   remove the old form. Don't collapse this into one giant task.
 - Tasks should be completable in 1-2 hours.
-- A ticket may carry three optional lines under its heading: `Agent: claude | agy | codex`, `Model: <name>`, and `Effort: low | medium | high | xhigh | max`. A missing line takes the default in `rules/aodd.md` § Effort ladder. Set `xhigh` or `max` here only on purpose, never by the agent.
+- A ticket may carry three optional lines under its heading: `Agent: claude | agy | codex`, `Model: <name>`, and `Effort: low | medium | high | xhigh | max`. A missing line takes the default in `rules/aodd/delegation.md` § Effort ladder. Set `xhigh` or `max` here only on purpose, never by the agent.
 
-## Task tags (dashboard view, not phases)
+## Task tags (labels, not phases)
 
-Tag each task with the track(s) it touches, in brackets after the checkbox. This drives a
-`## Track Progress` rollup (count checked/unchecked per tag) — tags never license planning
+Tag each task with the track(s) it touches, in brackets after the checkbox. Tags never license planning
 "all Backend tasks" as a phase before touching Frontend; the task list stays vertical slices.
 
 **Dev** — use only tags that apply to the project type:
@@ -129,19 +127,6 @@ Status: In Progress | Completed
 ## Artifacts
 - Architecture / Design: $AODD_PLANS/[FEATURE]/[FEATURE]-architecture.md
 
-## Skill Invocation Log
-- Phase 1: {skill name(s), or "none — collapsed/step-0"}
-- Phase 2: {skill name(s)}
-- Phase 3: {skill name(s)}
-- Phase 4: {skill name(s)}
-- Phase 5: {skill name(s)}
-
-## Summary
-- Total tasks: {N} | Completed: {N} | Remaining: {N}
-
-## Track Progress
-- Backend: {N}/{N} done | Frontend: {N}/{N} done | Infra: {N}/{N} done | QA: {N}/{N} done
-
 ## Tasks
 - [ ] [Infra] Storage setup — migration/schema/env config
 - [ ] [QA-Skeleton] [TS-0001] Stub test scenario skeleton (RED)
@@ -156,21 +141,18 @@ Status: In Progress | Completed
 
 Combined tags can be used across Dev and QA (`[Infra]`, `[Backend]`, `[Frontend]`, `[QA-Skeleton]`, `[QA-Verify]`, `[Performance]`, `[Shared]`, `[PageObject]`, `[Pipeline]`). A Performance Testing task can be added optionally after all core tasks pass.
 
-## File behavior & master index
+## File behavior
 
 - 1 feature = 1 progress file; reuse it in place (`[x]` in place, not a new file per session).
 - Rerunning the same feature from scratch → archive the existing file as `{name}.v{N}.md`.
-- Keep `PROGRESS.md` (project root) current — `/resume`'s decision tree reads it to find the
-  active 🔄 feature. Add a row when a feature starts, update counts as tasks complete, mark
-  ✅ + date when done.
 
-## Resume protocol ("ทำต่อ" / "continue" / "resume")
+## Resume protocol
 
-1. Read `PROGRESS.md` → find the 🔄 in-progress feature.
-2. Read that feature's progress file, verify every path in `## Artifacts` still exists —
-   if one's missing, warn before resuming ("phase ก่อนหน้าหาย ต้องทำใหม่").
-3. If `handoff.md` exists next to the progress file, read it before anything else.
-4. Find the first `[ ]` task → resume there.
+Resume ("ทำต่อ" / "continue") = read the feature's progress file and continue.
+
+1. Read the progress file; verify every path in `## Artifacts` still exists. If one is missing, warn before resuming.
+2. If `handoff.md` exists next to it, read it before anything else.
+3. Find the first `[ ]` task and resume there.
 
 **Writing `handoff.md`** (when stopping mid-feature, the user asks for a handoff, or context is about to run out): overwrite `$AODD_PLANS/[FEATURE]/handoff.md` with
 - **State:** phase, current task, branch/worktree, last green command
@@ -179,39 +161,10 @@ Combined tags can be used across Dev and QA (`[Infra]`, `[Backend]`, `[Frontend]
 - **Open:** decisions waiting on the user, files to open first
 Keep it under 30 lines; delete it once the feature is Done.
 
-## Incremental update rule — update in real time, never batch at the end
+## Incremental update rule
 
-After every completed task: mark `[x]`, update Summary counts, update the Track Progress
-rollup for every tag the task carries, update `Last updated`, update `PROGRESS.md`'s row.
-Stale progress files are how a resumed session re-does already-completed work.
-
-Also append to `## Skill Invocation Log`'s matching phase row the moment a skill is
-actually invoked in that phase (not batched at phase-end) — this is the audit trail for
-the "always name the skill invoked" rule and `rules/ai-sdlc-workflow.md`'s
-Self-Update follow-through fact; a phase row left "none" when a skill was actually called
-is itself a signal something didn't get logged.
-
-## Session task mirroring (MANDATORY when running the full phase spine)
-
-`ai-sdlc-task-progress.md` is the durable, cross-session record — it is not replaced by
-this. Mirror at the SAME granularity the file itself uses — never mirror the 5 Phase names
-as if they were tasks; § Task granularity above already forbids horizontal phase-tasks in
-the file, and mirroring what the file explicitly rejects just creates two representations
-that can't agree:
-
-1. Call `TaskCreate` for each of the 3 Approval Gates (these are genuinely singular,
-   file-independent events — not vertical slices) the moment the full spine (not a
-   collapsed one-line fix) starts.
-2. Call `TaskCreate` for each vertical-slice line under `## Tasks` in
-   `ai-sdlc-task-progress.md`, one Task per checkbox line at the top level (not the
-   `- [ ] ✅ Run test scripts` sub-line) — same wording, so the two lists read as the same
-   plan in two views, not two independent ones.
-3. `TaskUpdate` to `in_progress` the moment work on it starts and to `completed` only once
-   the matching checkbox in `ai-sdlc-task-progress.md` is also marked `[x]` — the two must
-   never drift apart, and there is now always a real checkbox to point at.
-
-Skip this mirroring entirely for collapsed small tasks, same as the rest of this file's
-machinery.
+After every completed task, mark its `[x]` and update the `Last updated` line, in real time, never batched at the end. Stale
+progress files make a resumed session redo finished work.
 
 ## Rollback protocol
 
@@ -229,7 +182,7 @@ Never mark a task ✅ while its test is still failing — completion means GREEN
 Run the full suite one final time and record pass/fail. **Dev only** — run
 code review (via `/code-review` or any review skill you have)
 against the full diff before committing; don't commit with Critical/Important
-findings unresolved. Update `PROGRESS.md` to ✅ + date.
+findings unresolved.
 
 ## Lessons learnt
 

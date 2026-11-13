@@ -73,8 +73,7 @@ def sop() -> str:
     f = paths.claude_home() / "skills/agent-ops/SKILL.md"
     try:
         text = f.read_text()
-        a, b = text.index("## SOP"), text.find("## Self-Update")
-        return text[a:b if b > a else None].strip()
+        return text[text.index("## SOP"):].strip()
     except (OSError, ValueError):
         return "Find projects with the most rework, skills never used, corrections that recur; propose at most 5 changes, each with its Why."
 

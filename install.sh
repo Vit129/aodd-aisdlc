@@ -13,7 +13,7 @@
 # Agents: the coding agents on this machine are detected (binary on PATH, or its home dir) and listed. In a
 # terminal, each supported one found (Codex, Antigravity) is offered; --codex / --agy choose without asking, and a
 # non-terminal run (e.g. the post-merge hook) never adds one by itself. --detect only prints the list.
-# --codex also installs into ${CODEX_HOME:-~/.codex}: the same files, the two rules inlined in AGENTS.md
+# --codex also installs into ${CODEX_HOME:-~/.codex}: the same files, the two rules inlined in AGENTS.md (the rest of rules/ is copied and read by path)
 # between aodd:begin/aodd:end markers (Codex has no @import), hooks in hooks.json.
 # An existing file that differs is printed as UPDATE and its old content is kept next to it as
 # <file>.aodd-bak (--no-backup or AODD_NO_BACKUP=1: no .aodd-bak files at all). Nothing is ever deleted, host files are never chmod'ed, repo git-hooks are not installed.
@@ -326,10 +326,10 @@ fi
 if [ "$CODEX_ON" = 1 ]; then
   CDEST="${CODEX_HOME:-$HOME/.codex}"
   echo "install into: $CDEST (codex)"
-  for d in skills agents hooks scripts docs; do copy_tree "$d" "$CDEST"; done
+  for d in skills agents rules hooks scripts docs; do copy_tree "$d" "$CDEST"; done   # rules/ too: AGENTS.md has no @import, so rules/aodd/*.md and rules/effort/*.md are read by path
   for m in $MODS; do copy_module "$m" "$CDEST"; done
   register_hooks "$CDEST" hooks.json
-  write_aodd_block "$CDEST/AGENTS.md"
+  write_aodd_block "$CDEST/AGENTS.md" "> The rules/, docs/ and skills/ paths named below live under $CDEST; read rules/aodd/*.md there when the contract says so."
 fi
 if [ -n "$PROJECT_ROOT" ]; then
   # Claude Code loads .claude/rules/ itself; AGENTS.md carries the same contract for Codex, Antigravity and other readers

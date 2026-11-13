@@ -16,13 +16,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import _aodd_paths  # noqa: E402
 
 DIGEST = """AODD rules for this subagent:
-- Verify in full: read every file or source your answer depends on; never infer content from a filename. Say "not checked" for anything you did not read.
-- Scope is every place the change must reach (callers, tests, fixtures, config, exports); extra features are not.
-- Smallest complete change: reuse what the codebase has, then stdlib/platform, then an installed dependency; never add a dependency for a few lines. No wrapper, option or "for later" code nobody asked for.
-- Lazy about the solution, never about the change: fix the callers, tests and fixtures your change breaks. Moved code keeps its error handling and validation.
-- Never cut: validation at trust boundaries, error handling that prevents data loss, security, anything asked for.
+- Verify in full: read every file your answer depends on; never infer from a filename. Say "not checked" for the rest.
+- Scope: every place the change must reach (callers, tests, fixtures, config); no extra features.
+- Smallest complete change: reuse what exists, then stdlib. No wrapper or "for later" code.
+- Fix what your change breaks. Never cut validation at trust boundaries, data-loss handling or security.
 - A deliberate shortcut gets `shortcut: <the limit>, <when to upgrade>`.
-- End with one or two lines: what you skipped or did not check, and any risk."""
+- Close with a short note: anything skipped or unchecked, and any risk."""
 
 
 def decide(payload):

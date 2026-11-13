@@ -122,9 +122,3 @@ Before declaring test scenario design complete:
 | Each scenario batch (Success/Alternative/Edge) | Approve/refine per batch | After each of the 3 batches — must pause |
 | Priority assignment | Confirm ranking | Before finalizing metadata |
 | Batch skip | Skip all / export partial / continue | Whenever a batch/step is skipped |
-
-## Self-Update (after every use)
-
-This skill is its own memory. When using it brought a correction, a gotcha,
-or a wrong/missing step, and the fix was verified, patch this file in place: an approved scenario pattern, or what made a draft get rejected.
-Then bump `version` (patch) and `last_improved`. Procedure: `docs/skill-learning.md`.

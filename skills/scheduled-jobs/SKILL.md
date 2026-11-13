@@ -19,9 +19,3 @@ origin: auto-captured
 
 ## Check it worked
 Trigger once by hand through the same wrapper the scheduler calls, then confirm the scheduler lists the job and the log shows the next real tick.
-
-## Self-Update (after every use)
-
-This skill is its own memory. When using it brought a correction, a gotcha,
-or a wrong/missing step, and the fix was verified, patch this file in place: add the trap as a numbered rule (keep ≤10).
-Then bump `version` (patch) and `last_improved`. Procedure: `docs/skill-learning.md`.

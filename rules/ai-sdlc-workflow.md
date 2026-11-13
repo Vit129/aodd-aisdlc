@@ -1,141 +1,93 @@
-# AI-SDLC — Dev/QA Workflow Spine
+# AI-SDLC: Dev/QA workflow spine
 
-Lean AI-SDLC spine — interview → architect (dev+qa) → qa-design (scenario+skeleton,
-RED) → dev (implement to GREEN) → qa-verify (confirm GREEN). Mandatory shape for work
-that genuinely needs QA coverage; depth per phase, and which phases even apply, is
-model judgment. This page carries the workflow shape; mechanics too dense to inline
-live in `skills/ai-sdlc/references/` — `ai-sdlc-progress-spec.md` (task
-tracking), `dev-qa-handoff.md` (dev↔QA handoff), `ai-sdlc-workflow-guide.md`
-(execution guide), `qa-automation-loop.md` (self-heal/reporting).
+Every change that touches files runs through this workflow. Phases are skipped when not needed, never the dev step, the QA
+testing step or the final graph update. Interview → architect (dev+qa) → qa-design (RED) → dev (to GREEN) → qa-verify.
+Phase files live in `skills/ai-sdlc/phases/`; mechanics in `skills/ai-sdlc/references/`: `ai-sdlc-progress-spec.md` (progress
+file), `dev-qa-handoff.md`, `dev-qa-pattern.md`, `qa-automation-loop.md`, `skill-routing.md`.
 
-**Roles (AODD JD — one owner per phase; the main thread switches hats and orchestrates, and dispatches the subagents below):**
+## Paths: pick by what changes, not by size
 
-| Role | Owns | Out of scope | Subagents | KPI |
+| What changes | Path | Enter at | Gates | Living docs |
 |---|---|---|---|---|
-| Dev Lead | Phase 2 dev half (design, Existing Asset Scan), Phase 4; dispatches stack-specific skills if you have them, mechanical pieces to Haiku | Writing scenarios; declaring QA pass | Phase 2: Dev design subagent; Phase 4: the implementation subagent | Phase 5 failures sent back to Phase 4 |
-| QA Lead | Phase 2 QA half, Phase 3 (RED), Phase 5 (GREEN sign-off); dispatches your scenario, test-framework and performance skills if you have them | Patching product code to make a test pass | Phase 2: QA design subagent | Defects found after Phase 5 sign-off |
-| Reviewer | Built-in `/code-review` on the Phase 4 diff before Phase 5 | — | — | — |
-| Auditor | `scripts/audit.py` after Phase 5 only on the CEO's yes, proposed when the work is risky (cross-family, writes its own report): re-checks evidence vs. the brief, reports to the CEO | Fixing | — | Defects after audit PASS |
+| Wording, typo, config value | Light | Phase 4: edit, then Phase 5: run the existing tests (a config value that changes behavior adds a test) | none | none |
+| Logic: a bug, a rule inside an existing requirement, a refactor | Logic | Phase 4: debugging skill first for a bug, failing test (RED), fix to GREEN, refactor; Phase 5: the regression test, boundary and error cases, callers in the blast radius | none | `ARCHITECTURE.md` only if a seam or the data model changes |
+| UX/UI: look, layout, an on-screen flow | Design | Phase 4: read `DESIGN.md`, change; show a mock or screenshot first for a new screen. Phase 5: look at every affected screen in a browser (sizes, long text, dark mode); a Playwright test when a user flow changes | none | `DESIGN.md` |
+| Requirement: a new or changed capability, a rule users see, a new integration | Requirement | Phase 1 (interview skipped if the requirement is complete), then 2 to 5 | Gates 1-3 | `PRODUCT.md`, `ARCHITECTURE.md`, `CONTEXT.md` (+ `DESIGN.md` with UI) |
+| Unclear which | Interview | Phase 1 names the kind, then the path above | none | none |
 
-Each role follows the same SOP: read brief + progress file → ask once, everything at once → do →
-check vs. Definition of Done → hand back to the next owner via the progress/handoff file → leave the record (checkbox).
+Only the Requirement path has approval gates. A change can carry several kinds (a new requirement with a new screen runs both).
 
-**Subagents: many eyes for design, one pair of hands for code.**
-- **Phase 2 design (Requirement path):** two subagents in parallel, so the views stay independent and the phase stays fast. Dev: structure, file separation, reuse, stack, the invariants that must always hold. QA: failure modes, edge and boundary cases, security boundaries (where untrusted input enters), mocks, testability. Both get the same brief. The main thread merges both into one plan, listing each conflict and how it was decided (plan mode, or a plan file in `$AODD_PLANS/[FEATURE]/`). Logic and UX/UI paths: the main thread designs alone.
-- **Phase 4 code:** one subagent by default, so no two agents write the same or a shared file. More than one only when the work splits into parts that touch disjoint files, each given an explicit scope (the files it may edit, the interface it must meet); shared files stay with one owner.
+**Every path, always:**
+1. Interview: if the requirement is complete, skip it. If it is not, run `grill-plan` (one question at a time) and produce an
+   `.html` file of the agreed requirement and plan (render it with an artifact tool when available, else save it as
+   `$AODD_PLANS/<feature>/plan.html`). No code before that.
+2. Read `skills/ai-sdlc/references/dev-qa-pattern.md` (tagging, invariants, test barriers), then a dev step and a QA testing step.
+3. Last step, after everything passes: run `graphify update .` when `graphify-out/` exists; stage its tracked files with the
+   commit (`rules/aodd/git-ops.md`).
 
-**Documents: plan first, living docs after Gate 1.** Until Gate 1 everything stays in the plan; no repo doc or product code changes. After approval, write the durable decisions into four living docs at the repo root, one owner each, kept short:
+**Look before you pick.** Size comes from the code: check the blast radius (graphify `blast_radius`/`affected`, or grep), how
+many callers or screens it reaches, and whether it was "fixed" before (git log). One place, first attempt: the path as is.
+Wide reach: list every affected place in a short plan; QA checks each. Failed once, or many small symptoms on one screen:
+stop patching; Phase 1 lists all symptoms, QA turns each into a check that fails now, find the shared cause, fix, re-run all
+(UI: `rules/gui-fixes.md`).
 
-| Doc | Owner | Holds |
-|---|---|---|
-| `PRODUCT.md` | PO | scope, users, outcomes, in/out of scope |
-| `ARCHITECTURE.md` | Dev + QA | tech stack, structure, seams, data model, test strategy |
-| `DESIGN.md` | UX/UI | tokens, layout, components (UI projects only) |
-| `CONTEXT.md` | everyone | domain glossary |
+**Baseline floor, any path:** `ARCHITECTURE.md` never collapses (`rules/product-design.md`); the Existing Asset Scan runs
+for anything that adds a function, component, helper or query (`skills/ai-sdlc/phases/phase2-existing-asset-scan.md`);
+Test-Before-Deliver (`rules/aodd.md`) runs on every task.
 
-Then propose a `docs:` commit, before any test or code. The second commit point is Phase 4 GREEN (`feat:`/`fix:`), with the test evidence. Architectural invariants and QA automated guard pattern → `skills/ai-sdlc/references/dev-qa-pattern.md`; release checks (security/pen test, performance) → `rules/coding/release.md`; project runner → `rules/coding/project-blueprint.md` § 2.1.
+## Roles and subagents
 
-**Shift-left:** QA scenario/test-skeleton design happens BEFORE dev writes
-implementation code — dev implements against a known RED state and drives it to
-GREEN, QA re-verifies GREEN at the end. TDD applied at the feature level, not just
-the unit level.
+One owner per phase; the main thread switches hats and dispatches the subagents. Dev Lead: Phase 2 dev half, Phase 4. QA Lead:
+Phase 2 QA half, Phase 3 (RED), Phase 5 (sign-off); never patches product code to pass a test. Reviewer: built-in `/code-review`
+on the Phase 4 diff before Phase 5. Auditor: on the CEO's yes only (`docs/audit.md`).
 
-Enter at the phase the work needs (Phase 1–2 only when scope or design is open), but no path skips its testing step or its dev step.
-**Pick the path by what changes, not by size.** Every task, small or large, takes the path for the kind of change; only that path's phases run. A change can carry more than one kind (a new requirement with a new screen runs both). If it is not clear which kind it is, Phase 1 decides that first.
+- **Phase 2 design (Requirement path):** two subagents in parallel with the same brief. Dev: structure, file separation, reuse,
+  invariants. QA: failure modes, edge cases, security boundaries, mocks, testability. The main thread merges both into one plan and
+  lists each conflict and how it was decided. Other paths: the main thread designs alone.
+- **Phase 4 code:** one subagent, so no two agents write a shared file; split only along disjoint files, each with a stated scope.
+- Model and effort rules: `rules/aodd/delegation.md`.
 
-| What changes | Path | Dev | QA | Gates | Living docs |
-|---|---|---|---|---|---|
-| Wording, typo, config value | Light | edit | run the existing tests and show they pass; a config value that changes behavior adds a test | — | — |
-| **Logic**: a bug, a rule inside an existing requirement, a refactor | TDD | bug: debugging skill first (reproduce, trace, falsify); then Phase 4 unit loop: failing test first → GREEN → refactor; Existing Asset Scan when it adds a helper | a regression test that fails without the fix; the cases next to it (boundary, null, error path); callers in the blast radius still pass | — | `ARCHITECTURE.md` only if a seam or the data model changes |
-| **UX/UI**: look, layout, an on-screen flow | Design | read `DESIGN.md` → change | look at every affected screen in a browser/screenshot (sizes, long text, dark mode); a Playwright test when a user flow changes | show the mock or screenshot first for a new screen | `DESIGN.md` |
-| **Requirement**: a new or changed capability, a rule users see, a new integration | Full | Phase 2 Dev subagent, Phase 4 | Phase 2 QA subagent (NFRs), Phase 3 scenarios RED, Phase 5 traceability + sign-off | Gates 1-3 | `PRODUCT.md`, `ARCHITECTURE.md`, `CONTEXT.md` (+ `DESIGN.md` with UI) |
-| Unclear which | Interview | Phase 1 resolves the kind, then the path above | | — | — |
+## Documents
 
-**Look before you pick.** Size is not known from the request; it comes from the code. Before choosing, check: the blast radius (graphify `blast_radius`/`affected`, or grep the token, component or function), how many screens or callers it reaches, and whether this was already "fixed" before (git log, past sessions). Then weigh it:
-- one place, first attempt → the path as it is;
-- wide reach (a color token used on 30 screens, a shared helper with many callers) → list every affected place in a short plan; QA checks each one (a regression list, not a spot check), even on the Logic or UX/UI path;
-- already failed once, or many small symptoms on one screen (clipping, wrapping, spacing) → stop patching symptom by symptom: Phase 1 lists all the symptoms first (QA turns each into a check that fails now), find the shared cause, then fix and re-run every check together (UI: `rules/gui-fixes.md`, 2 rounds then options).
+Until Gate 1 everything stays in the plan; no repo doc or product code changes. After approval write the durable decisions into
+the living docs at the repo root, one owner each, kept short: `PRODUCT.md` (scope, users, outcomes), `ARCHITECTURE.md` (stack,
+structure, seams, data model, test strategy), `DESIGN.md` (tokens, layout, UI projects only), `CONTEXT.md` (glossary). Then
+propose a `docs:` commit before any test or code. The second commit is Phase 4 GREEN (`feat:`/`fix:`) with the test evidence.
+Release checks: `rules/coding/release.md`; project runner: `rules/coding/project-blueprint.md` § 2.1.
 
-Size still matters for orchestration and audit (`rules/aodd.md` triage): a change that adds or splits files states its file separation plan on any path.
+Shift-left: QA designs scenarios and the test skeleton BEFORE dev writes code; dev drives RED to GREEN; QA re-verifies.
 
-**Four independent baseline rules — a floor, not a free pass (single authoritative version — other files point back to this list):**
-1. **Only the Requirement path runs the full ceremony.**
-2. **ARCHITECTURE.md never collapses.** Every project keeps an `ARCHITECTURE.md`: see `rules/product-design.md`.
-3. **The Existing Asset Scan never collapses** for any task that adds a new
-   function/component/helper/query. § Existing Asset Scan (`skills/ai-sdlc/phases/phase2-existing-asset-scan.md`) and its
-   Reuse-Table/Nth-Occurrence rule (`skills/ai-sdlc/phases/phase2-reuse-table.md`) run regardless of task size — exempt only when
-   there's genuinely nothing to scan (a single-line edit to an existing line).
-4. **Verification never collapses.** `rules/aodd.md`'s Test-Before-Deliver (build
-   passes + relevant tests pass) is a baseline outside this file's
-   phase shape — every task runs it regardless of what collapsed.
+## Phase map: load only the phase you are on
 
-## Phase map — load only the phase you are on
+| Phase | File |
+|---|---|
+| 1 Interview | `skills/ai-sdlc/phases/phase1-interview.md` |
+| 2 Architect (Requirement path; any path that adds files) | `skills/ai-sdlc/phases/phase2-architect.md` |
+| 2 Existing Asset Scan | `skills/ai-sdlc/phases/phase2-existing-asset-scan.md` |
+| 2 Reuse table and Nth-occurrence rule | `skills/ai-sdlc/phases/phase2-reuse-table.md` |
+| 2 Reuse modification retest | `skills/ai-sdlc/phases/phase2-reuse-retest.md` |
+| 3 QA-Design | `skills/ai-sdlc/phases/phase3-qa-design.md` |
+| 4 Dev | `skills/ai-sdlc/phases/phase4-dev.md` |
+| 5 QA-Verify | `skills/ai-sdlc/phases/phase5-qa-verify.md` |
 
-| Phase | Load when | File |
-|---|---|---|
-| Phase 1 — Interview | when you start Phase 1 | `skills/ai-sdlc/phases/phase1-interview.md` |
-| Phase 2 — Architect | when you start Phase 2 (Requirement path, or a file separation plan on any path) | `skills/ai-sdlc/phases/phase2-architect.md` |
-| Phase 2 — Existing Asset Scan | before designing any new module, component, service, query or test helper (never collapses) | `skills/ai-sdlc/phases/phase2-existing-asset-scan.md` |
-| Phase 2 — Reuse-Table Artifact & Nth-Occurrence Centralization Rule | whenever Phase 2 touches more than one file or adds a function/component/query/helper (the table is Gate 1's review artifact, even for create-new), and when a pattern now occurs a third time | `skills/ai-sdlc/phases/phase2-reuse-table.md` |
-| Phase 2 — Reuse Modification Retest | when a design modifies an existing shared component (decided in Phase 2, executed in Phase 4) | `skills/ai-sdlc/phases/phase2-reuse-retest.md` |
-| Phase 3 — QA-Design | when you start Phase 3 | `skills/ai-sdlc/phases/phase3-qa-design.md` |
-| Phase 4 — Dev | when you start Phase 4 | `skills/ai-sdlc/phases/phase4-dev.md` |
-| Phase 5 — QA-Verify | when you start Phase 5 | `skills/ai-sdlc/phases/phase5-qa-verify.md` |
+## Approval gates (Requirement path; real stops, even in auto mode)
 
-Approval Gates, Core facts and Status below stay in force in every phase.
+1. After Phase 2 produces its plan: no Phase 3 or 4 until the user explicitly approves it.
+2. After Phase 3's scenario list (`[TS-XXXX]`/`[TC-XXXX]`): no skeleton or automation until the user approves the list.
+3. After Phase 3's seam/automation-architecture agreement (which public seam each scenario tests at): no test at a seam
+   not agreed.
 
-## Approval Gates (mandatory on the Requirement path)
+No hook enforces these. "The user hasn't objected" is not approval: ask directly and wait for a real answer.
 
-Three checkpoints carry a real hard stop — everything else stays Auto Mode default
-(don't stop to ask). These three have a uniquely expensive undo: get one wrong and
-everything built on top of it gets thrown away.
+## Core facts
 
-1. **After Phase 2 (Architect) produces its design/implementation plan** — do not start
-   Phase 3 or Phase 4 until the user has explicitly approved it. A wrong architecture
-   discovered after Dev has built against it means redoing the build, not just the doc.
-2. **After Phase 3's scenario list is written** (the `[TS-XXXX]`/`[TC-XXXX]`
-   output of your scenario skill or tool) — do not move on to skeleton/automation until the
-   user has explicitly approved the scenario list. A wrong scenario found after
-   automation is built against it means rewriting the automation, not just the list.
-3. **After Phase 3's seam/automation-architecture agreement** (which public seam —
-   API endpoint, function, UI element — each scenario tests at, and how the automation
-   is structured) — write no test at a seam not explicitly agreed to. A real HITL gate,
-   not a formality.
-
-No mechanical hook enforces these — treat "the user hasn't objected" as different from
-"the user approved"; ask directly and wait for a real answer before crossing the gate.
-
-## Core facts (non-negotiable, not model-inferable — everything else is judgment)
-
-- QA scenario/test ID (`[TS-XXXX]`/`[TC-XXXX]`) in every automated test name — the only
-  link between a scenario, its automation, and any tracker. Without it, nothing traces.
-- Scenario/test titles also carry a `[LAYER-KIND]` tag (`BE|FE` × `BL|UT|IT`, e.g. `[BE-BL]`) — layer/kind
-  definitions and Dev + QA rules → `skills/ai-sdlc/references/dev-qa-pattern.md`.
-- Multi-step/multi-session work: track in `ai-sdlc-task-progress.md` in the feature's plans folder (`$AODD_PLANS`, see `rules/aodd.md`)
-  (legacy `dev-task-progress.md`/`qa-task-progress.md` supported), vertical slices not phases, resume at first unchecked `[ ]`.
-  Skip entirely for single-sitting work. Full mechanics (tags, sensitive-data/mock rules,
-  rollback, resume protocol) → `skills/ai-sdlc/references/ai-sdlc-progress-spec.md`.
-- Project/Feature Architecture Planning: the architecture document always goes in `$AODD_PLANS/[FEATURE]/[FEATURE]-architecture.md` (or `[FEATURE]-architecture/`), next to `ai-sdlc-task-progress.md` and the feature's other artifacts, never scattered.
-- Test automation: zero hard waits — whatever fixed-delay primitive the framework in
-  use offers is forbidden, use its wait-for-condition primitive instead. 1 self-heal attempt max then
-  route to a root-cause debugging pass (`9arm-skills:debug-mantra` if installed) — both are anti-flakiness facts, not
-  code-quality opinions a model would guess.
-- Interactive UI elements carry a stable test identifier (`data-testid` etc., naming
-  convention fixed once per project) — a
-  contract QA automation depends on existing, not something to rediscover per task. Full
-  dev→QA handoff conventions (testid map, test-env requirements, schema consistency,
-  DB strategy) → `skills/ai-sdlc/references/dev-qa-handoff.md`.
-- Graph-before-edit (if graphify is installed) applies in every phase.
-- **Self-Update, every phase:** Every
-  skill learns the same way: when a phase hit a correction, a gotcha, or a
-  wrong/missing step in the invoked skill, and the fix was verified, patch that skill's
-  `SKILL.md` (or its `references/`) in place and bump `version`/`last_improved` — see its
-  `## Self-Update` section and `docs/skill-learning.md`.
-  A phase's attention being on the workflow doesn't excuse skipping whichever loop the
-  invoked skill actually uses. Log which skill(s) ran in each phase into
-  `ai-sdlc-task-progress.md` per
-  `skills/ai-sdlc/references/ai-sdlc-progress-spec.md`'s Skill Invocation Log.
-
-## Status
-
-Default route for new/unclear-scope Dev/QA feature work. Stack-specific coding skills (`backend-dev`, `frontend-dev`, `macos-swiftui`) and `rules/coding.md` still own coding conventions.
+- A scenario/test ID (`[TS-XXXX]`/`[TC-XXXX]`) and a `[LAYER-KIND]` tag (`BE|FE` x `BL|UT|IT`) in every automated test name
+  (`skills/ai-sdlc/references/dev-qa-pattern.md`).
+- Multi-session work: `ai-sdlc-task-progress.md` in the feature's plans folder (`$AODD_PLANS/<feature>/`), vertical slices,
+  resume = read it and continue at the first unchecked `[ ]`. Single-sitting work skips it. Mechanics:
+  `skills/ai-sdlc/references/ai-sdlc-progress-spec.md`. The architecture document sits in the same folder as `<feature>-architecture.md`.
+- Test automation: no hard waits (use the framework's wait-for-condition); 1 self-heal attempt, then a root-cause pass with the
+  debugging skill.
+- Interactive UI elements carry a stable test identifier; handoff conventions: `skills/ai-sdlc/references/dev-qa-handoff.md`.
+- Graph-before-edit applies in every phase when graphify is installed.
+- Stack skills (`backend-dev`, `frontend-dev`, `macos-swiftui`) and `rules/coding.md` own coding conventions.

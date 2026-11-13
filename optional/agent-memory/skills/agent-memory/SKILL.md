@@ -1,12 +1,7 @@
 ---
 name: agent-memory
 description: >
-  This skill should be used when the user asks to "bootstrap agent memory",
-  "setup memory", "สร้าง agent memory", "reset memory", "memory template",
-  "initialize memory files", "create memory structure",
-  or needs guidance on the agent memory file structure, session flow,
-  knowledge capture, or subagent delegation patterns.
-  Non-coding tasks (research, analysis, writing) use this memory system alongside coding tasks.
+  Agent memory setup: "bootstrap agent memory", "setup memory", "สร้าง agent memory", "reset memory", "memory template", "initialize memory files"; also the memory file structure, session flow and knowledge capture, for coding and non-coding tasks.
 version: 4.0.1
 ---
 

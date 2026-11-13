@@ -473,9 +473,3 @@ See [references/pr-attachments.md](references/pr-attachments.md) for alt text, i
 * **Video recording** [references/video-recording.md](references/video-recording.md)
 * **Attaching screenshots and videos to pull requests** [references/pr-attachments.md](references/pr-attachments.md)
 * **Inspecting element attributes** [references/element-attributes.md](references/element-attributes.md)
-
-## Self-Update (after every use)
-
-This skill is its own memory. When using it brought a correction, a gotcha,
-or a wrong/missing step, and the fix was verified, patch this file in place: a locator strategy, mock pattern or self-heal fix that proved reliable (or failed).
-Then bump `version` (patch) and `last_improved`. Procedure: `docs/skill-learning.md`.

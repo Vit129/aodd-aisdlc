@@ -1,14 +1,7 @@
 ---
 name: playwright-testing
 description: >
-  skill should used when user asks "write Playwright tests", "เขียน Playwright tests",
-  "review test code", "review test", "run tests", "รัน tests", "fix failing tests",
-  "แก้ test ที่ fail", "heal test failures", "heal failures", "visual regression test",
-  "screenshot comparison", "accessibility test", "axe-core", "WCAG", "component test",
-  "test React component in browser", "ทดสอบ React component", "check Playwright coding standards",
-  "Playwright rules", "what are the Playwright rules", "convert Postman to Playwright",
-  "postman to playwright", "แปลง Postman เป็น Playwright", or needs full Playwright
-  automation cycle: write code, review quality, execute tests, auto-heal failures.
+  Playwright test work: "write Playwright tests", "เขียน Playwright tests", "review test code", "run tests", "fix failing tests", "heal failures", "visual regression", "accessibility test", "axe-core", "component test", "Playwright rules", "convert Postman to Playwright". Covers write, review, run and auto-heal.
 version: 1.2.1
 ---
 
@@ -100,12 +93,6 @@ Before declaring implementation complete:
 | First spec file written | Confirm pattern | Before generating the rest |
 | Self-heal exhausted (workflow.md's attempt cap) | Accept heal / manual fix / skip test | After heal attempts run out |
 | Before committing healed code | Review weakened assertions | Every heal |
-
-## Self-Update (after every use)
-
-This skill is its own memory. When using it brought a correction, a gotcha,
-or a wrong/missing step, and the fix was verified, patch this file in place: a locator/wait pattern that held across features; for a self-heal, symptom -> root cause -> fix.
-Then bump `version` (patch) and `last_improved`. Procedure: `docs/skill-learning.md`.
 
 ## Bug Life Cycle Integration (GUARD state)
 

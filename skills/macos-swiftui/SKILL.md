@@ -82,10 +82,3 @@ xctest, swift test, swift unit test
   Swift source). `grep -rn <FileName> Tests/` before the move; point those tests at the new file.
 - Calling an app type's static helper from XCTest → "main actor-isolated" error if the type is
   `@MainActor` (NSViewController). Mark pure helpers `nonisolated static`.
-
-
-## Self-Update (after every use)
-
-This skill is its own memory. When using it brought a correction, a gotcha,
-or a wrong/missing step, and the fix was verified, patch this file in place: a new anti-pattern, build/test gotcha, or a fallback case not yet in the tables above.
-Then bump `version` (patch) and `last_improved`. Procedure: `docs/skill-learning.md`.

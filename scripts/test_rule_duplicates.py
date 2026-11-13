@@ -6,6 +6,23 @@ two files and (b) a run of SHINGLE consecutive normalized words shared by two fi
 import collections, pathlib, re, sys
 from rulescan import root, markdown_files, hook_files, hook_strings, norm_words
 
+# the AODD core set: the contract, the workflow, the docs and the core skills. The shingle check runs only here.
+CORE = ("rules/aodd/", "rules/effort/", "rules/coding", "docs/", "agents/", "skills/ai-sdlc/", "skills/chief-of-staff/",
+        "skills/grill-plan/", "skills/agent-ops/", "skills/delivery-workflow/", "skills/housekeeping/",
+        "hooks/", "optional/")  # plus rules/*.md and the root files, see is_core
+ROOT_FILES = {"AGENTS.md", "README.md", "ARCHITECTURE.md", "CONTEXT.md"}
+# sibling domain skills (stack and test-framework skills) share templated sections of their own; an identical sentence
+# that occurs only among them is allowed. A sentence shared with any core file is still flagged.
+SIBLING_SKILLS = ("skills/backend-dev/", "skills/frontend-dev/", "skills/performance-testing/", "skills/robotframework-testing/",
+                  "skills/playwright-testing/", "skills/playwright-cli/", "skills/security/", "skills/test-scenario/",
+                  "skills/uxui-designer/", "skills/macos-swiftui/",
+                  "rules/playwright/", "rules/robot/")  # the last two: parent/child header lines repeat by design
+
+
+def is_core(rel):
+    return rel in ROOT_FILES or (rel.startswith("rules/") and rel.count("/") == 1) or rel.startswith(CORE)
+
+
 MIN_CHARS = 60  # shorter lines are headings, table cells and pointers
 SHINGLE = 8
 # normalized word runs that are allowed to recur (boilerplate frontmatter, license text, ...); keep tiny
@@ -30,11 +47,21 @@ for rel, ln, line in sources:
         key = re.sub(r"\W+", " ", s.lower()).strip()
         if len(key) > MIN_CHARS:
             where[key].add(f"{rel}:{ln}")
-dupes = sorted(f"{sorted(locs)}: {key[:90]}" for key, locs in where.items() if len({l.rsplit(':', 1)[0] for l in locs}) > 1)
+def flagged(locs):
+    files = {l.rsplit(':', 1)[0] for l in locs}
+    return len(files) > 1 and not all(f.startswith(SIBLING_SKILLS) for f in files)
+
+
+dupes = sorted(f"{sorted(locs)}: {key[:90]}" for key, locs in where.items() if flagged(locs))
 
 shingles = collections.defaultdict(dict)  # shingle -> {file: first lineno}
 for rel, ln, line in sources:
-    w = norm_words(line)
+    if not is_core(rel):
+        continue
+    # a backticked path or command is a pointer to a home, not a copied rule; one-letter tokens are regex, not prose
+    w = norm_words(re.sub(r"`[^`]*[./][^`]*`", " ", line))
+    if sum(len(t) < 2 for t in w) > len(w) // 4 or (rel.startswith(("hooks/", "optional/")) and line.count("|") >= 3):
+        continue  # regex, not prose
     for i in range(len(w) - SHINGLE + 1):
         sh = " ".join(w[i:i + SHINGLE])
         if not any(a in sh or sh in a for a in ALLOW):

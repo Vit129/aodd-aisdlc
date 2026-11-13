@@ -32,6 +32,7 @@ normal work, not lessons. A skill that turned out wrong or missing a step is pat
 
 ## Where to write it (first rung that fits — Hermes order)
 
+0. **Search for where the rule is already stated** (grep `rules/`, `skills/`, `docs/`). Edit it there; never add a second copy.
 1. **A skill loaded this session** that covers the lesson: patch it, whoever wrote it.
 2. **An existing class-level skill** (global `<claude-home>/skills/` or the project's
    `.claude/skills/`): add a step, a pitfall, or widen its trigger description.
@@ -54,6 +55,7 @@ Aim for a few broad skills with references, not many narrow one-session skills.
   (`<branch>`, `{ticker}`), keep the rule, drop the story. No error transcripts.
 - **Fix wrong rules in place (ExpeL edit/downvote):** if a skill's rule caused the
   mistake, rewrite or delete that rule; do not append a contradicting one below it.
+- **Net lines:** a patch that adds lines removes or merges at least as many where possible.
 - **Bump frontmatter:** `version` patch +1 and `last_improved: <today>`
   (`improvement_count` +1 if the skill has it).
 - **Bounded (Reflexion):** a Pitfalls/Gotchas list keeps at most ~15 items; past that,
@@ -74,15 +76,3 @@ skills unused for a long time, and auto-captured skills (`origin: auto-captured`
 candidates to archive (move to `skills/.archive/`, recoverable, never deleted); skills with overlapping
 descriptions are candidates to merge. These are proposals for the CEO, each with the evidence that
 prompted it. `pinned: true` in frontmatter exempts a skill.
-
-## Skill capture (self-improving skills)
-
-`hooks/skill-capture-nudge.py` asks the agent to patch the governing skill, but only when the session has at least 20 tool calls and one of two signals: a **user correction** (English or Thai phrases such as "no", "wrong", "too long", "ไม่ใช่", "ยาวไป") or a **`fix:` / `revert:` commit**. Ordinary tool errors do not count. It nudges again only after 40 more tool calls with a new signal, and right after a fix commit it reminds in the moment. The procedure (where to write the lesson, verified-only, generalize, bump version) is `docs/skill-learning.md`. Disable with `CLAUDE_SKILL_CAPTURE=0`.
-
-### Proposals from other agents (evidence gate)
-
-Another agent (agy, Codex) never edits its synced copy of a skill. It writes `agy-proposal-<date>-<slug>.md` into `$AODD_REPORTS/`. `scripts/check_agy_proposal.py <file>` auto-rejects it unless it carries all of these fields, each non-trivial:
-
-`Project`, `Repo` (a real git repo), `What` (targets a file under `.claude/`), `Analysis`, `Code`, `Test`, `Fix`, `Verified` (must differ from `Test`), `Commit` (a hash that exists in `Repo`), `Proposed change`.
-
-It proves the evidence is present and the commit is real, not that the content is honest; the triage (the `agent-ops` skill) and the CEO still judge it.

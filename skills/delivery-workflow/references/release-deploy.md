@@ -16,7 +16,7 @@ Before any version file changes, record the candidate: baseline, semver, build (
 
 ## 3. Validate the exact commit
 
-1. Prepare the metadata (version fields, build number, changelog, generated notes) then await Graphify and commit metadata plus tracked graph artifacts as one local candidate commit. Stop on refresh failure. Stage explicit paths only; see [commit-push.md](commit-push.md).
+1. Prepare the metadata (version fields, build number, changelog, generated notes) then commit it as one local candidate commit. Stage explicit paths only; see [commit-push.md](commit-push.md).
 2. Run the release gates on that exact commit: build, the test command the repo declares as its release gate, and any security or audit check the repo requires.
 3. A failed gate stops the publish. Keep the candidate. Fix the source and metadata, make a new local candidate commit, and rerun the affected gates. Do not roll back metadata and bump again.
 
@@ -48,4 +48,4 @@ Mark the candidate complete only after every configured target verifies. Until t
 
 ## 7. Report
 
-Give each stage PASS, FAIL, BLOCKED, or NOT RUN, with the command and output. Give the version and build at each release-bearing stage, the target, the live evidence, and the last completed version. If a candidate is still pending, give its exact identity and the next missing step.
+Give the status of each stage with the command and output (format: SKILL.md). Give the version and build at each release-bearing stage, the target, the live evidence, and the last completed version. If a candidate is still pending, give its exact identity and the next missing step.

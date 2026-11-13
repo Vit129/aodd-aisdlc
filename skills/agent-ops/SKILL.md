@@ -44,9 +44,3 @@ Proposals from other agents (`agy-proposal-*.md` in `$AODD_REPORTS/`) are triage
 - Comparing us with an external tool: fetch its upstream README/source and cite it, and re-check that our own scripts still match the current setup; never compare from memory or a pasted post.
 - Skill usage counts miss user-typed slash commands: `"skill":"<name>"` only catches Skill tool calls. Also count `<command-name>/<plugin>:<skill>` in the transcripts, or a skill the user runs by hand reads as unused.
 - Retiring a skill or plugin: after removing its references, grep for its sub-command names too (`/<command>`, `<plugin>:<skill>`), not only the plugin name; a bare `/<command>` left in a guide keeps the dependency alive.
-
-## Self-Update (after every use)
-
-This skill is its own memory. When using it brought a correction, a gotcha,
-or a wrong/missing step, and the fix was verified, patch this file in place: a measurement that misled, or a proposal shape that the CEO rejected, goes in the steps above.
-Then bump `version` (patch). Procedure: `docs/skill-learning.md`.

@@ -25,7 +25,7 @@ Do not assume the last printed line matches remote state. A dry-run may not mode
 ## 3. Never
 
 - Start a new version while a candidate is still pending.
-- Move, delete, or force-push a published tag.
+- Touch a published tag (move, delete or force-push).
 - Hide an error or report success from an exit code alone.
 - Retry more than the single missing idempotent step. If that retry fails, stop and report.
 

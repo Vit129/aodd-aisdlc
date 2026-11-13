@@ -1,6 +1,7 @@
 ---
 name: hook-authoring
-description: Writing or fixing a Claude Code hook (a script under the agent home's `hooks/`: PreToolUse/PostToolUse/Stop/UserPromptSubmit/SessionStart python scripts, settings.json registration, regex guards on commands or prompts). Use when the user says "เขียน hook", "แก้ hook", "hook บล็อกผิด", "hook ไม่ทำงาน", "add a hook", "guard blocks my command", or a hook denies/blocks something it should not. Not for Claude Code plugin mods (use plugin-authoring) or git hooks.
+description: >
+  Writing or fixing a Claude Code hook (a script under `hooks/`, its settings.json registration): "เขียน hook", "แก้ hook", "hook บล็อกผิด", "hook ไม่ทำงาน", "add a hook", "guard blocks my command". Not for plugin mods (plugin-authoring) or git hooks.
 version: 0.1.8
 last_improved: 2026-10-21
 origin: auto-captured
@@ -36,9 +37,3 @@ Hooks are installed into the agent home's `hooks/` and registered in `settings.j
 ## Check it worked
 
 `python3 hooks/test_<name>.py` passes, `python3 -m py_compile hooks/<name>.py`, then trigger it once for real in a session (the PostToolUse/Stop output appears in the transcript).
-
-## Self-Update (after every use)
-
-This skill is its own memory. When using it brought a correction, a gotcha,
-or a wrong/missing step, and the fix was verified, patch this file in place: a new hook pitfall goes in Rules (keep ≤15; merge related ones).
-Then bump `version` (patch) and `last_improved`. Procedure: `docs/skill-learning.md`.

@@ -1,10 +1,7 @@
 ---
 name: project-blueprint
 description: >
-  Thai triggers: "วางโครงสร้างโปรเจกต์", "จัดระเบียบโปรเจกต์", "project structure", "blueprint", "dashboard architecture".
-  Use this skill when scaffolding, reviewing, or refactoring a project's structure.
-  Role-based and stack-agnostic: UI, feature flow, pure logic, integration, config/tokens, types, data, tests;
-  expressed by size (filename suffix, folders, or modules). Repos with their own enforced layout keep it.
+  Project structure: "วางโครงสร้างโปรเจกต์", "จัดระเบียบโปรเจกต์", "project structure", "blueprint", "dashboard architecture"; scaffolding, reviewing or refactoring a layout by role (UI, logic, integration, config, types, data, tests). Repos with an enforced layout keep it.
 version: 1.3.0
 ---
 
@@ -23,9 +20,3 @@ Record `- §<rule> — <why> — <revisit when>` (MUST needs an external constra
 
 ## Review (existing project)
 Run the §7 checklist and, when it has a release/deploy target, map its current pipeline against `references/release-profiles.md`; report PASS/FAIL/WARN/ACCEPTED per line with file evidence (MUST = fail, STRONG = fail unless fixed or recorded with a revisit date, SHOULD = warn, recorded deviation = accepted). Do not refactor without the user's approval; list violations with the smallest fix. Repo with its own enforced layout, or a read-only clone? Stop.
-
-## Self-Update (after every use)
-
-This skill is its own memory. When using it brought a correction, a gotcha,
-or a wrong/missing step, and the fix was verified, patch this file in place: a structure rule that did not fit a real project, or a missing role/alias.
-Then bump `version` (patch) and `last_improved`. Procedure: `docs/skill-learning.md`.

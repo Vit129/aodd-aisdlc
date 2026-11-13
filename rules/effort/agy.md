@@ -2,6 +2,8 @@
 
 Scope: only for setups that use Antigravity (`agy`). The shared ladder, bake-off and escalation rules are in `rules/aodd.md` § Effort ladder and tier choice.
 
+Before writing any prompt or dispatching to `agy` or a Gemini model, read `rules/gemini-prompting.md` in full.
+
 ## Setting effort
 
 - **Command:** `agy -p --model <m> --effort <low|medium|high|xhigh|max> --mode accept-edits`, run in its own worktree.

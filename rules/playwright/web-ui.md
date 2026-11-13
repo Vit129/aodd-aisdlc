@@ -26,15 +26,15 @@ tests/web-testing/
 
 ## Locators
 
-- Priority: `getByTestId` (container or unique element; naming per `rules/data-testid-mapping.md`) → `getByRole(…, { name: L.key })` → `getByLabel(L.key)` → `getByPlaceholder(L.key)` → `locator('css')` last resort only. Scope with `getByTestId`, then target with `getByRole` inside it.
+- Locator priority: `pw-coding-standards.md`. Scope with `getByTestId`, then target with `getByRole` inside it.
 - Multi-language apps: UI text lives in `[feature]Labels.ts` with every supported language; select with `process.env.LANG`; never hard-code visible text in one language.
-- Anti-patterns (zero tolerance): `waitForTimeout()`, `.nth(0)` / `.first()` without filtering (use `filter({ hasText })`), `{ force: true }`, `waitForLoadState('networkidle')` (wait for the specific API response), XPath by position, `waitForTimeout` for WebSocket (wait on the frame or event).
+- Anti-patterns (zero tolerance): `waitForTimeout()`, `.nth(0)` / `.first()` without filtering (use `filter({ hasText })`), `{ force: true }`, `waitForLoadState('networkidle')` (wait for the specific API response), XPath by position.
 
 ## Synchronization and assertions
 
 - Web-first, auto-retrying assertions only (`toBeVisible`, `toHaveURL`, `toHaveText`); never generic `toBeTruthy()` on a locator.
 - Loading overlay covers the element → wait for the overlay to be hidden, then act. UI depends on an API response → `Promise.all([page.waitForResponse(...), click])`.
-- Timeout → check the selector, then timing (API or loading), then state (disabled, hidden, covered); fix the cause, never add a hard wait.
+- Timeout → check the selector, then timing (API or loading), then state (disabled, hidden, covered); fix the cause.
 - Same user, different action → no re-login; re-login only when the role differs.
 
 ## Advanced

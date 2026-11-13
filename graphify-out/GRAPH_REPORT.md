@@ -1,16 +1,16 @@
 # Graph Report - skill-hygiene  (2026-11-13)
 
 ## Corpus Check
-- 257 files · ~181,069 words
+- 256 files · ~180,600 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2483 nodes · 2676 edges · 253 communities (224 shown, 29 thin omitted)
+- 2480 nodes · 2674 edges · 252 communities (224 shown, 28 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 13 edges (avg confidence: 0.62)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `ae4d40dc`
+- Built from commit: `b532b3f3`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -57,7 +57,7 @@ node's neighbors span, not by raw edge count.
 ## Import Cycles
 - None detected.
 
-## Communities (253 total, 29 thin omitted)
+## Communities (252 total, 28 thin omitted)
 
 ### Community 0 - "_aodd_paths.py"
 Cohesion: 0.16
@@ -751,6 +751,10 @@ Nodes (3): Check it worked, Scheduled jobs (cron / launchd), Self-Update (after 
 Cohesion: 0.83
 Nodes (3): _check_file(), main(), _read_rows()
 
+### Community 189 - "programming-language.md"
+Cohesion: 0.33
+Nodes (5): Codex effort mapping, Row, Setting effort, Start, announce, escalate, Tiers (same roles as Claude)
+
 ### Community 193 - "test_install.py"
 Cohesion: 0.33
 Nodes (5): Design, Interaction principles, Interface model, Preview, Release gate
@@ -772,8 +776,8 @@ Cohesion: 0.40
 Nodes (5): [0.6.1] - 2026-10-30, Added, Changed, Documentation, Fixed
 
 ### Community 227 - "Claude effort mapping"
-Cohesion: 0.33
-Nodes (5): Claude effort mapping, Defaults for Claude work, Limits, Setting effort, Start, announce, escalate
+Cohesion: 0.40
+Nodes (4): agy effort mapping, Row, Setting effort, Start, announce, escalate
 
 ### Community 228 - "Project Release Profiles"
 Cohesion: 0.40
@@ -789,11 +793,7 @@ Nodes (4): [0.3.2] - 2026-10-17, Added, Documentation, Fixed
 
 ### Community 231 - "agy effort mapping"
 Cohesion: 0.40
-Nodes (4): agy effort mapping, Row, Setting effort, Start, announce, escalate
-
-### Community 232 - "Codex effort mapping"
-Cohesion: 0.33
-Nodes (5): Codex effort mapping, Row, Setting effort, Start, announce, escalate, Tiers (same roles as Claude)
+Nodes (4): Claude effort mapping, Defaults for Claude work, Setting effort, Start, announce, escalate
 
 ### Community 233 - "[0.2.0] - 2026-10-17"
 Cohesion: 0.67
@@ -840,9 +840,9 @@ Cohesion: 0.50
 Nodes (4): `resources/`, Trace Output Files, `trace-{timestamp}.network`, `trace-{timestamp}.trace`
 
 ## Knowledge Gaps
-- **1445 isolated node(s):** `name`, `pull_request`, `push`, `contents`, `check` (+1440 more)
+- **1443 isolated node(s):** `name`, `pull_request`, `push`, `contents`, `check` (+1438 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **29 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **28 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 - **15 possibly unreachable function(s):** `_size()`, `ask_model()`, `git()`, `housekeeping_scan()`, `job_agent_ops()` (+10 more)
   Not reached from any recognized entry point - could be dead code, or dynamically dispatched/decorator-registered.
 
@@ -856,7 +856,7 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `Test generation (plan → generate → heal)` connect `3. Heal` to `SKILL.md`?**
   _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **What connects `name`, `pull_request`, `push` to the rest of the system?**
-  _1541 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1539 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Fix Generated Playwright Files (Postman Migration)` be split into smaller, more focused modules?**
   _Cohesion score 0.041666666666666664 - nodes in this community are weakly interconnected._
 - **Should `Changelog` be split into smaller, more focused modules?**

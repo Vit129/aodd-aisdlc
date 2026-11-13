@@ -16,11 +16,6 @@ Scope: Claude Code only. The shared ladder, bake-off and escalation rules are in
 | Mechanical run, search, summary, data dump | Haiku subagent | `low` |
 | Review of a diff | main session | `high`; `xhigh` only when the ticket says so |
 
-## Limits
-
-- **Haiku writes no code** under this file. A Haiku code row needs a bake-off result from `rules/aodd.md` first.
-- `xhigh` and `max` are set only by a ticket's `Effort:` line or by the ai-sdlc review stage, never by the escalation ladder.
-
 ## Start, announce, escalate
 
 - **Start:** every subagent (`Agent`) and `claude -p` run starts at `low`, unless the ticket's `Effort:` line says otherwise.

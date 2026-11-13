@@ -67,7 +67,7 @@ No task is complete until the build passes and the relevant tests pass. If tests
 
 ## Effort ladder and tier choice (every agent, every vendor)
 
-Five levels, shared by all vendors: `low` < `medium` < `high` < `xhigh` < `max`. Each vendor maps them to its own setting in its own file, loaded only where that tool is used: `rules/effort/claude.md` (Claude Code), `rules/effort/agy.md` (agy) and `rules/effort/codex.md` (Codex). A setup uses only the files for the tools it runs; read a vendor's file before dispatching to it.
+Five levels, shared by all vendors: `low` < `medium` < `high` < `xhigh` < `max`. Each vendor maps them to its own setting in its own file, loaded only where that tool is used: `rules/effort/claude-code.md` (Claude Code), `rules/effort/agy.md` (agy) and `rules/effort/codex.md` (Codex). A setup uses only the files for the tools it runs; read a vendor's file before dispatching to it.
 
 - **Before any run:** every subagent (`Agent`), `claude -p`, `codex exec` or `agy -p` run starts at `low`. Tell the user the model, the effort and the number of runs, and wait for a yes. The vendor file in `rules/effort/` gives the setting and the step-up rule.
 - **`xhigh` and `max` are never raised automatically.** They run only when a ticket says `Effort: xhigh` or `Effort: max`, or when the review stage of ai-sdlc requires `xhigh`.

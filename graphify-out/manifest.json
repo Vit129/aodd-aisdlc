@@ -390,8 +390,8 @@
     "semantic_hash": ""
   },
   "rules/aodd.md": {
-    "mtime": 1794540831.9828827,
-    "ast_hash": "172a5e9c03da142960fc7927c79d6871",
+    "mtime": 1794542795.569642,
+    "ast_hash": "8029f3e561d217977798ec569b7244ed",
     "semantic_hash": ""
   },
   "rules/coding.md": {
@@ -1269,14 +1269,14 @@
     "ast_hash": "4bbce8350e7d75870de23da1f4ca39e3",
     "semantic_hash": ""
   },
-  "rules/effort/claude.md": {
-    "mtime": 1794540665.3921475,
-    "ast_hash": "4108f9ded4a89c162bb73e6010079b12",
-    "semantic_hash": ""
-  },
   "rules/effort/codex.md": {
     "mtime": 1794534496.7180936,
     "ast_hash": "2203697090115d45b153de452d050ea2",
+    "semantic_hash": ""
+  },
+  "rules/effort/claude-code.md": {
+    "mtime": 1794540665.3921475,
+    "ast_hash": "4108f9ded4a89c162bb73e6010079b12",
     "semantic_hash": ""
   }
 }

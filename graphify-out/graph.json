@@ -7894,52 +7894,52 @@
       "norm_label": "start, announce, escalate"
     },
     {
-      "label": "claude.md",
+      "label": "claude-code.md",
       "file_type": "document",
-      "source_file": "rules/effort/claude.md",
+      "source_file": "rules/effort/claude-code.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "rules_effort_claude",
+      "id": "rules_effort_claude_code",
       "community": 231,
-      "norm_label": "claude.md"
+      "norm_label": "claude-code.md"
     },
     {
       "label": "Claude effort mapping",
       "file_type": "document",
-      "source_file": "rules/effort/claude.md",
+      "source_file": "rules/effort/claude-code.md",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "rules_effort_claude_claude_effort_mapping",
+      "id": "rules_effort_claude_code_claude_effort_mapping",
       "community": 231,
       "norm_label": "claude effort mapping"
     },
     {
       "label": "Setting effort",
       "file_type": "document",
-      "source_file": "rules/effort/claude.md",
+      "source_file": "rules/effort/claude-code.md",
       "source_location": "L5",
       "_origin": "ast",
-      "id": "rules_effort_claude_setting_effort",
+      "id": "rules_effort_claude_code_setting_effort",
       "community": 231,
       "norm_label": "setting effort"
     },
     {
       "label": "Defaults for Claude work",
       "file_type": "document",
-      "source_file": "rules/effort/claude.md",
+      "source_file": "rules/effort/claude-code.md",
       "source_location": "L10",
       "_origin": "ast",
-      "id": "rules_effort_claude_defaults_for_claude_work",
+      "id": "rules_effort_claude_code_defaults_for_claude_work",
       "community": 231,
       "norm_label": "defaults for claude work"
     },
     {
       "label": "Start, announce, escalate",
       "file_type": "document",
-      "source_file": "rules/effort/claude.md",
+      "source_file": "rules/effort/claude-code.md",
       "source_location": "L19",
       "_origin": "ast",
-      "id": "rules_effort_claude_start_announce_escalate",
+      "id": "rules_effort_claude_code_start_announce_escalate",
       "community": 231,
       "norm_label": "start, announce, escalate"
     },
@@ -37506,45 +37506,45 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "rules/effort/claude.md",
+      "source_file": "rules/effort/claude-code.md",
       "source_location": "L1",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "rules_effort_claude",
-      "target": "rules_effort_claude_claude_effort_mapping",
+      "source": "rules_effort_claude_code",
+      "target": "rules_effort_claude_code_claude_effort_mapping",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "rules/effort/claude.md",
+      "source_file": "rules/effort/claude-code.md",
       "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "rules_effort_claude_claude_effort_mapping",
-      "target": "rules_effort_claude_defaults_for_claude_work",
+      "source": "rules_effort_claude_code_claude_effort_mapping",
+      "target": "rules_effort_claude_code_defaults_for_claude_work",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "rules/effort/claude.md",
+      "source_file": "rules/effort/claude-code.md",
       "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "rules_effort_claude_claude_effort_mapping",
-      "target": "rules_effort_claude_setting_effort",
+      "source": "rules_effort_claude_code_claude_effort_mapping",
+      "target": "rules_effort_claude_code_setting_effort",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "rules/effort/claude.md",
+      "source_file": "rules/effort/claude-code.md",
       "source_location": "L19",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "rules_effort_claude_claude_effort_mapping",
-      "target": "rules_effort_claude_start_announce_escalate",
+      "source": "rules_effort_claude_code_claude_effort_mapping",
+      "target": "rules_effort_claude_code_start_announce_escalate",
       "confidence_score": 1.0
     },
     {
@@ -55248,5 +55248,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "b532b3f3fb02ca4c310a168fb243d8ba92f3ae85"
+  "built_at_commit": "380ce23ebf8e64aad0013752dde2cb92623993e8"
 }

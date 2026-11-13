@@ -19,6 +19,9 @@ for _ in range(d.STREAK - 1):
 # the STREAK-th lookup in a row without delegating fires once
 msg = call("Grep")
 assert msg and "[delegation-nudge]" in msg and "Haiku" in msg
+assert "rules/ai-sdlc/delegation.md" in msg and "ai-sdlc-workflow.md" not in msg   # points at the file that holds the rule
+assert "effort `low`" in msg and "announce" in msg and "yes" in msg      # effort + announce-once rule rides along
+assert all(len(m) <= 600 for m in (msg, call("Bash", out="x" * (d.MAX_BYTES + 1), sid="len-c", transcript_path=str(Path(tempfile.mkdtemp()) / "rollout-x.jsonl"))))
 # cooldown: the next lookups do not fire again right away
 for _ in range(d.STREAK - 1):
     assert call("Bash") is None

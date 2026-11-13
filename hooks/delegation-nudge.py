@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """delegation-nudge: PostToolUse(Read|Grep|Glob|Bash|Agent|Task; Codex exec|spawn_agent|followup_task) reminder to hand mechanical work to a cheap model.
 
-The model split in rules/ai-sdlc-workflow.md is text only; in practice the main session keeps doing lookups itself.
+The model split in rules/ai-sdlc/delegation.md is text only; in practice the main session keeps doing lookups itself.
 This hook watches the MAIN session (Claude tool calls carrying `agent_id`, and Codex threads whose rollout
 says `source.subagent`, are ignored). Codex gets the same rule with its tiers (Sol/Terra/Luna = Opus/Sonnet/Haiku):
 
@@ -21,7 +21,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import _aodd_paths  # noqa: E402
 
-MAX_BYTES = 40_000   # same threshold as rules/ai-sdlc-workflow.md "Big data stays out of main context"
+MAX_BYTES = 40_000   # same threshold as rules/ai-sdlc/delegation.md "Big data stays out of main context"
 MAX_LINES = 300
 STREAK = 8
 COOLDOWN = 10
@@ -33,9 +33,9 @@ TIER = {
     "codex": 'a luna subagent (spawn_agent with model luna; terra for code, sol stays the main session)',
 }
 MSG = (
-    "[delegation-nudge] {why}. Per rules/ai-sdlc-workflow.md (cheap-model delegation): send the next search, file sweep, "
-    "log read or test run to {tier} that returns paths and a short excerpt, "
-    "and keep the main session for code, decisions and review. Ignore if the next step is one short command."
+    "[delegation-nudge] {why}. See rules/ai-sdlc/delegation.md: send the next search, file sweep, log read or test run to "
+    "{tier}, effort `low`, returning paths and a short excerpt. Announce it once per plan (model, effort, number of runs) "
+    "and wait for a yes. A lookup the main session does itself needs no announcement."
 )
 
 

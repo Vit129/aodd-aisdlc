@@ -202,4 +202,28 @@ assert "claudeMdExcludes" not in run("--core-only", extra={"CLAUDE_HOME": str(W 
 ag = (W / "x/AGENTS.md").read_text()                                                                   # (d)
 wf = (ROOT / "rules/ai-sdlc-workflow.md").read_text().rstrip("\n")
 assert wf in ag and "# AODD: the operating contract" not in ag
+# hook guard: every registered command exits 0 when its file is gone; an old unguarded entry is upgraded in place
+G = W / "guard"
+GH = str(G / "hooks")
+def hook_cmds(path):
+    return [h["command"] for ev in json.loads(Path(path).read_text())["hooks"].values() for g in ev for h in g["hooks"]]
+G.mkdir()
+old = {"hooks": {
+    "PreToolUse": [{"matcher": "Bash|Grep|Read|Glob", "hooks": [{"type": "command", "command": f'python3 "{GH}/graphify-guard.py" pre'}]},
+                   {"matcher": "Bash", "hooks": [{"type": "command", "command": "echo mine"}]}],
+    "Stop": [{"matcher": "*", "hooks": [{"type": "command", "command": f'python3 "{GH}/done-gate.py"'}]}]}}
+json.dump(old, open(G / "settings.json", "w"))
+run("--core-only", extra={"CLAUDE_HOME": str(G)})
+cmds = hook_cmds(G / "settings.json")
+mine_ok = [c for c in cmds if c == "echo mine"]
+ours = [c for c in cmds if c != "echo mine"]
+assert len(mine_ok) == 1 and ours and all('[ -f "$f" ] || exit 0' in c for c in ours), [c for c in ours if "[ -f" not in c]
+assert sum("graphify-guard.py" in c and c.rstrip().endswith(" pre") for c in cmds) == 1      # upgraded in place, not duplicated
+assert sum("done-gate.py" in c for c in cmds) == 1
+snap = (G / "settings.json").read_text()
+run("--core-only", extra={"CLAUDE_HOME": str(G)})
+assert (G / "settings.json").read_text() == snap                                            # idempotent
+fresh = W / "guard-fresh"; fresh.mkdir()
+run("--core-only", extra={"CLAUDE_HOME": str(fresh)})
+assert all('[ -f "$f" ] || exit 0' in c for c in hook_cmds(fresh / "settings.json"))
 print("ok - single-rule install checks passed")

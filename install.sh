@@ -254,8 +254,13 @@ changed = 0
 for event, matcher, script, args in WANT:
     groups = hooks.setdefault(event, [])
     label = f"{script} {' '.join(args)}".strip()
-    if any(registered_args(h.get("command", ""), script) == args for g in groups for h in g.get("hooks", [])):
-        print(f"hook    {event:<16} {label}: already registered")
+    mine = [h for g in groups for h in g.get("hooks", []) if registered_args(h.get("command", ""), script) == args]
+    if mine:
+        old = [h for h in mine if "[ -f" not in h.get("command", "")]   # an older install wrote no guard: upgrade it in place
+        for h in old:
+            h["command"] = cmd(script, *args)
+        changed += bool(old)
+        print(f"hook    {event:<16} {label}: " + (f"guard {'would add' if dry else 'added'}" if old else "already registered"))
         continue
     groups.append({"matcher": matcher, "hooks": [{"type": "command", "command": cmd(script, *args)}]})
     changed += 1

@@ -531,7 +531,7 @@
       "end_line": 87,
       "_origin": "ast",
       "id": "hooks_aodd_paths_session_id",
-      "community": 241,
+      "community": 0,
       "norm_label": "session_id()"
     },
     {
@@ -561,7 +561,7 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "hooks_aodd_paths_rationale_79",
-      "community": 241,
+      "community": 0,
       "norm_label": "short session key for audit filenames: disambiguates antigravity transcript.json"
     },
     {
@@ -831,7 +831,7 @@
       "end_line": 107,
       "_origin": "ast",
       "id": "hooks_delegation_nudge",
-      "community": 243,
+      "community": 0,
       "norm_label": "delegation-nudge.py"
     },
     {
@@ -842,7 +842,7 @@
       "end_line": 51,
       "_origin": "ast",
       "id": "hooks_delegation_nudge_codex_meta",
-      "community": 243,
+      "community": 0,
       "norm_label": "_codex_meta()"
     },
     {
@@ -853,7 +853,7 @@
       "end_line": 57,
       "_origin": "ast",
       "id": "hooks_delegation_nudge_size",
-      "community": 243,
+      "community": 0,
       "norm_label": "_size()"
     },
     {
@@ -864,7 +864,7 @@
       "end_line": 92,
       "_origin": "ast",
       "id": "hooks_delegation_nudge_decide",
-      "community": 243,
+      "community": 0,
       "norm_label": "decide()"
     },
     {
@@ -875,7 +875,7 @@
       "end_line": 102,
       "_origin": "ast",
       "id": "hooks_delegation_nudge_main",
-      "community": 243,
+      "community": 0,
       "norm_label": "main()"
     },
     {
@@ -885,7 +885,7 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "hooks_delegation_nudge_rationale_43",
-      "community": 243,
+      "community": 0,
       "norm_label": "(is_codex, is_subagent) from a codex rollout's first record; claude transcripts"
     },
     {
@@ -1025,7 +1025,7 @@
       "end_line": 142,
       "_origin": "ast",
       "id": "hooks_done_gate",
-      "community": 241,
+      "community": 0,
       "norm_label": "done-gate.py"
     },
     {
@@ -1036,7 +1036,7 @@
       "end_line": 75,
       "_origin": "ast",
       "id": "hooks_done_gate_scan",
-      "community": 241,
+      "community": 0,
       "norm_label": "scan()"
     },
     {
@@ -1046,7 +1046,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "hooks_done_gate_py_path",
-      "community": 241,
+      "community": 0,
       "norm_label": "path"
     },
     {
@@ -1057,7 +1057,7 @@
       "end_line": 86,
       "_origin": "ast",
       "id": "hooks_done_gate_audit_report",
-      "community": 241,
+      "community": 0,
       "norm_label": "audit_report()"
     },
     {
@@ -1068,7 +1068,7 @@
       "end_line": 100,
       "_origin": "ast",
       "id": "hooks_done_gate_already_raised",
-      "community": 241,
+      "community": 0,
       "norm_label": "already_raised()"
     },
     {
@@ -1079,7 +1079,7 @@
       "end_line": 128,
       "_origin": "ast",
       "id": "hooks_done_gate_decide",
-      "community": 241,
+      "community": 0,
       "norm_label": "decide()"
     },
     {
@@ -1090,7 +1090,7 @@
       "end_line": 137,
       "_origin": "ast",
       "id": "hooks_done_gate_main",
-      "community": 241,
+      "community": 0,
       "norm_label": "main()"
     },
     {
@@ -1100,7 +1100,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "hooks_done_gate_rationale_33",
-      "community": 241,
+      "community": 0,
       "norm_label": "(progress files written this session, whether an auditor subagent ran, files edi"
     },
     {
@@ -1110,7 +1110,7 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "hooks_done_gate_rationale_79",
-      "community": 241,
+      "community": 0,
       "norm_label": "(report path, verdict) of the newest audit for this session, or (none, none)."
     },
     {
@@ -1120,7 +1120,7 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "hooks_done_gate_rationale_90",
-      "community": 241,
+      "community": 0,
       "norm_label": "true if this exact report (or open-items text) was already put to the worker; re"
     },
     {
@@ -2636,7 +2636,7 @@
       "end_line": 222,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job",
-      "community": 232,
+      "community": 0,
       "norm_label": "aodd_job.py"
     },
     {
@@ -2647,7 +2647,7 @@
       "end_line": 36,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_log",
-      "community": 232,
+      "community": 0,
       "norm_label": "log()"
     },
     {
@@ -2658,7 +2658,7 @@
       "end_line": 54,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_ask_model",
-      "community": 232,
+      "community": 0,
       "norm_label": "ask_model()"
     },
     {
@@ -2669,7 +2669,7 @@
       "end_line": 62,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_write_report",
-      "community": 232,
+      "community": 0,
       "norm_label": "write_report()"
     },
     {
@@ -2679,7 +2679,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_py_path",
-      "community": 232,
+      "community": 0,
       "norm_label": "path"
     },
     {
@@ -2690,7 +2690,7 @@
       "end_line": 69,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_template",
-      "community": 232,
+      "community": 0,
       "norm_label": "template()"
     },
     {
@@ -2701,7 +2701,7 @@
       "end_line": 78,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_sop",
-      "community": 232,
+      "community": 0,
       "norm_label": "sop()"
     },
     {
@@ -2712,7 +2712,7 @@
       "end_line": 92,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_job_agent_ops",
-      "community": 232,
+      "community": 0,
       "norm_label": "job_agent_ops()"
     },
     {
@@ -2723,7 +2723,7 @@
       "end_line": 103,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_size",
-      "community": 232,
+      "community": 0,
       "norm_label": "_size()"
     },
     {
@@ -2734,7 +2734,7 @@
       "end_line": 121,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_housekeeping_scan",
-      "community": 232,
+      "community": 0,
       "norm_label": "housekeeping_scan()"
     },
     {
@@ -2745,7 +2745,7 @@
       "end_line": 130,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_job_housekeeping",
-      "community": 232,
+      "community": 0,
       "norm_label": "job_housekeeping()"
     },
     {
@@ -2756,7 +2756,7 @@
       "end_line": 135,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_git",
-      "community": 232,
+      "community": 0,
       "norm_label": "git()"
     },
     {
@@ -2767,7 +2767,7 @@
       "end_line": 143,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_repo_list",
-      "community": 232,
+      "community": 0,
       "norm_label": "repo_list()"
     },
     {
@@ -2778,7 +2778,7 @@
       "end_line": 164,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_pending_work",
-      "community": 232,
+      "community": 0,
       "norm_label": "pending_work()"
     },
     {
@@ -2789,7 +2789,7 @@
       "end_line": 177,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_job_pending_work",
-      "community": 232,
+      "community": 0,
       "norm_label": "job_pending_work()"
     },
     {
@@ -2800,7 +2800,7 @@
       "end_line": 201,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_job_memory_backup",
-      "community": 232,
+      "community": 0,
       "norm_label": "job_memory_backup()"
     },
     {
@@ -2811,7 +2811,7 @@
       "end_line": 217,
       "_origin": "ast",
       "id": "optional_schedules_scripts_aodd_job_main",
-      "community": 232,
+      "community": 0,
       "norm_label": "main()"
     },
     {
@@ -2822,7 +2822,7 @@
       "end_line": 246,
       "_origin": "ast",
       "id": "optional_schedules_scripts_install_schedules",
-      "community": 235,
+      "community": 0,
       "norm_label": "install-schedules.py"
     },
     {
@@ -2833,7 +2833,7 @@
       "end_line": 45,
       "_origin": "ast",
       "id": "optional_schedules_scripts_install_schedules_load_jobs",
-      "community": 235,
+      "community": 0,
       "norm_label": "load_jobs()"
     },
     {
@@ -2844,7 +2844,7 @@
       "end_line": 60,
       "_origin": "ast",
       "id": "optional_schedules_scripts_install_schedules_parse_time",
-      "community": 235,
+      "community": 0,
       "norm_label": "parse_time()"
     },
     {
@@ -2855,7 +2855,7 @@
       "end_line": 64,
       "_origin": "ast",
       "id": "optional_schedules_scripts_install_schedules_describe",
-      "community": 235,
+      "community": 0,
       "norm_label": "describe()"
     },
     {
@@ -2866,7 +2866,7 @@
       "end_line": 80,
       "_origin": "ast",
       "id": "optional_schedules_scripts_install_schedules_baked_env",
-      "community": 235,
+      "community": 0,
       "norm_label": "baked_env()"
     },
     {
@@ -2877,7 +2877,7 @@
       "end_line": 84,
       "_origin": "ast",
       "id": "optional_schedules_scripts_install_schedules_argv",
-      "community": 235,
+      "community": 0,
       "norm_label": "argv()"
     },
     {
@@ -2888,7 +2888,7 @@
       "end_line": 94,
       "_origin": "ast",
       "id": "optional_schedules_scripts_install_schedules_cron_block",
-      "community": 235,
+      "community": 0,
       "norm_label": "cron_block()"
     },
     {
@@ -2899,7 +2899,7 @@
       "end_line": 101,
       "_origin": "ast",
       "id": "optional_schedules_scripts_install_schedules_merge_cron",
-      "community": 235,
+      "community": 0,
       "norm_label": "merge_cron()"
     },
     {
@@ -2910,7 +2910,7 @@
       "end_line": 113,
       "_origin": "ast",
       "id": "optional_schedules_scripts_install_schedules_plist_for",
-      "community": 235,
+      "community": 0,
       "norm_label": "plist_for()"
     },
     {
@@ -2921,7 +2921,7 @@
       "end_line": 117,
       "_origin": "ast",
       "id": "optional_schedules_scripts_install_schedules_run",
-      "community": 235,
+      "community": 0,
       "norm_label": "run()"
     },
     {
@@ -2932,7 +2932,7 @@
       "end_line": 121,
       "_origin": "ast",
       "id": "optional_schedules_scripts_install_schedules_crontab_bin",
-      "community": 235,
+      "community": 0,
       "norm_label": "crontab_bin()"
     },
     {
@@ -2943,7 +2943,7 @@
       "end_line": 218,
       "_origin": "ast",
       "id": "optional_schedules_scripts_install_schedules_main",
-      "community": 235,
+      "community": 0,
       "norm_label": "main()"
     },
     {
@@ -2954,7 +2954,7 @@
       "end_line": 241,
       "_origin": "ast",
       "id": "optional_schedules_scripts_install_schedules_uninstall",
-      "community": 235,
+      "community": 0,
       "norm_label": "uninstall()"
     },
     {
@@ -2964,7 +2964,7 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "optional_schedules_scripts_install_schedules_rationale_49",
-      "community": 235,
+      "community": 0,
       "norm_label": "-> (weekday or none for daily, hour, minute). a bare hh:mm keeps the default's d"
     },
     {
@@ -6971,64 +6971,6 @@
       "id": "docs_skill_learning_curation",
       "community": 6,
       "norm_label": "curation"
-    },
-    {
-      "label": "query_20261113_135822_grill_plan_phase1_interview_routing.md",
-      "file_type": "document",
-      "source_file": "graphify-out/memory/query_20261113_135822_grill_plan_phase1_interview_routing.md",
-      "source_location": "L1",
-      "frontmatter": {
-        "type": "query",
-        "date": "2026-11-13T13:58:22.152403+00:00",
-        "question": "grill-plan phase1 interview routing",
-        "contributor": "graphify",
-        "outcome": "useful",
-        "source_nodes": "[\"phase1-interview.md\", \"Grill the plan\"]"
-      },
-      "_origin": "ast",
-      "id": "graphify_out_memory_query_20261113_135822_grill_plan_phase1_interview_routing",
-      "community": 101,
-      "norm_label": "query_20261113_135822_grill_plan_phase1_interview_routing.md"
-    },
-    {
-      "label": "Q: grill-plan phase1 interview routing",
-      "file_type": "document",
-      "source_file": "graphify-out/memory/query_20261113_135822_grill_plan_phase1_interview_routing.md",
-      "source_location": "L10",
-      "_origin": "ast",
-      "id": "graphify_out_memory_query_20261113_135822_grill_plan_phase1_interview_routing_q_grill_plan_phase1_interview_routing",
-      "community": 101,
-      "norm_label": "q: grill-plan phase1 interview routing"
-    },
-    {
-      "label": "Answer",
-      "file_type": "document",
-      "source_file": "graphify-out/memory/query_20261113_135822_grill_plan_phase1_interview_routing.md",
-      "source_location": "L12",
-      "_origin": "ast",
-      "id": "graphify_out_memory_query_20261113_135822_grill_plan_phase1_interview_routing_answer",
-      "community": 101,
-      "norm_label": "answer"
-    },
-    {
-      "label": "Outcome",
-      "file_type": "document",
-      "source_file": "graphify-out/memory/query_20261113_135822_grill_plan_phase1_interview_routing.md",
-      "source_location": "L16",
-      "_origin": "ast",
-      "id": "graphify_out_memory_query_20261113_135822_grill_plan_phase1_interview_routing_outcome",
-      "community": 101,
-      "norm_label": "outcome"
-    },
-    {
-      "label": "Source Nodes",
-      "file_type": "document",
-      "source_file": "graphify-out/memory/query_20261113_135822_grill_plan_phase1_interview_routing.md",
-      "source_location": "L20",
-      "_origin": "ast",
-      "id": "graphify_out_memory_query_20261113_135822_grill_plan_phase1_interview_routing_source_nodes",
-      "community": 101,
-      "norm_label": "source nodes"
     },
     {
       "label": "SKILL.md",
@@ -14062,7 +14004,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_commands",
-      "community": 242,
+      "community": 15,
       "norm_label": "commands"
     },
     {
@@ -14072,7 +14014,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_core",
-      "community": 242,
+      "community": 15,
       "norm_label": "core"
     },
     {
@@ -14082,7 +14024,7 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_navigation",
-      "community": 242,
+      "community": 15,
       "norm_label": "navigation"
     },
     {
@@ -14092,7 +14034,7 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_keyboard",
-      "community": 242,
+      "community": 15,
       "norm_label": "keyboard"
     },
     {
@@ -14102,7 +14044,7 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_mouse",
-      "community": 242,
+      "community": 15,
       "norm_label": "mouse"
     },
     {
@@ -14112,7 +14054,7 @@
       "source_location": "L96",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_save_as",
-      "community": 242,
+      "community": 15,
       "norm_label": "save as"
     },
     {
@@ -14122,7 +14064,7 @@
       "source_location": "L106",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_tabs",
-      "community": 242,
+      "community": 15,
       "norm_label": "tabs"
     },
     {
@@ -14132,7 +14074,7 @@
       "source_location": "L117",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_storage",
-      "community": 242,
+      "community": 15,
       "norm_label": "storage"
     },
     {
@@ -14142,7 +14084,7 @@
       "source_location": "L148",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_network",
-      "community": 242,
+      "community": 15,
       "norm_label": "network"
     },
     {
@@ -14152,7 +14094,7 @@
       "source_location": "L158",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_devtools",
-      "community": 242,
+      "community": 15,
       "norm_label": "devtools"
     },
     {
@@ -14162,7 +14104,7 @@
       "source_location": "L196",
       "_origin": "ast",
       "id": "skills_playwright_cli_skill_webmcp",
-      "community": 242,
+      "community": 15,
       "norm_label": "webmcp"
     },
     {
@@ -14422,7 +14364,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_request_mocking",
-      "community": 122,
+      "community": 52,
       "norm_label": "request-mocking.md"
     },
     {
@@ -14822,7 +14764,7 @@
       "source_location": "L195",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_session_management_best_practices",
-      "community": 40,
+      "community": 101,
       "norm_label": "best practices"
     },
     {
@@ -14832,7 +14774,7 @@
       "source_location": "L197",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_session_management_1_name_browser_sessions_semantically",
-      "community": 40,
+      "community": 101,
       "norm_label": "1. name browser sessions semantically"
     },
     {
@@ -14842,7 +14784,7 @@
       "source_location": "L208",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_session_management_2_always_clean_up",
-      "community": 40,
+      "community": 101,
       "norm_label": "2. always clean up"
     },
     {
@@ -14852,7 +14794,7 @@
       "source_location": "L222",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_session_management_3_delete_stale_browser_data",
-      "community": 40,
+      "community": 101,
       "norm_label": "3. delete stale browser data"
     },
     {
@@ -15492,7 +15434,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_trace_output_files",
-      "community": 54,
+      "community": 232,
       "norm_label": "trace output files"
     },
     {
@@ -15502,7 +15444,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_trace_timestamp_trace",
-      "community": 54,
+      "community": 232,
       "norm_label": "`trace-{timestamp}.trace`"
     },
     {
@@ -15512,7 +15454,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_trace_timestamp_network",
-      "community": 54,
+      "community": 232,
       "norm_label": "`trace-{timestamp}.network`"
     },
     {
@@ -15522,7 +15464,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_resources",
-      "community": 54,
+      "community": 232,
       "norm_label": "`resources/`"
     },
     {
@@ -36775,50 +36717,6 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "graphify-out/memory/query_20261113_135822_grill_plan_phase1_interview_routing.md",
-      "source_location": "L10",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "graphify_out_memory_query_20261113_135822_grill_plan_phase1_interview_routing",
-      "target": "graphify_out_memory_query_20261113_135822_grill_plan_phase1_interview_routing_q_grill_plan_phase1_interview_routing",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "graphify-out/memory/query_20261113_135822_grill_plan_phase1_interview_routing.md",
-      "source_location": "L12",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "graphify_out_memory_query_20261113_135822_grill_plan_phase1_interview_routing_q_grill_plan_phase1_interview_routing",
-      "target": "graphify_out_memory_query_20261113_135822_grill_plan_phase1_interview_routing_answer",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "graphify-out/memory/query_20261113_135822_grill_plan_phase1_interview_routing.md",
-      "source_location": "L16",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "graphify_out_memory_query_20261113_135822_grill_plan_phase1_interview_routing_q_grill_plan_phase1_interview_routing",
-      "target": "graphify_out_memory_query_20261113_135822_grill_plan_phase1_interview_routing_outcome",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "graphify-out/memory/query_20261113_135822_grill_plan_phase1_interview_routing.md",
-      "source_location": "L20",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "graphify_out_memory_query_20261113_135822_grill_plan_phase1_interview_routing_q_grill_plan_phase1_interview_routing",
-      "target": "graphify_out_memory_query_20261113_135822_grill_plan_phase1_interview_routing_source_nodes",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
       "source_location": "L13",
       "weight": 1.0,
@@ -55298,5 +55196,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "6e0e83177ca331c8cd7ee16c87fef1e76c0c60f2"
+  "built_at_commit": "4d4d2311b72589e3754cfb502a9537959dad147f"
 }

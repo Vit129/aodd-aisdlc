@@ -3,21 +3,55 @@
 All notable changes to aodd-aisdlc are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and it follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [Unreleased]
-
-### Changed
-- Every file-changing request runs `ai-sdlc` (`rules/aodd.md`, `rules/ai-sdlc-workflow.md`): size picks the entry phase, but the testing and dev steps never skip; only a pure question is answered without the workflow
-- Every bug goes through the debugging skill (`9arm-skills:debug-mantra` when installed) before a fix, then the Logic path with a regression test first
-- Small triage row and `chief-of-staff` micro now point at the `ai-sdlc` Light / Logic paths instead of "just do it"; `CONTEXT.md` and `rules/coding.md` updated to match
-- `delivery-workflow` skill: required setup now names the test server, the changelog generator (one per repo) and the `9arm-skills` debugging plugin (with a check and install step); docs-only changes take `skip`; a per-repo adapter template in `references/project-adapters.md`
-- `delivery-workflow` skill: a "Tag and GitHub release" section with the remote-tag and release-page checks, the question of whether CI or a local helper creates the release, and the rule that a helper moving a tag is a gap
-
-## [0.8.0] - 2026-11-05
+## [0.8.1] - 2026-11-13
 
 ### Added
-- Shared effort ladder and bake-off rule in `rules/aodd.md`, per-ticket `Agent:` / `Model:` / `Effort:` lines in `ai-sdlc-progress-spec.md`
-- Vendor mappings in their own files: `rules/claude-effort.md` (Claude Code), `rules/agy-effort.md` (agy) and `rules/codex-effort.md` (Codex), each only where that tool is used
+- Require user approval and add subagent dispatch criteria (#58) (`5ada1af`)
+- Run the audit only on request or for risky work (#59) (`42d23a1`)
+- Shared effort ladder with per-vendor files (v0.8.0) (#64) (`106da5c`)
+- Every change runs ai-sdlc with test+dev; bugs go through the debugging skill (`803165c`)
+- Delegation-nudge reminds the main session to hand lookups to Haiku (`7c51ff2`)
+- Delegation-nudge applies the same rule on Codex (sol/terra/luna) (`351c7f7`)
+- DONE_GATE_ITEMS=0 turns off the done-gate open-items reminder (`e506b4f`)
+- Make step-by-step workflow skills user-invoked so routing does not depend on description word matches (`0a2a0e9`)
+- Add skill_trigger_eval to measure whether a model opens a skill from unseen phrasings (`2024006`)
+- Split ai-sdlc Phase 1 grilling into grill-plan so the questioning does not rush toward the design it can see ahead (`ad5e964`)
+
+### Changed
+- Keep the commit-preparation rule in one place so the always-loaded rules stop paying for it three times (`ced9436`)
+- Prune aodd.md sentences that restate another section or vendor file (`b7ac279`)
+- Drop per-language checker list, move effort files to rules/effort/, remove duplicate rule sentences (`380ce23`)
+- Split aodd.md into core + rules/aodd/{delegation,git-ops}, one home per rule, shrink always-loaded text (`e077633`)
+- Make ai-sdlc-workflow.md the one always-loaded rule, delete aodd.md, rename rules/aodd/ to rules/ai-sdlc/ (`d5d669a`)
+- Consolidate interview into an HTML plan ready for coding (`6e0e831`)
+
+### Documentation
+- Add ARCHITECTURE and CONTEXT per project structure standard (`719519c`)
+- Close stdin when running codex exec from an agent (#63) (`8305598`)
+- Require a clean tree after deploy and npm ci in deploy hooks (`e057b1d`)
+- Pair with Cloudflare security-audit for full audits (`b93536a`)
+- Require changelog, test server and the 9arm debugging plugin; docs-only takes skip (`1880650`)
+- Verify the tag and GitHub release; flag tag-moving helpers as a gap (`58073c9`)
+- Scope skill_trigger_eval to skills that must stay model-invoked; user-invoked is the first fix (`03c18fa`)
+
+### Fixed
+- Give throwaway test repos a git identity (#60) (`1f607a7`)
+- Refresh Graphify before every commit and keep graph in the same commit (#65) (`f939820`)
+- Done-gate repeats the same open-items list on every stop (`f3cf1af`)
+- Stop after grill-plan hands back so the grilling never sees the phase that follows (`657abe4`)
+- Say where skills/ resolves and keep the named workflow stops out of the no-micro-approval rule (`04de980`)
+- Skill_trigger_eval no longer crashes on stream events whose message is a string (`f13d4bb`)
+- Keep ai-sdlc, chief-of-staff and grill-plan model-invoked so the agent and other skills can reach them (`6b4541d`)
+- Rewrite ai-sdlc, chief-of-staff and grill-plan descriptions around real phrasing and what is not their job (`ae4d40d`)
+- Start every subagent and CLI agent run at low effort, announce it first, step up low to medium to high (`3cf6827`)
+- Drop the vendor-switch step from the effort escalation in the vendor files (`8d01464`)
+- Drop the vendor-switch step from the aodd.md effort ladder (`b532b3f`)
+- Rename rules/effort/claude.md to claude-code.md so a case-insensitive filesystem does not load it as CLAUDE.md (`b5eed6d`)
+- Skill-capture nudge no longer lists a shell $var or glob as a loaded skill (`c3cc693`)
+- Delegation-nudge points at rules/ai-sdlc/delegation.md with the effort and announce rule; installer upgrades unguarded hook commands in place (`1145f23`)
+
+### wip
+- Project release profiles (unfinished, saved to unblock new worktrees) (#62) (`f0b37e7`)
 
 ## [0.7.0] - 2026-10-30
 
@@ -191,3 +225,4 @@ All notable changes to aodd-aisdlc are documented here. The format is based on
 ### Added
 - Initial release: AODD + ai-sdlc for Claude Code and Codex (`d75adf4`)
 - Done-gate and skill-capture read Codex rollouts; auditor deny verified live (`bb16c85`)
+

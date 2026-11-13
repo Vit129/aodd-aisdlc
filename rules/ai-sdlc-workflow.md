@@ -15,7 +15,7 @@ handoffs), `$AODD_STATE`. Resolve one with `python3 hooks/_aodd_paths.py reports
 | Any file change (code, config, tests, UI) | The path table below picks the entry phase; the dev step and the QA testing step never skip |
 | Spends money, reaches an outside party, irreversible | Stop and ask the CEO first |
 
-`chief-of-staff`, `ai-sdlc` and `grill-plan` are model-invoked; `agent-ops`, `housekeeping` and `delivery-workflow` are
+`chief-of-staff` and `ai-sdlc` are model-invoked; `agent-ops`, `housekeeping` and `delivery-workflow` are
 user-started (`/<name>`). When this contract routes work to a skill, invoke it and name it in the reply.
 
 ## Paths: pick by what changes, not by size
@@ -32,9 +32,9 @@ Only the Requirement path has approval gates. A change can carry several kinds (
 Phase files live in `skills/ai-sdlc/phases/` (Phase map in `skills/ai-sdlc/SKILL.md`); mechanics in `skills/ai-sdlc/references/`.
 
 **Every path, always:**
-1. Interview: if the requirement is complete, skip it. If it is not, run `grill-plan` (one question at a time) and produce an
+1. Interview: if the requirement is complete, skip it. If it is not, use Phase 1 interview and produce an
    `.html` file of the agreed requirement and plan (render it with an artifact tool when available, else save it as
-   `$AODD_PLANS/<feature>/plan.html`). No code before that.
+   `$AODD_PLANS/<feature>/plan.html`). Refine it until ready for coding (Phase 1 defines readiness); no code before that.
 2. Read `skills/ai-sdlc/references/dev-qa-pattern.md` (tagging, invariants, test barriers), then a dev step and a QA testing step.
 3. Last step, after everything passes: run `graphify update .` when `graphify-out/` exists; stage its tracked files with the
    commit (`rules/ai-sdlc/git-ops.md`).

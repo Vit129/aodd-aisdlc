@@ -1,34 +1,41 @@
 # Phase 1 — Interview
 
-> Load when you start Phase 1. Parent: `rules/ai-sdlc-workflow.md`.
+> Load when clarification or idea questioning is needed. Parent: `rules/ai-sdlc-workflow.md`.
 
+## Interview
 
-Route by situation:
-- Vague or underspecified idea, or a high-stakes / hard-to-reverse decision → **grill it**:
-  invoke the `grill-plan` skill (`skills/grill-plan/SKILL.md`) and follow only it until it hands back the spec
-  (save it as `brief.md` next to the progress file). While in it, draft no design and touch
-  no code: the grilling ends when no fork is left open, not when there is enough to start.
-  When it hands back, produce the `.html` file of the agreed requirement and plan (workflow § Every path), then **stop**: show it and wait for the user to continue
-  (`/ai-sdlc <slug>` again, or "continue").
-- Has codebase → read the code the plan touches first, so questions the code can answer are
-  never asked; note where the plan's language drifts from what the code already calls things,
-  and record any real ADR-worthy decision inline.
-- Framework/library specific, API version matters → a Haiku subagent fetches the primary
-  docs and returns facts + sources; read the cited parts before relying on them.
+Use the request and visible context to pick the path (§ Paths in the parent workflow).
+If the goal, scope and acceptance criteria are complete, skip questions and take that path.
+Otherwise identify the weakest assumptions and unresolved choices. Follow each answer to
+what it leaves open, challenge contradictions, and finish when every branch has a decision,
+or the user says to stop. Having enough to start is not enough to end the interview.
 
-**Phase 1 also picks the path** (§ Paths in `rules/ai-sdlc-workflow.md`): name the kind of change (logic, UX/UI, requirement, or several). When the kind is unclear, that is the first question to settle; anything else still unclear is settled here too, before design.
+1. Read relevant code and docs first. Never ask a question those sources can answer; use the
+   codebase's terms and note any ADR-worthy decision. For version-sensitive framework/API
+   facts, verify primary docs (delegation mechanics: `rules/ai-sdlc/delegation.md`).
+2. Ask **one at a time** (`AskUserQuestion` where available), recommend an answer with its
+   reason, and resolve any contradiction with earlier answers or the code. If the kind of
+   change is unclear, settle that first.
+3. Draft no design and touch no product code during questioning. Keep decisions in the plan.
 
-The scope check comes first, silently: if scope is already unambiguous from the request + visible context (typo fix, single clear bug, direct question, explain/summarize/search/diagnose), state the 1-line scope read and skip straight to the fitting phase/action — don't invoke any of the above.
+## Build the artifact until ready for coding
 
-**On the Requirement path, Phase 1 is not skippable and hands off to plan mode.**
-The scope-check skip is for collapsed tasks only. On the Requirement path, close Phase 1 by stating
-the resolved scope (spec summary + any assumptions still open) in the response, then —
-enter plan mode (`EnterPlanMode` in Claude Code; elsewhere a plan file in `$AODD_PLANS/[FEATURE]/` that the user approves)
-*before* writing any Phase 2 design, so Phase 2 drafts inside plan mode and Gate 1 is the explicit user approval
-(mechanics: `skills/ai-sdlc/references/dev-qa-handoff.md`). Keep all interview/planning context in the plan;
-do not edit repo living docs (`PRODUCT.md`, `ARCHITECTURE.md`, etc.) or product code until Gate 1 is approved.
-Never go interview → architect file directly without passing through plan mode.
+Capture the goal, scope in / out, acceptance criteria and decisions with reasons in `brief.md`
+next to the progress file. This is input to the artifact, not the endpoint of the work.
+After questioning, create the agreed requirement and implementation plan as an HTML file
+(`plan.html`; rendering and storage follow the parent workflow § Every path).
+Continue refining that artifact through the design and QA planning phases required by the
+chosen path until it is ready for coding. Do not stop at a brief or ask for an extra
+"continue" between interview and artifact preparation.
 
-**Update `ai-sdlc-task-progress.md` now** — initialize it if this is the first phase touching
-this feature, record the spec/decisions this phase produced (§ Incremental Update Rule,
-`skills/ai-sdlc/references/ai-sdlc-progress-spec.md`).
+The artifact is ready when the scope and acceptance criteria are settled, implementation
+steps and affected files are clear, verification cases and test seams are defined, and
+no decision blocking coding remains open. Apply the parent workflow's approval gates at
+their named points; proceed to coding only after the applicable approvals. If the user
+explicitly asks for questions only or asks to stop, respect that narrower scope.
+
+On the Requirement path, enter plan mode before Phase 2 design (`EnterPlanMode` in Claude
+Code; elsewhere a plan file in `$AODD_PLANS/[FEATURE]/` for approval), even when questions were skipped.
+Handoff mechanics: `skills/ai-sdlc/references/dev-qa-handoff.md`. Record decisions and artifact
+links in the existing task progress file when required
+(`skills/ai-sdlc/references/ai-sdlc-progress-spec.md`); single-sitting work skips it.

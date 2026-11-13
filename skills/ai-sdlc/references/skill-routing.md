@@ -10,7 +10,7 @@ do the step directly.
 | Epic too big for one session / complex unknowns | Chart the decision map directly as a written doc |
 | Codebase / ecosystem investigation | Haiku subagent(s) return facts + sources; the big model reads what it relies on |
 | Exploratory spike / feasibility check | Throwaway spike in `.tmp/` or a scratch branch, deleted after it answers the question |
-| Deep interview / stress-test an idea or plan | Phase 1 grill (`skills/ai-sdlc/phases/phase1-interview.md`) |
+| Deep interview / stress-test an idea or plan | Phase 1 interview (`skills/ai-sdlc/phases/phase1-interview.md`) |
 | Structured spec needed | Write it directly as a short markdown doc |
 | Domain language / `CONTEXT.md` | `references/dev-qa-handoff.md` § Domain Language |
 | Interface & seam design (deep modules, adapters) | Phase 2 design (deep modules, seams agreed with QA in Phase 3) |

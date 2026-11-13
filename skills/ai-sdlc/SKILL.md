@@ -1,7 +1,7 @@
 ---
 name: ai-sdlc
 description: >
-  Change behaviour with tests: "build a feature" / "เพิ่มฟีเจอร์" in new or existing code; "refactor across files" needing QA coverage. Vague feature requests stay here; calls grill-plan to clarify. Idea questioning only: grill-plan. Whole jobs across disciplines: chief-of-staff.
+  Change behaviour with tests: "build a feature" / "เพิ่มฟีเจอร์" in new or existing code; "refactor across files" needing QA coverage. Vague feature requests and idea questioning use Phase 1 interview; continue into an artifact refined until ready for coding. Whole jobs across disciplines: chief-of-staff.
 version: 1.0.1
 ---
 

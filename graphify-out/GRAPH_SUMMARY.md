@@ -1,15 +1,15 @@
-# Graph Summary — fix-skill-md-var
+# Graph Summary — aodd-aisdlc
 _Auto-generated from GRAPH_REPORT.md · do not edit manually_
 _Regen: `graphify update .`_
 
 ## Summary
-- 2466 nodes · 2673 edges · 248 communities (217 shown, 31 thin omitted)
+- 2472 nodes · 2679 edges · 248 communities (219 shown, 29 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 13 edges (avg confidence: 0.62)
 - Token cost: 0 input · 0 output
 
 
 ## Graph Freshness
-- Built from commit: `7ce35e5e`
+- Built from commit: `d8871af7`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 

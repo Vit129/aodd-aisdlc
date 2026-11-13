@@ -1,16 +1,16 @@
-# Graph Report - fix-skill-md-var  (2026-11-13)
+# Graph Report - aodd-aisdlc  (2026-11-13)
 
 ## Corpus Check
-- 259 files · ~176,581 words
+- 259 files · ~176,705 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2466 nodes · 2673 edges · 248 communities (217 shown, 31 thin omitted)
+- 2472 nodes · 2679 edges · 248 communities (219 shown, 29 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 13 edges (avg confidence: 0.62)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `7ce35e5e`
+- Built from commit: `d8871af7`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -57,7 +57,7 @@ node's neighbors span, not by raw edge count.
 ## Import Cycles
 - None detected.
 
-## Communities (248 total, 31 thin omitted)
+## Communities (248 total, 29 thin omitted)
 
 ### Community 0 - "_aodd_paths.py"
 Cohesion: 0.06
@@ -465,7 +465,7 @@ Nodes (8): Anti-Patterns, Constraints, Save Rubric (before patching a skill), Se
 
 ### Community 101 - "AODD: the operating contract"
 Cohesion: 0.40
-Nodes (5): 1.1 Prerequisite: workspace, 1.2 Prerequisite: seed test, 1.3 Explore the app, 1.4 Write the spec file, 1. Planning
+Nodes (4): Answer, Outcome, Q: grill-plan phase1 interview routing, Source Nodes
 
 ### Community 102 - "data-testid Naming Convention"
 Cohesion: 0.22
@@ -751,6 +751,10 @@ Nodes (4): Codex effort mapping, Setting effort, Start effort, Tiers (same roles
 Cohesion: 0.33
 Nodes (5): Design, Interaction principles, Interface model, Preview, Release gate
 
+### Community 195 - "phase1-interview.md"
+Cohesion: 0.50
+Nodes (3): Build the artifact until ready for coding, Interview, Phase 1 — Interview
+
 ### Community 223 - "How the audit works"
 Cohesion: 0.33
 Nodes (5): Out of scope, Product, Purpose, Supported delivery, Users and interface
@@ -789,7 +793,7 @@ Nodes (3): Claude Code effort syntax, Setting effort, Start effort
 
 ### Community 232 - "2. Generate"
 Cohesion: 0.40
-Nodes (5): 2.1 Inputs, 2.2 Generate one scenario, 2.3 Generate multiple scenarios, 2.4 Run generated tests, 2. Generate
+Nodes (5): 1.1 Prerequisite: workspace, 1.2 Prerequisite: seed test, 1.3 Explore the app, 1.4 Write the spec file, 1. Planning
 
 ### Community 233 - "[0.2.0] - 2026-10-17"
 Cohesion: 0.67
@@ -807,9 +811,13 @@ Nodes (3): [0.6.0] - 2026-10-23, Added, Documentation
 Cohesion: 0.50
 Nodes (3): Commit preparation, Git ops: the Haiku ops runner and commit preparation, Haiku ops runner
 
-### Community 240 - "Best Practices"
+### Community 240 - "[0.3.4] - 2026-10-17"
 Cohesion: 0.67
 Nodes (3): [0.3.4] - 2026-10-17, Documentation, Fixed
+
+### Community 243 - "2. Generate"
+Cohesion: 0.40
+Nodes (5): 2.1 Inputs, 2.2 Generate one scenario, 2.3 Generate multiple scenarios, 2.4 Run generated tests, 2. Generate
 
 ### Community 245 - "Best Practices"
 Cohesion: 0.39
@@ -820,9 +828,9 @@ Cohesion: 0.21
 Nodes (9): hook_files(), hook_strings(), markdown_files(), norm_words(), _ok(), Shared file set for the rule guard tests: markdown rule text plus str constants, (lineno, text) for each str constant in a hook; docstrings=False drops them (nev, (relpath, lineno, text) for every line of markdown and every hook string constan (+1 more)
 
 ## Knowledge Gaps
-- **1414 isolated node(s):** `name`, `pull_request`, `push`, `contents`, `check` (+1409 more)
+- **1417 isolated node(s):** `name`, `pull_request`, `push`, `contents`, `check` (+1412 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **31 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **29 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 - **15 possibly unreachable function(s):** `_size()`, `ask_model()`, `git()`, `housekeeping_scan()`, `job_agent_ops()` (+10 more)
   Not reached from any recognized entry point - could be dead code, or dynamically dispatched/decorator-registered.
 
@@ -831,12 +839,12 @@ _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `log()` connect `_aodd_paths.py` to `BM25`?**
   _High betweenness centrality (0.004) - this node is a cross-community bridge._
+- **Why does `Test generation (plan → generate → heal)` connect `3. Heal` to `2. Generate`, `2. Generate`, `SKILL.md`?**
+  _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **Why does `_get_bm25()` connect `core.py` to `BM25`?**
   _High betweenness centrality (0.002) - this node is a cross-community bridge._
-- **Why does `BM25` connect `BM25` to `core.py`?**
-  _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **What connects `name`, `pull_request`, `push` to the rest of the system?**
-  _1513 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1516 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `_aodd_paths.py` be split into smaller, more focused modules?**
   _Cohesion score 0.057297297297297295 - nodes in this community are weakly interconnected._
 - **Should `Fix Generated Playwright Files (Postman Migration)` be split into smaller, more focused modules?**

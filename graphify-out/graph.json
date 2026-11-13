@@ -1701,7 +1701,7 @@
       "file_type": "code",
       "source_file": "hooks/test_delegation_nudge.py",
       "source_location": "L1",
-      "end_line": 72,
+      "end_line": 75,
       "_origin": "ast",
       "id": "hooks_test_delegation_nudge",
       "community": 0,
@@ -2228,7 +2228,7 @@
       "label": "write_aodd_block()",
       "file_type": "code",
       "source_file": "install.sh",
-      "source_location": "L307",
+      "source_location": "L312",
       "metadata": {
         "language": "bash",
         "kind": "bash_function"
@@ -4298,7 +4298,7 @@
       "file_type": "code",
       "source_file": "scripts/test_install.py",
       "source_location": "L1",
-      "end_line": 206,
+      "end_line": 230,
       "_origin": "ast",
       "id": "scripts_test_install",
       "community": 80,
@@ -4336,6 +4336,17 @@
       "id": "scripts_test_install_tree",
       "community": 80,
       "norm_label": "tree()"
+    },
+    {
+      "label": "hook_cmds()",
+      "file_type": "code",
+      "source_file": "scripts/test_install.py",
+      "source_location": "L208",
+      "end_line": 209,
+      "_origin": "ast",
+      "id": "scripts_test_install_hook_cmds",
+      "community": 80,
+      "norm_label": "hook_cmds()"
     },
     {
       "label": "test_post_merge.py",
@@ -4572,7 +4583,7 @@
       "file_type": "code",
       "source_file": "scripts/test_skill_invocation.py",
       "source_location": "L1",
-      "end_line": 38,
+      "end_line": 37,
       "_origin": "ast",
       "id": "scripts_test_skill_invocation",
       "community": 249,
@@ -6942,6 +6953,64 @@
       "norm_label": "curation"
     },
     {
+      "label": "query_20261113_135822_grill_plan_phase1_interview_routing.md",
+      "file_type": "document",
+      "source_file": "graphify-out/memory/query_20261113_135822_grill_plan_phase1_interview_routing.md",
+      "source_location": "L1",
+      "frontmatter": {
+        "type": "query",
+        "date": "2026-11-13T13:58:22.152403+00:00",
+        "question": "grill-plan phase1 interview routing",
+        "contributor": "graphify",
+        "outcome": "useful",
+        "source_nodes": "[\"phase1-interview.md\", \"Grill the plan\"]"
+      },
+      "_origin": "ast",
+      "id": "graphify_out_memory_query_20261113_135822_grill_plan_phase1_interview_routing",
+      "community": 101,
+      "norm_label": "query_20261113_135822_grill_plan_phase1_interview_routing.md"
+    },
+    {
+      "label": "Q: grill-plan phase1 interview routing",
+      "file_type": "document",
+      "source_file": "graphify-out/memory/query_20261113_135822_grill_plan_phase1_interview_routing.md",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "graphify_out_memory_query_20261113_135822_grill_plan_phase1_interview_routing_q_grill_plan_phase1_interview_routing",
+      "community": 101,
+      "norm_label": "q: grill-plan phase1 interview routing"
+    },
+    {
+      "label": "Answer",
+      "file_type": "document",
+      "source_file": "graphify-out/memory/query_20261113_135822_grill_plan_phase1_interview_routing.md",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "graphify_out_memory_query_20261113_135822_grill_plan_phase1_interview_routing_answer",
+      "community": 101,
+      "norm_label": "answer"
+    },
+    {
+      "label": "Outcome",
+      "file_type": "document",
+      "source_file": "graphify-out/memory/query_20261113_135822_grill_plan_phase1_interview_routing.md",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "graphify_out_memory_query_20261113_135822_grill_plan_phase1_interview_routing_outcome",
+      "community": 101,
+      "norm_label": "outcome"
+    },
+    {
+      "label": "Source Nodes",
+      "file_type": "document",
+      "source_file": "graphify-out/memory/query_20261113_135822_grill_plan_phase1_interview_routing.md",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "graphify_out_memory_query_20261113_135822_grill_plan_phase1_interview_routing_source_nodes",
+      "community": 101,
+      "norm_label": "source nodes"
+    },
+    {
       "label": "SKILL.md",
       "file_type": "document",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
@@ -6949,7 +7018,6 @@
       "frontmatter": {
         "name": "agent-memory",
         "description": ">",
-        "Agent memory setup": "bootstrap agent memory\", \"setup memory\", \"\u0e2a\u0e23\u0e49\u0e32\u0e07 agent memory\", \"reset memory\", \"memory template\", \"initialize memory files\"; also the memory file structure, session flow and knowledge capture, for coding and non-coding tasks.",
         "version": "4.0.1"
       },
       "_origin": "ast",
@@ -6961,7 +7029,7 @@
       "label": "Agent Memory",
       "file_type": "document",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L8",
+      "source_location": "L13",
       "_origin": "ast",
       "id": "optional_agent_memory_skills_agent_memory_skill_agent_memory",
       "community": 68,
@@ -6971,7 +7039,7 @@
       "label": "Memory structure",
       "file_type": "document",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L13",
+      "source_location": "L18",
       "_origin": "ast",
       "id": "optional_agent_memory_skills_agent_memory_skill_memory_structure",
       "community": 68,
@@ -6981,7 +7049,7 @@
       "label": "Bootstrap",
       "file_type": "document",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L26",
+      "source_location": "L31",
       "_origin": "ast",
       "id": "optional_agent_memory_skills_agent_memory_skill_bootstrap",
       "community": 68,
@@ -6991,7 +7059,7 @@
       "label": "When to load each reference",
       "file_type": "document",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L37",
+      "source_location": "L42",
       "_origin": "ast",
       "id": "optional_agent_memory_skills_agent_memory_skill_when_to_load_each_reference",
       "community": 68,
@@ -7001,7 +7069,7 @@
       "label": "Knowledge capture",
       "file_type": "document",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L46",
+      "source_location": "L51",
       "_origin": "ast",
       "id": "optional_agent_memory_skills_agent_memory_skill_knowledge_capture",
       "community": 68,
@@ -7011,7 +7079,7 @@
       "label": "Promotion flow",
       "file_type": "document",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L52",
+      "source_location": "L57",
       "_origin": "ast",
       "id": "optional_agent_memory_skills_agent_memory_skill_promotion_flow",
       "community": 68,
@@ -7021,7 +7089,7 @@
       "label": "Rules",
       "file_type": "document",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L59",
+      "source_location": "L64",
       "_origin": "ast",
       "id": "optional_agent_memory_skills_agent_memory_skill_rules",
       "community": 68,
@@ -7031,7 +7099,7 @@
       "label": "Session search",
       "file_type": "document",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L69",
+      "source_location": "L74",
       "_origin": "ast",
       "id": "optional_agent_memory_skills_agent_memory_skill_session_search",
       "community": 68,
@@ -7041,7 +7109,7 @@
       "label": "Context compression",
       "file_type": "document",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L79",
+      "source_location": "L84",
       "_origin": "ast",
       "id": "optional_agent_memory_skills_agent_memory_skill_context_compression",
       "community": 68,
@@ -7051,7 +7119,7 @@
       "label": "Verification",
       "file_type": "document",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L83",
+      "source_location": "L88",
       "_origin": "ast",
       "id": "optional_agent_memory_skills_agent_memory_skill_verification",
       "community": 68,
@@ -7061,7 +7129,7 @@
       "label": "Self-update",
       "file_type": "document",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L88",
+      "source_location": "L93",
       "_origin": "ast",
       "id": "optional_agent_memory_skills_agent_memory_skill_self_update",
       "community": 68,
@@ -9526,7 +9594,7 @@
       "frontmatter": {
         "name": "ai-sdlc",
         "description": ">",
-        "Change behaviour with tests": "build a feature\" / \"\u0e40\u0e1e\u0e34\u0e48\u0e21\u0e1f\u0e35\u0e40\u0e08\u0e2d\u0e23\u0e4c\" in new or existing code; \"refactor across files\" needing QA coverage. Vague feature requests stay here; calls grill-plan to clarify. Idea questioning only: grill-plan. Whole jobs across disciplines: chief-of-staff.",
+        "Change behaviour with tests": "build a feature\" / \"\u0e40\u0e1e\u0e34\u0e48\u0e21\u0e1f\u0e35\u0e40\u0e08\u0e2d\u0e23\u0e4c\" in new or existing code; \"refactor across files\" needing QA coverage. Vague feature requests and idea questioning use Phase 1 interview; a questioning-only request stops after the agreed brief. Whole jobs across disciplines: chief-of-staff.",
         "version": "1.0.1"
       },
       "_origin": "ast",
@@ -9583,6 +9651,26 @@
       "id": "skills_ai_sdlc_phases_phase1_interview_phase_1_interview",
       "community": 195,
       "norm_label": "phase 1 \u2014 interview"
+    },
+    {
+      "label": "Interview",
+      "file_type": "document",
+      "source_file": "skills/ai-sdlc/phases/phase1-interview.md",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "skills_ai_sdlc_phases_phase1_interview_interview",
+      "community": 195,
+      "norm_label": "interview"
+    },
+    {
+      "label": "Build the artifact until ready for coding",
+      "file_type": "document",
+      "source_file": "skills/ai-sdlc/phases/phase1-interview.md",
+      "source_location": "L21",
+      "_origin": "ast",
+      "id": "skills_ai_sdlc_phases_phase1_interview_build_the_artifact_until_ready_for_coding",
+      "community": 195,
+      "norm_label": "build the artifact until ready for coding"
     },
     {
       "label": "phase2-architect.md",
@@ -13026,32 +13114,6 @@
     {
       "label": "SKILL.md",
       "file_type": "document",
-      "source_file": "skills/grill-plan/SKILL.md",
-      "source_location": "L1",
-      "frontmatter": {
-        "name": "grill-plan",
-        "version": "0.1.0",
-        "description": ">",
-        "Question an idea before building": "stress-test my plan\" / \"\u0e0a\u0e48\u0e27\u0e22\u0e17\u0e49\u0e32\u0e17\u0e32\u0e22\u0e41\u0e1c\u0e19\u0e19\u0e35\u0e49\"; or resolve indecision: \"help me choose\" / \"\u0e22\u0e31\u0e07\u0e15\u0e31\u0e14\u0e2a\u0e34\u0e19\u0e43\u0e08\u0e44\u0e21\u0e48\u0e44\u0e14\u0e49\". Feature requests, even vague ones, belong to ai-sdlc, which calls this skill to clarify. Plain questions need a direct answer."
-      },
-      "_origin": "ast",
-      "id": "skills_grill_plan_skill",
-      "community": 248,
-      "norm_label": "skill.md"
-    },
-    {
-      "label": "Grill the plan",
-      "file_type": "document",
-      "source_file": "skills/grill-plan/SKILL.md",
-      "source_location": "L8",
-      "_origin": "ast",
-      "id": "skills_grill_plan_skill_grill_the_plan",
-      "community": 248,
-      "norm_label": "grill the plan"
-    },
-    {
-      "label": "SKILL.md",
-      "file_type": "document",
       "source_file": "skills/hook-authoring/SKILL.md",
       "source_location": "L1",
       "frontmatter": {
@@ -15210,7 +15272,7 @@
       "source_location": "L142",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_1_planning",
-      "community": 101,
+      "community": 232,
       "norm_label": "1. planning"
     },
     {
@@ -15220,7 +15282,7 @@
       "source_location": "L146",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_1_1_prerequisite_workspace",
-      "community": 101,
+      "community": 232,
       "norm_label": "1.1 prerequisite: workspace"
     },
     {
@@ -15230,7 +15292,7 @@
       "source_location": "L162",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_1_2_prerequisite_seed_test",
-      "community": 101,
+      "community": 232,
       "norm_label": "1.2 prerequisite: seed test"
     },
     {
@@ -15240,7 +15302,7 @@
       "source_location": "L203",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_1_3_explore_the_app",
-      "community": 101,
+      "community": 232,
       "norm_label": "1.3 explore the app"
     },
     {
@@ -15250,7 +15312,7 @@
       "source_location": "L234",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_1_4_write_the_spec_file",
-      "community": 101,
+      "community": 232,
       "norm_label": "1.4 write the spec file"
     },
     {
@@ -15260,7 +15322,7 @@
       "source_location": "L281",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_2_generate",
-      "community": 232,
+      "community": 243,
       "norm_label": "2. generate"
     },
     {
@@ -15270,7 +15332,7 @@
       "source_location": "L285",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_2_1_inputs",
-      "community": 232,
+      "community": 243,
       "norm_label": "2.1 inputs"
     },
     {
@@ -15280,7 +15342,7 @@
       "source_location": "L291",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_2_2_generate_one_scenario",
-      "community": 232,
+      "community": 243,
       "norm_label": "2.2 generate one scenario"
     },
     {
@@ -15290,7 +15352,7 @@
       "source_location": "L350",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_2_3_generate_multiple_scenarios",
-      "community": 232,
+      "community": 243,
       "norm_label": "2.3 generate multiple scenarios"
     },
     {
@@ -15300,7 +15362,7 @@
       "source_location": "L354",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_2_4_run_generated_tests",
-      "community": 232,
+      "community": 243,
       "norm_label": "2.4 run generated tests"
     },
     {
@@ -29268,7 +29330,7 @@
       "relation": "defines",
       "confidence": "EXTRACTED",
       "source_file": "install.sh",
-      "source_location": "L307",
+      "source_location": "L312",
       "weight": 1.0,
       "_origin": "ast",
       "source": "install",
@@ -29363,7 +29425,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "install.sh",
-      "source_location": "L328",
+      "source_location": "L333",
       "weight": 1.0,
       "context": "call",
       "_origin": "ast",
@@ -29375,7 +29437,7 @@
       "relation": "calls",
       "confidence": "EXTRACTED",
       "source_file": "install.sh",
-      "source_location": "L363",
+      "source_location": "L368",
       "weight": 1.0,
       "context": "call",
       "_origin": "ast",
@@ -33399,6 +33461,17 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "scripts/test_install.py",
+      "source_location": "L208",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_test_install",
+      "target": "scripts_test_install_hook_cmds",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/test_install.py",
       "source_location": "L109",
       "weight": 1.0,
       "_origin": "ast",
@@ -36660,8 +36733,52 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "graphify-out/memory/query_20261113_135822_grill_plan_phase1_interview_routing.md",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "graphify_out_memory_query_20261113_135822_grill_plan_phase1_interview_routing",
+      "target": "graphify_out_memory_query_20261113_135822_grill_plan_phase1_interview_routing_q_grill_plan_phase1_interview_routing",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "graphify-out/memory/query_20261113_135822_grill_plan_phase1_interview_routing.md",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "graphify_out_memory_query_20261113_135822_grill_plan_phase1_interview_routing_q_grill_plan_phase1_interview_routing",
+      "target": "graphify_out_memory_query_20261113_135822_grill_plan_phase1_interview_routing_answer",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "graphify-out/memory/query_20261113_135822_grill_plan_phase1_interview_routing.md",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "graphify_out_memory_query_20261113_135822_grill_plan_phase1_interview_routing_q_grill_plan_phase1_interview_routing",
+      "target": "graphify_out_memory_query_20261113_135822_grill_plan_phase1_interview_routing_outcome",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "graphify-out/memory/query_20261113_135822_grill_plan_phase1_interview_routing.md",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "graphify_out_memory_query_20261113_135822_grill_plan_phase1_interview_routing_q_grill_plan_phase1_interview_routing",
+      "target": "graphify_out_memory_query_20261113_135822_grill_plan_phase1_interview_routing_source_nodes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L8",
+      "source_location": "L13",
       "weight": 1.0,
       "_origin": "ast",
       "source": "optional_agent_memory_skills_agent_memory_skill",
@@ -36672,7 +36789,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L26",
+      "source_location": "L31",
       "weight": 1.0,
       "_origin": "ast",
       "source": "optional_agent_memory_skills_agent_memory_skill_agent_memory",
@@ -36683,7 +36800,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L79",
+      "source_location": "L84",
       "weight": 1.0,
       "_origin": "ast",
       "source": "optional_agent_memory_skills_agent_memory_skill_agent_memory",
@@ -36694,7 +36811,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L46",
+      "source_location": "L51",
       "weight": 1.0,
       "_origin": "ast",
       "source": "optional_agent_memory_skills_agent_memory_skill_agent_memory",
@@ -36705,7 +36822,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L13",
+      "source_location": "L18",
       "weight": 1.0,
       "_origin": "ast",
       "source": "optional_agent_memory_skills_agent_memory_skill_agent_memory",
@@ -36716,7 +36833,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L59",
+      "source_location": "L64",
       "weight": 1.0,
       "_origin": "ast",
       "source": "optional_agent_memory_skills_agent_memory_skill_agent_memory",
@@ -36727,7 +36844,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L88",
+      "source_location": "L93",
       "weight": 1.0,
       "_origin": "ast",
       "source": "optional_agent_memory_skills_agent_memory_skill_agent_memory",
@@ -36738,7 +36855,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L69",
+      "source_location": "L74",
       "weight": 1.0,
       "_origin": "ast",
       "source": "optional_agent_memory_skills_agent_memory_skill_agent_memory",
@@ -36749,7 +36866,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L83",
+      "source_location": "L88",
       "weight": 1.0,
       "_origin": "ast",
       "source": "optional_agent_memory_skills_agent_memory_skill_agent_memory",
@@ -36760,7 +36877,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L37",
+      "source_location": "L42",
       "weight": 1.0,
       "_origin": "ast",
       "source": "optional_agent_memory_skills_agent_memory_skill_agent_memory",
@@ -36771,7 +36888,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L52",
+      "source_location": "L57",
       "weight": 1.0,
       "_origin": "ast",
       "source": "optional_agent_memory_skills_agent_memory_skill_knowledge_capture",
@@ -39174,6 +39291,28 @@
       "_origin": "ast",
       "source": "skills_ai_sdlc_phases_phase1_interview",
       "target": "skills_ai_sdlc_phases_phase1_interview_phase_1_interview",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "skills/ai-sdlc/phases/phase1-interview.md",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "skills_ai_sdlc_phases_phase1_interview_phase_1_interview",
+      "target": "skills_ai_sdlc_phases_phase1_interview_build_the_artifact_until_ready_for_coding",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "skills/ai-sdlc/phases/phase1-interview.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "skills_ai_sdlc_phases_phase1_interview_phase_1_interview",
+      "target": "skills_ai_sdlc_phases_phase1_interview_interview",
       "confidence_score": 1.0
     },
     {
@@ -42562,17 +42701,6 @@
       "_origin": "ast",
       "source": "skills_git_safety_skill_git_safety",
       "target": "skills_git_safety_skill_rewriting_history_to_change_an_identity",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "skills/grill-plan/SKILL.md",
-      "source_location": "L8",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "skills_grill_plan_skill",
-      "target": "skills_grill_plan_skill_grill_the_plan",
       "confidence_score": 1.0
     },
     {
@@ -55128,5 +55256,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "7ce35e5e92715a2435e2424a3f4d3014edb70098"
+  "built_at_commit": "d8871af7b9c52f4f8364f6c908cd2636a8679c93"
 }

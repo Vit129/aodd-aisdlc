@@ -1,16 +1,16 @@
-# Graph Report - rules-single-source  (2026-11-13)
+# Graph Report - fix-skill-md-var  (2026-11-13)
 
 ## Corpus Check
-- 259 files · ~176,351 words
+- 259 files · ~176,581 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2466 nodes · 2673 edges · 249 communities (216 shown, 33 thin omitted)
+- 2466 nodes · 2673 edges · 248 communities (217 shown, 31 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 13 edges (avg confidence: 0.62)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `e077633f`
+- Built from commit: `7ce35e5e`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -31,7 +31,7 @@ A high-degree node isn't always architecturally central - a widely-used
 utility/config file can rack up more edges than a real coupler while only
 ever touching one area. This ranks by how many DIFFERENT communities a
 node's neighbors span, not by raw edge count.
-1. `Changelog` - bridges 12 areas (18 edges)
+1. `Changelog` - bridges 11 areas (18 edges)
 2. `Test generation (plan → generate → heal)` - bridges 3 areas (6 edges)
 3. `search()` - bridges 2 areas (10 edges)
 4. `generate_design_system()` - bridges 2 areas (8 edges)
@@ -57,7 +57,7 @@ node's neighbors span, not by raw edge count.
 ## Import Cycles
 - None detected.
 
-## Communities (249 total, 33 thin omitted)
+## Communities (248 total, 31 thin omitted)
 
 ### Community 0 - "_aodd_paths.py"
 Cohesion: 0.06
@@ -68,8 +68,8 @@ Cohesion: 0.04
 Nodes (47): 10. Request Body Types 📦, 11. Response Headers 📋, 12. Path Parameters & Query Parameters 🔗, 13. Postman Dynamic Variables 🎲, 14. Folder-level Auth Inheritance 🔐, 15. Folder-level Pre-request Script → beforeAll / beforeEach 🔧, 16. Nested Folders → File Structure 📁, 17. Collection Runner + Data File (Data-Driven) 📊 (+39 more)
 
 ### Community 2 - "Changelog"
-Cohesion: 0.15
-Nodes (12): [0.1.0] - 2026-10-16, [0.3.3] - 2026-10-17, [0.3.4] - 2026-10-17, [0.5.0] - 2026-10-22, [0.8.0] - 2026-11-05, Added, Added, Changelog (+4 more)
+Cohesion: 0.14
+Nodes (13): [0.1.0] - 2026-10-16, [0.3.3] - 2026-10-17, [0.5.0] - 2026-10-22, [0.7.0] - 2026-10-30, [0.8.0] - 2026-11-05, Added, Added, Added (+5 more)
 
 ### Community 3 - "SKILL.md"
 Cohesion: 0.05
@@ -136,8 +136,8 @@ Cohesion: 0.08
 Nodes (24): 1. Global Standards & Tooling Facts, 1. Hybrid Setup (API + Mobile), 2. Automation Strategy, 2. Expert Locators Fallback, 3. Screen Record on Failure, 4. Advanced Data Orchestration (Python Integration), 4. Mobile Expert Patterns & Gems, 5. Mobile Platform Differences (Android vs iOS) (+16 more)
 
 ### Community 19 - "design_system.py"
-Cohesion: 0.11
-Nodes (26): ansi_ljust(), _detect_page_type(), _filter_anti_patterns_for_mode(), format_ascii_box(), format_markdown(), format_master_md(), format_page_override_md(), generate_design_system() (+18 more)
+Cohesion: 0.12
+Nodes (24): ansi_ljust(), _detect_page_type(), format_ascii_box(), format_markdown(), format_master_md(), format_page_override_md(), generate_design_system(), _generate_intelligent_overrides() (+16 more)
 
 ### Community 20 - "Reasoning Engine: 4-Stage Design System Generation"
 Cohesion: 0.08
@@ -156,8 +156,8 @@ Cohesion: 0.27
 Nodes (15): candidates(), describe(), extract_thai_tokens(), gist(), is_long(), is_machine_or_pasted(), is_recall_extra(), keywords() (+7 more)
 
 ### Community 24 - ".generate"
-Cohesion: 0.14
-Nodes (11): DesignSystemGenerator, Generates design system recommendations from aggregated searches., Load reasoning rules from CSV., Execute searches across multiple domains., Find matching reasoning rule for a category., Apply reasoning rules to search results., Select best matching result based on priority keywords., Extract results list from search result dict. (+3 more)
+Cohesion: 0.12
+Nodes (13): DesignSystemGenerator, _filter_anti_patterns_for_mode(), Drop "avoid dark mode" advice once dark mode is the resolved answer., Generates design system recommendations from aggregated searches., Load reasoning rules from CSV., Execute searches across multiple domains., Find matching reasoning rule for a category., Apply reasoning rules to search results. (+5 more)
 
 ### Community 25 - "Web Frameworks"
 Cohesion: 0.10
@@ -807,6 +807,10 @@ Nodes (3): [0.6.0] - 2026-10-23, Added, Documentation
 Cohesion: 0.50
 Nodes (3): Commit preparation, Git ops: the Haiku ops runner and commit preparation, Haiku ops runner
 
+### Community 240 - "Best Practices"
+Cohesion: 0.67
+Nodes (3): [0.3.4] - 2026-10-17, Documentation, Fixed
+
 ### Community 245 - "Best Practices"
 Cohesion: 0.39
 Nodes (8): cli(), leaks(), main(), opened(), Skill names the session called through the Skill tool, from stream-json output., report(), run(), skills_opened()
@@ -818,7 +822,7 @@ Nodes (9): hook_files(), hook_strings(), markdown_files(), norm_words(), _ok(), 
 ## Knowledge Gaps
 - **1414 isolated node(s):** `name`, `pull_request`, `push`, `contents`, `check` (+1409 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **33 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **31 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 - **15 possibly unreachable function(s):** `_size()`, `ask_model()`, `git()`, `housekeeping_scan()`, `job_agent_ops()` (+10 more)
   Not reached from any recognized entry point - could be dead code, or dynamically dispatched/decorator-registered.
 
@@ -837,5 +841,5 @@ _Questions this graph is uniquely positioned to answer:_
   _Cohesion score 0.057297297297297295 - nodes in this community are weakly interconnected._
 - **Should `Fix Generated Playwright Files (Postman Migration)` be split into smaller, more focused modules?**
   _Cohesion score 0.041666666666666664 - nodes in this community are weakly interconnected._
-- **Should `SKILL.md` be split into smaller, more focused modules?**
-  _Cohesion score 0.05128205128205128 - nodes in this community are weakly interconnected._
+- **Should `Changelog` be split into smaller, more focused modules?**
+  _Cohesion score 0.14285714285714285 - nodes in this community are weakly interconnected._

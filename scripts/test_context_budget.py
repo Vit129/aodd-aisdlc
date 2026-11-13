@@ -1,24 +1,23 @@
 #!/usr/bin/env python3
-"""Always-loaded text has a size budget: the contract, Codex's inlined pair, descriptions the model
+"""Always-loaded text has a size budget: the one always-loaded rule file (also Codex's inline), descriptions the model
 reads every session, and long prompt strings in hooks."""
 import re, sys
 from rulescan import root, hook_files, hook_strings
 
-AODD_MAX_LINES, AODD_MAX_CHARS = 60, 9000
-CODEX_INLINE_MAX_LINES = 200
+RULE_MAX_LINES, RULE_MAX_CHARS = 140, 16000
+CODEX_INLINE_MAX_LINES = 140
 DESCRIPTION_MAX = 400
 HOOK_STRING_LONG, HOOK_STRING_MAX = 200, 600
 
 bad = []
-aodd = (root / "rules/aodd.md").read_text(encoding="utf-8")
 wf = (root / "rules/ai-sdlc-workflow.md").read_text(encoding="utf-8")
-if len(aodd.splitlines()) > AODD_MAX_LINES:
-    bad.append(f"rules/aodd.md: {len(aodd.splitlines())} lines > {AODD_MAX_LINES}")
-if len(aodd) > AODD_MAX_CHARS:
-    bad.append(f"rules/aodd.md: {len(aodd)} chars > {AODD_MAX_CHARS}")
-tot = len(aodd.splitlines()) + len(wf.splitlines())
+if len(wf.splitlines()) > RULE_MAX_LINES:
+    bad.append(f"rules/ai-sdlc-workflow.md: {len(wf.splitlines())} lines > {RULE_MAX_LINES}")
+if len(wf) > RULE_MAX_CHARS:
+    bad.append(f"rules/ai-sdlc-workflow.md: {len(wf)} chars > {RULE_MAX_CHARS}")
+tot = len(wf.splitlines())   # Codex and Antigravity inline only this file
 if tot > CODEX_INLINE_MAX_LINES:
-    bad.append(f"Codex inline total (rules/aodd.md + rules/ai-sdlc-workflow.md): {tot} lines > {CODEX_INLINE_MAX_LINES}")
+    bad.append(f"Codex inline total (rules/ai-sdlc-workflow.md): {tot} lines > {CODEX_INLINE_MAX_LINES}")
 
 
 def frontmatter(text):

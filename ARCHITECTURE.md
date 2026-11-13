@@ -20,4 +20,4 @@ The conventions are in `AGENTS.md` under "Conventions".
 
 ## Commit preparation
 
-The commit and graph rules are in `rules/aodd/git-ops.md`. `scripts/graphify_commit.py` is the helper the release runner uses.
+The commit and graph rules are in `rules/ai-sdlc/git-ops.md`. `scripts/graphify_commit.py` is the helper the release runner uses.

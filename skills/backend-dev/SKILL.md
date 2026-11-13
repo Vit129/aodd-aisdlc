@@ -83,7 +83,7 @@ Write comments that AI agents can understand — not just humans:
 | Existing API patterns in codebase | Source code | Match conventions, avoid inconsistency |
 | DB schema / migrations folder | Database | Understand current data model |
 | `references/*.md` (one per concern) | Skill reference | API design, DB, auth, Docker — no framework-specific reference, see Inline Process step 1 |
-| `rules/coding.md` & `rules/aodd.md` | Rule | Core engineering principles and verification gates |
+| `rules/coding.md` & `rules/ai-sdlc-workflow.md` | Rule | Core engineering principles and verification gates |
 | `knowledge/` | Lessons learnt | Check before execute |
 
 Related: drive the implementation test-first (Red→Green), then review the diff before merge against `references/backend-code-review.md`'s checklist.

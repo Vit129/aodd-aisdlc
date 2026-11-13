@@ -7,7 +7,7 @@ Use when the user asks for commit + push, or when it is a stage of a full cycle.
 1. Check the branch, `git status`, the staged diff, and the unstaged diff. Record anything already staged and leave it alone.
 2. Confirm the change is ready. Run the checks the repo requires. Do not claim unrun checks passed.
 3. Review every path. If ownership is unclear, leave that path out and say so.
-4. Stage explicit paths only (`rules/aodd/git-ops.md`). Prove the commit contains exactly those paths (for example inspect `git diff --cached --name-only`). If that cannot be proven without touching pre-existing staged work, stop.
+4. Stage explicit paths only (`rules/ai-sdlc/git-ops.md`). Prove the commit contains exactly those paths (for example inspect `git diff --cached --name-only`). If that cannot be proven without touching pre-existing staged work, stop.
 5. Use the repo's commit convention and make one scoped commit. Verify the hash and the clean worktree afterward.
 
 ## Before pushing

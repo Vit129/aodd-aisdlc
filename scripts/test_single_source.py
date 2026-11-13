@@ -6,17 +6,19 @@ from rulescan import text_units
 
 # topic -> (home files, [signature regexes])
 SINGLE_HOME = {
-    "delegation + effort ladder": (["rules/aodd/delegation.md"], [
+    "delegation + effort ladder": (["rules/ai-sdlc/delegation.md"], [
         r"starts at .low.", r"3 failing checks", r"low\s*(?:->|→|to)\s*medium\s*(?:->|→|to)\s*high",
         r"announce[sd]? (?:the )?(?:effort|level)[^.\n]*once"]),
-    "git ops / commit prep / graph refresh": (["rules/aodd/git-ops.md"], [
+    "git ops / commit prep / graph refresh": (["rules/ai-sdlc/git-ops.md"], [
         r"PYTHONHASHSEED", r"Haiku ops runner", r"never `git add -A`", r"graph-only commit"]),
     "audit command and procedure": (["docs/audit.md"], [r"audit\.py --transcript"]),
     "skill-learning procedure": (["docs/skill-learning.md"], [
         r"Self-Update \(after every use\)", r"auto-captured`? skill"]),
     "ai-sdlc paths, phases, gates": (["rules/ai-sdlc-workflow.md"], [
         r"entered at Phase", r"Logic path entered", r"Requirement path's 3 gates"]),
-    "Boss report shape": (["rules/aodd.md"], [r"Result\W+Evidence\W+Needs (?:your |CEO )?decision"]),
+    "Boss report shape": (["rules/ai-sdlc-workflow.md"], [r"Result\W+Evidence\W+Needs (?:your |CEO )?decision"]),
+    "debugging-skill rule": (["rules/ai-sdlc-workflow.md"], [r"Every bug goes through the debugging skill", r"debugging skill first"]),
+    "size rule": (["rules/ai-sdlc-workflow.md"], [r"pick the smaller"]),
     "skill routing table": (["skills/ai-sdlc/references/skill-routing.md"], [r"Skill-by-situation routing"]),
     "artifact/plan file locations": (["skills/ai-sdlc/references/ai-sdlc-progress-spec.md"], [
         r"agent-memory/plans/\[?<?(?:FEATURE|feature)"]),

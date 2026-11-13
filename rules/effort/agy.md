@@ -1,6 +1,6 @@
 # agy effort mapping
 
-Scope: only for Antigravity (`agy`). Ladder rules: `rules/aodd/delegation.md` § Effort ladder.
+Scope: only for Antigravity (`agy`). Ladder rules: `rules/ai-sdlc/delegation.md` § Effort ladder.
 
 Before writing any prompt or dispatching to `agy` or a Gemini model, read `rules/gemini-prompting.md` in full.
 

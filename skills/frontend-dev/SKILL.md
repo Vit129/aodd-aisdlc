@@ -133,7 +133,7 @@ Before declaring frontend implementation complete, confirm:
 | Existing component patterns in codebase | Source code | Match conventions, reuse patterns |
 | `references/web/` | Reference docs | Web-specific implementation patterns (React/Next.js/Tailwind/Vite) |
 | `uxui-designer` skill output (if exists) | Design spec | Component specs and design tokens |
-| `rules/coding.md` & `rules/aodd.md` | Rule | Core engineering principles and verification gates |
+| `rules/coding.md` & `rules/ai-sdlc-workflow.md` | Rule | Core engineering principles and verification gates |
 | `rules/data-testid-mapping.md` | Rule | Canonical `data-testid` naming — `references/shared/testability-standards.md` implements it, doesn't redefine it |
 | `knowledge/` | Lessons learnt | Check before execute |
 

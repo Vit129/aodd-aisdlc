@@ -7,7 +7,7 @@ import collections, pathlib, re, sys
 from rulescan import root, markdown_files, hook_files, hook_strings, norm_words
 
 # the AODD core set: the contract, the workflow, the docs and the core skills. The shingle check runs only here.
-CORE = ("rules/aodd/", "rules/effort/", "rules/coding", "docs/", "agents/", "skills/ai-sdlc/", "skills/chief-of-staff/",
+CORE = ("rules/ai-sdlc/", "rules/effort/", "rules/coding", "docs/", "agents/", "skills/ai-sdlc/", "skills/chief-of-staff/",
         "skills/grill-plan/", "skills/agent-ops/", "skills/delivery-workflow/", "skills/housekeeping/",
         "hooks/", "optional/")  # plus rules/*.md and the root files, see is_core
 ROOT_FILES = {"AGENTS.md", "README.md", "ARCHITECTURE.md", "CONTEXT.md"}

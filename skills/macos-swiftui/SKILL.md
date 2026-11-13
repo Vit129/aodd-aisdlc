@@ -16,7 +16,7 @@ version: 1.2.2
 | Dependency | Purpose |
 |---|---|
 | `rules/coding.md` | Simplicity first, surgical changes — read before writing code |
-| `rules/aodd.md` | Test-before-deliver: `swift test` must pass before declaring done |
+| `rules/ai-sdlc-workflow.md` | Test-before-deliver: `swift test` must pass before declaring done |
 
 Related: drive `@Observable` model logic Red → Green via XCTest; review view hierarchies before merge.
 

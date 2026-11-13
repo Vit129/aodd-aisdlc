@@ -69,10 +69,10 @@ copy_tree() {  # copy_tree <relative dir> [dest root]: every file except tests a
   done < <(cd "$SRC" && find "$rel" -type f ! -name 'test_*.py' ! -name '*.pyc' ! -path '*/__pycache__/*' ! -path '*/git-hooks/*' | sort)
 }
 
-for d in skills agents adapters rules docs; do copy_tree "$d"; done   # rules/ and docs/: AGENTS.md has no @import, so rules/aodd/*.md are read by path
+for d in skills agents adapters rules docs; do copy_tree "$d"; done   # rules/ and docs/: AGENTS.md has no @import, so rules/ai-sdlc/*.md are read by path
 
 # Instruction file (AGENTS.md / GEMINI.md)
-BLOCK="$(printf '<!-- aodd:begin -->\n> The rules/, docs/ and skills/ paths named below live under %s; read rules/aodd/*.md there when the contract says so.\n\n' "$AGY_HOME"; cat "$SRC/rules/aodd.md"; printf '\n'; cat "$SRC/rules/ai-sdlc-workflow.md"; printf '\n<!-- aodd:end -->\n')"
+BLOCK="$(printf '<!-- aodd:begin -->\n> The rules/, docs/ and skills/ paths named below live under %s; read rules/ai-sdlc/*.md there when the contract says so.\n\n' "$AGY_HOME"; cat "$SRC/rules/ai-sdlc-workflow.md"; printf '\n<!-- aodd:end -->\n')"
 if [ "$DRY" = 1 ]; then
   echo "AGENTS  $AG <- aodd block (would write)"
 else

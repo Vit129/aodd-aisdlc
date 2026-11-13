@@ -7,7 +7,7 @@ description: >
 
 # Chief of Staff — one brief in, one report out
 
-Entered from the AODD triage in `rules/aodd.md`: **micro** (small logic fixes) = no brief question; runs the `ai-sdlc` Logic path (`rules/ai-sdlc-workflow.md`): state a one-line Done yourself, run the tests, check the diff against design docs/README, report in the `rules/aodd.md` shape; **light** (medium tasks) = steps 1-2 and 4; **full** (large tasks) = everything.
+Entered from the AODD triage in `rules/ai-sdlc-workflow.md`: **micro** (small logic fixes) = no brief question; runs the `ai-sdlc` Logic path (`rules/ai-sdlc-workflow.md`): state a one-line Done yourself, run the tests, check the diff against design docs/README, report in the `rules/ai-sdlc-workflow.md` shape; **light** (medium tasks) = steps 1-2 and 4; **full** (large tasks) = everything.
 
 **Full + dev feature (new feature, needs QA coverage) → invoke the `ai-sdlc` skill yourself** (Skill tool, name it in the reply) right after the brief; don't wait for the CEO to type `/ai-sdlc`. Research, finance, design-only or ops jobs stay plain full.
 
@@ -53,7 +53,7 @@ Save it as `$AODD_PLANS/<feature>/brief.md` when the work spans sessions.
 - Default is one agent. Split only when one holds: (a) the pieces run in parallel without needing each other's results AND speed is worth the extra tokens; (b) the data would flood the main context; (c) you have seen quality drop here (wrong tools, instructions contradicting), not just a long chat. A team buys speed, not judgment. Independent checks (audit, advisor) are exempt: their point is independence.
 - Subagents building separate parts agree the shared interface first; work breaks at the hand-off.
 - An extra reviewer must differ from the existing ones in model or lens (for example, from the requirement rather than the diff). More copies of the same reviewer share its blind spots.
-- Mechanical pieces → Haiku (`rules/aodd/delegation.md`).
+- Mechanical pieces → Haiku (`rules/ai-sdlc/delegation.md`).
 - Each subagent gets a mini-brief (goal, done, scope, limits) — it sees none of this conversation.
 - Cross-team handoff goes through a file (`$AODD_PLANS/<feature>/handoff.md`), not through your memory.
 - No skill fits → do it yourself; propose a new team only if the same gap shows up again (add teams when work needs them, not to fill the chart).
@@ -66,7 +66,7 @@ Spending money · anything sent to a customer or outside party (email, post, PR 
 
 0. Audit on demand only: the CEO asks, or you propose it in one line when a mistake would be expensive. Procedure and command: `docs/audit.md`. Never write the auditor's brief; quote its verdict line and table as-is, never paraphrase a FAIL/DISPUTED.
 1. Verify every output against "Done looks like" — evidence (test run, file, link), not claims. Fail → send back once with the specific gap.
-2. Report to the CEO in the shape in `rules/aodd.md` (options with a recommendation under the decision part).
+2. Report to the CEO in the shape in `rules/ai-sdlc-workflow.md` (options with a recommendation under the decision part).
 3. Same mistake twice → fix the system (patch the skill or rule that allowed it, see `docs/skill-learning.md`), not just the output.
 
 ## Dispatch pitfalls (verified)

@@ -278,6 +278,22 @@ if os.environ["WRITE_ENV"] == "1":
         changed += 1
         print(f"env     {k}={v}: {'would write' if dry else 'written'}")
 
+# Claude Code loads every .md under rules/ at session start; only the workflow file should. Exclude the rest (settings.json only).
+# The user's own entries stay; the old exclude of the workflow file is removed because that file must load.
+if settings.name == "settings.json":
+    EXCLUDES = ["**/rules/ai-sdlc/**", "**/rules/effort/**", "**/rules/coding/**", "**/rules/playwright/**", "**/rules/robot/**",
+                "**/rules/product-design.md", "**/rules/gui-fixes.md", "**/rules/data-testid-mapping.md", "**/rules/gemini-prompting.md"]
+    cur = data.get("claudeMdExcludes", [])
+    if isinstance(cur, list):
+        new = [e for e in cur if e != "**/rules/ai-sdlc-workflow.md"]
+        new += [e for e in EXCLUDES if e not in new]
+        if new != cur:
+            data["claudeMdExcludes"] = new
+            changed += 1
+            print(f"exclude claudeMdExcludes: {'would write' if dry else 'written'} ({len(new)} entries)")
+    else:
+        print("exclude claudeMdExcludes is not a list: kept as is")
+
 if changed and not dry:
     if settings.is_file():
         bak = settings.with_name(settings.name + ".aodd-bak")
@@ -290,7 +306,7 @@ PY
 }
 write_aodd_block() {  # write_aodd_block <AGENTS.md> [header line]: the aodd block between markers; a re-run replaces it in place
   local AG="$1" HEAD="${2:-}" BLOCK
-  BLOCK="$(printf '<!-- aodd:begin -->\n'; [ -n "$HEAD" ] && printf '%s\n\n' "$HEAD"; cat "$SRC/rules/aodd.md"; printf '\n'; cat "$SRC/rules/ai-sdlc-workflow.md"; printf '\n<!-- aodd:end -->\n')"
+  BLOCK="$(printf '<!-- aodd:begin -->\n'; [ -n "$HEAD" ] && printf '%s\n\n' "$HEAD"; cat "$SRC/rules/ai-sdlc-workflow.md"; printf '\n<!-- aodd:end -->\n')"
   if [ "$DRY" = 1 ]; then echo "AGENTS  $AG <- aodd block (would write)"; return 0; fi
   mkdir -p "$(dirname "$AG")"
   [ "${AODD_NO_BACKUP:-0}" != 1 ] && [ -f "$AG" ] && [ ! -e "$AG.aodd-bak" ] && ! grep -q "aodd:begin" "$AG" && cp "$AG" "$AG.aodd-bak" && echo "backup  $AG.aodd-bak"
@@ -311,10 +327,25 @@ PY
 
 register_hooks "$DEST" settings.json "$([ -n "$PROJECT_ROOT" ] && echo 0 || echo 1)"
 
-IMPORT='@rules/aodd.md'
+IMPORT='@rules/ai-sdlc-workflow.md'; OLD_IMPORT='@rules/aodd.md'
 if [ -n "$PROJECT_ROOT" ]; then :
 elif [ "$CLAUDE_MD" = 1 ]; then
-  if [ -f "$DEST/CLAUDE.md" ] && grep -qxF "$IMPORT" "$DEST/CLAUDE.md"; then
+  if [ -f "$DEST/CLAUDE.md" ] && grep -qxF "$OLD_IMPORT" "$DEST/CLAUDE.md"; then  # upgrade: swap the old import in place, no duplicate line
+    echo "REPLACE $DEST/CLAUDE.md: $OLD_IMPORT -> $IMPORT"
+    [ "$DRY" = 1 ] || DEST="$DEST" OLD="$OLD_IMPORT" NEW="$IMPORT" python3 - <<'PY'
+import os
+from pathlib import Path
+f = Path(os.environ["DEST"]) / "CLAUDE.md"
+out, seen = [], False
+for l in f.read_text().split("\n"):
+    if l in (os.environ["OLD"], os.environ["NEW"]):
+        if seen:
+            continue
+        l, seen = os.environ["NEW"], True
+    out.append(l)
+f.write_text("\n".join(out))
+PY
+  elif [ -f "$DEST/CLAUDE.md" ] && grep -qxF "$IMPORT" "$DEST/CLAUDE.md"; then
     echo "CLAUDE.md already imports $IMPORT"
   else
     echo "APPEND  $DEST/CLAUDE.md <- $IMPORT"
@@ -326,10 +357,10 @@ fi
 if [ "$CODEX_ON" = 1 ]; then
   CDEST="${CODEX_HOME:-$HOME/.codex}"
   echo "install into: $CDEST (codex)"
-  for d in skills agents rules hooks scripts docs; do copy_tree "$d" "$CDEST"; done   # rules/ too: AGENTS.md has no @import, so rules/aodd/*.md and rules/effort/*.md are read by path
+  for d in skills agents rules hooks scripts docs; do copy_tree "$d" "$CDEST"; done   # rules/ too: AGENTS.md has no @import, so rules/ai-sdlc/*.md and rules/effort/*.md are read by path
   for m in $MODS; do copy_module "$m" "$CDEST"; done
   register_hooks "$CDEST" hooks.json
-  write_aodd_block "$CDEST/AGENTS.md" "> The rules/, docs/ and skills/ paths named below live under $CDEST; read rules/aodd/*.md there when the contract says so."
+  write_aodd_block "$CDEST/AGENTS.md" "> The rules/, docs/ and skills/ paths named below live under $CDEST; read rules/ai-sdlc/*.md there when the contract says so."
 fi
 if [ -n "$PROJECT_ROOT" ]; then
   # Claude Code loads .claude/rules/ itself; AGENTS.md carries the same contract for Codex, Antigravity and other readers

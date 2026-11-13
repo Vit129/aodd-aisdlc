@@ -36,7 +36,7 @@ internal logic it writes — derived FROM the same business rules/edge cases QA 
 spelled out in Phase 3's scenarios (boundary values, validation rules, error paths), not
 invented separately — per the rule that non-trivial logic leaves one
 runnable check behind and the unit loop above. Phase 5 verifies the QA scenario suite; it doesn't re-verify Phase 4's own unit
-tests — those stay green as part of Phase 4's own Done-gate (`rules/aodd.md`
+tests — those stay green as part of Phase 4's own Done-gate (`rules/ai-sdlc-workflow.md`
 Test-Before-Deliver).
 
 **Update `ai-sdlc-task-progress.md` now** — mark each skeleton `[x]` as it actually goes

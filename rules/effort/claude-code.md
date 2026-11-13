@@ -1,6 +1,6 @@
 # Claude Code effort syntax
 
-Scope: Claude Code only. Ladder rules: `rules/aodd/delegation.md` § Effort ladder. This file only says how levels are set on Claude.
+Scope: Claude Code only. Ladder rules: `rules/ai-sdlc/delegation.md` § Effort ladder. This file only says how levels are set on Claude.
 
 ## Setting effort
 

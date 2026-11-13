@@ -2,7 +2,7 @@
 
 Two things for Claude Code that work together:
 
-- **AODD** (AI Orchestration Driven Development): an operating contract. You are the CEO. The main agent is your chief of staff / orchestrator. Cheap models take the routine work. An auditor from a different model family checks on request, or when the agent proposes it for risky work.
+- **AODD** (AI Orchestrator Driven Development): an operating contract. You are the CEO. The main agent is your chief of staff / orchestrator. Cheap models take the routine work. An auditor from a different model family checks on request, or when the agent proposes it for risky work.
 - **ai-sdlc**: a Dev/QA feature workflow. Interview, architect, QA design (tests RED), dev (GREEN), QA verify, with three real approval gates.
 
 ## The flow
@@ -25,7 +25,7 @@ Every change runs `ai-sdlc` (`rules/ai-sdlc-workflow.md`); phases are skipped wh
 
 | Path | What |
 |---|---|
-| `rules/aodd.md`, `rules/aodd/`, `rules/effort/` | the AODD contract (triage, boss mode), with delegation and git rules in `rules/aodd/` read on demand, and per-vendor effort syntax |
+| `rules/ai-sdlc-workflow.md`, `rules/ai-sdlc/`, `rules/effort/` | the always-loaded contract and workflow (triage, boss mode, paths), with delegation and git rules in `rules/ai-sdlc/` read on demand, and per-vendor effort syntax |
 | `rules/ai-sdlc-workflow.md` | the 5-phase workflow spine and approval gates; per-phase detail in `skills/ai-sdlc/phases/`, loaded only when you reach that phase |
 | `skills/chief-of-staff`, `skills/ai-sdlc` (+ `references/`), `skills/agent-ops` | orchestrator, workflow, monthly team review |
 | `skills/reverse-engineer-anything` | [REA](https://github.com/morluto/rea) skill for shipped binaries, Electron/JS apps, Android, firmware; the installer also runs `rea setup --client <claude_code, codex, antigravity> --yes` for each agent you install into (`rea` on PATH, else `npx -y rea-agents@6.8.0`, needs Node; `--dry-run` passes `--dry-run`). Later, no reinstall needed: `python3 scripts/rea_check.py` reports installed vs latest and `rea doctor` per agent, `--update` upgrades `rea-agents` and re-registers what is stale |
@@ -60,7 +60,7 @@ Every change runs `ai-sdlc` (`rules/ai-sdlc-workflow.md`); phases are skipped wh
 
 ```bash
 git clone https://github.com/<owner>/aodd-aisdlc.git && cd aodd-aisdlc
-./install.sh --claude-md        # copy files, register hooks, import rules/aodd.md in CLAUDE.md
+./install.sh --claude-md        # copy files, register hooks, import rules/ai-sdlc-workflow.md in CLAUDE.md
 ```
 
 `./install.sh --detect` lists the coding agents on this machine (Claude Code, Codex, Antigravity, Gemini CLI, Cursor, Copilot, OpenCode, Hermes, Kiro, Aider, Goose, Grok, Pi, OpenClaw; found by binary on PATH or home dir). A terminal install offers Codex and Antigravity when found; the others are listed as having no installer yet. It also warns when neither `agy` nor `codex` is present, since the cross-family audit then falls back to a Claude auditor.
@@ -118,7 +118,8 @@ Full by default: every module that works per repository (agent-memory). `--core-
   `python3 hooks/_aodd_paths.py reports|state|plans [cwd]` prints the resolved path.
 - **Your own agent-ops steps**: if `$AODD_HOME/extensions/agent-ops.md` exists, the agent-ops skill also follows it. That is the only extension hook; there is no plugin framework.
 - **Optional post-merge hook** (off unless you enable it): `git config core.hooksPath scripts/git-hooks` plus `AODD_AUTO_INSTALL=1` in your environment makes `scripts/git-hooks/post-merge` run `./install.sh` after a merge or pull that changes this repo's main branch, then, only if `AODD_POST_INSTALL` is set, that command (for example a script that mirrors the installed files to other tools). One runner at a time (a `mkdir` lock, 30 s debounce), output in `$AODD_STATE/post-merge.log`, never blocks git. It runs `install.sh` as the current checkout, so it only installs what you merged.
-- Without `--claude-md`, add the line `@rules/aodd.md` to your `CLAUDE.md` yourself, or the contract will not load.
+- Without `--claude-md`, add the line `@rules/ai-sdlc-workflow.md` to your `CLAUDE.md` yourself, or the contract will not load.
+- **Upgrading from a release that had rules/aodd.md**: the installer never deletes files, so after upgrading delete `<home>/rules/aodd.md` and `<home>/rules/aodd/` if present. With `--claude-md` an old `@rules/aodd.md` line in `CLAUDE.md` is replaced by `@rules/ai-sdlc-workflow.md`. The installer also writes `claudeMdExcludes` to `settings.json` so Claude Code loads only `rules/ai-sdlc-workflow.md` at session start (your own entries are kept).
 
 ### Companion plugins (optional, installed separately, not copied here)
 
@@ -176,9 +177,9 @@ Tests point `AODD_HOME` at a temp directory and use stub models; no network, no 
 
 ## Uninstall
 
-Delete the files this repo copied (for Codex: from `$CODEX_HOME`, also the block between the `aodd:begin` and `aodd:end` markers in `AGENTS.md` and the hook entries in `hooks.json`) from your Claude home, remove the matching hook entries from `settings.json` (or restore `settings.json.aodd-bak`) and the `@rules/aodd.md` line from `CLAUDE.md`, and optionally delete `~/.aodd`. Because the hook commands are fail-open, deleting only the hook files already makes them inert.
+Delete the files this repo copied (for Codex: from `$CODEX_HOME`, also the block between the `aodd:begin` and `aodd:end` markers in `AGENTS.md` and the hook entries in `hooks.json`) from your Claude home, remove the matching hook entries from `settings.json` (or restore `settings.json.aodd-bak`) and the `@rules/ai-sdlc-workflow.md` line from `CLAUDE.md`, and optionally delete `~/.aodd`. Because the hook commands are fail-open, deleting only the hook files already makes them inert.
 
-- **Core**: `skills/{chief-of-staff,ai-sdlc,grill-plan,agent-ops,reverse-engineer-anything}`, `agents/{auditor,advisor}.md`, `rules/{aodd,ai-sdlc-workflow}.md`, `rules/aodd/`, `rules/effort/`, `hooks/{done-gate,auditor-readonly,skill-capture-nudge,secret-read-guard,coding-rules-gate,dirty-branch-switch-guard,graphify-guard,work-log,delegation-nudge,_aodd_paths,_aodd_secrets}.py`, `scripts/{audit,check_agy_proposal,skill_learning_report,skill_trigger_eval,agent_ops_gather}.py`, `docs/skill-learning.md`, plus the `env` keys you had it write.
+- **Core**: `skills/{chief-of-staff,ai-sdlc,grill-plan,agent-ops,reverse-engineer-anything}`, `agents/{auditor,advisor}.md`, `rules/ai-sdlc-workflow.md`, `rules/ai-sdlc/`, `rules/effort/`, `hooks/{done-gate,auditor-readonly,skill-capture-nudge,secret-read-guard,coding-rules-gate,dirty-branch-switch-guard,graphify-guard,work-log,delegation-nudge,_aodd_paths,_aodd_secrets}.py`, `scripts/{audit,check_agy_proposal,skill_learning_report,skill_trigger_eval,agent_ops_gather}.py`, `docs/skill-learning.md`, plus the `env` keys you had it write.
 - **agent-memory**: `hooks/{memory-recall,memory-write-scan,session-start-recent}.py` and the three entries (`UserPromptSubmit`, `SessionStart`, and `memory-write-scan` under `PreToolUse`) in `settings.json`. Your `$AODD_MEMORY` notes are yours; the installer never touches them.
 - **schedules**: first `python3 <claude home>/scripts/install-schedules.py --uninstall` (removes the `# aodd:begin` ... `# aodd:end` cron block or the `com.aodd.*` launch agents; `--dry-run` previews), then delete `scripts/{install-schedules,aodd_job}.py` and `schedules/`.
 

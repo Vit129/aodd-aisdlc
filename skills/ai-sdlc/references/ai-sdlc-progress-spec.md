@@ -42,7 +42,7 @@ below. Load this file when actually breaking a design into tasks.
   expand-contract as their own slice: add the new form → migrate call sites in batches →
   remove the old form. Don't collapse this into one giant task.
 - Tasks should be completable in 1-2 hours.
-- A ticket may carry three optional lines under its heading: `Agent: claude | agy | codex`, `Model: <name>`, and `Effort: low | medium | high | xhigh | max`. A missing line takes the default in `rules/aodd/delegation.md` § Effort ladder. Set `xhigh` or `max` here only on purpose, never by the agent.
+- A ticket may carry three optional lines under its heading: `Agent: claude | agy | codex`, `Model: <name>`, and `Effort: low | medium | high | xhigh | max`. A missing line takes the default in `rules/ai-sdlc/delegation.md` § Effort ladder. Set `xhigh` or `max` here only on purpose, never by the agent.
 
 ## Task tags (labels, not phases)
 

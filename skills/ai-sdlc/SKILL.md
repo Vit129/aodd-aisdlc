@@ -7,7 +7,7 @@ version: 1.0.1
 
 # ai-sdlc
 
-Read `rules/ai-sdlc-workflow.md` (installed under your Claude home, `~/.claude/rules/`) now and follow it phase by phase for this feature: load each phase file from its Phase map (`skills/ai-sdlc/phases/`) only when you reach that phase. Pull the
+Read `rules/ai-sdlc-workflow.md` (installed under your Claude home, `~/.claude/rules/`) now and follow it phase by phase for this feature: load each phase file from the Phase map below only when you reach that phase. Pull the
 `references/*.md` files next to this SKILL.md only when the phase you are in points to them.
 
 - Argument = feature slug. Create `$AODD_PLANS/<slug>/ai-sdlc-task-progress.md` yourself
@@ -16,9 +16,22 @@ Read `rules/ai-sdlc-workflow.md` (installed under your Claude home, `~/.claude/r
 - `hooks/done-gate.py` blocks stopping while that progress file still has `- [ ]` boxes,
   so keep checkboxes current as you go, not at the end.
 - Runs as `chief-of-staff` full: Phase 1 output is the brief (`$AODD_PLANS/<slug>/brief.md`),
-  each phase dispatches to its team, and the run ends with the report in `rules/aodd.md`. Risky work: propose the audit (`docs/audit.md`).
+  each phase dispatches to its team, and the run ends with the report in `rules/ai-sdlc-workflow.md` § Boss mode. Risky work: propose the audit (`docs/audit.md`).
 - Which skill for which task: `references/skill-routing.md`.
 - Resume = read the progress file and continue at its first `- [ ]`.
+
+## Phase map: load only the phase you are on
+
+| Phase | File |
+|---|---|
+| 1 Interview | `skills/ai-sdlc/phases/phase1-interview.md` |
+| 2 Architect (Requirement path; any path that adds files) | `skills/ai-sdlc/phases/phase2-architect.md` |
+| 2 Existing Asset Scan | `skills/ai-sdlc/phases/phase2-existing-asset-scan.md` |
+| 2 Reuse table and Nth-occurrence rule | `skills/ai-sdlc/phases/phase2-reuse-table.md` |
+| 2 Reuse modification retest | `skills/ai-sdlc/phases/phase2-reuse-retest.md` |
+| 3 QA-Design | `skills/ai-sdlc/phases/phase3-qa-design.md` |
+| 4 Dev | `skills/ai-sdlc/phases/phase4-dev.md` |
+| 5 QA-Verify | `skills/ai-sdlc/phases/phase5-qa-verify.md` |
 
 ## Read before each phase (memory dir from the `agent-memory` skill; open only matching sections)
 

@@ -145,7 +145,7 @@ Before declaring RF test implementation complete, confirm:
 | Appium config (capabilities, device farm) | Infrastructure | Target platform and device configuration |
 | `references/*.md` (one per task) | Workflow reference | Write, review, execute, heal, Browser Library |
 | YAML fixture files | Test data | All test data externalized to YAML |
-| `rules/coding.md` & `rules/aodd.md` | Rule | Core engineering principles and verification gates |
+| `rules/coding.md` & `rules/ai-sdlc-workflow.md` | Rule | Core engineering principles and verification gates |
 | `knowledge/` | Lessons learnt | Check before execute |
 
 Related: switch to root-cause debugging when self-heal is

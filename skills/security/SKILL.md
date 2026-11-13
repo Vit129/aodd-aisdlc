@@ -22,7 +22,7 @@ last_improved: 2026-11-09
 | Dependency | Purpose |
 |---|---|
 | `rules/coding.md` | Zero secrets in code, input validation at every boundary |
-| `rules/aodd.md` | Verification gates — no secure-coding claim without a passing test |
+| `rules/ai-sdlc-workflow.md` | Verification gates — no secure-coding claim without a passing test |
 
 ## Related Skills
 

@@ -1,6 +1,6 @@
 # Codex effort mapping
 
-Scope: only for Codex. Ladder rules: `rules/aodd/delegation.md` § Effort ladder.
+Scope: only for Codex. Ladder rules: `rules/ai-sdlc/delegation.md` § Effort ladder.
 
 ## Setting effort
 

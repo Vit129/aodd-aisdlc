@@ -13,7 +13,7 @@ version: 1.2.1
 |-----------|---------|
 | `rules/playwright/` | MUST read before writing/reviewing any code (`pw-coding-standards.md`, `api.md`, `web-ui.md`) |
 | `rules/data-testid-mapping.md` | MUST read before naming a `data-testid` — shared with `robotframework-testing`'s `accessibility_id` naming |
-| `rules/coding.md` & `rules/aodd.md` | Core engineering principles and verification gates |
+| `rules/coding.md` & `rules/ai-sdlc-workflow.md` | Core engineering principles and verification gates |
 | `references/runtime-inspection.md` | Navigate, screenshot, inspect live pages via plain `npx playwright` commands |
 | `knowledge/` (project memory) | Project patterns & lessons learned — prevent repeat failures |
 

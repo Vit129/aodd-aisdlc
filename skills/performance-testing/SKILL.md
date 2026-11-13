@@ -84,7 +84,7 @@ Before declaring performance testing complete, confirm:
 | Target SLAs (p95, p99, error rate) | Performance criteria | Define pass/fail thresholds |
 | Infrastructure specs (server capacity, limits) | System context | Inform realistic load levels |
 | `references/*.md` (one per phase) | Skill reference | Scripting, CI integration, analysis |
-| `rules/coding.md` & `rules/aodd.md` | Rule | Core engineering principles and verification gates |
+| `rules/coding.md` & `rules/ai-sdlc-workflow.md` | Rule | Core engineering principles and verification gates |
 | `knowledge/` | Lessons learnt | Check before execute |
 
 Related: when a bottleneck needs falsification-driven root-cause triage (reproduce, trace the failing path, test one hypothesis at a time) go beyond `references/triage.md`'s layer isolation.

@@ -8,7 +8,7 @@ This document describes how `aodd-aisdlc` integrates with Google Antigravity (th
 |---|---|
 | Skills (`skills/`) | Copied into `$AGY_HOME/skills` (default `~/.gemini/antigravity-cli/skills`). |
 | Agents (`agents/`) | Copied into `$AGY_HOME/agents` (default `~/.gemini/antigravity-cli/agents`). |
-| Rules (`rules/aodd.md`, `rules/ai-sdlc-workflow.md`) | Inlined into the Antigravity instruction file (`AGENTS.md`, default `~/.gemini/AGENTS.md`) between `<!-- aodd:begin -->` and `<!-- aodd:end -->` markers. The files under `rules/aodd/` and `rules/effort/` are copied to `$AGY_HOME/rules/` and read by path. |
+| Rule (`rules/ai-sdlc-workflow.md`) | Inlined into the Antigravity instruction file (`AGENTS.md`, default `~/.gemini/AGENTS.md`) between `<!-- aodd:begin -->` and `<!-- aodd:end -->` markers. The files under `rules/ai-sdlc/` and `rules/effort/` are copied to `$AGY_HOME/rules/` and read by path. |
 | Lifecycle Hook Adapter (`adapters/antigravity-hook-adapter.py`) | Registered under `"aodd-guardrails"` in Antigravity's `config/hooks.json` (default `~/.gemini/config/hooks.json`). Bridges Antigravity events to installed Python hooks. |
 
 ### Lifecycle Hook Adapter details

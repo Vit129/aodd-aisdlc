@@ -234,15 +234,22 @@
   "232": "2. Generate",
   "233": "[0.2.0] - 2026-10-17",
   "234": "[0.3.4] - 2026-10-17",
+  "235": "session_id",
   "236": "[0.6.0] - 2026-10-23",
   "237": "[0.7.0] - 2026-10-30",
   "238": "CONTEXT.md",
   "239": "graphify.toml",
   "240": "[0.3.4] - 2026-10-17",
+  "241": "Commands",
+  "242": "delegation-nudge.py",
+  "243": "Q: grill-plan phase1 interview routing",
   "244": "[0.6.1] - 2026-10-30",
   "245": "Best Practices",
   "246": "[0.5.0] - 2026-10-22",
+  "247": "2. Generate",
+  "248": "codex.md",
   "249": "test_skill_invocation.py",
   "250": "test_skill_trigger_eval.py",
-  "251": "test_rule_duplicates.py"
+  "251": "test_rule_duplicates.py",
+  "252": "Install"
 }

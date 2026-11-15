@@ -28,6 +28,13 @@ Continue refining that artifact through the design and QA planning phases requir
 chosen path until it is ready for coding. Do not stop at a brief or ask for an extra
 "continue" between interview and artifact preparation.
 
+Keep one `plan.html` and update it as those phases progress. Show its current state and pending
+approvals: **Draft** after interview, **Design approved** after Gate 1, **Scenarios approved**
+after Gate 2, and **Ready for coding** after Gate 3 and the readiness checks below. Before Gate 1,
+verification ideas and test seams are provisional; Phase 3 settles them after design approval.
+Do not complete Phase 3 early just to finish the HTML, or require a final HTML before Gate 1.
+On paths without gates, move from Draft to Ready for coding once the applicable readiness checks hold.
+
 The artifact is ready when the scope and acceptance criteria are settled, implementation
 steps and affected files are clear, verification cases and test seams are defined, and
 no decision blocking coding remains open. Apply the parent workflow's approval gates at

@@ -8,18 +8,37 @@ Two things for Claude Code that work together:
 ## The flow
 
 ```
-you (CEO) ── one brief ──> chief-of-staff ──> ai-sdlc phases (large work) / direct work (small)
-                                │                    │
-                       Haiku does git/ops,     Gate 1 design · Gate 2 scenarios · Gate 3 seams
-                       lookups, test runs               │
-                                └── Done claim ──> scripts/audit.py (other model family, read-only)
-                                                          │
-                          hooks/done-gate.py reports any non-PASS; audit runs on demand
-                                                          │
-                                  report: result, evidence, decision ──> you
+you (CEO) ── request ──> choose path by what changes
+                         │
+                         ├── question ──> answer
+                         └── file change ──> Light / Logic / Design / Requirement
+                                               │
+                                   Dev + QA for the chosen path
+                                   Requirement: Gates 1–3
+                                               │
+                                   verification evidence
+                                   optional approved audit
+                                               │
+                                   report ──> requested delivery
 ```
 
 Every change runs `ai-sdlc` (`rules/ai-sdlc-workflow.md`); phases are skipped when not needed, and only the requirement path has the three gates. Large work goes through `chief-of-staff`. The audit is on demand only. Anything that spends money, reaches an outside party or is irreversible always stops for you.
+
+When clarification is needed, the interview leads into one HTML plan that evolves with the approvals.
+Its labels progress from Draft to Design approved, Scenarios approved, and Ready for coding; a complete brief
+can skip the questions. See [interview and plan readiness](skills/ai-sdlc/phases/phase1-interview.md).
+Requirement work always includes scenarios. Manual checks are supported with a reason and recorded steps/results;
+they retain scenario and verification-boundary approval. See [QA design](skills/ai-sdlc/phases/phase3-qa-design.md).
+
+Passing scenarios that cover the delivered changes can be reused for an authorized push, release or deploy;
+there is no additional Test-Before-Deliver pass. Changed inputs require the affected checks again, while required
+project gates and artifact identity still apply. The policy is in
+[verification evidence](rules/ai-sdlc-workflow.md#verification-evidence).
+Documentation and implementation can be separate commits for the same task.
+Coding always routes into `delivery-workflow`. A change without coding follows that delivery process with `skip`,
+keeping the version unchanged unless you explicitly request a bump. This routing does not expand merge or deploy permission.
+Agent effort increases for repeated unsuccessful problem-solving attempts, excluding expected RED or external blockers;
+see the [effort ladder](rules/ai-sdlc/delegation.md#effort-ladder).
 
 ## What is in the box
 

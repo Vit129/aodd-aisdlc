@@ -16,7 +16,7 @@ Update the living docs the change affects (for example product, architecture, de
 
 1. Implement the approved change. Keep its tests with it.
 2. Run the dev or preview path for a person to inspect, if the repo has one.
-3. Run the repo's required checks. If the repo has no automated QA, record that and get the named human acceptance.
+3. Assess existing evidence using the parent workflow's Verification evidence policy; execute only missing or invalidated checks. If the repo has no automated QA, record that and get the named human acceptance.
 
 ## 4. Commit and merge
 
@@ -28,13 +28,13 @@ Update the living docs the change affects (for example product, architecture, de
 
 **Semver (`patch`, `minor`, `major`):**
 1. Prepare the candidate metadata and changelog as a local commit on the merged main (see [release-deploy.md](release-deploy.md) §3).
-2. Run the release gates (release-deploy.md) on the candidate commit.
+2. Validate the candidate's release evidence as described in release-deploy.md, reusing valid results.
 3. Push the commit, create the tag, create the hosted release (§4).
 4. Deploy or install the same commit, then verify the live target (§5, §6).
 
 **`skip`:**
 1. On `skip`, add the change to CHANGELOG.md under an `Unreleased` heading, the same as any other change. Do not add a version heading, create a tag, or create a release page.
-2. Run the build and release-gate tests on the merged commit.
+2. Confirm the merged inputs have the required passing evidence; run affected checks where evidence no longer applies.
 3. Deploy or install that commit, then verify the live target reports it.
 4. Report the build number where the repo has one. No tag, no release page.
 

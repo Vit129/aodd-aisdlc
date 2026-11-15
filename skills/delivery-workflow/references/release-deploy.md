@@ -17,7 +17,7 @@ Before any version file changes, record the candidate: baseline, semver, build (
 ## 3. Validate the exact commit
 
 1. Prepare the metadata (version fields, build number, changelog, generated notes) then commit it as one local candidate commit. Stage explicit paths only; see [commit-push.md](commit-push.md).
-2. Run the release gates on that exact commit: build, the test command the repo declares as its release gate, and any security or audit check the repo requires.
+2. Match existing PASS scenario and required gate results to that candidate using `rules/ai-sdlc-workflow.md` § Verification evidence. Record the tested revision, relevant inputs and any unchanged inputs carried forward from an earlier revision. Run only missing or invalidated checks; no separate Test-Before-Deliver run. If a build is required, identify the artifact built from the candidate inputs; include any security or audit check the repo requires.
 3. A failed gate stops the publish. Keep the candidate. Fix the source and metadata, make a new local candidate commit, and rerun the affected gates. Do not roll back metadata and bump again.
 
 ## 4. Publish (semver release only)

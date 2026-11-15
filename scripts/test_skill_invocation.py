@@ -5,11 +5,11 @@ import pathlib, re, sys
 
 root = pathlib.Path(__file__).resolve().parent.parent
 # Only the user starts these; nothing else needs to reach them.
-USER_INVOKED = {"agent-ops", "housekeeping", "delivery-workflow",
+USER_INVOKED = {"agent-ops", "housekeeping",
                 "test-scenario", "robotframework-testing", "performance-testing"}
 # The agent and other skills must reach these (triage routes to them; chief-of-staff calls ai-sdlc,
 # Phase 1 handles questioning directly). A user-invoked skill cannot be called by another skill.
-MODEL_INVOKED = {"ai-sdlc", "chief-of-staff"}
+MODEL_INVOKED = {"ai-sdlc", "chief-of-staff", "delivery-workflow"}
 
 
 def frontmatter(path):

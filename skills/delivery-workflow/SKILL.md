@@ -1,7 +1,6 @@
 ---
-disable-model-invocation: true
 name: delivery-workflow
-description: Use when asked to carry a software project through delivery stages such as dev/preview, test, commit and push, release, deploy, or recovery. Runs only the requested stages, follows the repository's own entrypoint, and stops before publishing if a gate fails.
+description: Use after coding or when delivering any file change through preview, test, commit, push, release, deploy or recovery. Non-coding changes use skip without a version bump unless requested otherwise. Runs authorized stages through the repository entrypoint and stops publication on a failed gate.
 metadata:
   short-description: Run project delivery stages safely
 ---
@@ -10,13 +9,16 @@ metadata:
 
 Run the delivery stages the user asked for, through the repository's own entrypoint (`make start`, `npm start`, or the script it calls). Trace the entrypoint before running it. A menu label or a final success message does not prove what ran.
 
+The parent contract routes coding tasks here automatically; other file changes use this same process in `skip` mode.
+Entering the workflow is not permission to merge, publish or deploy: run only the authorized stages and report pending ones.
+
 ## Required in every repo
 
 These are the setup targets. A repo that lacks one is fixed in its own repo, not worked around in the skill.
 
 1. Entrypoint: `make start` or `npm start` (or the repo's documented equivalent).
 2. Dev / test server: a local dev server and, where the repo has one, a separate test server on its own port. Neither has release side effects.
-3. Release gate: a declared test command (and build) that must pass before anything is published. If QA exists, its test layers are named in the repo's adapter.
+3. Release gate: declared verification requirements, including the test command and build where the project requires them. Evidence reuse follows `rules/ai-sdlc-workflow.md` § Verification evidence. If QA exists, its test layers are named in the repo's adapter.
 4. Version scheme: semver in every surface that shows it, plus a build number where the app needs one.
 5. Living docs (PRODUCT / ARCHITECTURE / DESIGN / CONTEXT) updated before a release starts when the change affects them.
 6. Changelog: `CHANGELOG.md` exists, and its generator is declared (`cliff.toml` / git-cliff or the repo's own tool). Every commit that changes behaviour adds its entry; a semver release generates the version heading, `skip` writes under `Unreleased`. Only one generator per repo.
@@ -34,7 +36,7 @@ Each stage is requestable on its own. A full cycle composes them and keeps each 
 | Test / QA | Runs the declared gates and reports evidence. Does not change code unless asked. |
 | Commit + push | Scoped commit and push to the intended branch. Stops before merge. |
 | Merge | Only in a full cycle or when asked. Uses the repo's review/CI policy. Never `--admin`. |
-| Release | Version candidate → metadata commit → checks on that exact commit → push + tag → GitHub release page. |
+| Release | Version candidate → metadata commit → validate evidence for that candidate → push + tag → GitHub release page. |
 | Deploy / install | Deploys the identified release to a named target, then verifies it is serving. |
 | Recovery | Finds which boundary completed and finishes only the missing step for the same candidate. |
 
@@ -58,7 +60,7 @@ Compute the candidates with the repo's own function (for example the repo's own 
 | `skip` | unchanged | +1 if present | add entry under `Unreleased`; no version heading | **no** | yes, if requested | merged + deployed + live matches the intended commit |
 
 Rules that follow from this:
-- Choose by what changed. Docs-only (README, docs/, CHANGELOG wording, comments) → `skip`. Code, config that ships, or a behaviour change → `patch` / `minor` / `major`, picked by the user. A missing choice is asked once.
+- Coding requires this release workflow and a `patch` / `minor` / `major` choice from the user. Without coding, retain the delivery stages but default to `skip`: no version bump, tag or release page. An explicit version request overrides that default, including for docs or shipped workflow rules. Classify executable config or shipped instructions that change behavior with the user when the version choice is unclear; do not silently bump. A missing required choice is asked once.
 - `skip` never creates or moves a tag and never creates a release page. The deployed build is identified by its commit SHA and build number.
 - A published tag is never moved or deleted. `git tag -f` and `git push --force` on a tag are not allowed.
 - A repo whose helper cannot express `skip` (for example, patch-only) reports `skip` as unsupported, not as an approximation.
@@ -71,7 +73,7 @@ Rules that follow from this:
 
 ## Gates and failures
 
-- Before publishing (tag push, release, deploy), build and the release-gate tests must pass on the exact commit being published. A failure stops the publish. It does not block a WIP commit on a feature branch or local development.
+- Before publishing (tag push, release, deploy), verify covering PASS scenario results and any explicitly required project gates for the candidate. Reuse valid results as defined in `rules/ai-sdlc-workflow.md` § Verification evidence; run only missing or invalidated checks, with no separate Test-Before-Deliver run. A required build still needs an identified artifact from the delivered inputs. A failure stops the publish. It does not block a WIP commit on a feature branch or local development.
 - Known-failing tests are declared in the repo's adapter with a reason. An undeclared failure is a failure. A skipped test is reported as NOT RUN, not PASS.
 - If the repo's order differs from this (for example, it merges to main before its final build), report it as a known gap with file:line evidence. Do not rewrite the repo's route without the user's decision.
 

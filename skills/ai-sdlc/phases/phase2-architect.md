@@ -47,6 +47,9 @@ here (the `security` skill), in this same pass (its own coverage decision, same 
 coverage"), not discovered later during implementation. If it's a core/load-sensitive
 API → flag it for performance testing too, to run after Phase 5 confirms GREEN.
 
+On the Requirement path, update the existing `plan.html` with the approved design, set **Design approved**, and show
+Gate 2 (scenarios) and Gate 3 (test seams) as pending. This is not yet Ready for coding.
+
 **Update `ai-sdlc-task-progress.md` now** — mark the design/implementation plan approved,
 record approver/scope/timestamp for Approval Gate 1, and log the vertical-slice task
 breakdown if multi-step (§ Incremental Update Rule, `skills/ai-sdlc/references/ai-sdlc-progress-spec.md`).

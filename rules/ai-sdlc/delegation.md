@@ -7,7 +7,7 @@ is in `rules/effort/claude-code.md`, `rules/effort/codex.md` and `rules/effort/a
 
 | Work | Who |
 |---|---|
-| Plan, pick architecture, write the brief, review every diff, re-run test/build, check the UI in a browser | main session (Opus/Fable) |
+| Plan, pick architecture, write the brief, review every diff, assess verification evidence, check the UI in a browser | main session (Opus/Fable) |
 | Design on the ai-sdlc Requirement path | 2 subagents in parallel (Dev view + QA view), see `rules/ai-sdlc-workflow.md` |
 | Multi-file feature or bug fix | 1 Sonnet subagent in its own worktree; more only for disjoint files with an explicit scope each |
 | Design delegated to ChatGPT | `sol` writes the design; main reviews it before any code |
@@ -43,8 +43,10 @@ Five levels, shared by every vendor: `low` < `medium` < `high` < `xhigh` < `max`
   wait for a yes. After that the runs in that plan go without asking again. Ask again only to add runs or raise effort
   outside the plan. Small lookups the main session does itself need no announcement.
 - **Start at `low`**, unless the ticket's `Effort:` line says otherwise.
-- **Escalate one step at a time:** 3 failing checks in a row raise one step, `low` → `medium` → `high`. Still failing at
-  `high`: stop and tell the user. No vendor switching.
+- **Escalate one step at a time:** 3 consecutive unsuccessful attempts to solve the same diagnosed problem raise one step,
+  `low` → `medium` → `high`. Count only attempts where the agent could change the outcome through its reasoning or implementation.
+  Expected RED tests, unavailable dependencies/services, environment failures and missing permissions do not count; resolve or
+  report those blockers instead. Still failing at `high`: stop and tell the user. No vendor switching.
 - `xhigh` and `max` run only when a ticket says so or the ai-sdlc review stage requires `xhigh`.
 - A passing check returns the task to its starting level.
 

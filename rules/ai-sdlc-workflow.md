@@ -15,7 +15,7 @@ handoffs), `$AODD_STATE`. Resolve one with `python3 hooks/_aodd_paths.py reports
 | Any file change (code, config, tests, UI) | The path table below picks the entry phase; the dev step and the QA testing step never skip |
 | Spends money, reaches an outside party, irreversible | Stop and ask the CEO first |
 
-`chief-of-staff` and `ai-sdlc` are model-invoked; `agent-ops`, `housekeeping` and `delivery-workflow` are
+`chief-of-staff`, `ai-sdlc` and `delivery-workflow` are model-invoked; `agent-ops` and `housekeeping` are
 user-started (`/<name>`). When this contract routes work to a skill, invoke it and name it in the reply.
 
 ## Paths: pick by what changes, not by size
@@ -38,6 +38,8 @@ Phase files live in `skills/ai-sdlc/phases/` (Phase map in `skills/ai-sdlc/SKILL
 2. Read `skills/ai-sdlc/references/dev-qa-pattern.md` (tagging, invariants, test barriers), then a dev step and a QA testing step.
 3. Last step, after everything passes: run `graphify update .` when `graphify-out/` exists; stage its tracked files with the
    commit (`rules/ai-sdlc/git-ops.md`).
+4. Every coding task enters `delivery-workflow` for delivery. Non-coding changes take the same workflow with `skip`
+   (no version bump); an explicitly requested version takes precedence. Run authorized stages only, retaining publish approvals.
 
 **Look before you pick.** Size comes from the code: check the blast radius (graphify `blast_radius`/`affected`, or grep), how
 many callers or screens it reaches, and whether it was "fixed" before (git log). One place, first attempt: the path as is.
@@ -49,7 +51,7 @@ unless the change reaches many files or callers.
 
 **Baseline floor, any path:** `ARCHITECTURE.md` never collapses (`rules/product-design.md`); the Existing Asset Scan runs
 for anything that adds a function, component, helper or query (`skills/ai-sdlc/phases/phase2-existing-asset-scan.md`);
-Test-Before-Deliver (below) runs on every task.
+Verification evidence (below) is required for every changed task; passing scenario results can satisfy it without another test run.
 
 ## Boss mode
 
@@ -60,16 +62,23 @@ Test-Before-Deliver (below) runs on every task.
 - Every proposal states its why: the reason and evidence (numbers, file:line, error text, usage counts).
 - Report shape, always three parts: **Result** (one line plus file links), **Evidence** (command output, verification proof),
   **Needs your decision** (remaining approvals: merge, deploy, irreversible actions).
-- Never claim Done without re-running the tests and builds and citing real output.
+- Never claim Done without citing passing verification evidence for the delivered changes; reuse valid results instead of re-running them.
 
-## Test-Before-Deliver
+## Verification evidence
 
-No task is complete until the build passes and the relevant tests pass. If tests cannot run, state why.
+When test scenarios cover the change and their results are PASS, the change is eligible for the requested push, release or
+deploy without a separate Test-Before-Deliver run. Cite the scenarios, results, tested source revision (or working-tree diff),
+and relevant environment. Existing valid results count; no duplicate test, build or static-check run is required by this rule.
 
-- A green test run is not proof of a passing build. Also run the project's own static, type or syntax check if it has
-  one; if it has none, say so in the report.
+- Results must cover the source and inputs being delivered. After source, dependency, configuration or environment changes,
+  rerun only the affected checks; an unrelated docs or graph refresh does not invalidate results unless it changes their inputs.
+- Without covering scenario results, run the relevant existing tests and the project's build/static/type/syntax checks where
+  applicable. Report missing coverage or checks that cannot run; do not label them PASS.
+- This does not authorize an unrequested publish or bypass a project's explicitly required CI, build/artifact, security or
+  release gates. Reuse their valid results too; a scenario PASS does not prove that a deployable artifact exists.
 - Check diff size against task scope first (`git diff --stat`); far beyond the task: stop and confirm.
-- One commit per task, verified per task. Release checks: `rules/coding/release.md`.
+- Keep each task's commits scoped to that task and backed by verification evidence. Requirement work may have a docs commit
+  followed by implementation commits; do not mix unrelated tasks. Release checks: `rules/coding/release.md`.
 
 ## Roles and subagents
 
@@ -96,8 +105,8 @@ Shift-left: QA designs scenarios and the test skeleton BEFORE dev writes code; d
 
 1. After Phase 2 produces its plan: no Phase 3 or 4 until the user explicitly approves it.
 2. After Phase 3's scenario list (`[TS-XXXX]`/`[TC-XXXX]`): no skeleton or automation until the user approves the list.
-3. After Phase 3's seam/automation-architecture agreement (which public seam each scenario tests at): no test at a seam
-   not agreed.
+3. After Phase 3's verification-boundary agreement (automated test seams and manual verification boundaries): no test at a seam
+   not agreed. Manual-only coverage still requires this approval and recorded verification results.
 
 No hook enforces these. "The user hasn't objected" is not approval: ask directly and wait for a real answer.
 

@@ -171,7 +171,7 @@ Each step names what to read or call next. **[hook]** means the step is enforced
 | 3. Branch | New branch from `main` before the first edit (rule only; the hook blocks switching away from uncommitted work, not editing on `main`) | your project's git conventions |
 | 4. Place code | Logic vs UI vs Tests split (§6) & Anti-Monolith pattern (target 300–400 lines); structure work → blueprint | `rules/coding/project-blueprint.md`, `project-blueprint` skill |
 | 5. Domain skill | Web/mobile UI → `frontend-dev` (+ `uxui-designer` if no design tokens); API/DB → `backend-dev`; SwiftUI → `macos-swiftui`; auth/input/secrets → `security`; UI layout bug → `rules/gui-fixes.md` | the skill |
-| 6. Verify | Tests + the project's own static/type/syntax check (`rules/ai-sdlc-workflow.md` § Test-Before-Deliver) | — |
+| 6. Verify | Use covering PASS scenario results; otherwise run applicable tests/checks (`rules/ai-sdlc-workflow.md` § Verification evidence). Reuse valid evidence without duplicate runs | — |
 | 7. Review | Medium+: review the diff against the brief (an independent reviewer if available); **[done-gate hook reports a non-PASS verdict]** | `rules/coding/review-report.md` |
 | 8. Close | Tick progress boxes **[done-gate hook]**, skill patch **[skill-capture-nudge hook, at 20+ tool calls with a learning signal]**, graph refresh if used | `docs/skill-learning.md` |
 

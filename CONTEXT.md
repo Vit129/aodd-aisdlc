@@ -10,7 +10,8 @@ Terms used across this repo, as defined by `rules/ai-sdlc-workflow.md`.
 - **Advisor:** the second-opinion agent (Fable or Opus) for a hard or irreversible decision.
 - **ai-sdlc:** the Dev/QA feature workflow every change runs through; only its requirement path has the approval gates. A gate is passed only on an explicit answer, never on silent consent.
 - **Done gate:** the `done-gate` hook, which blocks a Done claim while the task progress file has unchecked boxes, and relays a non-PASS audit verdict.
-- **Test-Before-Deliver:** no task is complete until the build and the relevant tests have run; a green test run alone is not proof of a passing build.
+- **Verification evidence:** covering PASS scenario results allow the requested delivery without a separate Test-Before-Deliver run. Reuse results for unchanged inputs; run missing or invalidated checks and satisfy explicitly required project gates (`rules/ai-sdlc-workflow.md`).
+- **Delivery routing:** coding always enters `delivery-workflow`; non-coding changes follow it with `skip` unless a version bump is explicitly requested. Stage authorization remains separate from routing.
 - **Git ops runner:** the cheap-model routine for git and ops mechanics (status, staging by path, commit, push, PR); the main session decides what to commit (`rules/ai-sdlc/git-ops.md`).
 - **Skill learning:** the procedure that turns a correction or a fix into a patch on the governing skill (`docs/agents/skill-learning.md`).
 - **Installed copy:** the files `install.sh` copies into an agent home. Never edit the installed copy; change the source here.

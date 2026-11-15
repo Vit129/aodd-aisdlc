@@ -37,7 +37,7 @@ spelled out in Phase 3's scenarios (boundary values, validation rules, error pat
 invented separately — per the rule that non-trivial logic leaves one
 runnable check behind and the unit loop above. Phase 5 verifies the QA scenario suite; it doesn't re-verify Phase 4's own unit
 tests — those stay green as part of Phase 4's own Done-gate (`rules/ai-sdlc-workflow.md`
-Test-Before-Deliver).
+§ Verification evidence); valid passing results need not be run again.
 
 **Update `ai-sdlc-task-progress.md` now** — mark each skeleton `[x]` as it actually goes
 GREEN, not batched at the end (§ Incremental Update Rule, `skills/ai-sdlc/references/ai-sdlc-progress-spec.md`).

@@ -3,7 +3,10 @@
 > Load when you start Phase 5. Parent: `rules/ai-sdlc-workflow.md`.
 
 
-Run the full scenario suite from Phase 3 against the Phase 4 implementation. Every
+Verify the full scenario suite from Phase 3 against the Phase 4 implementation, including
+recorded manual results for scenarios approved without automation. Reuse existing PASS results
+when they cover the delivered source and relevant inputs; run missing or invalidated checks only
+(parent workflow § Verification evidence). Every automated
 test still carries its `[TS-XXXX]`/`[TC-XXXX]` ID and obeys the core facts in `rules/ai-sdlc-workflow.md` (no
 hard waits, 1 heal attempt max before routing to `9arm-skills:debug-mantra`). This phase
 is verification only — no new scenarios get invented here; a genuinely missing case
@@ -15,7 +18,8 @@ Pre-merge gate: once all tests confirm GREEN, run `/code-review` (or any review 
 
 **Traceability table** (before sign-off, in the progress file): one row per Phase 1 requirement and Phase 2 NFR → the test(s) that cover it → result. A requirement with no test is a gap: add the test or record why not. The auditor checks against this table.
 
-**Release or deploy after this feature:** run the release gate in `rules/coding/release.md` first (security/pen test, performance, audit, version + changelog).
+**Release or deploy after this feature:** satisfy the release gate in `rules/coding/release.md`
+(security/pen test, performance, audit, version + changelog), reusing valid results without a separate Test-Before-Deliver run.
 
 **Last step, after everything passes:** if `graphify-out/` exists, run `graphify update .` and stage its tracked files with the commit (`rules/ai-sdlc/git-ops.md`).
 

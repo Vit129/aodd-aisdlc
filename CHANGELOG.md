@@ -3,6 +3,11 @@
 All notable changes to aodd-aisdlc are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and it follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.8.2] - 2026-11-15
+
+### Fixed
+- Require approval and evidence at gates (`357fc61`)
+
 ## [0.8.1] - 2026-11-13
 
 ### Added
@@ -225,4 +230,3 @@ All notable changes to aodd-aisdlc are documented here. The format is based on
 ### Added
 - Initial release: AODD + ai-sdlc for Claude Code and Codex (`d75adf4`)
 - Done-gate and skill-capture read Codex rollouts; auditor deny verified live (`bb16c85`)
-

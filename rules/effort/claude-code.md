@@ -12,7 +12,8 @@ Scope: Claude Code only. Ladder rules: `rules/ai-sdlc/delegation.md` § Effort l
 
 | Work | Model | Start effort |
 |---|---|---|
-| Code change, multi-file fix | Sonnet subagent in its own worktree | `low` |
+| Execution brief from main's plan; a very easy change done directly | Sonnet subagent | `low` |
+| Code change from Sonnet's brief | Haiku subagent in its own worktree | `low` |
 | Plan, design, architecture | main session (Opus/Fable) | `high` |
-| Mechanical run, search, summary, data dump | Haiku subagent | `low` |
+| Every command run (build, test, git/ops, release, deploy, ...), search, summary, data dump | Haiku subagent | `low` |
 | Review of a diff | main session | `high`; `xhigh` only when the ticket says so |

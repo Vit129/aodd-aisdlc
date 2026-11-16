@@ -75,13 +75,14 @@ def test_done_gate_integration():
         "workspacePaths": [str(work_dir)],
     }
     res = adapter.handle_stop(payload)
-    assert res.get("decision") == "continue", f"expected continue, got {res}"
-    assert "- [ ] task two" in res.get("reason", "")
+    assert res.get("decision") == "allow", f"a Stop is never blocked, got {res}"
+    assert "- [ ] task two" in res.get("systemMessage", ""), res
+    assert "reason" not in res
 
     # When all progress items checked but not audited -> allowed, audit is on demand
     prog_file.write_text("- [x] task one\n- [x] task two\n")
     res_aud = adapter.handle_stop(payload)
-    assert res_aud.get("decision") != "continue", f"expected no block, got {res_aud}"
+    assert res_aud == {"decision": "allow"}, f"expected a plain allow, got {res_aud}"
 
 
 # 3. Calls skill-capture-nudge on Antigravity transcript
@@ -111,9 +112,10 @@ def test_skill_capture_integration():
         "workspacePaths": [str(T / "proj")],
     }
     res = adapter.handle_stop(payload)
-    assert res.get("decision") == "continue", f"expected continue, got {res}"
-    assert "[skill-capture]" in res.get("reason", "")
-    assert "user correction" in res.get("reason", "")
+    assert res.get("decision") == "allow", f"a Stop is never blocked, got {res}"
+    assert "[skill-capture]" in res.get("systemMessage", "")
+    assert "user correction" in res.get("systemMessage", "")
+    assert adapter.handle_stop(payload) == {"decision": "allow"}, "said once per session"
 
 
 # 4. Calls auditor-readonly on PreToolUse
@@ -234,6 +236,52 @@ def test_install_agy():
     assert (temp_agy / "adapters" / "antigravity-hook-adapter.py").stat().st_mtime == stat_adapter.st_mtime
 
 
+def test_advice_hooks_never_deny():
+    """coding-rules-gate, dirty-branch-switch-guard and graphify-guard give advice, never a deny."""
+    os.environ["AODD_HOOKS_DIR"] = str(ROOT / "hooks")
+    os.environ["AODD_STATE"] = str(T / "state-advice")
+    os.environ["CODING_RULES_GATE_STATE"] = str(T / "crg-state")
+    rules_home = T / "claude-advice"
+    (rules_home / "rules").mkdir(parents=True, exist_ok=True)
+    (rules_home / "rules" / "coding.md").write_text("rules")
+    os.environ["AODD_CODING_RULES"] = str(rules_home / "rules" / "coding.md")
+    try:
+        # coding-rules-gate: first code edit without the rules read
+        res = adapter.handle_pre({"conversationId": "adv-1", "workspacePaths": [str(T / "gproj")],
+                                  "toolCall": {"name": "write_to_file", "args": {"TargetFile": str(T / "gproj" / "a.py"), "CodeContent": "x"}}})
+        assert res["decision"] == "allow" and "coding.md" in res.get("additionalContext", ""), res
+        # dirty-branch-switch-guard: a dirty tree and a branch switch
+        repo = T / "dirty-repo"
+        repo.mkdir(parents=True, exist_ok=True)
+        g = lambda *a: subprocess.run(["git", *a], cwd=repo, check=True, capture_output=True)
+        g("init", "-q"); (repo / "f").write_text("a"); g("add", "f")
+        g("-c", "user.email=t@t", "-c", "user.name=t", "commit", "-q", "-m", "f")
+        (repo / "f").write_text("b")
+        pre = {"conversationId": "adv-2", "workspacePaths": [str(repo)],
+               "toolCall": {"name": "run_command", "args": {"CommandLine": "git checkout -b other"}}}
+        res = adapter.handle_pre(pre)
+        assert res["decision"] == "allow" and "uncommitted" in res.get("additionalContext", ""), res
+        assert adapter.handle_pre(pre) == {"decision": "allow"}, "same advice once per session"
+    finally:
+        for k in ("AODD_STATE", "CODING_RULES_GATE_STATE", "AODD_CODING_RULES"):
+            os.environ.pop(k, None)
+
+
+def test_secret_deny_only_for_hard_secrets():
+    os.environ["AODD_HOOKS_DIR"] = str(ROOT / "hooks")
+    os.environ["AODD_STATE"] = str(T / "state-secret")
+    try:
+        env = T / ".env"
+        env.write_text("KEY=abc\n")
+        read = {"conversationId": "sec-1", "toolCall": {"name": "view_file", "args": {"AbsolutePath": str(env)}}}
+        assert adapter.handle_pre(read)["decision"] == "deny"                      # printing a secret file: kept
+        edit = {"conversationId": "sec-2", "toolCall": {"name": "replace_file_content", "args": {"TargetFile": str(env)}}}
+        res = adapter.handle_pre(edit)
+        assert res["decision"] == "allow" and "additionalContext" in res, res      # editing one: advice only
+    finally:
+        os.environ.pop("AODD_STATE", None)
+
+
 def test_graphify_guard_integration():
     os.environ["AODD_HOOKS_DIR"] = str(ROOT / "hooks")
     gproj = T / "gproj"
@@ -245,7 +293,7 @@ def test_graphify_guard_integration():
         "workspacePaths": [str(gproj)],
         "toolCall": {"name": "run_command", "args": {"CommandLine": "grep -rn foo ."}}
     })
-    assert res_deny.get("decision") == "deny" and "graphify" in res_deny.get("reason", ""), res_deny
+    assert res_deny.get("decision") == "allow" and "graphify" in res_deny.get("additionalContext", ""), res_deny
 
     adapter.handle_post({
         "conversationId": "gg-sess-1",
@@ -266,5 +314,7 @@ if __name__ == "__main__":
     test_skill_capture_integration()
     test_auditor_readonly_integration()
     test_graphify_guard_integration()
+    test_advice_hooks_never_deny()
+    test_secret_deny_only_for_hard_secrets()
     test_install_agy()
     print("ok")

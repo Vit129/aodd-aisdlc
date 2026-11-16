@@ -1,0 +1,21 @@
+adapters/antigravity-hook-adapter.py
+  s_3546f3791531e1::t_73cac78a272f8c 17-19,23-26,155-159,161,165,175,180-183,187,191,195,199-201,205,209,215-216,242-243,346,360,362-363,368-369,373,377,381,385,389,416-417
+adapters/test_antigravity_hook_adapter.py
+  s_3546f3791531e1::t_26a7613a5d045e 78-80,85,115-118,239-284,296,317-318
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "e6fe634dd8b013884644cf0fe8c76c8529ea74a1",
+  "prompts": {},
+  "sessions": {
+    "s_3546f3791531e1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d9313ef0-6765-42f0-9d15-df1f99a3cab1",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

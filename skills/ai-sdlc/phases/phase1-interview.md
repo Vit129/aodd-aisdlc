@@ -29,6 +29,11 @@ Continue refining that artifact through the design and QA planning phases requir
 chosen path until it is ready for coding. Do not ask for an extra "continue" between
 interview and artifact preparation.
 
+Who does what (tiers from `rules/ai-sdlc/delegation.md`): the big model asks the questions and judges
+readiness; the middle model writes the agreed plan text (or the big model, when the plan is very small);
+the small model (Haiku, `luna` on Codex) only turns the agreed text into `plan.html` and never adds,
+drops or reinterprets content. The big model checks the rendered file against the agreed text.
+
 Once the artifact is fully agreed, write `brief.md` next to the progress file (goal, scope in / out,
 acceptance criteria, decisions with reasons) for agents and handoff. For new work, first check the
 project structure standard and `rules/coding.md` for which parts apply, and record them in `brief.md`.

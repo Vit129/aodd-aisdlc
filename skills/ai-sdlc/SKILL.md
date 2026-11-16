@@ -13,7 +13,7 @@ Read `rules/ai-sdlc-workflow.md` (installed under your Claude home, `~/.claude/r
 - Argument = feature slug. Create `$AODD_PLANS/<slug>/ai-sdlc-task-progress.md` yourself
   (`AODD_PLANS` defaults to `~/.aodd/plans`; `python3 hooks/_aodd_paths.py plans` prints the resolved dir).
 - The 3 approval gates are real stops even in auto mode — the user opted in by invoking this.
-- `hooks/done-gate.py` blocks stopping while that progress file still has `- [ ]` boxes,
+- `hooks/done-gate.py` tells the user once when that progress file still has `- [ ]` boxes at stop,
   so keep checkboxes current as you go, not at the end.
 - Runs as `chief-of-staff` full: Phase 1 starts the HTML plan, which the applicable design/QA phases refine through their approvals until coding-ready,
   then records the brief (`$AODD_PLANS/<slug>/brief.md`) once the plan is agreed;

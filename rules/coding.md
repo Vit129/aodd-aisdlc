@@ -162,17 +162,17 @@ Files must remain modular, maintainable, and testable for both **Dev and QA**.
 
 ## 7. Coding flow (after reading this file)
 
-Each step names what to read or call next. **[hook]** means the step is enforced mechanically, not just written down.
+Each step names what to read or call next. **[hook]** means a hook reminds you at that step (advice only; the exceptions are the hard-safety set in the README).
 
 | Step | Do | Read / call |
 |---|---|---|
 | 1. Orient | Project root `ARCHITECTURE.md`, `CONTEXT.md`; find code via graphify if the project has `graphify-out/`; past decisions in the project's memory (`knowledge/`, `plans/`) | `rules/product-design.md` |
 | 2. Size it | Medium: Architecture-First (§1, § Anti-Monolith), `chief-of-staff` light. AODD triage is in `rules/ai-sdlc-workflow.md`. Large: `chief-of-staff` full. Every change takes a path in `rules/ai-sdlc-workflow.md` | `skills/chief-of-staff` |
-| 3. Branch | New branch from `main` before the first edit (rule only; the hook blocks switching away from uncommitted work, not editing on `main`) | your project's git conventions |
+| 3. Branch | New branch from `main` before the first edit (rule only; the hook reminds you once before switching away from uncommitted work, not about editing on `main`) | your project's git conventions |
 | 4. Place code | Logic vs UI vs Tests split (§6) & Anti-Monolith pattern (target 300–400 lines); structure work → blueprint | `rules/coding/project-blueprint.md`, `project-blueprint` skill |
 | 5. Domain skill | Web/mobile UI → `frontend-dev` (+ `uxui-designer` if no design tokens); API/DB → `backend-dev`; SwiftUI → `macos-swiftui`; auth/input/secrets → `security`; UI layout bug → `rules/gui-fixes.md` | the skill |
 | 6. Verify | Use covering PASS scenario results; otherwise run applicable tests/checks (`rules/ai-sdlc-workflow.md` § Verification evidence). Reuse valid evidence without duplicate runs | — |
-| 7. Review | Medium+: review the diff against the brief (an independent reviewer if available); **[done-gate hook reports a non-PASS verdict]** | `rules/coding/review-report.md` |
+| 7. Review | Medium+: review the diff against the brief (an independent reviewer if available); **[done-gate hook notes a non-PASS verdict]** | `rules/coding/review-report.md` |
 | 8. Close | Tick progress boxes **[done-gate hook]**, skill patch **[skill-capture-nudge hook, at 20+ tool calls with a learning signal]**, graph refresh if used | `docs/skill-learning.md` |
 
 - **Read before write:** understand existing code before modifying it.

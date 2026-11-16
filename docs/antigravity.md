@@ -14,11 +14,11 @@ This document describes how `aodd-aisdlc` integrates with Google Antigravity (th
 ### Lifecycle Hook Adapter details
 
 The adapter translates Antigravity lifecycle events to the payload format expected by AODD hooks:
-- **`PreToolUse`**: Maps Antigravity tool names to standard names (`run_command` -> `Bash`, `view_file` -> `Read`, `write_to_file` -> `Write`, `replace_file_content` -> `Edit`). When an auditor run is active (`AODD_AUDITOR=1`), `auditor-readonly.py` blocks write operations with `{"decision": "deny"}`.
+- **`PreToolUse`**: Maps Antigravity tool names to standard names (`run_command` -> `Bash`, `view_file` -> `Read`, `write_to_file` -> `Write`, `replace_file_content` -> `Edit`). The hooks advise: every `additionalContext` they produce (coding-rules, dirty-branch, graphify, secret-read advice) is joined into `{"decision": "allow", "additionalContext": "..."}`. Only the hard-safety set denies with `{"decision": "deny"}`: `auditor-readonly.py` while an auditor run is active (`AODD_AUDITOR=1`), and `secret-read-guard.py` when a secret file would be printed.
 - **`PostToolUse`**: Records tool executions for post-tool hooks (such as `coding-rules-gate.py` if installed).
 - **`Stop`**:
-  - `done-gate.py`: Scans Antigravity transcript tool calls. If a progress file (`ai-sdlc-task-progress.md`) was touched and still has open `[ ]` tasks, or an audit verdict is not PASS, it blocks turn completion with `{"decision": "continue"}`.
-  - `skill-capture-nudge.py`: Scans the session transcript for learning signals (user corrections or fix commits). If >= 20 tool calls have run since the last nudge, it guides the model to file an `agy-proposal` with evidence before stopping.
+  - `done-gate.py`: Scans Antigravity transcript tool calls. If a progress file (`ai-sdlc-task-progress.md`) was touched and still has open `[ ]` tasks, or an audit verdict is not PASS, it adds a note for the user as `systemMessage` once; the Stop is never blocked (`{"decision": "allow", "systemMessage": "..."}`).
+  - `skill-capture-nudge.py`: Scans the session transcript for learning signals (user corrections or fix commits). After >= 20 tool calls with a learning signal it adds one `systemMessage` note per session suggesting a skill patch or an `agy-proposal`. Not verified against a live agy: whether it renders `systemMessage` / accepts `additionalContext` beside `allow`.
 - **Fail-open**: If any hook module is missing from the installed hooks directory or encounters an error, the adapter allows execution to proceed normally (`{"decision": "allow"}`).
 
 ## How to install

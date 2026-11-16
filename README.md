@@ -49,14 +49,14 @@ see the [effort ladder](rules/ai-sdlc/delegation.md#effort-ladder).
 | `skills/chief-of-staff`, `skills/ai-sdlc` (+ `references/`), `skills/agent-ops` | orchestrator, workflow, monthly team review |
 | `skills/reverse-engineer-anything` | [REA](https://github.com/morluto/rea) skill for shipped binaries, Electron/JS apps, Android, firmware; the installer also runs `rea setup --client <claude_code, codex, antigravity> --yes` for each agent you install into (`rea` on PATH, else `npx -y rea-agents@6.8.0`, needs Node; `--dry-run` passes `--dry-run`). Later, no reinstall needed: `python3 scripts/rea_check.py` reports installed vs latest and `rea doctor` per agent, `--update` upgrades `rea-agents` and re-registers what is stale |
 | `agents/auditor.md`, `agents/advisor.md` | independent auditor, second-opinion expert |
-| `hooks/done-gate.py` | Stop hook: no "Done" with open checkboxes; relays a non-PASS audit |
-| `hooks/auditor-readonly.py` | PreToolUse hook: an auditor run cannot write |
-| `hooks/skill-capture-nudge.py` | Stop/PostToolUse hook: turns a user correction or fix commit into a skill patch |
-| `hooks/secret-read-guard.py` | PreToolUse hook: secret files (`.env`, keys, configs with tokens) are never printed or edited by the agent; `--show <file>` gives a masked view |
-| `hooks/coding-rules-gate.py` | PreToolUse/PostToolUse hook: the first code edit of a session waits until `rules/coding.md` (if you have one) and the project's `ARCHITECTURE.md` were read |
-| `hooks/delegation-nudge.py` | PostToolUse hook: reminds the main session to hand lookups and big outputs to a Haiku subagent (`AODD_DELEGATION_NUDGE=0` turns it off) |
-| `hooks/dirty-branch-switch-guard.py` | PreToolUse hook: no branch switch or new worktree while earlier work is uncommitted |
-| `hooks/graphify-guard.py` | graph-first lookup gate and graph refresh; a silent no-op unless `graphify-out/graph.json` exists |
+| `hooks/done-gate.py` | Stop hook: one note to the user (`systemMessage`, never a block) when a progress file still has open checkboxes or the audit is not PASS |
+| `hooks/auditor-readonly.py` | PreToolUse hook: an auditor run (`AODD_AUDITOR=1`) cannot write; the sandbox of the independent auditor, never fires in a normal session |
+| `hooks/skill-capture-nudge.py` | Stop/PostToolUse hook: after a user correction or fix commit, one note per session that a skill patch may be worth it |
+| `hooks/secret-read-guard.py` | PreToolUse hook: printing a secret file (`.env`, keys, configs with a real token shape) is denied and `--show <file>` gives a masked view; edits and key-name-only matches get one line of advice |
+| `hooks/coding-rules-gate.py` | PreToolUse/PostToolUse hook: the first code edit of a session gets one reminder to read `rules/coding.md` (if you have one) and the project's `ARCHITECTURE.md`; the edit always goes through |
+| `hooks/delegation-nudge.py` | PostToolUse hook: one reminder per session to hand lookups and big outputs to a Haiku subagent (`AODD_DELEGATION_NUDGE=0` turns it off) |
+| `hooks/dirty-branch-switch-guard.py` | PreToolUse hook: one reminder per session before a branch switch or new worktree while earlier work is uncommitted; the command still runs |
+| `hooks/graphify-guard.py` | graph-first lookup reminder (once per session) and graph refresh; a silent no-op unless `graphify-out/graph.json` exists |
 | `hooks/work-log.py` | Stop hook: one record per session (tokens, tool calls, rework signals); `--report YYYY-MM` |
 | `scripts/skill_learning_report.py`, `scripts/agent_ops_gather.py` | the curator (stale/archive/merge candidates, capture yield) and the agent-ops input gatherer |
 | `scripts/skill_trigger_eval.py` | measures whether a model opens a model-invoked skill on its own, from unseen user phrasings; under half → make it user-invoked |
@@ -84,7 +84,7 @@ git clone https://github.com/<owner>/aodd-aisdlc.git && cd aodd-aisdlc
 
 `./install.sh --detect` lists the coding agents on this machine (Claude Code, Codex, Antigravity, Gemini CLI, Cursor, Copilot, OpenCode, Hermes, Kiro, Aider, Goose, Grok, Pi, OpenClaw; found by binary on PATH or home dir). A terminal install offers Codex and Antigravity when found; the others are listed as having no installer yet. It also warns when neither `agy` nor `codex` is present, since the cross-family audit then falls back to a Claude auditor.
 
-Update: `git pull && ./install.sh` (re-running is safe; changed files are kept as `.aodd-bak`). To make it automatic after every pull, enable the post-merge hook (below).
+Update: `git pull && ./install.sh` (re-running is safe; changed files are kept as `.aodd-bak`). A non-terminal re-run (the post-merge hook) also updates a Codex or Antigravity home that already has an aodd install, but never adds a new one. `./install.sh --check` copies nothing: it prints `DRIFT <file>` for every installed file that differs from this checkout and exits 1 on any. To make it automatic after every pull, enable the post-merge hook (below).
 
 In a terminal the installer asks about each optional module (one line each, default no) and, for `schedules`, which times to use. To skip the questions:
 
@@ -105,7 +105,7 @@ Modules are additive: add one later with `./install.sh --with <module>`; modules
 - the same skills, agents, rules, hooks, scripts and docs go into `<repo>/.claude/` (Claude Code loads `.claude/rules/` and project skills itself);
 - hooks are registered in `<repo>/.claude/settings.json` with paths relative to `$CLAUDE_PROJECT_DIR`, so the committed file has no machine path, and each hook gets `CLAUDE_HOME` pointed at the repo's own `.claude/`;
 - every repo gets the same full hook set, so the result is identical wherever it runs. Claude Code also runs the global `~/.claude` hooks, so a machine that has the global install runs each AODD hook twice in that repo until the global AODD hooks are removed (`~/.claude/settings.json`, restored from `.aodd-bak` if needed);
-- the aodd contract is written as a block between `aodd:begin`/`aodd:end` markers into the repo's `AGENTS.md` (created if missing; hand-written content is kept). Codex and Antigravity read that file; `CLAUDE.md` gets an `@AGENTS.md` line (created, or appended if missing; the rest of the file is kept) so Claude reads the same block;
+- `AGENTS.md` gets a short block between `aodd:begin`/`aodd:end` markers (created if missing; hand-written content is kept) that points at `.claude/rules/ai-sdlc-workflow.md`, so the contract is not loaded twice (Claude Code auto-loads that rule file; the Codex home install still inlines it). Codex and Antigravity read the pointer; `CLAUDE.md` gets an `@AGENTS.md` line (created, or appended if missing; the rest of the file is kept). An older inlined block is replaced in place;
 - `.gitignore` gets `__pycache__/`; no `.aodd-bak` files (git is the backup), so review with `git -C <repo> status && git -C <repo> diff`. Nothing is committed.
 
 Full by default: every module that works per repository (agent-memory). `--core-only` skips modules. Skipped with a printed reason: `schedules` (crontab / LaunchAgents are per machine), `rea setup` (per machine), Codex and Antigravity (their homes are global). Paths matching `AODD_COMPANY_PATHS` (colon-separated globs, set in your shell, e.g. `AODD_COMPANY_PATHS="$HOME/work/*"`; the package ships none) are refused unless `AODD_ALLOW_COMPANY=1`, and a path that is not a git repository is refused. `--dry-run` shows the plan and writes nothing.
@@ -151,7 +151,7 @@ Core works alone. Each module is a folder `optional/<module>/` with its own `ski
 
 | Module | Gives you | Details |
 |---|---|---|
-| `agent-memory` | agents recall past decisions and lessons across sessions and projects | `memory-recall.py` (UserPromptSubmit) adds up to 5 pointers + a one-line gist from `knowledge/*.md` under `$AODD_MEMORY` and from Claude's auto-memory notes; `memory-write-scan.py` (PreToolUse) refuses to store a real credential or an injection phrase in a memory file; `session-start-recent.py` (SessionStart) shows the project's last session digest and, in the workspace only, new reports, agent proposals and audits that need you |
+| `agent-memory` | agents recall past decisions and lessons across sessions and projects | `memory-recall.py` (UserPromptSubmit) adds up to 5 pointers + a one-line gist from `knowledge/*.md` under `$AODD_MEMORY` and from Claude's auto-memory notes; `memory-write-scan.py` (PreToolUse) refuses to store a real credential in a memory file and only advises (once per session) on an injection phrase or invisible unicode; `session-start-recent.py` (SessionStart) shows the project's last session digest and, in the workspace only, new reports, agent proposals and audits that need you |
 | `schedules` | weekly team review, cleanup report and backups run by themselves at times you pick | `scripts/install-schedules.py` writes cron lines (Linux) or launchd agents (macOS) with absolute paths resolved at install time; jobs run `scripts/aodd_job.py` |
 
 Add one later: `./install.sh --with agent-memory` (or `--with agent-memory,schedules`).
@@ -172,13 +172,23 @@ Not included: cross-session full-text search (`session_search`) and the unified 
 - Change times by re-running: `python3 <claude home>/scripts/install-schedules.py --set agent-ops="fri 17:30" --set housekeeping=off` (`HH:MM`, optionally `daily` or a weekday first). Entries are replaced in place, so it is safe to repeat. `--dry-run` prints what would be written; `--list` shows jobs and defaults.
 - Run a job by hand through the same wrapper: `python3 <claude home>/scripts/aodd_job.py agent-ops`.
 
+### Hooks advise; the hard-safety set denies
+
+Hooks add one line of context (PreToolUse `additionalContext`, Stop `systemMessage`), once per session, and never block a command or a stop; with no `session_id` or on any error they stay silent. The only denies left:
+
+| Hook | Denies exactly | Why |
+|---|---|---|
+| `secret-read-guard.py` | printing a secret file into the session: the Read tool, or `cat`/`head`/`sed`/`grep`/`jq`/`git diff`/`show`/`blame`/`grep`/`cat-file`/`log` on `.env*`, `*.pem`/`*.key`/`*.p12`/`*.keystore`, `.netrc`/`.npmrc`/`.pypirc`, a non-code file named `*secret*`/`*credential*`, or a config file holding a real token shape. Edits, key-name-only matches and recursive grep only advise; `cp`/`mv`/`git add` are not reads | the value lands in the transcript and at the model provider; the key must then be rotated |
+| `memory-write-scan.py` (agent-memory) | writing a real token shape into a memory `.md` | memory auto-loads into every later session and is pushed to a git remote |
+| `auditor-readonly.py` | writes, only in a process started with `AODD_AUDITOR=1` by `scripts/audit.py` | the auditor's read-only sandbox; a writing auditor voids its own audit |
+
 ## How the audit works
 
 On your yes, the work is checked by an independent auditor that never sees the worker's argument (a different model: another family for Opus/Fable work, Opus for Sonnet/Haiku work); the brief is built from your own messages and the diff, and a FAIL or DISPUTED verdict goes to you as is. Details, auditor selection and the report format: [docs/audit.md](docs/audit.md).
 
 ## Skill capture (self-improving skills)
 
-After a user correction or a `fix:` commit, a Stop hook asks the agent to patch the skill that governs the work; other agents raise evidence-gated proposals instead. Details: [docs/skill-learning.md](docs/skill-learning.md).
+After a user correction or a `fix:` commit, a Stop hook notes (once per session) that a patch to the skill that governs the work may be worth it; other agents raise evidence-gated proposals instead. Details: [docs/skill-learning.md](docs/skill-learning.md).
 
 ## Codex
 

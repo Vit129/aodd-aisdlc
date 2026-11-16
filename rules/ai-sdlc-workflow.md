@@ -37,7 +37,7 @@ Phase files live in `skills/ai-sdlc/phases/` (Phase map in `skills/ai-sdlc/SKILL
    `$AODD_PLANS/<feature>/plan.html`). Refine it until ready for coding (Phase 1 defines readiness); no code before that.
 2. Read `skills/ai-sdlc/references/dev-qa-pattern.md` (tagging, invariants, test barriers), then a dev step and a QA testing step.
 3. Last step, after everything passes: run `graphify update .` when `graphify-out/` exists; stage its tracked files with the
-   commit (`rules/ai-sdlc/git-ops.md`).
+   commit (`rules/ai-sdlc/git-ops.md`); skip it when every changed file is documentation (`.md`, `VERSION`).
 4. Every coding task enters `delivery-workflow` for delivery. Non-coding changes take the same workflow with `skip`
    (no version bump); an explicitly requested version takes precedence. Run authorized stages only, retaining publish approvals.
 

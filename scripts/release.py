@@ -55,6 +55,13 @@ def output(*args: str) -> str:
     return run(list(args), capture=True).stdout.strip()
 
 
+def docs_only(paths: list[str]) -> bool:
+    """True when every changed path is documentation, VERSION, or Graphify output."""
+    return bool(paths) and all(
+        p.endswith(".md") or p == "VERSION" or p.startswith("graphify-out/") for p in paths
+    )
+
+
 def release_exists(tag: str) -> bool:
     releases = json.loads(output("gh", "release", "list", "--limit", "1000", "--json", "tagName"))
     return any(release.get("tagName") == tag for release in releases)
@@ -165,15 +172,23 @@ def main() -> int:
     new_version = version if pending_version else next_version(version, args.bump)
     new_tag = f"v{new_version}"
     changelog = output("git", "cliff", "--tag", new_tag)
+    skip_graph = False
+    if latest_tag_version != "0.0.0":
+        changed = output("git", "diff", "--name-only", f"v{latest_tag_version}..HEAD").splitlines()
+        skip_graph = docs_only(changed)
     if args.dry_run:
         action = "complete" if pending_version else "create"
-        print(f"Would {action} {new_tag}, update VERSION/CHANGELOG.md if needed, refresh Graphify, commit metadata + tracked graph together, push, and create a GitHub Release.")
+        graph_step = "skip Graphify (docs-only)" if skip_graph else "refresh Graphify"
+        print(f"Would {action} {new_tag}, update VERSION/CHANGELOG.md if needed, {graph_step}, commit metadata + tracked graph together, push, and create a GitHub Release.")
         return 0
 
     if not pending_version:
         VERSION_FILE.write_text(f"{new_version}\n")
     CHANGELOG_FILE.write_text(changelog)
-    prepare_graph(ROOT)
+    if skip_graph:
+        print("Docs-only release: skipping Graphify refresh.")
+    else:
+        prepare_graph(ROOT)
     run(["git", "add", "VERSION", "CHANGELOG.md"])
     if output("git", "diff", "--cached", "--name-only"):
         run(["git", "commit", "-m", f"chore(release): {new_tag}"],

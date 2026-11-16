@@ -1,0 +1,27 @@
+hooks/dirty-branch-switch-guard.py
+  s_3546f3791531e1::t_dcba8a77817eb4 88,94,113
+hooks/secret-read-guard.py
+  s_3546f3791531e1::t_1758ae2db53b4d 127-129,143-144
+hooks/test_allow_by_default.py
+  s_3546f3791531e1::t_cd6dfd131ab08d 26,50-53
+hooks/test_dirty_branch_switch_guard.py
+  s_3546f3791531e1::t_d25240a9a8f7aa 65-71
+hooks/test_secret_read_guard.py
+  s_3546f3791531e1::t_f9395f3f5ce778 47-48
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "2e50bbc86a1e4f4482b973ae8278d0bd6a991f0c",
+  "prompts": {},
+  "sessions": {
+    "s_3546f3791531e1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d9313ef0-6765-42f0-9d15-df1f99a3cab1",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

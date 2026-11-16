@@ -15,8 +15,8 @@ Read `rules/ai-sdlc-workflow.md` (installed under your Claude home, `~/.claude/r
 - The 3 approval gates are real stops even in auto mode — the user opted in by invoking this.
 - `hooks/done-gate.py` blocks stopping while that progress file still has `- [ ]` boxes,
   so keep checkboxes current as you go, not at the end.
-- Runs as `chief-of-staff` full: Phase 1 records the brief (`$AODD_PLANS/<slug>/brief.md`) and starts
-  the HTML plan, which the applicable design/QA phases refine through their approvals until coding-ready;
+- Runs as `chief-of-staff` full: Phase 1 starts the HTML plan, which the applicable design/QA phases refine through their approvals until coding-ready,
+  then records the brief (`$AODD_PLANS/<slug>/brief.md`) once the plan is agreed;
   each phase dispatches to its team, and the run ends with the report in `rules/ai-sdlc-workflow.md` § Boss mode. Risky work: propose the audit (`docs/audit.md`).
 - Which skill for which task: `references/skill-routing.md`.
 - Resume = read the progress file and continue at its first `- [ ]`.

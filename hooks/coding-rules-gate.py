@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
-"""coding-rules-gate: refuse the first code edit of a session until `rules/coding.md` was read.
+"""coding-rules-gate: remind a session once to read `rules/coding.md` before it edits code. Never blocks.
 
-  pre   (PreToolUse  Edit|Write|MultiEdit|NotebookEdit|Bash)  deny a code-file write (Edit/Write tool,
+  pre   (PreToolUse  Edit|Write|MultiEdit|NotebookEdit|Bash)  on a code-file write (Edit/Write tool,
         or a Bash command that writes a code file: sed -i, perl -i, redirect/tee, open(...,"w"),
-        write_text, git apply, patch) while this session has no "read" marker.
-        Also denies it while the edited project's root ARCHITECTURE.md (if it has one) is unread.
+        write_text, git apply, patch) while this session has no "read" marker, add ONE line of context
+        naming the file to read. The same for the edited project's root ARCHITECTURE.md (if it has one),
+        once per project. The edit itself always goes through.
   post  (PostToolUse Read|Bash)  sets a marker when rules/coding.md or ARCHITECTURE.md is read (Read
-        tool, or a Bash cat/sed/head/less on it).
+        tool, or a Bash cat/sed/head/less/nl/grep/rg on it).
 
 Why: "read the coding rules once per session" is plain text; a session that edits only through Bash
-(auto mode) skips it. The rule file gate only applies when `rules/coding.md` exists in the Claude home
-(or at $AODD_CODING_RULES), so a package without that file never blocks on it. Bash detection is a
-heuristic; it errs toward missing an odd write form, never toward blocking reads.
+(auto mode) skips it. The reminder only applies when `rules/coding.md` exists in the Claude home
+(or at $AODD_CODING_RULES). Bash detection is a heuristic, which is why it only advises: a wrong guess
+costs one line of context, never a refused command.
 Fails open on any error. Disable with CODING_RULES_GATE=0.
 """
 import hashlib
@@ -33,27 +34,25 @@ CODE_PATH = re.compile(rf"[\w./+~$-]+\.(?:{CODE_EXT})\b")
 SHELL_WRITE = re.compile(r"\bsed\s+(?:-\w*\s+)*-i|\bperl\s+-\w*i|\btee\b|>>?\s*[\w./+~$-]+\.(?:" + CODE_EXT + r")\b")
 # Interpreter writes: live inside a heredoc or `-c "..."`, so matched on the quoted text.
 PY_WRITE = re.compile(r"open\([^)]*['\"][wa]\+?['\"]|\.write_text\(")
+# The same writes when their target is a string literal: open("x", "w") / Path("x").write_text(
+PY_TARGET = re.compile(r"open\(\s*[rbfu]*['\"]([^'\"]+)['\"]\s*,[^)]*['\"][wa]\+?['\"]|Path\(\s*['\"]([^'\"]+)['\"]\s*\)\.write_text\(")
 HEREDOC = re.compile(r"^(?P<head>[^\n]*?)<<-?\s*['\"]?(?P<tag>\w+)['\"]?[^\n]*\n.*?^\s*(?P=tag)\s*$", re.M | re.S)
-INTERPRETER = re.compile(r"\b(?:python3?|node|ruby|perl|bash|sh|zsh|swift|deno|bun)\b")
+# An interpreter as the command that reads the heredoc, not a word inside a path (`cat > /x/swift/notes.md`)
+INTERPRETER = re.compile(r"(?:^|[|;&(]|\b(?:sudo|env|time|command|exec)\b)\s*(?:\w+=\S*\s+)*(?:[\w./~$-]*/)?"
+                         r"(?:python3?|node|ruby|perl|bash|sh|zsh|swift|deno|bun)\b")
 QUOTED = re.compile(r"'[^']*'|\"(?:\\.|[^\"\\])*\"")
 PATCH = re.compile(r"\bgit\s+apply\b|\bpatch\s+-")  # writes code without naming a code file
 RULE = "rules/coding.md"
 ARCH = "ARCHITECTURE.md"
-READERS = {"cat", "sed", "head", "tail", "less", "bat", "rtk"}
-MSG = (
-    "coding-rules-gate: read {path} before the first code edit of this session. "
-    "Read it with the Read tool, then retry this edit."
-)
+READERS = {"cat", "sed", "head", "tail", "less", "more", "bat", "nl", "awk", "grep", "rg", "rtk"}
+MSG = "coding-rules-gate (advice, not a block): this session has not read {path}; read it before more code edits."
 
 
 def rule_file():
     """The coding rules file, or None when this install has none (then the rule gate stays off)."""
     f = Path(os.environ.get("AODD_CODING_RULES") or _aodd_paths.claude_home() / RULE).expanduser()
     return f if f.is_file() else None
-ARCH_MSG = (
-    "coding-rules-gate: this project has {path} - read it before the first code edit in this project "
-    "this session then retry."
-)
+ARCH_MSG = "coding-rules-gate (advice, not a block): this project has {path}; read it before more code edits here."
 
 
 def _marker(sid, kind="read"):
@@ -92,8 +91,20 @@ def write_texts(cmd):
     on the bare command (`sed -i 's|x.sh|y|' AGENTS.md` edits the .md); interpreter writes on the
     quoted text, since their path is a string literal."""
     out = [s for s in _segments(_bare(cmd)) if SHELL_WRITE.search(s) and CODE_PATH.search(s)]
-    out += [s for s in _segments(_drop_data_heredocs(cmd)) if PY_WRITE.search(s) and CODE_PATH.search(s)]
+    out += [t for t in map(_py_write_paths, _segments(_drop_data_heredocs(cmd))) if t]
     return out
+
+
+def _py_write_paths(text):
+    """Code paths an interpreter snippet writes, space-joined. A literal target decides alone
+    (`open("report.md", "w")` is not a code write, whatever paths the text it writes mentions);
+    only a write through a variable falls back to every code path in the snippet."""
+    writes = PY_WRITE.findall(text)
+    if not writes:
+        return ""
+    literal = [a or b for a, b in PY_TARGET.findall(text)]
+    paths = literal if len(literal) >= len(writes) else [m.group() for m in CODE_PATH.finditer(text)]
+    return " ".join(p for p in paths if CODE_PATH.search(p))
 
 
 def reads_file(tool, inp, name):
@@ -101,7 +112,7 @@ def reads_file(tool, inp, name):
         return str(inp.get("file_path", "")).endswith(name)
     if tool == "Bash":
         cmd = str(inp.get("command", ""))
-        return name in cmd and any(re.search(rf"(?:^|[;&|]\s*){w}\b", cmd) for w in READERS)
+        return name in cmd and any(re.search(rf"(?:^|[;&|(\s'\"]){w}\s", cmd) for w in READERS)
     return False
 
 
@@ -122,9 +133,7 @@ def bash_target(cmd):
     (`cd`/absolute paths), so the file decides whose ARCHITECTURE.md applies. Relative -> None (cwd)."""
     # Write segments first; then the whole command, since a `&&` inside a heredoc string can split a
     # script's `p="/abs/x.py"` from its `open(p,"w")`.
-    script = _drop_data_heredocs(cmd)
-    fallback = script if PY_WRITE.search(script) else ""
-    for text in (" ".join(write_texts(cmd)), fallback):
+    for text in (" ".join(write_texts(cmd)), _py_write_paths(_drop_data_heredocs(cmd))):
         for m in CODE_PATH.finditer(text):
             if m.group().startswith(("/", "~", "$HOME/")):
                 return m.group().replace("$HOME", "~", 1)
@@ -140,6 +149,14 @@ def _touch(m):
     m.touch()
 
 
+def _first_time(m):
+    """True once per marker: each reminder is said one time per session, never on every edit."""
+    if m.exists():
+        return False
+    _touch(m)
+    return True
+
+
 def decide_pre(payload):
     if os.environ.get("CODING_RULES_GATE") == "0":
         return None
@@ -148,20 +165,17 @@ def decide_pre(payload):
         return None
     target = inp.get("file_path") or inp.get("notebook_path") or bash_target(str(inp.get("command", "")))
     arch = find_arch(Path(target).expanduser().parent if target else payload.get("cwd") or os.getcwd())
+    if not sid:  # cannot throttle without a session -> stay silent rather than repeat on every edit
+        return None
     missing = []
     rule = rule_file()
-    if rule and not (sid and _marker(sid).exists()):
+    if rule and not _marker(sid).exists() and _first_time(_marker(sid, "advised")):
         missing.append(MSG.format(path=rule))
-    if arch and not (sid and _marker(sid, _arch_key(arch)).exists()):
+    if arch and not _marker(sid, _arch_key(arch)).exists() and _first_time(_marker(sid, _arch_key(arch) + "-advised")):
         missing.append(ARCH_MSG.format(path=arch / ARCH))
     if not missing:
         return None
-    out = {"hookEventName": "PreToolUse"}
-    if not sid:  # cannot track the session -> remind, never block
-        out["additionalContext"] = " ".join(missing)
-    else:
-        out.update(permissionDecision="deny", permissionDecisionReason=" ".join(missing))
-    return {"hookSpecificOutput": out}
+    return {"hookSpecificOutput": {"hookEventName": "PreToolUse", "additionalContext": " ".join(missing)}}
 
 
 def record_post(payload):

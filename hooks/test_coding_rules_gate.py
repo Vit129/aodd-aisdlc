@@ -31,29 +31,49 @@ assert g.is_code_write("Edit", {"file_path": "/r/MobileBridgeServer+Connection.s
 assert g.is_code_write("Write", {"file_path": "/r/hooks/x.py"})
 assert not g.is_code_write("Edit", {"file_path": "/r/README.md"}) and not g.is_code_write("Write", {"file_path": "/r/a.json"})
 
+# negatives: a heredoc body that merely mentions code paths is data, not a code write
+assert not w("python3 - <<'EOF'\nopen('/out/report.md','w').write('see hooks/x.py')\nEOF")
+assert g.bash_target("python3 - <<'EOF'\nopen('/out/report.md','w').write('see hooks/x.py')\nEOF") is None
+assert not w("cat > /a/swift/notes.md <<'EOF'\nsrc/a.py\nEOF")
+# readers: nl, bash -lc "sed ...", but a bare echo is not a read
+assert g.reads_file("Bash", {"command": "nl -ba ~/.claude/rules/coding.md"}, g.RULE)
+assert g.reads_file("Bash", {"command": 'bash -lc "sed -n 1,5p rules/coding.md"'}, g.RULE)
+assert not g.reads_file("Bash", {"command": "echo rules/coding.md"}, g.RULE)
+
 # no rules/coding.md installed: the rule gate stays off (nothing to read)
 assert g.decide_pre({"tool_name": "Edit", "tool_input": {"file_path": str(plain / "a.swift")}, "session_id": "s0", "cwd": str(plain)}) is None
 (CH / "rules").mkdir(); (CH / "rules/coding.md").write_text("rules")
 pre = lambda tool, inp, sid="s1", cwd=plain: g.decide_pre({"tool_name": tool, "tool_input": inp, "session_id": sid, "cwd": str(cwd)})
 A, P = str(plain / "a.swift"), str(proj / "src" / "a.swift")
-d = pre("Edit", {"file_path": A})
-assert d["hookSpecificOutput"]["permissionDecision"] == "deny" and "rules/coding.md" in d["hookSpecificOutput"]["permissionDecisionReason"]
-assert "permissionDecision" not in pre("Edit", {"file_path": A}, sid=None)["hookSpecificOutput"]  # no session -> remind only
+
+
+def advice(d):
+    """The result is advice only: additionalContext, never a permission decision. Returns its text."""
+    o = d["hookSpecificOutput"]
+    assert "permissionDecision" not in o and "permissionDecisionReason" not in o
+    return o["additionalContext"]
+
+
+assert "rules/coding.md" in advice(pre("Edit", {"file_path": A}))
+assert pre("Edit", {"file_path": A}) is None                       # once per session
+assert pre("Edit", {"file_path": A}, sid=None) is None             # no session -> silent
 assert pre("Edit", {"file_path": str(plain / "a.md")}) is None
 
-# reading the rule (Read tool or Bash cat) unlocks the session, and only that session
-assert not g.reads_file("Bash", {"command": "echo rules/coding.md"}, g.RULE)
+# reading the rule (Read tool or Bash cat) marks the session, and only that session
 g.record_post({"tool_name": "Bash", "tool_input": {"command": "cat ~/.claude/rules/coding.md; ls"}, "session_id": "s1"})
 assert pre("Edit", {"file_path": A}) is None
-assert pre("Edit", {"file_path": A}, sid="s2")["hookSpecificOutput"]["permissionDecision"] == "deny"
+assert "rules/coding.md" in advice(pre("Edit", {"file_path": A}, sid="s2"))
 g.record_post({"tool_name": "Read", "tool_input": {"file_path": "/srv/u/.claude/rules/coding.md"}, "session_id": "s2"})
 assert pre("Bash", {"command": "sed -i '' s/a/b/ a.swift"}, sid="s2") is None
 
-# a project with ARCHITECTURE.md also needs that file read, per project
+# a project with ARCHITECTURE.md also gets one reminder, per project
 assert g.find_arch(proj / "src") == proj and g.find_arch(plain) is None
-r = pre("Edit", {"file_path": P})["hookSpecificOutput"]["permissionDecisionReason"]     # s1 read coding.md only
+r = advice(pre("Edit", {"file_path": P}, sid="s5"))                # s5 has not read the rules or the architecture
+assert "ARCHITECTURE.md" in r and "rules/coding.md" in r
+assert pre("Edit", {"file_path": P}, sid="s5") is None             # both said once
+g.record_post({"tool_name": "Read", "tool_input": {"file_path": "/x/rules/coding.md"}, "session_id": "s6"})
+r = advice(pre("Edit", {"file_path": P}, sid="s6"))                # s6 read coding.md only
 assert "ARCHITECTURE.md" in r and "rules/coding.md" not in r
-assert "rules/coding.md" in pre("Edit", {"file_path": P}, sid="s9")["hookSpecificOutput"]["permissionDecisionReason"]
 g.record_post({"tool_name": "Bash", "tool_input": {"command": "cat ARCHITECTURE.md"}, "cwd": str(proj), "session_id": "s1"})
 assert pre("Edit", {"file_path": P}) is None
 assert pre("Bash", {"command": "sed -i '' s/a/b/ src/a.swift"}, cwd=proj) is None
@@ -61,10 +81,8 @@ g.record_post({"tool_name": "Read", "tool_input": {"file_path": str(proj / "ARCH
 assert pre("Edit", {"file_path": P}, sid="s2") is None
 
 # Bash run from another project's cwd: an absolute path decides the project, not the cwd
-assert pre("Bash", {"command": f"sed -i '' s/a/b/ {P}"}, sid="s3", cwd=plain)["hookSpecificOutput"]["permissionDecision"] == "deny"
-g.record_post({"tool_name": "Read", "tool_input": {"file_path": "/x/rules/coding.md"}, "session_id": "s3"})
-assert "ARCHITECTURE.md" in pre("Bash", {"command": f"sed -i '' s/a/b/ {P}"}, sid="s3", cwd=plain)["hookSpecificOutput"]["permissionDecisionReason"]
-assert pre("Bash", {"command": f"sed -i '' s/a/b/ {A}"}, sid="s3", cwd=proj) is None
+assert "ARCHITECTURE.md" in advice(pre("Bash", {"command": f"sed -i '' s/a/b/ {P}"}, sid="s3", cwd=plain))
+assert "rules/coding.md" in advice(pre("Bash", {"command": f"sed -i '' s/a/b/ {A}"}, sid="s7", cwd=proj))
 assert g.bash_target("cd x && sed -i s/a/b/ src/a.swift") is None
 assert g.bash_target("f=\"$HOME/.claude/hooks/x.py\"; open(f,\"w\")") == "~/.claude/hooks/x.py"
 

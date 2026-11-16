@@ -19,7 +19,7 @@ Entered from the AODD triage in `rules/ai-sdlc-workflow.md`: **micro** (small lo
 
 Add a short design check against the design docs, and propose the audit (`docs/audit.md`) before reporting. The path and its gates are the ones in `rules/ai-sdlc-workflow.md`.
 
-With `ai-sdlc` (invoked by you or by the CEO): the ai-sdlc phases ARE the dispatch plan. Phase 1 interview = step 1 (save `brief.md` next to the progress file), Phases 2-5 = step 2, the 3 approval gates are the CEO check-back points, and step 4 (report) closes the run.
+With `ai-sdlc` (invoked by you or by the CEO): the ai-sdlc phases ARE the dispatch plan. Phase 1 interview = step 1 (save `brief.md` next to the progress file once the HTML plan is agreed), Phases 2-5 = step 2, the 3 approval gates are the CEO check-back points, and step 4 (report) closes the run.
 
 The CEO touches the work twice: the brief, and the final decision. Everything between is yours.
 

@@ -1,23 +1,23 @@
-# Graph Summary — release-0.8.2
+# Graph Summary — aodd-aisdlc
 _Auto-generated from GRAPH_REPORT.md · do not edit manually_
 _Regen: `graphify update .`_
 
 ## Summary
-- 2473 nodes · 2685 edges · 253 communities (225 shown, 28 thin omitted)
+- 2483 nodes · 2695 edges · 251 communities (222 shown, 29 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 13 edges (avg confidence: 0.62)
 - Token cost: 0 input · 0 output
 
 
 ## Graph Freshness
-- Built from commit: `afa7f5cc`
+- Built from commit: `0ff78fb9`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 
 ## God Nodes (most connected - your core abstractions)
 1. `Fix Generated Playwright Files (Postman Migration)` - 33 edges
-2. `UX/UI Designer` - 20 edges
-3. `Changelog` - 19 edges
+2. `Changelog` - 20 edges
+3. `UX/UI Designer` - 20 edges
 4. `Browser Automation with playwright-cli` - 16 edges
 5. `Frontend Development` - 15 edges
 6. `aodd-aisdlc` - 14 edges
@@ -32,26 +32,26 @@ A high-degree node isn't always architecturally central - a widely-used
 utility/config file can rack up more edges than a real coupler while only
 ever touching one area. This ranks by how many DIFFERENT communities a
 node's neighbors span, not by raw edge count.
-1. `Changelog` - bridges 11 areas (19 edges)
-2. `state()` - bridges 5 areas (10 edges)
-3. `claude_home()` - bridges 3 areas (9 edges)
-4. `Test generation (plan → generate → heal)` - bridges 3 areas (6 edges)
-5. `aodd-aisdlc` - bridges 2 areas (14 edges)
-6. `search()` - bridges 2 areas (10 edges)
-7. `generate_design_system()` - bridges 2 areas (8 edges)
-8. `session_id()` - bridges 2 areas (6 edges)
-9. `_resolve_color_mode()` - bridges 2 areas (5 edges)
+1. `Changelog` - bridges 12 areas (20 edges)
+2. `aodd-aisdlc` - bridges 2 areas (14 edges)
+3. `search()` - bridges 2 areas (10 edges)
+4. `Browser Session Management` - bridges 2 areas (10 edges)
+5. `generate_design_system()` - bridges 2 areas (8 edges)
+6. `_resolve_color_mode()` - bridges 2 areas (5 edges)
+7. `_select_palette_for_mode()` - bridges 2 areas (4 edges)
+8. `Browser Automation with playwright-cli` - bridges 1 areas (16 edges)
+9. `Running Custom Playwright Code` - bridges 1 areas (13 edges)
 
 ## Surprising Connections (you probably didn't know these)
-- `write_report()` --calls--> `reports()`  [EXTRACTED]
-  optional/schedules/scripts/aodd_job.py → hooks/_aodd_paths.py
-- `housekeeping_scan()` --calls--> `state()`  [EXTRACTED]
-  optional/schedules/scripts/aodd_job.py → hooks/_aodd_paths.py
-- `main()` --calls--> `state()`  [EXTRACTED]
-  optional/schedules/scripts/install-schedules.py → hooks/_aodd_paths.py
 - `candidates()` --calls--> `memory_dirs()`  [EXTRACTED]
   optional/agent-memory/hooks/memory-recall.py → hooks/_aodd_paths.py
-- `job_memory_backup()` --calls--> `memory()`  [EXTRACTED]
+- `candidates()` --calls--> `project()`  [EXTRACTED]
+  optional/agent-memory/hooks/memory-recall.py → hooks/_aodd_paths.py
+- `main()` --calls--> `session_id()`  [EXTRACTED]
+  scripts/audit.py → hooks/_aodd_paths.py
+- `main()` --calls--> `reports()`  [EXTRACTED]
+  optional/agent-memory/hooks/session-start-recent.py → hooks/_aodd_paths.py
+- `write_report()` --calls--> `reports()`  [EXTRACTED]
   optional/schedules/scripts/aodd_job.py → hooks/_aodd_paths.py
 
 

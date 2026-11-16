@@ -3,6 +3,8 @@
 
 Denies Edit/Write/MultiEdit/NotebookEdit outright and Bash commands that write files or history.
 audit.py also voids the audit if `git status` changed, so this is prevention, that is detection.
+This is the sandbox of the independent auditor, not a normal-session hook: without AODD_AUDITOR=1 it never fires.
+Quoted strings and heredoc bodies are stripped before matching, so `grep "rm " x` is not a write.
 Known limit: Bash writes are caught by pattern (redirects, sed -i, rm/mv/cp, git commit/push...);
 an interpreter writing a file (`python -c open(...,'w')`) slips past here and is caught by audit.py's git check.
 """
@@ -21,6 +23,12 @@ BASH_WRITE = re.compile(
     r"|\bgh\s+(pr|issue)\s+(create|merge|edit|comment|close)\b")
 
 
+def unquoted(cmd: str) -> str:
+    """Drop heredoc bodies and quoted strings so prose (a grep pattern, a commit message) never looks like a command."""
+    cmd = re.sub(r"<<-?\s*['\"]?(\w+)['\"]?.*?\n\1\b", "", cmd, flags=re.S)
+    return re.sub(r"\"(?:\\.|[^\"\\])*\"|'[^']*'", '""', cmd)
+
+
 def decide(payload: dict):
     if os.environ.get("AODD_AUDITOR") != "1":
         return None
@@ -29,7 +37,7 @@ def decide(payload: dict):
         return f"auditor is read-only: {tool} denied"
     if tool == "Bash":
         cmd = str((payload.get("tool_input") or {}).get("command", ""))
-        if BASH_WRITE.search(cmd):
+        if BASH_WRITE.search(unquoted(cmd)):
             return "auditor is read-only: this command writes files or git history. Run read-only checks only."
     return None
 

@@ -9,6 +9,8 @@ spec.loader.exec_module(h)
 bash = lambda c: {"tool_name": "Bash", "tool_input": {"command": c}}
 os.environ.pop("AODD_AUDITOR", None)
 assert h.decide({"tool_name": "Write"}) is None                    # normal sessions untouched
+for p in [{"tool_name": "Edit"}, {"tool_name": "apply_patch"}, bash("rm -rf x"), bash("git push"), bash("echo x > f"), {"tool_name": "Read"}]:
+    assert h.decide(p) is None, p                                  # every tool: no AODD_AUDITOR -> never denies
 os.environ["AODD_AUDITOR"] = "1"
 assert h.decide({"tool_name": "Write"}) and h.decide({"tool_name": "Edit"})
 for c in ["echo x > f", "cat a >> b", "sed -i '' s/a/b/ f", "rm -rf x", "git commit -m x", "git push", "tee out",
@@ -23,6 +25,9 @@ assert h.decide(bash("echo hi > hello.txt")) and h.decide(bash("ls")) is None
 assert h.decide({"tool_name": "Read"}) is None
 for c in ["git tag", "git tag -l 'v*'", "git branch -r --contains abc; git tag", "git stash list"]:
     assert h.decide(bash(c)) is None, c                              # listing tags/stashes is a read
+for c in ['grep "rm " x', 'git log --grep="cp"', "cat <<'EOF'\nrm -rf x\nEOF"]:
+    assert h.decide(bash(c)) is None, c                              # prose in quotes / heredoc is not a write
+assert h.decide(bash('echo "x" > "out file"')) and h.decide(bash('git commit -m "x"'))
 for c in ["git tag v1.0.0", "git tag -a v1 -m x", "git stash", "git stash push -m x", "git stash pop"]:
     assert h.decide(bash(c)), c
 print("ok")

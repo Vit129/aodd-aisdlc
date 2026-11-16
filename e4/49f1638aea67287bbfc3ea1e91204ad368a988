@@ -1,0 +1,29 @@
+AGENTS.md
+  s_3546f3791531e1::t_7ac677fccba39b 10,15,32
+README.md
+  s_3546f3791531e1::t_07f89233089ee2 52-59,87,108,154,175-184,191
+docs/antigravity.md
+  s_3546f3791531e1::t_61fdf96d3ca226 17,20-21
+docs/codex.md
+  s_3546f3791531e1::t_7a85de1d22dee7 15
+rules/coding.md
+  s_3546f3791531e1::t_85c1b5ff1c3361 165,171,175
+skills/ai-sdlc/SKILL.md
+  s_3546f3791531e1::t_0d63500ab959fb 16
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "e449f1638aea67287bbfc3ea1e91204ad368a988",
+  "prompts": {},
+  "sessions": {
+    "s_3546f3791531e1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d9313ef0-6765-42f0-9d15-df1f99a3cab1",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

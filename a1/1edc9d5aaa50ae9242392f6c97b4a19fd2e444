@@ -1,0 +1,21 @@
+install.sh
+  s_3546f3791531e1::t_389fe0b2541753 3,16-17,26,38,48,118,122-125,151-172,188-192,344-351,408-409
+scripts/test_install.py
+  s_3546f3791531e1::t_e163117c2e289e 13-19,99-118,124,178-182,189-194
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "a11edc9d5aaa50ae9242392f6c97b4a19fd2e444",
+  "prompts": {},
+  "sessions": {
+    "s_3546f3791531e1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d9313ef0-6765-42f0-9d15-df1f99a3cab1",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

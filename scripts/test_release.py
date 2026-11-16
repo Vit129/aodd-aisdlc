@@ -31,6 +31,11 @@ class ReleaseVersionTests(unittest.TestCase):
     def test_version_order(self):
         self.assertGreater(release.version_tuple("0.7.0"), release.version_tuple("0.6.9"))
 
+    def test_docs_only(self):
+        self.assertTrue(release.docs_only(["README.md", "VERSION", "graphify-out/GRAPH_REPORT.md", "rules/a.md"]))
+        self.assertFalse(release.docs_only(["README.md", "scripts/release.py"]))
+        self.assertFalse(release.docs_only([]))
+
 
 if __name__ == "__main__":
     unittest.main()

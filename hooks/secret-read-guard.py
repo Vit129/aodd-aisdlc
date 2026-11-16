@@ -50,6 +50,8 @@ def is_secret(path):
     p = Path(os.path.expanduser(path))
     if NAME.search(p.name) and not TEMPLATE.search(p.name) and not CODE_EXT.search(p.name):
         return True
+    if "graphify-out" in p.parts:  # generated code graph, never real secrets; may quote this file's own examples
+        return False
     if not (p.is_file() and CONFIG_EXT.search(p.name)) or p.stat().st_size > 2_000_000:
         return False
     text = p.read_text(errors="ignore")

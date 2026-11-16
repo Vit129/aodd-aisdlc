@@ -17,7 +17,7 @@ spec.loader.exec_module(adapter)
 
 T = Path(tempfile.mkdtemp())
 os.environ["AODD_HOME"] = str(T / "aodd")
-for _k in ("AODD_REPORTS", "AODD_STATE", "AODD_PLANS", "CLAUDE_SKILL_CAPTURE", "AODD_AUDITOR"):
+for _k in ("AODD_REPORTS", "AODD_STATE", "AODD_PLANS", "CLAUDE_SKILL_CAPTURE", "AODD_AUDITOR", "DONE_GATE_AUDIT", "DONE_GATE_ITEMS"):
     os.environ.pop(_k, None)
 
 

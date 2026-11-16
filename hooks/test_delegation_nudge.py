@@ -22,7 +22,7 @@ assert msg and "[delegation-nudge]" in msg and "Haiku" in msg
 assert "rules/ai-sdlc/delegation.md" in msg and "ai-sdlc-workflow.md" not in msg   # points at the file that holds the rule
 assert "effort `low`" in msg and "announce" in msg and "yes" in msg      # effort + announce-once rule rides along
 assert all(len(m) <= 600 for m in (msg, call("Bash", out="x" * (d.MAX_BYTES + 1), sid="len-c", transcript_path=str(Path(tempfile.mkdtemp()) / "rollout-x.jsonl"))))
-# cooldown: the next lookups do not fire again right away
+# the same session never fires a second time
 for _ in range(d.STREAK - 1):
     assert call("Bash") is None
 
@@ -71,22 +71,22 @@ big = json.dumps({"session_id": "s8", "tool_name": "Bash", "tool_response": "x" 
 r = subprocess.run([sys.executable, str(HERE / "delegation-nudge.py")], input=big, capture_output=True, text=True, env=env)
 out = json.loads(r.stdout)["hookSpecificOutput"]
 assert out["hookEventName"] == "PostToolUse" and "[delegation-nudge]" in out["additionalContext"]
-# [TS-TOKEN-03][BE-UT] Streak fires once per session; large outputs still repeat.
+# [TS-TOKEN-03][BE-UT] One nudge per session in total, whichever trigger comes first.
 for sid in ("once-a", "once-b"):
     for _ in range(d.STREAK - 1):
         assert call("Read", sid=sid) is None
     assert "lookups in a row" in call("Read", sid=sid)
-    for _ in range(d.COOLDOWN * 3):
+    for _ in range(d.STREAK * 3):
         assert call("Read", sid=sid) is None
     assert call("Agent", sid=sid) is None
     for _ in range(d.STREAK * 2):
         assert call("Read", sid=sid) is None
-    assert "large output" in call("Bash", out="x" * (d.MAX_BYTES + 1), sid=sid)
-    for _ in range(d.COOLDOWN - 1):
-        assert call("Read", sid=sid) is None
-    assert "large output" in call("Bash", out="x" * (d.MAX_BYTES + 1), sid=sid)
+    assert call("Bash", out="x" * (d.MAX_BYTES + 1), sid=sid) is None      # large output after a streak nudge -> silent
 assert call("Bash", out="x" * (d.MAX_BYTES + 1), sid="big-first")
-for _ in range(d.COOLDOWN - 1):
-    assert call("Read", sid="big-first") is None
-assert "lookups in a row" in call("Read", sid="big-first")
+assert call("Bash", out="x" * (d.MAX_BYTES + 1), sid="big-first") is None  # second large output -> silent
+for _ in range(d.STREAK * 2):
+    assert call("Read", sid="big-first") is None                           # and no streak nudge after a large-output one
+# a state file from before the single flag still counts as nudged
+(state / "legacy").write_text(json.dumps({"calls": 3, "streak": 0, "last": 1, "streak_nudged": True}))
+assert call("Bash", out="x" * (d.MAX_BYTES + 1), sid="legacy") is None
 print("ok")

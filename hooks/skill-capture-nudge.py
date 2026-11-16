@@ -1,17 +1,15 @@
 #!/usr/bin/env python3
-"""Stop hook: the agent improves its own skills after real work (Hermes-style).
+"""Stop hook: a one-line note to the user, once per session, that a skill patch may be worth making.
 
-Procedure the model follows: docs/agents/skill-learning.md. Lessons go into skills
+Procedure to follow when the user agrees: docs/agents/skill-learning.md. Lessons go into skills
 (patch a loaded skill > patch an existing umbrella > add a references/ file > new skill),
 never into a loose lessons file.
 
-Fires when the session has >= MIN_TOOL_CALLS tool calls and at least one learning signal
-(a user correction or a `fix` commit; tool errors are counted but no longer a signal) since
-the last nudge, and no skill file was written since then. After a nudge it can fire again
-every INTERVAL further tool calls (Hermes `creation_nudge_interval`), each time only on new
-signals. Skills loaded this session are named in the prompt as the first patch targets.
-With the `post` argument it runs as PostToolUse(Bash) and, right after a fix commit,
-asks for the skill patch while the cause is still in context.
+Fires once per session, when it has >= MIN_TOOL_CALLS tool calls and at least one learning signal
+(a user correction or a `fix` commit; tool errors are counted but no longer a signal), and no
+skill file was written. The note goes out as `systemMessage` (for the user); it never blocks the
+stop and never refires (INTERVAL is kept for the adapters that import it). With the `post` argument
+it runs as PostToolUse(Bash) and, once per session, right after a fix commit, adds one line of context.
 Fails open (any error -> allow stop). Disable with CLAUDE_SKILL_CAPTURE=0.
 """
 import json
@@ -21,7 +19,7 @@ import sys
 from pathlib import Path
 
 MIN_TOOL_CALLS = 20  # Known limit: raw tool-call count as "complex"; swap for a smarter signal if it fires on grind-y but trivial sessions
-INTERVAL = 40        # further tool calls before the same session can be nudged again
+INTERVAL = 40        # kept for the public API; nothing refires any more (one note per session)
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import _aodd_paths  # noqa: E402
 STATE_DIR = _aodd_paths.state() / "skill-capture"
@@ -36,14 +34,11 @@ SKILL_MD = re.compile(r"(/[^\s'\"$*?{}]*/skills/([A-Za-z0-9][\w.:-]*)/SKILL\.md)
 PATCH_FILE = re.compile(r"^\*\*\* (?:Add|Update|Delete) File: (.+?)\s*$", re.M)  # Codex apply_patch headers
 DOC = "docs/skill-learning.md (under your Claude home)"
 
-SKILL_PASS = """[skill-capture] This session had a learning signal ({sig}; {n} tool calls). Follow {doc} (rung 0 first: find where the rule is already stated and edit it there). Nothing is a fine answer: reply "skill-capture: nothing" and carry on with the user's task{fix_note}.
-{loaded}
-Say in one line which skill changed."""
+SKILL_PASS = "[skill-capture] learning signal this session ({sig}; {n} tool calls): a skill patch may be worth it, see {doc}.{loaded}"
 
-FIX_NOTE = "; a fix was committed, so look for its cause in the governing skill"
+FIX_NOTE = ""  # kept for the public API
 
-MID_FLIGHT = ("[skill-capture] You just committed a fix. While the cause is in context, patch the skill that governs "
-              "this code/workflow (pitfall + how to check), per " + DOC + ".")
+MID_FLIGHT = "[skill-capture] a fix was committed: the skill that governs this code may deserve a pitfall note, see " + DOC + "."
 
 
 def _text(content) -> str:
@@ -144,7 +139,7 @@ def skill_path(name: str, known: str, cwd: Path) -> str:
 
 
 def decide(payload: dict):
-    """Return the block reason, or None to allow the stop."""
+    """Return the note for the user, or None (no note, the stop is never blocked)."""
     if os.environ.get("CLAUDE_SKILL_CAPTURE") == "0" or payload.get("stop_hook_active"):
         return None
     sid = payload.get("session_id") or ""
@@ -152,29 +147,32 @@ def decide(payload: dict):
     if not sid or not transcript.is_file():
         return None
     marker = STATE_DIR / sid
-    last = None
     if marker.exists():
-        raw = marker.read_text().strip()
-        last = int(raw) if raw.isdigit() else 10**9  # legacy empty marker: already nudged, never again
-    n, written, signals, loaded = scan(transcript, since=last or 0)
-    if n < (MIN_TOOL_CALLS if last is None else last + INTERVAL) or written or not signals:
+        return None  # said once; never again this session
+    n, written, signals, loaded = scan(transcript)
+    if n < MIN_TOOL_CALLS or written or not signals:
         return None
     STATE_DIR.mkdir(parents=True, exist_ok=True)
     marker.write_text(str(n))
     cwd = Path(payload.get("cwd") or os.getcwd())
-    loaded_txt = ("Skills loaded this session (patch these first):\n" +
-                  "\n".join(f"  - {k}: {skill_path(k, v, cwd)}" for k, v in loaded.items())) if loaded else \
-        "No skill was loaded this session."
-    return SKILL_PASS.format(n=n, sig=", ".join(signals), doc=DOC, loaded=loaded_txt,
-                             fix_note=FIX_NOTE if "fix commit" in signals else "")
+    loaded_txt = (" Skills loaded: " + ", ".join(loaded) + ".") if loaded else ""
+    return SKILL_PASS.format(n=n, sig=", ".join(signals), doc=DOC, loaded=loaded_txt)
 
 
 def post_tool(payload: dict):
-    """PostToolUse(Bash): mid-flight reminder right after a fix commit."""
-    if os.environ.get("CLAUDE_SKILL_CAPTURE") == "0":
+    """PostToolUse(Bash): one mid-flight line per session, right after a fix commit. No session id -> silent."""
+    sid = payload.get("session_id") or ""
+    if os.environ.get("CLAUDE_SKILL_CAPTURE") == "0" or not sid:
         return None
     cmd = str((payload.get("tool_input") or {}).get("command", ""))
-    return MID_FLIGHT if FIX_COMMIT.search(cmd) else None
+    if not FIX_COMMIT.search(cmd):
+        return None
+    marker = STATE_DIR / f"{sid}.post"
+    if marker.exists():
+        return None
+    STATE_DIR.mkdir(parents=True, exist_ok=True)
+    marker.write_text("1")
+    return MID_FLIGHT
 
 
 def main():
@@ -189,7 +187,7 @@ def main():
     except Exception:
         return
     if reason:
-        print(json.dumps({"decision": "block", "reason": reason}))
+        print(json.dumps({"systemMessage": reason}))
 
 
 if __name__ == "__main__":

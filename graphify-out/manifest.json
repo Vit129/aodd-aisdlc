@@ -305,8 +305,8 @@
     "semantic_hash": ""
   },
   "CHANGELOG.md": {
-    "mtime": 1794758041.7876341,
-    "ast_hash": "6d58c0cae7c8f7a5f597483f28791e15",
+    "mtime": 1794796840.3542607,
+    "ast_hash": "ff770ae64490602ad1775bac31bc13cf",
     "semantic_hash": ""
   },
   "CLAUDE.md": {
@@ -1255,13 +1255,13 @@
     "semantic_hash": ""
   },
   "rules/effort/codex.md": {
-    "mtime": 1794758015.9259067,
-    "ast_hash": "451eafc9fa38f19d90263cb0291c45c8",
+    "mtime": 1794796818.3802373,
+    "ast_hash": "025fa1b3878d03437db0ea3b8df5ce63",
     "semantic_hash": ""
   },
   "rules/effort/claude-code.md": {
-    "mtime": 1794758015.9257956,
-    "ast_hash": "4cb3c4ad71393aa4f58426ddd79aa1fa",
+    "mtime": 1794796818.3800225,
+    "ast_hash": "cd9bb8a8d8709e303bf8edb6038df51f",
     "semantic_hash": ""
   },
   "scripts/rulescan.py": {
@@ -1280,8 +1280,8 @@
     "semantic_hash": ""
   },
   "rules/ai-sdlc/delegation.md": {
-    "mtime": 1794758030.4714115,
-    "ast_hash": "5e678009185f1425405db49a499fd720",
+    "mtime": 1794796818.3796616,
+    "ast_hash": "9e6469212496f58ca8cb742c7abef87d",
     "semantic_hash": ""
   },
   "rules/ai-sdlc/git-ops.md": {

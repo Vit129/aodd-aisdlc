@@ -3,6 +3,11 @@
 All notable changes to aodd-aisdlc are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and it follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.8.3] - 2026-11-16
+
+### Fixed
+- Plan big, brief middle, execute small (`1393f38`)
+
 ## [0.8.2] - 2026-11-15
 
 ### Fixed

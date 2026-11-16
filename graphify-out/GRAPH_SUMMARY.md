@@ -3,20 +3,20 @@ _Auto-generated from GRAPH_REPORT.md · do not edit manually_
 _Regen: `graphify update .`_
 
 ## Summary
-- 2480 nodes · 2693 edges · 251 communities (221 shown, 30 thin omitted)
+- 2484 nodes · 2699 edges · 253 communities (218 shown, 35 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 13 edges (avg confidence: 0.62)
 - Token cost: 0 input · 0 output
 
 
 ## Graph Freshness
-- Built from commit: `02ec246a`
+- Built from commit: `30f1e38f`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 
 ## God Nodes (most connected - your core abstractions)
 1. `Fix Generated Playwright Files (Postman Migration)` - 33 edges
-2. `Changelog` - 21 edges
+2. `Changelog` - 22 edges
 3. `UX/UI Designer` - 20 edges
 4. `Browser Automation with playwright-cli` - 16 edges
 5. `Frontend Development` - 15 edges
@@ -32,17 +32,19 @@ A high-degree node isn't always architecturally central - a widely-used
 utility/config file can rack up more edges than a real coupler while only
 ever touching one area. This ranks by how many DIFFERENT communities a
 node's neighbors span, not by raw edge count.
-1. `Changelog` - bridges 13 areas (21 edges)
+1. `Changelog` - bridges 15 areas (22 edges)
 2. `aodd-aisdlc` - bridges 2 areas (14 edges)
-3. `search()` - bridges 2 areas (10 edges)
-4. `Browser Session Management` - bridges 2 areas (10 edges)
+3. `state()` - bridges 2 areas (11 edges)
+4. `search()` - bridges 2 areas (10 edges)
 5. `generate_design_system()` - bridges 2 areas (8 edges)
-6. `_resolve_color_mode()` - bridges 2 areas (5 edges)
-7. `_select_palette_for_mode()` - bridges 2 areas (4 edges)
-8. `Browser Automation with playwright-cli` - bridges 1 areas (16 edges)
-9. `Running Custom Playwright Code` - bridges 1 areas (13 edges)
+6. `Tracing` - bridges 2 areas (8 edges)
+7. `_resolve_color_mode()` - bridges 2 areas (5 edges)
+8. `_select_palette_for_mode()` - bridges 2 areas (4 edges)
+9. `Browser Automation with playwright-cli` - bridges 1 areas (16 edges)
 
 ## Surprising Connections (you probably didn't know these)
+- `unseen_hits()` --calls--> `state()`  [EXTRACTED]
+  optional/agent-memory/hooks/memory-recall.py → hooks/_aodd_paths.py
 - `candidates()` --calls--> `memory_dirs()`  [EXTRACTED]
   optional/agent-memory/hooks/memory-recall.py → hooks/_aodd_paths.py
 - `candidates()` --calls--> `project()`  [EXTRACTED]
@@ -51,8 +53,6 @@ node's neighbors span, not by raw edge count.
   scripts/audit.py → hooks/_aodd_paths.py
 - `main()` --calls--> `reports()`  [EXTRACTED]
   optional/agent-memory/hooks/session-start-recent.py → hooks/_aodd_paths.py
-- `write_report()` --calls--> `reports()`  [EXTRACTED]
-  optional/schedules/scripts/aodd_job.py → hooks/_aodd_paths.py
 
 
 _Full map → GRAPH_REPORT.md · query: `graphify query "..."`_

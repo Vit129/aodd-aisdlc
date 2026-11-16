@@ -4,15 +4,16 @@
 Searches, for the prompt's keywords: knowledge/*.md sections under every root of $AODD_MEMORY (os.pathsep
 list) and under <root>/<project> (the cwd's git repo folder), the repo's own agent-memory/ when present,
 files matching the globs in $AODD_RECALL_EXTRA (os.pathsep list, relative to each root; default none), plus the auto-memory notes of the Claude home and of
-the cwd's project (projects/<slug>/memory/*.md, matched on name+description+body). Adds at most 5 pointers
+the cwd's project (projects/<slug>/memory/*.md, matched on name+description+body). Adds at most 3 pointers
 (file + description + one gist line, usually the note's 'How to apply') as additionalContext; it never
 pastes whole notes, so the cost stays small.
 
-Match rule: a candidate needs >=2 distinct keywords, or 1 keyword of >=10 chars (>=8 for Thai domain terms).
+Match rule: a candidate needs >=2 distinct keywords. Each section is injected once per session.
 Keywords are Latin/identifier tokens >=4 chars and Thai terms >=3 chars minus stopwords.
 Conversational filler returns nothing rather than noise. Fails open; disable with MEMORY_RECALL=0.
 """
 import fnmatch
+import hashlib
 import json
 import os
 import re
@@ -31,7 +32,8 @@ into over also just like need want make does doesn't dont done please check look
 any all not but and for the are was were has had can will let see use used using new old now still again
 file files code work task using something anything everything nothing today tomorrow yesterday different
 whatever otherwise important understand explain clearer variable""".split())
-MAX_HITS, MAX_LINE, MAX_GIST, LONG = 5, 170, 200, 10
+MAX_HITS, MAX_LINE, MAX_GIST = 3, 170, 200
+MIN_MATCHED_KEYWORDS = 2
 HIT_LOG = Path(os.environ.get("MEMORY_RECALL_LOG") or _aodd_paths.state() / "recall-hits.jsonl")
 
 
@@ -78,10 +80,6 @@ def extract_thai_tokens(text: str) -> list[str]:
                 if sub not in THAI_STOP and len(sub) >= 3 and sub not in tokens:
                     tokens.append(sub)
     return tokens
-
-
-def is_long(k: str) -> bool:
-    return len(k) >= LONG or (bool(re.search(r"[\u0e00-\u0e7f]", k)) and len(k) >= 8)
 
 
 def keywords(prompt: str, cap: int | None = 20) -> list[str]:
@@ -204,7 +202,7 @@ def recall(prompt: str, cwd: Path | None = None, limit: int = MAX_HITS):
     hits = []
     for path, anchor, text, low in chunks:
         matched = [k for k in kws if k in low]
-        if len(matched) >= 2 or any(is_long(k) for k in matched):
+        if len(matched) >= MIN_MATCHED_KEYWORDS:
             d = describe(path, text, anchor)
             g = gist(path, text, d)
             hits.append((len(matched), path, anchor, f"{d[:MAX_LINE]}" + (f" | gist: {g[:MAX_GIST]}" if g else "")))
@@ -212,12 +210,33 @@ def recall(prompt: str, cwd: Path | None = None, limit: int = MAX_HITS):
     return hits[:limit]
 
 
+def unseen_hits(hits, session_id):
+    if not session_id:
+        return hits[:MAX_HITS]
+    try:
+        key = hashlib.sha256(str(session_id).encode()).hexdigest()
+        path = _aodd_paths.state() / "memory-recall" / f"{key}.json"
+        try:
+            seen = set(json.loads(path.read_text()))
+        except (OSError, ValueError, TypeError):
+            seen = set()
+        # Sections of the same file are distinct memories; descriptions can change.
+        identified = [(json.dumps([str(h[1].resolve()), h[2]]), h) for h in hits]
+        fresh = [(key, h) for key, h in identified if key not in seen][:MAX_HITS]
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(sorted(seen | {key for key, _ in fresh})))
+        return [h for _, h in fresh]
+    except (OSError, ValueError, TypeError):
+        return hits[:MAX_HITS]  # unavailable state must not block recall or the prompt
+
+
 def main() -> int:
     if os.environ.get("MEMORY_RECALL") == "0":
         return 0
     try:
         data = json.load(sys.stdin)
-        hits = recall(data.get("prompt", ""), Path(data.get("cwd") or os.getcwd()))
+        hits = recall(data.get("prompt", ""), Path(data.get("cwd") or os.getcwd()), limit=None)
+        hits = unseen_hits(hits, data.get("session_id"))
     except Exception:
         return 0
     if not hits:

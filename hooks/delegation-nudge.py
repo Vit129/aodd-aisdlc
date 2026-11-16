@@ -8,8 +8,8 @@ says `source.subagent`, are ignored). Codex gets the same rule with its tiers (S
 - one tool output over MAX_BYTES or MAX_LINES (a dump that now rides along in every later turn), or
 - STREAK lookups in a row (Read/Grep/Glob/Bash) without an Agent/Task call,
 
-adds one line of context asking to send that kind of work to a Haiku subagent. At most once per
-COOLDOWN tool calls. State: $AODD_STATE/delegation-nudge/<session_id> (JSON counters).
+adds one line of context asking to send that kind of work to a Haiku subagent. Streak nudges fire once
+per session; large-output nudges retain the COOLDOWN. State: $AODD_STATE/delegation-nudge/<session_id>.
 Fails open on any error. Disable with AODD_DELEGATION_NUDGE=0.
 """
 import json
@@ -73,7 +73,9 @@ def decide(payload, state_dir=None):
     except (OSError, ValueError):
         st = {}
     calls, streak, last = st.get("calls", 0) + 1, st.get("streak", 0), st.get("last", -COOLDOWN)
+    streak_nudged = st.get("streak_nudged", False)
     why = None
+    streak_trigger = False
     if tool in DELEGATE:
         streak = 0
     else:
@@ -81,14 +83,17 @@ def decide(payload, state_dir=None):
         nbytes, nlines = _size(payload.get("tool_response", ""))
         if nbytes > MAX_BYTES or nlines > MAX_LINES:
             why = f"{tool} returned a large output ({nbytes // 1000} KB, {nlines} lines) into the main context"
-        elif streak >= STREAK:
+        elif streak >= STREAK and not streak_nudged:
             why = f"{streak} lookups in a row in the main session without delegating"
+            streak_trigger = True
     if why and calls - last < COOLDOWN:
         why = None
     if why:
         streak, last = 0, calls
+        streak_nudged = streak_nudged or streak_trigger
     d.mkdir(parents=True, exist_ok=True)
-    f.write_text(json.dumps({"calls": calls, "streak": streak, "last": last, "nudges": st.get("nudges", 0) + bool(why)}))
+    f.write_text(json.dumps({"calls": calls, "streak": streak, "last": last, "nudges": st.get("nudges", 0) + bool(why),
+                             "streak_nudged": streak_nudged}))
     return MSG.format(why=why, tier=TIER["codex" if codex else "claude"]) if why else None
 
 

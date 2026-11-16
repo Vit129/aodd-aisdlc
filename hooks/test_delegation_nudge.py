@@ -71,4 +71,22 @@ big = json.dumps({"session_id": "s8", "tool_name": "Bash", "tool_response": "x" 
 r = subprocess.run([sys.executable, str(HERE / "delegation-nudge.py")], input=big, capture_output=True, text=True, env=env)
 out = json.loads(r.stdout)["hookSpecificOutput"]
 assert out["hookEventName"] == "PostToolUse" and "[delegation-nudge]" in out["additionalContext"]
+# [TS-TOKEN-03][BE-UT] Streak fires once per session; large outputs still repeat.
+for sid in ("once-a", "once-b"):
+    for _ in range(d.STREAK - 1):
+        assert call("Read", sid=sid) is None
+    assert "lookups in a row" in call("Read", sid=sid)
+    for _ in range(d.COOLDOWN * 3):
+        assert call("Read", sid=sid) is None
+    assert call("Agent", sid=sid) is None
+    for _ in range(d.STREAK * 2):
+        assert call("Read", sid=sid) is None
+    assert "large output" in call("Bash", out="x" * (d.MAX_BYTES + 1), sid=sid)
+    for _ in range(d.COOLDOWN - 1):
+        assert call("Read", sid=sid) is None
+    assert "large output" in call("Bash", out="x" * (d.MAX_BYTES + 1), sid=sid)
+assert call("Bash", out="x" * (d.MAX_BYTES + 1), sid="big-first")
+for _ in range(d.COOLDOWN - 1):
+    assert call("Read", sid="big-first") is None
+assert "lookups in a row" in call("Read", sid="big-first")
 print("ok")

@@ -1,22 +1,22 @@
 # Graph Report - aodd-aisdlc  (2026-11-16)
 
 ## Corpus Check
-- 258 files · ~178,426 words
+- 258 files · ~179,225 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2480 nodes · 2693 edges · 251 communities (221 shown, 30 thin omitted)
+- 2484 nodes · 2699 edges · 253 communities (218 shown, 35 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 13 edges (avg confidence: 0.62)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `02ec246a`
+- Built from commit: `30f1e38f`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## God Nodes (most connected - your core abstractions)
 1. `Fix Generated Playwright Files (Postman Migration)` - 33 edges
-2. `Changelog` - 21 edges
+2. `Changelog` - 22 edges
 3. `UX/UI Designer` - 20 edges
 4. `Browser Automation with playwright-cli` - 16 edges
 5. `Frontend Development` - 15 edges
@@ -31,18 +31,20 @@ A high-degree node isn't always architecturally central - a widely-used
 utility/config file can rack up more edges than a real coupler while only
 ever touching one area. This ranks by how many DIFFERENT communities a
 node's neighbors span, not by raw edge count.
-1. `Changelog` - bridges 13 areas (21 edges)
+1. `Changelog` - bridges 15 areas (22 edges)
 2. `aodd-aisdlc` - bridges 2 areas (14 edges)
-3. `search()` - bridges 2 areas (10 edges)
-4. `Browser Session Management` - bridges 2 areas (10 edges)
+3. `state()` - bridges 2 areas (11 edges)
+4. `search()` - bridges 2 areas (10 edges)
 5. `generate_design_system()` - bridges 2 areas (8 edges)
-6. `_resolve_color_mode()` - bridges 2 areas (5 edges)
-7. `_select_palette_for_mode()` - bridges 2 areas (4 edges)
-8. `Browser Automation with playwright-cli` - bridges 1 areas (16 edges)
-9. `Running Custom Playwright Code` - bridges 1 areas (13 edges)
-10. `main()` - bridges 1 areas (11 edges)
+6. `Tracing` - bridges 2 areas (8 edges)
+7. `_resolve_color_mode()` - bridges 2 areas (5 edges)
+8. `_select_palette_for_mode()` - bridges 2 areas (4 edges)
+9. `Browser Automation with playwright-cli` - bridges 1 areas (16 edges)
+10. `Running Custom Playwright Code` - bridges 1 areas (13 edges)
 
 ## Surprising Connections (you probably didn't know these)
+- `unseen_hits()` --calls--> `state()`  [EXTRACTED]
+  optional/agent-memory/hooks/memory-recall.py → hooks/_aodd_paths.py
 - `candidates()` --calls--> `memory_dirs()`  [EXTRACTED]
   optional/agent-memory/hooks/memory-recall.py → hooks/_aodd_paths.py
 - `candidates()` --calls--> `project()`  [EXTRACTED]
@@ -51,13 +53,11 @@ node's neighbors span, not by raw edge count.
   scripts/audit.py → hooks/_aodd_paths.py
 - `main()` --calls--> `reports()`  [EXTRACTED]
   optional/agent-memory/hooks/session-start-recent.py → hooks/_aodd_paths.py
-- `write_report()` --calls--> `reports()`  [EXTRACTED]
-  optional/schedules/scripts/aodd_job.py → hooks/_aodd_paths.py
 
 ## Import Cycles
 - None detected.
 
-## Communities (251 total, 30 thin omitted)
+## Communities (253 total, 35 thin omitted)
 
 ### Community 0 - "_aodd_paths.py"
 Cohesion: 0.06
@@ -68,8 +68,8 @@ Cohesion: 0.04
 Nodes (47): 10. Request Body Types 📦, 11. Response Headers 📋, 12. Path Parameters & Query Parameters 🔗, 13. Postman Dynamic Variables 🎲, 14. Folder-level Auth Inheritance 🔐, 15. Folder-level Pre-request Script → beforeAll / beforeEach 🔧, 16. Nested Folders → File Structure 📁, 17. Collection Runner + Data File (Data-Driven) 📊 (+39 more)
 
 ### Community 2 - "Changelog"
-Cohesion: 0.12
-Nodes (15): [0.3.1] - 2026-10-17, [0.3.3] - 2026-10-17, [0.5.0] - 2026-10-22, [0.6.2] - 2026-10-30, [0.7.0] - 2026-10-30, [0.8.2] - 2026-11-15, [0.8.4] - 2026-11-16, Added (+7 more)
+Cohesion: 0.13
+Nodes (14): [0.1.0] - 2026-10-16, [0.3.1] - 2026-10-17, [0.3.5] - 2026-10-17, [0.8.2] - 2026-11-15, [0.8.3] - 2026-11-16, [0.8.6] - 2026-11-16, Added, Added (+6 more)
 
 ### Community 3 - "SKILL.md"
 Cohesion: 0.05
@@ -153,7 +153,7 @@ Nodes (22): 1. Surface (color), 2. Type, 3. Structure (pattern), 4. Motion, 5. R
 
 ### Community 23 - "coding-rules-gate.py"
 Cohesion: 0.27
-Nodes (15): candidates(), describe(), extract_thai_tokens(), gist(), is_long(), is_machine_or_pasted(), is_recall_extra(), keywords() (+7 more)
+Nodes (15): candidates(), describe(), extract_thai_tokens(), gist(), is_machine_or_pasted(), is_recall_extra(), keywords(), main() (+7 more)
 
 ### Community 24 - ".generate"
 Cohesion: 0.12
@@ -184,8 +184,8 @@ Cohesion: 0.11
 Nodes (17): Anti-Rationalization (Dev + QA), Automation Patterns (Playwright), Dev Review Checklist, Fixture Structure + Pipeline, Internal Analysis (auto-run when loaded during test scenario design), Minimum Scenarios, Mobile Patterns (Robot Framework), OWASP-Based Test Conditions (+9 more)
 
 ### Community 31 - "graphify-guard.py"
-Cohesion: 0.26
-Nodes (16): changed_since_graph(), decide_pre(), decide_stop(), find_root(), _first_words(), _hso(), is_raw_search(), main() (+8 more)
+Cohesion: 0.23
+Nodes (18): changed_since_graph(), decide_pre(), decide_stop(), find_root(), _first_words(), _hso(), is_raw_search(), main() (+10 more)
 
 ### Community 32 - "Frontend Development"
 Cohesion: 0.12
@@ -220,8 +220,8 @@ Cohesion: 0.12
 Nodes (15): Component Design, Critical — Eliminating Waterfalls, Cross-Platform Standards, Folder Structure, High — Bundle Size, Hooks, Medium — Re-render Optimization, Naming (+7 more)
 
 ### Community 40 - "Browser Session Management"
-Cohesion: 0.12
-Nodes (16): A/B Testing Sessions, Attach by channel name, Attach via browser extension, Attach via CDP endpoint, Attaching to a Running Browser, Browser Session Commands, Browser Session Configuration, Browser Session Isolation Properties (+8 more)
+Cohesion: 0.10
+Nodes (20): 1. Name Browser Sessions Semantically, 2. Always Clean Up, 3. Delete Stale Browser Data, A/B Testing Sessions, Attach by channel name, Attach via browser extension, Attach via CDP endpoint, Attaching to a Running Browser (+12 more)
 
 ### Community 41 - "Appium Testing (Android) — Platform Rules & Capabilities"
 Cohesion: 0.13
@@ -267,16 +267,12 @@ Nodes (12): 1. `memory-curator`, 2. `memory-bootstrapper`, 3. `knowledge-promote
 Cohesion: 0.14
 Nodes (13): 0. Enforcement: three levels, no optional tier, 1. Roles (fixed vocabulary), 2.1 Project runner (MAY), 2.2 Release and deployment scaffold (MUST for publishable projects), 2. Root layout (every project), 3. Source layout by size, 4. Dependency direction, 5. Naming (+5 more)
 
-### Community 52 - "SKILL.md"
-Cohesion: 0.21
-Nodes (4): Examples, Inspecting Element Attributes, Debugging Playwright Tests, Running Playwright Tests
-
 ### Community 53 - "Running Custom Playwright Code"
 Cohesion: 0.15
 Nodes (13): Clipboard, Complex Workflows, Error Handling, File Downloads, Frames and Iframes, Geolocation, JavaScript Execution, Media Emulation (+5 more)
 
 ### Community 54 - "Tracing"
-Cohesion: 0.15
+Cohesion: 0.17
 Nodes (12): 1. Start Tracing Before the Problem, 2. Clean Up Old Traces, Analyzing Performance, Basic Usage, Best Practices, Capturing Evidence, Debugging Failed Actions, Limitations (+4 more)
 
 ### Community 55 - "Accessibility Testing — Playwright + axe-core"
@@ -540,7 +536,7 @@ Cohesion: 0.25
 Nodes (7): 1. Hard Standards, 2. Standard SLA Thresholds, 3. Production Script Template, 4. CI/CD Performance Gates, Azure DevOps, GitHub Actions, K6 Load Testing Standards & CI Gates
 
 ### Community 122 - "Advanced Mocking with run-code"
-Cohesion: 0.25
+Cohesion: 0.22
 Nodes (8): Advanced Mocking with run-code, CLI Route Commands, Conditional Response Based on Request, Delayed Response, Modify Real Response, Request Mocking, Simulate Network Failures, URL Patterns
 
 ### Community 123 - "Robot Framework Workflow"
@@ -791,17 +787,9 @@ Nodes (4): [0.3.2] - 2026-10-17, Added, Documentation, Fixed
 Cohesion: 0.50
 Nodes (3): Claude Code effort syntax, Setting effort, Start effort
 
-### Community 232 - "2. Generate"
-Cohesion: 0.67
-Nodes (3): [0.3.5] - 2026-10-17, Documentation, Fixed
-
 ### Community 233 - "[0.2.0] - 2026-10-17"
 Cohesion: 0.67
 Nodes (3): [0.2.0] - 2026-10-17, Added, Fixed
-
-### Community 235 - "session_id"
-Cohesion: 0.50
-Nodes (4): 1. Name Browser Sessions Semantically, 2. Always Clean Up, 3. Delete Stale Browser Data, Best Practices
 
 ### Community 236 - "[0.6.0] - 2026-10-23"
 Cohesion: 0.67
@@ -836,9 +824,9 @@ Cohesion: 0.67
 Nodes (3): Companion plugins (optional, installed separately, not copied here), Install, Per repository (`--project`)
 
 ## Knowledge Gaps
-- **1421 isolated node(s):** `name`, `pull_request`, `push`, `contents`, `check` (+1416 more)
+- **1422 isolated node(s):** `name`, `pull_request`, `push`, `contents`, `check` (+1417 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **30 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **35 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 - **15 possibly unreachable function(s):** `_size()`, `ask_model()`, `docs_only()`, `git()`, `housekeeping_scan()` (+10 more)
   Not reached from any recognized entry point - could be dead code, or dynamically dispatched/decorator-registered.
 
@@ -847,15 +835,15 @@ _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `log()` connect `_aodd_paths.py` to `BM25`?**
   _High betweenness centrality (0.004) - this node is a cross-community bridge._
-- **Why does `Test generation (plan → generate → heal)` connect `3. Heal` to `SKILL.md`?**
-  _High betweenness centrality (0.002) - this node is a cross-community bridge._
+- **Why does `_get_bm25()` connect `core.py` to `BM25`?**
+  _High betweenness centrality (0.003) - this node is a cross-community bridge._
 - **What connects `name`, `pull_request`, `push` to the rest of the system?**
-  _1521 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1523 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `_aodd_paths.py` be split into smaller, more focused modules?**
   _Cohesion score 0.057297297297297295 - nodes in this community are weakly interconnected._
 - **Should `Fix Generated Playwright Files (Postman Migration)` be split into smaller, more focused modules?**
   _Cohesion score 0.041666666666666664 - nodes in this community are weakly interconnected._
 - **Should `Changelog` be split into smaller, more focused modules?**
-  _Cohesion score 0.125 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.13333333333333333 - nodes in this community are weakly interconnected._
 - **Should `SKILL.md` be split into smaller, more focused modules?**
   _Cohesion score 0.05128205128205128 - nodes in this community are weakly interconnected._

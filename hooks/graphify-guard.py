@@ -34,11 +34,8 @@ CODE_EXT = {
     ".dart", ".scala", ".vue", ".svelte",
 }
 GATE_MSG = (
-    "graphify-first: this project has a knowledge graph (graphify-out/). Look things up through graphify "
-    "before raw search: `graphify query \"<question>\"`, `graphify grep \"<text>\"` (exact text, shows the "
-    "enclosing symbol), `graphify explain \"<symbol>\" --snippet`, `graphify affected \"<symbol>\"` (or the "
-    "mcp__graphify__* tools). After one graphify lookup in this session, grep/find are allowed - use them to "
-    "confirm an exhaustive caller list or for files graphify does not index, and say so."
+    'graphify-first: run `graphify query "<question>"` or `graphify grep "<text>"` before raw code search '
+    '(alternative: mcp__graphify__*). One lookup unlocks searches for this session.'
 )
 NUDGE_MSG = (
     "graphify-out/ exists: prefer `graphify query/explain --snippet/grep/affected` over reading source files "
@@ -71,10 +68,50 @@ def _first_words(segment):
     return words
 
 
-def is_raw_search(command):
+def non_code_targets(words, cwd):
+    """Conservatively recognize explicit file targets; ambiguous shell/options stay gated."""
+    name, args = os.path.basename(words[0]), words[1:]
+    paths, pattern, options = [], name == "find", True
+    takes_value = {"-e", "--regexp", "-f", "--file", "-g", "--glob", "--iglob", "-t", "--type",
+                   "-T", "--type-not", "-A", "-B", "-C", "--after-context", "--before-context",
+                   "--context", "-m", "--max-count", "--include", "--exclude", "--exclude-dir"}
+    flags = {"--fixed-strings", "--ignore-case", "--line-number", "--recursive", "--hidden",
+             "--files-with-matches", "--files-without-match", "--word-regexp", "--no-heading"}
+    i = 0
+    while i < len(args):
+        arg = args[i]
+        if name == "find" and arg.startswith(("-", "(", "!")):
+            break  # find's expression follows its starting paths
+        if options and arg == "--":
+            options = False
+        elif options and arg.startswith("-"):
+            option = arg.split("=", 1)[0]
+            if option in takes_value:
+                if "=" not in arg:
+                    i += 1
+                    if i >= len(args):
+                        return False
+                if option in {"-e", "--regexp", "-f", "--file"}:
+                    pattern = True
+            elif arg not in flags and not re.fullmatch(r"-[nrilLhHvscqwoEFIPaUbz]+", arg):
+                return False
+        elif not pattern:
+            pattern = True
+        else:
+            paths.append(arg)
+        i += 1
+    return bool(paths) and all(
+        not re.search(r"[*?\[\]${}`<>]", p)
+        and (Path(cwd) / p).is_file() and Path(p).suffix.lower() not in CODE_EXT
+        for p in paths
+    )
+
+
+def is_raw_search(command, cwd=None):
     if "graphify-out" in command:
         return False
-    return any(w and os.path.basename(w[0]) in RAW_SEARCH for w in map(_first_words, _segments(command)))
+    return any(w and os.path.basename(w[0]) in RAW_SEARCH and not non_code_targets(w, cwd or os.getcwd())
+               for w in map(_first_words, _segments(command)))
 
 
 def uses_graphify(command):
@@ -114,7 +151,7 @@ def decide_pre(payload):
     if root is None:
         return None
     tool, inp, sid = payload.get("tool_name"), payload.get("tool_input") or {}, payload.get("session_id")
-    if tool == "Grep" or (tool == "Bash" and is_raw_search(str(inp.get("command", "")))):
+    if tool == "Grep" or (tool == "Bash" and is_raw_search(str(inp.get("command", "")), payload.get("cwd") or os.getcwd())):
         if sid and _marker(sid, root, "used").exists():
             return None
         if not sid:  # cannot track the session -> never block, only remind

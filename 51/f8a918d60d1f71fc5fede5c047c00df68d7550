@@ -1,0 +1,24 @@
+skills/ai-sdlc/SKILL.md
+  s_ad4111cf1943b0::t_6e80f02b4582ab 18-19
+skills/ai-sdlc/phases/phase1-interview.md
+  s_ad4111cf1943b0::t_4b90b970c4f200 13-18
+  s_ad4111cf1943b0::t_a31e7f55ff0bfe 29-36
+skills/chief-of-staff/SKILL.md
+  s_ad4111cf1943b0::t_899d78bf39e87f 22
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "51f8a918d60d1f71fc5fede5c047c00df68d7550",
+  "prompts": {},
+  "sessions": {
+    "s_ad4111cf1943b0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f5390119-c761-45cf-bfc6-d5c42bd5695c",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

@@ -30,6 +30,7 @@ do the step directly.
 | Pre-merge review (standards + spec) | `/code-review` or any review skill; feed it the project's coding standards explicitly |
 | Session handoff to another agent/session | Write `$AODD_PLANS/[FEATURE]/handoff.md` (sibling of, not the same file as, `ai-sdlc-task-progress.md`; format in `references/ai-sdlc-progress-spec.md` § Resume protocol) |
 | Bug investigation | `9arm-skills:debug-mantra` (companion) |
-| Post-incident RCA | `9arm-skills:post-mortem` (companion) |
+| Looping or context nearly full | `9arm-skills:qwenchance` (companion); its "invoke the `handoff` skill" step means: write `$AODD_PLANS/[FEATURE]/handoff.md` as in the row above |
+| Post-incident RCA | `9arm-skills:post-mortem` (companion); write it to the repo's `docs/postmortems/<slug>.md` unless the CEO names another place (ticket, PR) |
 | Independent audit of a "Done" claim | on the CEO's yes, `python3 scripts/audit.py --confirmed` (never a worker-briefed subagent) |
 | Cross-provider second opinion or stuck investigation | The `agy` / `codex` Claude Code plugins if installed; brief with a curated summary, not the raw transcript |

@@ -1,22 +1,22 @@
 # Graph Report - aodd-aisdlc  (2026-11-16)
 
 ## Corpus Check
-- 259 files · ~178,371 words
+- 258 files · ~178,426 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2483 nodes · 2695 edges · 251 communities (222 shown, 29 thin omitted)
+- 2480 nodes · 2693 edges · 251 communities (221 shown, 30 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 13 edges (avg confidence: 0.62)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `0ff78fb9`
+- Built from commit: `02ec246a`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## God Nodes (most connected - your core abstractions)
 1. `Fix Generated Playwright Files (Postman Migration)` - 33 edges
-2. `Changelog` - 20 edges
+2. `Changelog` - 21 edges
 3. `UX/UI Designer` - 20 edges
 4. `Browser Automation with playwright-cli` - 16 edges
 5. `Frontend Development` - 15 edges
@@ -31,7 +31,7 @@ A high-degree node isn't always architecturally central - a widely-used
 utility/config file can rack up more edges than a real coupler while only
 ever touching one area. This ranks by how many DIFFERENT communities a
 node's neighbors span, not by raw edge count.
-1. `Changelog` - bridges 12 areas (20 edges)
+1. `Changelog` - bridges 13 areas (21 edges)
 2. `aodd-aisdlc` - bridges 2 areas (14 edges)
 3. `search()` - bridges 2 areas (10 edges)
 4. `Browser Session Management` - bridges 2 areas (10 edges)
@@ -57,7 +57,7 @@ node's neighbors span, not by raw edge count.
 ## Import Cycles
 - None detected.
 
-## Communities (251 total, 29 thin omitted)
+## Communities (251 total, 30 thin omitted)
 
 ### Community 0 - "_aodd_paths.py"
 Cohesion: 0.06
@@ -69,7 +69,7 @@ Nodes (47): 10. Request Body Types 📦, 11. Response Headers 📋, 12. Path Par
 
 ### Community 2 - "Changelog"
 Cohesion: 0.12
-Nodes (15): [0.1.0] - 2026-10-16, [0.3.1] - 2026-10-17, [0.3.3] - 2026-10-17, [0.5.0] - 2026-10-22, [0.7.0] - 2026-10-30, [0.8.2] - 2026-11-15, [0.8.4] - 2026-11-16, Added (+7 more)
+Nodes (15): [0.3.1] - 2026-10-17, [0.3.3] - 2026-10-17, [0.5.0] - 2026-10-22, [0.6.2] - 2026-10-30, [0.7.0] - 2026-10-30, [0.8.2] - 2026-11-15, [0.8.4] - 2026-11-16, Added (+7 more)
 
 ### Community 3 - "SKILL.md"
 Cohesion: 0.05
@@ -463,10 +463,6 @@ Nodes (9): Anti-Pattern Check, By Industry File, Cross-Industry Pattern, Industr
 Cohesion: 0.22
 Nodes (8): Anti-Patterns, Constraints, Save Rubric (before patching a skill), Self-Review Rubric, Skill Flag Rubric, Skill Improvement Rubric, What to Review, When to Apply This
 
-### Community 101 - "AODD: the operating contract"
-Cohesion: 0.40
-Nodes (4): Answer, Outcome, Q: grill-plan phase1 interview routing, Source Nodes
-
 ### Community 102 - "data-testid Naming Convention"
 Cohesion: 0.22
 Nodes (8): Contents, data-testid Naming Convention, Mobile (Robot Framework + Appium), Naming Rules, Pattern, Shared Components, Type Abbreviation Table, Usage
@@ -840,9 +836,9 @@ Cohesion: 0.67
 Nodes (3): Companion plugins (optional, installed separately, not copied here), Install, Per repository (`--project`)
 
 ## Knowledge Gaps
-- **1423 isolated node(s):** `name`, `pull_request`, `push`, `contents`, `check` (+1418 more)
+- **1421 isolated node(s):** `name`, `pull_request`, `push`, `contents`, `check` (+1416 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **29 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **30 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 - **15 possibly unreachable function(s):** `_size()`, `ask_model()`, `docs_only()`, `git()`, `housekeeping_scan()` (+10 more)
   Not reached from any recognized entry point - could be dead code, or dynamically dispatched/decorator-registered.
 
@@ -854,7 +850,7 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `Test generation (plan → generate → heal)` connect `3. Heal` to `SKILL.md`?**
   _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **What connects `name`, `pull_request`, `push` to the rest of the system?**
-  _1523 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1521 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `_aodd_paths.py` be split into smaller, more focused modules?**
   _Cohesion score 0.057297297297297295 - nodes in this community are weakly interconnected._
 - **Should `Fix Generated Playwright Files (Postman Migration)` be split into smaller, more focused modules?**

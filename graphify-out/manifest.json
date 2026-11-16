@@ -45,8 +45,8 @@
     "semantic_hash": ""
   },
   "hooks/secret-read-guard.py": {
-    "mtime": 1792197660.3429909,
-    "ast_hash": "4464e79ff856c52e760b4d4216ce977a",
+    "mtime": 1794801008.1110547,
+    "ast_hash": "0817464828ba40315c128620de729d31",
     "semantic_hash": ""
   },
   "hooks/skill-capture-nudge.py": {
@@ -95,8 +95,8 @@
     "semantic_hash": ""
   },
   "hooks/test_secret_read_guard.py": {
-    "mtime": 1792197660.3446705,
-    "ast_hash": "f2f36db7b331fab627ce84d8a512cfd0",
+    "mtime": 1794801008.111641,
+    "ast_hash": "151cf13f88ccf5c530b3c0f122434dc0",
     "semantic_hash": ""
   },
   "hooks/test_skill_capture_nudge.py": {
@@ -305,8 +305,8 @@
     "semantic_hash": ""
   },
   "CHANGELOG.md": {
-    "mtime": 1794799628.6035867,
-    "ast_hash": "d9ae88b45215cc25f7e41768cfef2a2d",
+    "mtime": 1794801492.098151,
+    "ast_hash": "0a9c511f369d3f758ee22d8b8d39da8d",
     "semantic_hash": ""
   },
   "CLAUDE.md": {
@@ -1287,11 +1287,6 @@
   "rules/ai-sdlc/git-ops.md": {
     "mtime": 1794545317.1942108,
     "ast_hash": "132916bb36f832b97f5ec5729328f22e",
-    "semantic_hash": ""
-  },
-  "graphify-out/memory/query_20261113_135822_grill_plan_phase1_interview_routing.md": {
-    "mtime": 1794579793.6889215,
-    "ast_hash": "9639bf0c0d7cf213c1bf3c724092e79f",
     "semantic_hash": ""
   }
 }

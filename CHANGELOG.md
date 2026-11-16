@@ -3,6 +3,11 @@
 All notable changes to aodd-aisdlc are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and it follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.8.6] - 2026-11-16
+
+### Fixed
+- Order Phase 1 by whether the repo has code (`51f8a91`)
+
 ## [0.8.5] - 2026-11-16
 
 ### Fixed

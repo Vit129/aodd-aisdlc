@@ -25,6 +25,10 @@ URL, verbatim output tails).
 ## Commit preparation
 
 - The graph refresh is the last step of `rules/ai-sdlc-workflow.md`; do not refresh again here. A repo without graphify skips it.
+- Where the graph lives: `graphify-out/` at the repo root (hooks find it at or above the cwd). Track only the small
+  orientation files: `GRAPH_REPORT.md`, `GRAPH_SUMMARY.md`, `manifest.json`, `.graphify_labels.json`, `.graphify_root`, and
+  `graph.json` while it stays a few MB. Never commit `graph.html`, `cache/` or dated snapshot folders; a repo whose output
+  grows to tens of MB keeps `graph.json` ignored too. List the ignored paths in the repo's `.gitignore`.
 - Stage the tracked graph artifacts by explicit path with `git add --update -- <paths>` in the same commit as the edits they
   describe. Never a separate graph-only commit. Set `PYTHONHASHSEED=0` when a helper script refreshes the graph.
 - `python3 scripts/graphify_commit.py -m "<message>"` refreshes, stages tracked graph paths and commits the prepared index for

@@ -85,11 +85,13 @@ def decide(data: dict):
     """Returns (error_msg, is_blocking, additional_context). Advice only: error_msg is None and
     is_blocking False always; the shape is kept for callers (the agy adapter, kouen-worktree-guard)."""
     ti = data.get("tool_input", {})
+    cwd = data.get("cwd") or "."  # the session's directory, which the hook process may not share
     wt = new_worktree_repo(data.get("tool_name", ""), ti)
     if isinstance(wt, str):
         wt = (wt, False)
     if wt and wt[0]:
         repo, stashed = wt
+        repo = cwd if repo == "." else repo
         dirty, unmerged = sibling_state(os.path.expanduser(repo))
         if stashed:  # the stash cleans the current worktree; other dirty worktrees still block
             here = os.path.realpath(git(os.path.expanduser(repo), "rev-parse", "--show-toplevel").strip() or repo)
@@ -108,7 +110,7 @@ def decide(data: dict):
     m = SWITCH.search(cmd)
     if not m or not switches_branch(m.group("rest")) or stashed_before(cmd, m.start()):
         return None, False, None
-    out = git(os.path.expanduser(m.group("c") or "."), "status", "--porcelain", "--untracked-files=no", "--", ".", GENERATED).strip()
+    out = git(os.path.expanduser(m.group("c") or cwd), "status", "--porcelain", "--untracked-files=no", "--", ".", GENERATED).strip()
     if not out:
         return None, False, None
     files = "\n".join(out.splitlines()[:8])

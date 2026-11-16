@@ -23,6 +23,7 @@ CLI = [  # (script, modes); "" = no argument
     (HOOKS / "delegation-nudge.py", [""]),
     (ROOT / "optional/agent-memory/hooks/memory-write-scan.py", [""]),
 ]
+ADAPTER = ROOT / "adapters/antigravity-hook-adapter.py"
 T = tempfile.mkdtemp()
 ENV = {k: v for k, v in os.environ.items() if not k.startswith("AODD_") and k not in ("AODD_AUDITOR", "CLAUDE_SKILL_CAPTURE", "DONE_GATE_AUDIT")}
 ENV.update(AODD_HOME=T, HOME=T)
@@ -46,4 +47,8 @@ for script, modes in CLI:
                                env=ENV, cwd=T)
             assert r.returncode == 0, (script.name, mode, text[:20], r.returncode, r.stderr[-200:])
             assert not r.stdout.strip() or not blocks(r.stdout), (script.name, mode, text[:20], r.stdout[:200])
+for mode in ("pre", "post", "stop"):  # the agy adapter: allow, never deny/continue
+    for text in INPUTS:
+        r = subprocess.run([sys.executable, str(ADAPTER), mode], input=text, capture_output=True, text=True, env=ENV, cwd=T)
+        assert r.returncode == 0 and not blocks(r.stdout), (mode, text[:20], r.stdout[:200])
 print("ok - every hook allows by default")

@@ -44,6 +44,8 @@ assert dec("Bash", command=f"git add {env}") is None and dec("Bash", command=f"g
 assert dec("Bash", command=f"cat > {d}/notes.md <<'EOF'\ncat {env}\nEOF") is None
 assert advised(dec("Bash", command="grep -rn password src")) and advised(dec("Bash", command="rg token"))
 assert denied(dec("Bash", command=f"git diff {env}")) and denied(dec("Bash", command=f"git -C {d} log -p {env}"))
+assert denied(dec("Bash", command=f"bash <<EOF\ncat {env}\nEOF")) and denied(dec("Bash", command=f"cp {env} /dev/stdout"))
+assert denied(dec("Bash", command=f"mv {env} /dev/tty"))
 # garbage / empty payloads fail open
 for junk in ("{}", "garbage", ""):
     r = subprocess.run([sys.executable, h.__file__], input=junk, capture_output=True, text=True, env={**os.environ})

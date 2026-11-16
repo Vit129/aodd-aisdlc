@@ -62,6 +62,13 @@ assert advised("git switch -c a1", d, sid="once") and not advised("git switch -c
 assert advised("git switch -c a1", d, sid="other")
 rc, out = run("git switch -c a1", d, stdin=json.dumps({"tool_name": "Bash", "tool_input": {"command": "git switch -c a1"}}))
 assert rc == 0 and out == ""
+# the payload cwd decides the repo when the command has no -C (the hook process may run elsewhere)
+open(f"{d}/f", "a").write("z")
+cw = lambda cmd, cwd: subprocess.run(["python3", HOOK], input=json.dumps({"tool_name": "Bash", "tool_input": {"command": cmd}, "session_id": f"c{next(_n)}", "cwd": cwd}),
+                                    text=True, cwd=os.path.expanduser("~"), capture_output=True, env=ENV).stdout
+assert "uncommitted" in cw("git checkout -b q1", d) and "uncommitted" in cw(f"git worktree add -b q2 {d}-wq", d)
+assert cw("git checkout -b q1", tempfile.mkdtemp()) == ""
+g("checkout", "-q", "--", "f")
 # garbage and empty input fail open
 for junk in ("not json", "{}", ""):
     assert run("x", d, stdin=junk) == (0, ""), junk

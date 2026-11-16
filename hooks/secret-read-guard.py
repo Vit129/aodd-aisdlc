@@ -124,7 +124,9 @@ def bash_targets(cmd):
     """(reads, writes, greps) of secret files in a Bash command, per pipeline segment. reads are
     (file, level) pairs; greps are recursive greps for a secret word (advice only)."""
     reads, writes, greps = [], [], []
-    cmd = HEREDOC.sub(lambda m: m.group(2), cmd)  # a heredoc body is text, not a command
+    # a heredoc body is text, not a command, unless a shell reads it (`bash <<EOF`, `ssh host <<EOF`)
+    cmd = HEREDOC.sub(lambda m: m.group(0) if re.search(r"\b(?:bash|sh|zsh|ssh)\b", cmd[cmd.rfind("\n", 0, m.start()) + 1:m.start()])
+                      else m.group(2), cmd)
     for seg in re.split(r"&&|\|\|?|;|\n", cmd):
         try:
             words = shlex.split(seg, comments=True)
@@ -138,6 +140,8 @@ def bash_targets(cmd):
             if _git_sub(words) not in GIT_READS:
                 args = []  # git add/status/rm/check-ignore/mv name the file without printing it
         if os.path.basename(words[0]) in ("cp", "mv", "scp", "rsync", "install", "ln"):
+            if words[0] in ("cp", "mv") and words[-1] in ("/dev/stdout", "/dev/stderr", "/dev/tty", "-"):
+                reads += [(f, secret_level(f)) for f in args[:-1] if is_secret(f)]  # copying to the terminal prints it
             if args and is_secret(args[-1]):
                 writes.append(args[-1])  # overwriting a secret file is an edit
             args = args[:-1]  # the destination is written, not printed; only a secret source leaks

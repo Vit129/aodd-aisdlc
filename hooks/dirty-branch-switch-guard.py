@@ -1,22 +1,30 @@
 #!/usr/bin/env python3
-"""PreToolUse(Bash): refuse to start another task while earlier work is uncommitted.
+"""PreToolUse(Bash): remind, once per session, to commit earlier work before starting another task. Never blocks.
 
   1. `git checkout|switch` to ANOTHER branch while this tree has uncommitted tracked changes.
   2. `git worktree add` while ANY worktree of that repo has uncommitted
      changes (a new worktree branches from main/baseRef, so it never contains them). When all are
-     committed but a sibling branch still has commits not in the base, it only adds a reminder to
-     merge that branch into the new one if the new task builds on it.
+     committed but a sibling branch still has commits not in the base, it reminds to merge that
+     branch into the new one if the new task builds on it.
 
-Rule: commit task 1 on its own branch before starting task 2 elsewhere.
+Rule: commit task 1 on its own branch before starting task 2 elsewhere. The command always runs
+(git itself refuses a checkout that would lose changes); the hook only adds one line of context,
+the same text once per session, and nothing without a session id.
 Fails open on any error. Disable with BRANCH_SWITCH_GUARD=0. `git checkout -- <path>` / `-b` from a
-clean tree / `git switch -` are judged only by the dirty check, file restores are never blocked.
+clean tree / `git switch -` are judged only by the dirty check.
 """
+import hashlib
 import json
 import os
 import re
 import subprocess
 import sys
+from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import _aodd_paths  # noqa: E402
+
+TAG = "dirty-branch-switch-guard (advice, not a block)"
 SWITCH = re.compile(r"\bgit\s+(?:-C\s+(?P<c>\S+)\s+)?(checkout|switch)\b(?P<rest>[^;&|\n]*)")
 
 
@@ -74,22 +82,25 @@ def new_worktree_repo(tool, ti):
 
 
 def decide(data: dict):
-    """Returns (error_msg, is_blocking: bool, additional_context: str | None)."""
+    """Returns (error_msg, is_blocking, additional_context). Advice only: error_msg is None and
+    is_blocking False always; the shape is kept for callers (the agy adapter, kouen-worktree-guard)."""
     ti = data.get("tool_input", {})
+    cwd = data.get("cwd") or "."  # the session's directory, which the hook process may not share
     wt = new_worktree_repo(data.get("tool_name", ""), ti)
     if isinstance(wt, str):
         wt = (wt, False)
     if wt and wt[0]:
         repo, stashed = wt
+        repo = cwd if repo == "." else repo
         dirty, unmerged = sibling_state(os.path.expanduser(repo))
         if stashed:  # the stash cleans the current worktree; other dirty worktrees still block
             here = os.path.realpath(git(os.path.expanduser(repo), "rev-parse", "--show-toplevel").strip() or repo)
             dirty = [d for d in dirty if os.path.realpath(d) != here]
         if dirty:
-            msg = ("Cannot start a new worktree: uncommitted work in\n" + "\n".join(dirty[:5]) +
+            msg = (f"{TAG}: uncommitted work in\n" + "\n".join(dirty[:5]) +
                    "\n\nCommit it on its own branch first (two tasks, two branches); the new "
                    "worktree starts from main/baseRef and will not contain it.")
-            return msg, True, None
+            return None, False, msg
         if unmerged:
             ctx = ("Branches with commits not in main: " + ", ".join(unmerged[:6]) + ". If the new task builds on "
                    "one of them, merge that branch into the new branch (never into main) and say so in the PR.")
@@ -99,14 +110,26 @@ def decide(data: dict):
     m = SWITCH.search(cmd)
     if not m or not switches_branch(m.group("rest")) or stashed_before(cmd, m.start()):
         return None, False, None
-    out = git(os.path.expanduser(m.group("c") or "."), "status", "--porcelain", "--untracked-files=no", "--", ".", GENERATED).strip()
+    out = git(os.path.expanduser(m.group("c") or cwd), "status", "--porcelain", "--untracked-files=no", "--", ".", GENERATED).strip()
     if not out:
         return None, False, None
     files = "\n".join(out.splitlines()[:8])
-    msg = ("Uncommitted work on the current branch:\n" + files +
+    msg = (f"{TAG}: uncommitted work on the current branch:\n" + files +
            "\n\nCommit it on THIS branch first (two tasks, two branches). If the next task "
            "builds on it, branch from here or merge this branch into the new one; if independent, branch from main.")
-    return msg, True, None
+    return None, False, msg
+
+
+def first_time(sid, text):
+    """True once per (session, text): the same advice is never repeated within a session."""
+    d = _aodd_paths.state() / "dirty-branch-switch-guard"
+    f = d / re.sub(r"[^\w.-]", "_", sid)
+    digest = hashlib.sha1(text.encode()).hexdigest()
+    if f.is_file() and f.read_text().strip() == digest:
+        return False
+    d.mkdir(parents=True, exist_ok=True)
+    f.write_text(digest)
+    return True
 
 
 def main():
@@ -114,11 +137,9 @@ def main():
         return 0
     try:
         data = json.load(sys.stdin)
-        msg, blocking, ctx = decide(data)
-        if blocking and msg:
-            print(msg, file=sys.stderr)
-            return 2
-        if ctx:
+        _msg, _blocking, ctx = decide(data)
+        sid = data.get("session_id")
+        if ctx and sid and first_time(str(sid), ctx):
             print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "additionalContext": ctx}}))
         return 0
     except Exception:

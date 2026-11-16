@@ -41,43 +41,44 @@ for cmd in (
     "find rules/foo.md -name '*.md'", "fd x rules/foo.md",
 ):
     assert pre("Bash", {"command": cmd}, sid="docs") is None, cmd
-for cmd in (
+def advice(out):
+    """A PreToolUse result that only adds context: never a permission decision."""
+    assert out and "permissionDecision" not in out["hookSpecificOutput"], out
+    return out["hookSpecificOutput"]["additionalContext"]
+
+for i, cmd in enumerate((
     "rg x", "grep -n x rules", "grep x rules/foo.md rules/source.py",
     "rg x rules/looks.md", "find rules -name '*.md'",
     "grep x rules/foo.md; rg x rules/source.py", "grep -f rules/foo.md",
     "rg -g '*.md' x", "grep x rules/*.md", "grep x missing.md",
-):
-    assert pre("Bash", {"command": cmd}, sid="docs")["hookSpecificOutput"]["permissionDecision"] == "deny", cmd
+)):
+    assert advice(pre("Bash", {"command": cmd}, sid=f"code{i}")) == g.GATE_MSG, cmd   # code search: advice only
 assert len(g.GATE_MSG) <= 200 and "\n" not in g.GATE_MSG
 assert g.GATE_MSG.index("graphify query") < g.GATE_MSG.index("mcp__graphify__*")
 
-# ---- the gate: raw search is refused until graphify was consulted this session ----------
-d = pre("Bash", {"command": "grep -rn load_session ."})
-assert d["hookSpecificOutput"]["permissionDecision"] == "deny"
-assert "graphify query" in d["hookSpecificOutput"]["permissionDecisionReason"]
-assert pre("Grep", {"pattern": "foo"})["hookSpecificOutput"]["permissionDecision"] == "deny"
+# ---- allow by default: a raw search is never refused, it gets one line of advice per session ----
+assert "graphify query" in advice(pre("Bash", {"command": "grep -rn load_session ."}))
+assert pre("Grep", {"pattern": "foo"}) is None                                 # same session: already advised
+assert pre("Bash", {"command": "rg x"}) is None and pre("Read", {"file_path": str(proj / "a.py")}) is None
+assert advice(pre("Grep", {"pattern": "foo"}, sid="grep")) == g.GATE_MSG
 assert pre("Bash", {"command": "grep x y"}, cwd=plain) is None                 # no graph -> never interferes
 assert pre("Bash", {"command": "npm test"}) is None                            # not a search
 assert pre("Bash", {"command": "graphify grep foo"}) is None
+advice(pre("Bash", {"command": "graphify grep x; rg y"}, sid="compound2"))
 
-g.record_post({"tool_name": "Bash", "tool_input": {"command": "graphify query 'x'"}, "cwd": str(proj), "session_id": "s1"})
-assert pre("Bash", {"command": "grep -rn load_session ."}) is None             # consulted -> allowed
-assert pre("Grep", {"pattern": "foo"}) is None
-d2 = pre("Bash", {"command": "grep -rn x ."}, sid="s2")                        # another session is still gated
-assert d2["hookSpecificOutput"]["permissionDecision"] == "deny"
 g.record_post({"tool_name": "mcp__graphify__search_text", "tool_input": {}, "cwd": str(proj), "session_id": "s2"})
-assert pre("Bash", {"command": "rg x"}, sid="s2") is None                      # MCP use counts too
+assert pre("Bash", {"command": "rg x"}, sid="s2") is None                      # graphify consulted first -> silent
 g.record_post({"tool_name": "Bash", "tool_input": {"command": "graphify update ."}, "cwd": str(proj), "session_id": "s3"})
-assert pre("Bash", {"command": "rg x"}, sid="s3")["hookSpecificOutput"]["permissionDecision"] == "deny"  # update is not a lookup
-assert "additionalContext" in pre("Bash", {"command": "rg x"}, sid=None)["hookSpecificOutput"]  # no session id -> nudge, never deny
+advice(pre("Bash", {"command": "rg x"}, sid="s3"))                             # update is not a lookup -> still advised once
+assert pre("Bash", {"command": "rg x"}, sid=None) is None                      # no session id: cannot throttle -> silent
+assert pre("Bash", {"command": "rg x"}, cwd=tmp / "missing", sid="gone") is None   # missing cwd: fail open
 
 os.environ["GRAPHIFY_GUARD"] = "0"
 assert pre("Bash", {"command": "rg x"}, sid="s9") is None                      # explicit escape hatch
 del os.environ["GRAPHIFY_GUARD"]
 
 # ---- Read/Glob of source files: one nudge per session, never a block --------------------
-n1 = pre("Read", {"file_path": str(proj / "a.py")}, sid="n1")
-assert n1 and "permissionDecision" not in n1["hookSpecificOutput"] and "graphify" in n1["hookSpecificOutput"]["additionalContext"]
+assert advice(pre("Read", {"file_path": str(proj / "a.py")}, sid="n1")) == g.NUDGE_MSG
 assert pre("Read", {"file_path": str(proj / "b.py")}, sid="n1") is None        # already nudged
 assert pre("Read", {"file_path": str(proj / "notes.png")}, sid="n2") is None   # not source
 assert pre("Read", {"file_path": str(proj / "graphify-out" / "GRAPH_REPORT.md")}, sid="n3") is None

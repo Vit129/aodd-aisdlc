@@ -251,5 +251,10 @@
   "249": "test_skill_invocation.py",
   "250": "test_skill_trigger_eval.py",
   "251": "test_rule_duplicates.py",
-  "252": "Install"
+  "252": "Install",
+  "253": "state",
+  "254": "audit.md",
+  "255": "Optional modules",
+  "256": "[0.3.1] - 2026-10-17",
+  "257": "test_allow_by_default.py"
 }

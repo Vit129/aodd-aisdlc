@@ -4,10 +4,10 @@
 A project "has a graph" when `graphify-out/graph.json` exists at or above the session's cwd; anywhere
 else every mode is a silent no-op, so new graphified projects are covered with zero setup.
 
-  pre   (PreToolUse  Bash|Grep|Read|Glob)  graph-first lookup gate: a raw search (Grep tool, or a Bash
-        grep/rg/ag/ack/fd/find) is refused until graphify was consulted once in this session; reading
-        source files gets a single nudge. After one real graphify lookup raw search is allowed again
-        (to confirm an exhaustive caller list, or for files graphify does not index).
+  pre   (PreToolUse  Bash|Grep|Read|Glob)  graph-first advice, never a block: the first raw search (Grep
+        tool, or a Bash grep/rg/ag/ack/fd/find) or source-file read of a session, before graphify was
+        consulted, gets ONE line of context. Nothing is ever denied: the graphify server or binary can be
+        down, and a PreToolUse hook cannot see a lookup that runs in the same command.
   post  (PostToolUse Bash|mcp__graphify__*) records that graphify was consulted (query/grep/explain/
         affected/path/flow/dead-code/match/edit via the CLI, or any mcp__graphify__ tool).
   stop  (Stop) refreshes the graph with `graphify update .` (AST only, free) when a code file changed
@@ -34,8 +34,8 @@ CODE_EXT = {
     ".dart", ".scala", ".vue", ".svelte",
 }
 GATE_MSG = (
-    'graphify-first: run `graphify query "<question>"` or `graphify grep "<text>"` before raw code search '
-    '(alternative: mcp__graphify__*). One lookup unlocks searches for this session.'
+    'graphify-first (advice, not a block): prefer `graphify query "<question>"` or `graphify grep "<text>"` '
+    'over raw code search (or mcp__graphify__*). Shown once per session.'
 )
 NUDGE_MSG = (
     "graphify-out/ exists: prefer `graphify query/explain --snippet/grep/affected` over reading source files "
@@ -151,22 +151,22 @@ def decide_pre(payload):
     if root is None:
         return None
     tool, inp, sid = payload.get("tool_name"), payload.get("tool_input") or {}, payload.get("session_id")
+    if not sid:  # cannot throttle without a session -> stay silent rather than repeat on every call
+        return None
     if tool == "Grep" or (tool == "Bash" and is_raw_search(str(inp.get("command", "")), payload.get("cwd") or os.getcwd())):
-        if sid and _marker(sid, root, "used").exists():
-            return None
-        if not sid:  # cannot track the session -> never block, only remind
-            return _hso(additionalContext=GATE_MSG)
-        return _hso(permissionDecision="deny", permissionDecisionReason=GATE_MSG)
-    if tool in ("Read", "Glob") and sid:
+        msg = GATE_MSG
+    elif tool in ("Read", "Glob"):
         target = str(inp.get("file_path") or inp.get("pattern") or "")
         if "graphify-out" in target or Path(target).suffix.lower() not in CODE_EXT:
             return None
-        nudged = _marker(sid, root, "nudged")
-        if nudged.exists():
-            return None
-        _touch(nudged)
-        return _hso(additionalContext=NUDGE_MSG)
-    return None
+        msg = NUDGE_MSG
+    else:
+        return None
+    nudged = _marker(sid, root, "nudged")  # one graphify line per session, whichever tool comes first
+    if nudged.exists() or _marker(sid, root, "used").exists():
+        return None
+    _touch(nudged)
+    return _hso(additionalContext=msg)
 
 
 # ---- post ------------------------------------------------------------------------------------

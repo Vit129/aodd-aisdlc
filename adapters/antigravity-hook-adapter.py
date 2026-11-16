@@ -14,11 +14,16 @@ And, only if present in the installed hooks directory:
 
 Antigravity contract:
 - PreToolUse: stdin -> {"toolCall": {"name": "...", "args": {...}}, ...}
-              stdout -> {"decision": "allow"|"deny", "reason": "..."}
+              stdout -> {"decision": "allow", "additionalContext": "..."} (advice from the hooks, when any)
+                        or {"decision": "deny", "reason": "..."} for the hard-safety set only:
+                        auditor-readonly (AODD_AUDITOR=1) and a secret-read-guard deny
 - PostToolUse: stdin -> {"toolCall": {...}, ...}
                stdout -> {}
 - Stop: stdin -> {"terminationReason": "...", "transcriptPath": "...", ...}
-        stdout -> {"decision": "continue", "reason": "..."} (to block stop) or {"decision": "allow"}
+        stdout -> {"decision": "allow"} plus "systemMessage" when done-gate / skill-capture have a
+                  note for the user. Never "continue": a Stop is not blocked.
+Not verified against a live agy: whether it accepts `additionalContext` / `systemMessage` beside
+`decision: allow` (a hook in the wild returns `additionalContext` that way; `systemMessage` on Stop is a guess).
 
 Usage:
   python3 adapters/antigravity-hook-adapter.py pre
@@ -147,11 +152,17 @@ def to_claude_payload(agy_data: dict) -> dict:
     }
 
 
+def _context(res) -> str:
+    """additionalContext of a hook result {hookSpecificOutput: {...}}, or ''."""
+    return str(((res or {}).get("hookSpecificOutput") or {}).get("additionalContext") or "")
+
+
 def handle_pre(agy_data: dict) -> dict:
+    notes = []
     try:
         cp = to_claude_payload(agy_data)
 
-        # 1. auditor-readonly (AODD_AUDITOR=1: prevent writes)
+        # 1. auditor-readonly (AODD_AUDITOR=1: prevent writes). Hard-safety deny.
         h_aro = get_hook("aro")
         if h_aro and hasattr(h_aro, "decide"):
             try:
@@ -161,54 +172,48 @@ def handle_pre(agy_data: dict) -> dict:
             except Exception:
                 pass
 
-        # 2. secret-read-guard (if installed)
+        # 2. secret-read-guard (if installed). Hard-safety deny only for a real deny result; advice rides along.
         h_srg = get_hook("srg")
         if h_srg and hasattr(h_srg, "decide"):
             try:
                 res = h_srg.decide(cp)
-                if res:
-                    reason = res.get("hookSpecificOutput", {}).get("permissionDecisionReason", "secret access denied")
-                    return {"decision": "deny", "reason": reason}
+                out = (res or {}).get("hookSpecificOutput", {})
+                if out.get("permissionDecision") == "deny":
+                    return {"decision": "deny", "reason": out.get("permissionDecisionReason", "secret access denied")}
+                notes.append(_context(res))
             except Exception:
                 pass
 
-        # 3. coding-rules-gate (if installed)
+        # 3. coding-rules-gate (if installed): advice only
         h_crg = get_hook("crg")
         if h_crg and hasattr(h_crg, "decide_pre"):
             try:
-                res = h_crg.decide_pre(cp)
-                if res:
-                    out = res.get("hookSpecificOutput", {})
-                    if out.get("permissionDecision") == "deny":
-                        return {"decision": "deny", "reason": out.get("permissionDecisionReason", "coding rules unread")}
+                notes.append(_context(h_crg.decide_pre(cp)))
             except Exception:
                 pass
 
-        # 4. dirty-branch-switch-guard (if installed)
+        # 4. dirty-branch-switch-guard (if installed): advice only, returned as the third item
         h_dbs = get_hook("dbs")
         if cp.get("tool_name") == "Bash" and h_dbs and hasattr(h_dbs, "decide"):
             try:
-                msg, blocking, _ = h_dbs.decide(cp)
-                if blocking and msg:
-                    return {"decision": "deny", "reason": msg}
+                _msg, _blocking, ctx = h_dbs.decide(cp)
+                if ctx and cp.get("session_id") and hasattr(h_dbs, "first_time") and h_dbs.first_time(str(cp["session_id"]), ctx):
+                    notes.append(ctx)
             except Exception:
                 pass
 
-        # 5. graphify-guard (if installed)
+        # 5. graphify-guard (if installed): advice only
         h_gg = get_hook("gg")
         if h_gg and hasattr(h_gg, "decide_pre"):
             try:
-                res = h_gg.decide_pre(cp)
-                if res:
-                    out = res.get("hookSpecificOutput", {})
-                    if out.get("permissionDecision") == "deny":
-                        return {"decision": "deny", "reason": out.get("permissionDecisionReason", "graphify lookup required")}
+                notes.append(_context(h_gg.decide_pre(cp)))
             except Exception:
                 pass
     except Exception:
         pass
 
-    return {"decision": "allow"}
+    notes = [n for n in notes if n]
+    return {"decision": "allow", "additionalContext": "\n".join(notes)} if notes else {"decision": "allow"}
 
 
 def handle_post(agy_data: dict) -> dict:
@@ -234,26 +239,8 @@ def handle_post(agy_data: dict) -> dict:
 EXIT_CODE_RE = re.compile(r"exited with code (-?[1-9]\d*)")
 EDIT_TOOLS = {"write_to_file", "replace_file_content", "multi_replace_file_content", "Write", "Edit", "MultiEdit"}
 
-AGY_SKILL_PASS = """[skill-capture] This session had a learning signal ({sig}; {n} tool calls). Most sessions teach nothing new: "skill-capture: nothing" is a fine answer, and one solid lesson beats three thin ones. Procedure: {doc}.
-{loaded}
-Analyse first, then pick ONE place:
-  - Lesson about THIS project (its code, data, domain): add one line to that project's AGENTS.md on the branch you are working on, commit it there. No proposal.
-  - Lesson about the central agent home (a skill, rule, hook, script): raise an agy-proposal. Do NOT edit skills directly (Antigravity copies are synced read-only).
-  - Not verified, or would not recur: nothing.
-An agy-proposal is checked by scripts/check_agy_proposal.py and auto-rejected unless every section below is filled with real evidence from this session:
-  $AODD_REPORTS/agy-proposal-<YYYY-MM-DD>-<project>-<slug>.md
-  - **Project:** repo folder name
-  - **Repo:** absolute path of the repo the evidence commits are in
-  - **What:** target file (loaded skill above > existing skill > references/ file > new skill)
-  - **Analysis:** root cause, why it will recur, why it belongs in the global agent config and not the project
-  - **Code:** file:line of the code involved
-  - **Test:** the test command that failed before the fix, with its output
-  - **Fix:** what changed
-  - **Verified:** the command re-run after the fix, with its passing output
-  - **Commit:** the hash of the commit holding the fix (must exist in Repo)
-  - **Proposed change:** diff or exact text for the target file
-Never claim "fixed" or "verified" without the command and output. Generalize (placeholders, not this session's values). If a rule caused the mistake, propose rewriting or deleting it. No secrets or company identifiers.
-Then tell the user in one line what you wrote, or "skill-capture: nothing"{fix_note}."""
+AGY_SKILL_PASS = ("[skill-capture] learning signal this session ({sig}; {n} tool calls): a skill patch may be worth it "
+                  "(for the central agent home, an agy-proposal), see {doc}.{loaded}")
 
 
 def scan_transcript(transcript: Path, since: int = 0):
@@ -356,7 +343,7 @@ def scan_transcript(transcript: Path, since: int = 0):
 
 
 def decide_skill_capture(cp: dict):
-    """Antigravity stop decision for skill-learning nudge (Hermes-style)."""
+    """Note for the user (once per session) when the session had a learning signal; None otherwise."""
     if os.environ.get("CLAUDE_SKILL_CAPTURE") == "0" or cp.get("stop_hook_active"):
         return None
     sid = cp.get("session_id") or ""
@@ -369,46 +356,37 @@ def decide_skill_capture(cp: dict):
     if state_dir is None:
         state_dir = Path(os.environ.get("AODD_STATE") or (Path(os.environ.get("AODD_HOME") or (Path.home() / ".aodd")) / "state")).expanduser() / "skill-capture"
     marker = state_dir / sid
-    last = None
     if marker.exists():
-        raw = marker.read_text().strip()
-        last = int(raw) if raw.isdigit() else 10**9
+        return None  # said once; never again this session
 
-    n, written, signals, loaded = scan_transcript(transcript, since=last or 0)
-    if n < (h_scn.MIN_TOOL_CALLS if last is None else last + h_scn.INTERVAL) or written or not signals:
+    n, written, signals, loaded = scan_transcript(transcript)
+    if n < h_scn.MIN_TOOL_CALLS or written or not signals:
         return None
 
     state_dir.mkdir(parents=True, exist_ok=True)
     marker.write_text(str(n))
-    cwd = Path(cp.get("cwd") or os.getcwd())
-    loaded_txt = ("Skills loaded this session (propose changes to these first):\n" +
-                  "\n".join(f"  - {k}: {h_scn.skill_path(k, v, cwd)}" for k, v in loaded.items())) if loaded else \
-        "No skill was loaded this session."
-    return AGY_SKILL_PASS.format(n=n, sig=", ".join(signals), doc=h_scn.DOC, loaded=loaded_txt,
-                                 fix_note=h_scn.FIX_NOTE if "fix commit" in signals else "")
+    loaded_txt = (" Skills loaded: " + ", ".join(loaded) + ".") if loaded else ""
+    return AGY_SKILL_PASS.format(n=n, sig=", ".join(signals), doc=h_scn.DOC, loaded=loaded_txt)
 
 
 def handle_stop(agy_data: dict) -> dict:
+    notes = []
     try:
         cp = to_claude_payload(agy_data)
 
-        # 1. done-gate (checks progress files and auditor run)
+        # 1. done-gate (progress files, audit verdict): a note for the user, never a block
         h_dg = get_hook("dg")
         if h_dg and hasattr(h_dg, "decide"):
             try:
-                reason = h_dg.decide(cp)
-                if reason:
-                    return {"decision": "continue", "reason": reason}
+                notes.append(h_dg.decide(cp))
             except Exception:
                 pass
 
-        # 2. skill-capture-nudge (prompts for agy-proposal if learning signals found)
+        # 2. skill-capture-nudge: one note per session when learning signals were found
         h_scn = get_hook("scn")
         if h_scn:
             try:
-                reason = decide_skill_capture(cp)
-                if reason:
-                    return {"decision": "continue", "reason": reason}
+                notes.append(decide_skill_capture(cp))
             except Exception:
                 pass
 
@@ -435,7 +413,8 @@ def handle_stop(agy_data: dict) -> dict:
     except Exception:
         pass
 
-    return {"decision": "allow"}
+    notes = [n for n in notes if n]
+    return {"decision": "allow", "systemMessage": "\n".join(notes)} if notes else {"decision": "allow"}
 
 
 def main():

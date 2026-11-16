@@ -12,7 +12,7 @@
 Verified (Codex CLI 0.154, live run in a throwaway `CODEX_HOME`, `codex exec --dangerously-bypass-hook-trust`, and by tests):
 
 - Hook input: `PreToolUse` receives `session_id`, `transcript_path`, `cwd`, `tool_name`, `tool_input`, `tool_use_id`. A file edit arrives as `tool_name: apply_patch` with `tool_input: {"command": "<patch text>"}`; the shell tool arrives as `tool_name: Bash` with `tool_input: {"command": ...}`.
-- `auditor-readonly.py` (`AODD_AUDITOR=1`): the `apply_patch` edit was denied live (file not created, `git status` unchanged, Codex logged "Command blocked by PreToolUse hook"); `Bash` writes go through the same regex as under Claude.
+- `auditor-readonly.py` (`AODD_AUDITOR=1`, a hard-safety deny; the other hooks only advise): the `apply_patch` edit was denied live (file not created, `git status` unchanged, Codex logged "Command blocked by PreToolUse hook"); `Bash` writes go through the same regex as under Claude.
 - `done-gate.py` and `skill-capture-nudge.py` read the Codex rollout (`~/.codex/sessions/.../rollout-*.jsonl`: `{timestamp, type, payload}`): edited files come from `apply_patch` headers (`*** Add|Update|Delete File: <path>`), shell commands from `exec_command` (`arguments` JSON with `cmd`), user messages from `message`/`user`/`input_text` (injected `<...>` and `# AGENTS.md` blocks skipped). The shapes were read from real rollouts; the gates themselves are covered by `hooks/test_done_gate.py` and `hooks/test_skill_capture_nudge.py` with synthetic records of that shape, not by a full interactive Codex session.
 - Codex may ask you to trust newly added hooks on first run.
 - Transcript detection, auditor selection, the auditor command, install and re-install: `scripts/test_audit.py`, `scripts/test_install.py`.

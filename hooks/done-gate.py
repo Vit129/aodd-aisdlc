@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
-"""Stop hook: don't end a turn claiming Done while a touched ai-sdlc progress file
-still has unchecked boxes. Only checks progress files this session actually
-wrote to (so an unrelated old plan never blocks). Blocks at most once per
-stop cycle (stop_hook_active), fails open on any error.
+"""Stop hook: tell the user, once, when a turn ends while a touched ai-sdlc progress file still has
+unchecked boxes. Only checks progress files this session actually wrote to (so an unrelated old plan
+is never mentioned). A note for the user (`systemMessage`), never a block: the turn always ends.
+Said once per distinct text (the already_raised guards), stop_hook_active is honoured, fails open on any error.
 
 The audit is on demand: the user asks for it, or the worker proposes it for risky work (rules/ai-sdlc-workflow.md),
 so this hook never asks for one. "Audited" = scripts/audit.py wrote $AODD_REPORTS/audit-*-<sid8>.md for this
 session. When a tracked or AODD "medium" session (MEDIUM_FILES+ files via Edit/Write/MultiEdit, Codex apply_patch;
-scratch files never count) has a FAIL/DISPUTED/UNVERIFIABLE verdict -> block once per report: the worker relays
-it, then may stop. Disable with DONE_GATE_AUDIT=0; DONE_GATE_ITEMS=0 turns off the open-items reminder.
+scratch files never count) has a FAIL/DISPUTED/UNVERIFIABLE verdict -> one note per report naming it. Disable with DONE_GATE_AUDIT=0; DONE_GATE_ITEMS=0 turns off the open-items reminder.
 
 Known limit: edits made through Bash are not counted."""
 import hashlib
@@ -116,16 +115,13 @@ def decide(payload: dict, reports: Path = REPORTS):
     for p in paths:
         open_items += [f"{p}: {l.strip()}" for l in p.read_text().splitlines() if l.lstrip().startswith("- [ ]")]
     if not open_items and audited and verdict != "PASS" and audit_on and (paths or medium_session) and not already_raised(transcript, report):
-        return (f"[done-gate] The independent audit says {verdict}: {report}. Do not report Done. Either fix the "
-                "failed rows and re-run the audit, or tell the user plainly it is " + ("DISPUTED (the other-family auditor found a failure the "
-                "verifier rejected: the CEO decides)" if verdict == "DISPUTED" else "FAILED") + ", quoting the report's table.")
+        return (f"[done-gate] audit verdict {verdict}: {report}" +
+                (" (the other-family auditor found a failure the verifier rejected: the CEO decides)" if verdict == "DISPUTED" else ""))
     # Same list as last time -> the worker already relayed it; repeating it every stop only adds noise.
     if not open_items or os.environ.get("DONE_GATE_ITEMS") == "0" or already_raised(transcript, kind="items", text="\n".join(open_items)):
         return None
     shown = "\n".join(open_items[:8])
-    return ("[done-gate] Progress file(s) touched this session still have unchecked items:\n" + shown +
-            "\n\nEither finish/verify them and tick the boxes, or tell the user explicitly that the feature is NOT done "
-            "and which items remain. Do not claim Done.")
+    return f"[done-gate] {len(open_items)} unchecked item(s) in progress files touched this session:\n" + shown
 
 
 def main():
@@ -134,7 +130,7 @@ def main():
     except Exception:
         return
     if reason:
-        print(json.dumps({"decision": "block", "reason": reason}))
+        print(json.dumps({"systemMessage": reason}))
 
 
 if __name__ == "__main__":

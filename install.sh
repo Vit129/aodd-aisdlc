@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Install aodd-aisdlc into a Claude Code home (default ~/.claude, override with CLAUDE_HOME).
+#   ./install.sh --check   # copies nothing: DRIFT <file> for each installed file that differs from this checkout; exit 1 on drift
 #   ./install.sh [--dry-run] [--detect] [--no-backup] [--claude-md] [--codex] [--agy] [--with agent-memory,schedules | --all | --core-only] [--yes]
 #   ./install.sh --project <repo> [--project <repo> ...] [--dry-run] [--with agent-memory | --core-only]   # per repository, see below
 # Project mode: the same files go into <repo>/.claude/, hooks are registered in its settings.json with paths
@@ -12,7 +13,8 @@
 # default schedule times). Add a module later by re-running with --with <name>.
 # Agents: the coding agents on this machine are detected (binary on PATH, or its home dir) and listed. In a
 # terminal, each supported one found (Codex, Antigravity) is offered; --codex / --agy choose without asking, and a
-# non-terminal run (e.g. the post-merge hook) never adds one by itself. --detect only prints the list.
+# non-terminal run (e.g. the post-merge hook) never adds a new one by itself, but updates one that already has an aodd
+# install (so a re-run never leaves Codex or Antigravity behind). --detect only prints the list.
 # --codex also installs into ${CODEX_HOME:-~/.codex}: the same files, the two rules inlined in AGENTS.md (the rest of rules/ is copied and read by path)
 # between aodd:begin/aodd:end markers (Codex has no @import), hooks in hooks.json.
 # An existing file that differs is printed as UPDATE and its old content is kept next to it as
@@ -21,7 +23,7 @@
 # stay at their defaults, see hooks/_aodd_paths.py).
 set -euo pipefail
 
-DRY=0; DETECT=0; AGENTS_SET=0; CLAUDE_MD=0; CODEX_ON=0; AGY_ON=0; YES=0; MODS_SET=0; MODS=""
+DRY=0; CHECK=0; DRIFT=0; DETECT=0; AGENTS_SET=0; CLAUDE_MD=0; CODEX_ON=0; AGY_ON=0; YES=0; MODS_SET=0; MODS=""
 ALL_MODULES="agent-memory schedules"
 ORIG=("$@"); PROJECTS=()
 add_mod() { case " $MODS " in *" $1 "*) ;; *) MODS="${MODS:+$MODS }$1" ;; esac; }
@@ -33,6 +35,7 @@ while [ $# -gt 0 ]; do
     --no-backup) export AODD_NO_BACKUP=1 ;;
     --claude-md) CLAUDE_MD=1 ;;
     --detect) DETECT=1 ;;
+    --check) CHECK=1; DRY=1 ;;
     --codex) CODEX_ON=1; AGENTS_SET=1 ;;
     --agy) AGY_ON=1; AGENTS_SET=1 ;;
     --yes|-y) YES=1 ;;
@@ -42,7 +45,7 @@ while [ $# -gt 0 ]; do
       for m in $(echo "$1" | tr ',' ' '); do
         case " $ALL_MODULES " in *" $m "*) add_mod "$m" ;; *) echo "unknown module: $m (modules: $ALL_MODULES)" >&2; exit 2 ;; esac
       done; shift ;;
-    -h|--help) sed -n '2,18p' "$0"; exit 0 ;;
+    -h|--help) sed -n '2,20p' "$0"; exit 0 ;;
     *) echo "unknown option: $a" >&2; exit 2 ;;
   esac
 done
@@ -112,10 +115,14 @@ found agy || found codex || echo "warn    no agy or codex CLI: the cross-family 
 DEST="${CLAUDE_HOME:-$HOME/.claude}"
 [ -n "$PROJECT_ROOT" ] && DEST="$PROJECT_ROOT/.claude"
 [ "$DRY" = 1 ] && echo "[dry-run] nothing will be written"
-echo "install into: $DEST"
+[ "$CHECK" = 1 ] || echo "install into: $DEST"
 
 copy_file() {  # copy_file <src> <dest>
   local s="$1" d="$2"
+  if [ "$CHECK" = 1 ]; then  # --check: same comparison, only report
+    { [ -e "$d" ] && cmp -s "$s" "$d"; } || { echo "DRIFT   $d"; DRIFT=1; }
+    return 0
+  fi
   if [ -e "$d" ]; then
     if cmp -s "$s" "$d"; then return 0; fi
     if [ "${AODD_NO_BACKUP:-0}" = 1 ]; then echo "UPDATE  $d"; else
@@ -141,6 +148,28 @@ copy_module() {  # copy_module <module> <dest root>: optional/<module>/{skills,a
   for d in skills agents rules hooks scripts schedules docs; do copy_tree "$d" "$2" "$SRC/optional/$1"; done
 }
 
+# ---- --check: which installed files differ from this checkout (nothing is copied) ----------------------
+if [ "$CHECK" = 1 ]; then
+  check_home() {  # check_home <home>: core plus the modules that home already has
+    local h="$1" d
+    [ -f "$h/hooks/_aodd_paths.py" ] || return 0
+    echo "check   $h"
+    for d in skills agents rules hooks scripts docs; do copy_tree "$d" "$h"; done
+    [ -f "$h/hooks/memory-recall.py" ] && copy_module agent-memory "$h"
+    [ -f "$h/scripts/install-schedules.py" ] && copy_module schedules "$h"
+    return 0
+  }
+  check_home "$DEST"
+  [ -n "$PROJECT_ROOT" ] || check_home "${CODEX_HOME:-$HOME/.codex}"
+  AGY_CHECK="${AGY_HOME:-$HOME/.gemini/antigravity-cli}"
+  if [ -z "$PROJECT_ROOT" ] && [ -f "$AGY_CHECK/adapters/antigravity-hook-adapter.py" ]; then
+    echo "check   $AGY_CHECK"
+    for d in skills agents adapters rules docs; do copy_tree "$d" "$AGY_CHECK"; done
+  fi
+  [ "$DRIFT" = 0 ] && echo "ok      no drift"
+  exit "$DRIFT"
+fi
+
 # ---- module choice -------------------------------------------------------------------------------
 ask() {  # ask <question>: y/N, default no; --yes never asks
   local r; [ "$YES" = 1 ] && return 1
@@ -156,8 +185,11 @@ if [ "$AGENTS_SET" = 0 ] && [ "$YES" = 0 ] && [ -t 0 ]; then
   found codex && ask "  Codex found: also install into ${CODEX_HOME:-~/.codex}?" && CODEX_ON=1
   found agy && ask "  Antigravity found: also install into it (install-agy.sh)?" && AGY_ON=1
 elif [ "$AGENTS_SET" = 0 ]; then
-  found codex && echo "note    Codex found: add --codex to install into it"
-  found agy && echo "note    Antigravity found: add --agy to install into it"
+  # not a terminal: never add a new target, but keep one that already has an aodd install up to date
+  if [ -f "${CODEX_HOME:-$HOME/.codex}/hooks/_aodd_paths.py" ]; then CODEX_ON=1; echo "note    Codex: existing install found, updating it"
+  else found codex && echo "note    Codex found: add --codex to install into it"; fi
+  if [ -f "${AGY_HOME:-$HOME/.gemini/antigravity-cli}/adapters/antigravity-hook-adapter.py" ]; then AGY_ON=1; echo "note    Antigravity: existing install found, updating it"
+  else found agy && echo "note    Antigravity found: add --agy to install into it"; fi
 fi
 if [ "$MODS_SET" = 0 ] && [ "$YES" = 0 ] && [ ! -t 0 ]; then
   echo "note    not a terminal: installing core only (use --with agent-memory,schedules or --all for modules)"
@@ -309,9 +341,14 @@ if changed and not dry:
     settings.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
 PY
 }
-write_aodd_block() {  # write_aodd_block <AGENTS.md> [header line]: the aodd block between markers; a re-run replaces it in place
-  local AG="$1" HEAD="${2:-}" BLOCK
-  BLOCK="$(printf '<!-- aodd:begin -->\n'; [ -n "$HEAD" ] && printf '%s\n\n' "$HEAD"; cat "$SRC/rules/ai-sdlc-workflow.md"; printf '\n<!-- aodd:end -->\n')"
+write_aodd_block() {  # write_aodd_block <AGENTS.md> [header line] [pointer: 1]: the aodd block between markers (the contract inlined, or with pointer=1 only a pointer to it); a re-run replaces it in place
+  local AG="$1" HEAD="${2:-}" POINTER="${3:-0}" BLOCK BODY
+  if [ "$POINTER" = 1 ]; then  # project mode: .claude/rules/ai-sdlc-workflow.md is already auto-loaded, so inlining it too would load it twice
+    BODY="$(printf 'AODD / ai-sdlc contract: `.claude/rules/ai-sdlc-workflow.md` (Claude Code loads it automatically).\nOther agents: read that file before any file change.')"
+  else
+    BODY="$(cat "$SRC/rules/ai-sdlc-workflow.md")"
+  fi
+  BLOCK="$(printf '<!-- aodd:begin -->\n'; [ -n "$HEAD" ] && printf '%s\n\n' "$HEAD"; printf '%s\n' "$BODY"; printf '\n<!-- aodd:end -->\n')"
   if [ "$DRY" = 1 ]; then echo "AGENTS  $AG <- aodd block (would write)"; return 0; fi
   mkdir -p "$(dirname "$AG")"
   [ "${AODD_NO_BACKUP:-0}" != 1 ] && [ -f "$AG" ] && [ ! -e "$AG.aodd-bak" ] && ! grep -q "aodd:begin" "$AG" && cp "$AG" "$AG.aodd-bak" && echo "backup  $AG.aodd-bak"
@@ -368,8 +405,8 @@ if [ "$CODEX_ON" = 1 ]; then
   write_aodd_block "$CDEST/AGENTS.md" "> The rules/, docs/ and skills/ paths named below live under $CDEST; read rules/ai-sdlc/*.md there when the contract says so."
 fi
 if [ -n "$PROJECT_ROOT" ]; then
-  # Claude Code loads .claude/rules/ itself; AGENTS.md carries the same contract for Codex, Antigravity and other readers
-  write_aodd_block "$PROJECT_ROOT/AGENTS.md" "> Managed by aodd-aisdlc (install.sh --project). The rules/, skills/, hooks/, scripts/, agents/ and docs/ paths here live under this repo's .claude/ folder (~/.claude means the same)."
+  # Claude Code loads .claude/rules/ itself; AGENTS.md points other readers (Codex, Antigravity) at that file instead of repeating it
+  write_aodd_block "$PROJECT_ROOT/AGENTS.md" "> Managed by aodd-aisdlc (install.sh --project). The rules/, skills/, hooks/, scripts/, agents/ and docs/ paths here live under this repo's .claude/ folder (~/.claude means the same)." 1
   CM="$PROJECT_ROOT/CLAUDE.md"   # Claude Code reads CLAUDE.md, so it imports the AGENTS.md contract too
   if [ -f "$CM" ] && grep -qxF '@AGENTS.md' "$CM"; then :
   elif [ "$DRY" = 1 ]; then echo "CLAUDE  $CM <- @AGENTS.md (would add)"

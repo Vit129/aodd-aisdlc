@@ -10,7 +10,13 @@ env = {k: v for k, v in os.environ.items() if not k.startswith("AODD_")}
 REA_LOG = T / "rea.log"                                                          # stub REA launcher: never npx/network
 (T / "rea").write_text(f'#!/bin/sh\necho "$@" >> "{REA_LOG}"\n'); (T / "rea").chmod(0o755)
 (T / "claude-cli").write_text('#!/bin/sh\nexit 0\n'); (T / "claude-cli").chmod(0o755)
-env.update(CLAUDE_HOME=str(T / "claude"), CODEX_HOME=str(T / "codex"), CLAUDE_BIN=str(T / "claude-cli"), AODD_SCHEDULES_DRY_RUN="1", AODD_REA_CMD=str(T / "rea"))
+env.update(CLAUDE_HOME=str(T / "claude"), CODEX_HOME=str(T / "codex"), AGY_HOME=str(T / "agy-never-installed"), CLAUDE_BIN=str(T / "claude-cli"), AODD_SCHEDULES_DRY_RUN="1", AODD_REA_CMD=str(T / "rea"))
+
+
+def run_rc(*flags, extra=None):
+    p = subprocess.run(["bash", str(ROOT / "install.sh"), *flags], capture_output=True, text=True, stdin=subprocess.DEVNULL,
+                       env={**env, **(extra or {})})
+    return p.returncode, p.stdout
 
 
 def run(*flags, extra=None, home=None):
@@ -90,12 +96,32 @@ out = run("--no-backup", "--codex", "--agy", extra=nenv)
 assert "UPDATE" in out and not list(N.rglob("*.aodd-bak")), list(N.rglob("*.aodd-bak"))
 print("ok - install self-test passed (incl. --no-backup)")
 
+# --- drift: a non-terminal re-run keeps an installed Codex current; --check reports drift; a bare home stays untouched ---
+D = T / "drift"
+denv = {"CLAUDE_HOME": str(D / "c"), "CODEX_HOME": str(D / "x"), "AGY_HOME": str(D / "g/antigravity-cli")}
+run("--core-only", "--codex", extra=denv)
+rc, out = run_rc("--check", extra=denv)
+assert rc == 0 and "no drift" in out and "DRIFT" not in out, out
+stale = D / "x/hooks/done-gate.py"
+stale.write_text("old copy")
+rc, out = run_rc("--check", extra=denv)
+assert rc == 1 and f"DRIFT   {stale}" in out and str(D / "c") not in out.split("DRIFT")[1], out
+assert stale.read_text() == "old copy"                                         # --check copies nothing
+out = run("--core-only", extra=denv)                                           # no --codex, not a terminal
+assert "Codex: existing install found, updating it" in out, out
+assert stale.read_text() == (ROOT / "hooks/done-gate.py").read_text()
+assert run_rc("--check", extra=denv)[0] == 0
+E = T / "drift-none"; (E / "x").mkdir(parents=True); (E / "x/AGENTS.md").write_text("# mine\n")
+out = run("--core-only", extra={"CLAUDE_HOME": str(E / "c"), "CODEX_HOME": str(E / "x"), "AGY_HOME": str(E / "g/antigravity-cli")})
+assert "updating it" not in out and not (E / "x/hooks").exists() and (E / "x/AGENTS.md").read_text() == "# mine\n"   # never installed: not added
+print("ok - drift fix and --check")
+
 # agent detection: a fake PATH and HOME decide what is found; a non-terminal run never adds a target by itself
 fake = T / "fakebin"; fake.mkdir()
 for b in ("codex", "hermes", "opencode"):
     (fake / b).write_text("#!/bin/sh\n"); (fake / b).chmod(0o755)
 (T / "fakehome/.cursor").mkdir(parents=True)
-det = {"PATH": f"{fake}:/usr/bin:/bin", "HOME": str(T / "fakehome")}
+det = {"PATH": f"{fake}:/usr/bin:/bin", "HOME": str(T / "fakehome"), "CODEX_HOME": str(T / "fakehome/.codex")}
 out = run("--detect", extra=det)
 assert "found: codex cursor opencode hermes" in out, out
 assert "no installer yet for: cursor opencode hermes" in out and "warn    no agy" not in out
@@ -149,11 +175,22 @@ assert (gamma / "CLAUDE.md").read_text() == "# guidelines\n@AGENTS.md\n"        
 assert (alpha / "CLAUDE.md").read_text() == "@AGENTS.md\n" and (beta / "CLAUDE.md").read_text() == "@AGENTS.md\n"   # already imported / created
 ag = (alpha / "AGENTS.md").read_text()
 assert ag.startswith("# mine\n") and ag.count("<!-- aodd:begin -->") == 1 and "this repo's .claude/ folder" in ag
+# project mode writes a pointer, not the contract: Claude already auto-loads .claude/rules/ai-sdlc-workflow.md
+wf_text = (ROOT / "rules/ai-sdlc-workflow.md").read_text()
+blk = ag[ag.index("<!-- aodd:begin -->"):ag.index("<!-- aodd:end -->") + len("<!-- aodd:end -->")]
+assert len(blk.encode()) < 600 and ".claude/rules/ai-sdlc-workflow.md" in blk, blk
+assert next(l for l in wf_text.splitlines() if l.startswith("# ")) not in ag and (alpha / ".claude/rules/ai-sdlc-workflow.md").is_file()
 assert (alpha / ".gitignore").read_text() == "__pycache__/\n" and (gamma / ".gitignore").read_text() == "__pycache__/\n"
 assert not list((T / "projects").rglob("*.aodd-bak")), "git is the backup: no .aodd-bak inside a repo"
 snap = tree(*REPOS)
 second = run(*flags, extra=LA)
 assert tree(*REPOS) == snap and ": registered" not in second and "UPDATE" not in second, second
+
+old_block = repo("oldblock", {"AGENTS.md": "# top\n\n<!-- aodd:begin -->\n> old header\n\n" + wf_text + "\n<!-- aodd:end -->\n\n# bottom\n"})
+run("--project", str(old_block), "--core-only")
+ob = (old_block / "AGENTS.md").read_text()
+assert ob.startswith("# top\n") and ob.endswith("# bottom\n") and ob.count("<!-- aodd:begin -->") == 1 and len(ob.encode()) < 900   # the old inlined block is replaced in place
+assert ".claude/rules/ai-sdlc-workflow.md" in ob and "old header" not in ob
 
 fresh = repo("fresh", {"AGENTS.md": "# fresh\n"})
 run("--dry-run", "--project", str(fresh))

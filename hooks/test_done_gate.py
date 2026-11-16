@@ -86,4 +86,17 @@ assert pt() is None                                                # same report
 tr.write_text(tr.read_text() + "\n" + "\n".join(edt(f"/y/{i}.py", "2999-01-01T00:00:00Z") for i in range(2)))
 assert pt() is None                                                # 2 files after the audit -> small follow-up
 r.unlink()
+# CLI: the open-items note is a systemMessage, never a block, and said once
+import subprocess, sys
+cli_tr = d / "dddddddd-cli.jsonl"; cli_prog = d / "x" / "ai-sdlc-task-progress.md"; cli_prog.parent.mkdir()
+cli_prog.write_text("- [ ] open\n")
+cli_tr.write_text(json.dumps({"message": {"content": [{"type": "tool_use", "name": "Edit", "input": {"file_path": str(cli_prog)}}]}}))
+cli = lambda: subprocess.run([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), "done-gate.py")],
+                             input=json.dumps({"transcript_path": str(cli_tr)}), capture_output=True, text=True, env=os.environ.copy())
+r1 = cli(); o = json.loads(r1.stdout)
+assert r1.returncode == 0 and "systemMessage" in o and "decision" not in o and "open" in o["systemMessage"], r1.stdout
+assert cli().stdout == ""                                          # second run: silent
+for junk in ("garbage", "{}", ""):
+    r = subprocess.run([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), "done-gate.py")], input=junk, capture_output=True, text=True)
+    assert r.returncode == 0 and r.stdout == "", junk
 print("ok")

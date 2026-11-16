@@ -1,21 +1,22 @@
 #!/usr/bin/env python3
 """PreToolUse hook: scan Write/Edit content going into memory files (agent-memory/,
-memory/, knowledge/, projects/*/memory/) for prompt-injection markers and leaked
-secrets before it lands. Memory files get auto-injected into every future session's
-context, so an unscanned bad entry is a standing injection vector or a standing
-credential leak. Fail-open on any error.
+memory/, knowledge/, projects/*/memory/) for leaked secrets and prompt-injection markers
+before it lands. Memory files get auto-injected into every future session's context and pushed
+to a git remote, so a credential written there is a standing leak. Fail-open on any error.
 
-ponytail: regex/codepoint heuristic scan, not semantic — catches known injection
-phrasing, invisible-unicode tricks, and common secret token *shapes* (AWS/GitHub/
-OpenAI/Anthropic/Slack/Google/Stripe/npm key prefixes, PEM private key blocks, JWTs),
-not a novel obfuscation or an arbitrary high-entropy string. Upgrade path: route
-flagged-but-uncertain content through an LLM classifier instead of hard-deny.
+  DENY   a real token shape (_aodd_secrets.SECRET_PATTERNS: AWS/GitHub/OpenAI/Anthropic/Slack/
+         Google/Stripe/npm key prefixes, PEM private key blocks, JWTs). The message names the
+         pattern, never the value, so the agent rewrites the entry without the credential.
+  ADVICE invisible unicode (zero-width space/joiners, bidi controls: normal in Thai text and
+         emoji) and injection-like phrases ("ignore all previous instructions"): the write goes
+         through, one line of additionalContext asks the agent to check it, once per session
+         (silent without a session id).
 
-Deny-and-ask-agent-to-redact, not silent auto-strip: unlike a service that quietly
-scrubs secrets before storage, this hook blocks the write and names the pattern (not
-the matched value, so the secret itself never gets echoed into hook output/logs) so
-the agent rewrites the entry without the credential.
+ponytail: regex/codepoint heuristic scan, not semantic. It does not catch a novel obfuscation or an
+arbitrary high-entropy string. Upgrade path: route flagged-but-uncertain content through an LLM
+classifier.
 """
+import hashlib
 import json
 import re
 import sys
@@ -25,6 +26,7 @@ HERE = Path(__file__).resolve().parent
 for _d in (HERE, HERE.parents[2] / "hooks"):  # installed: next to this file; in the repo: core hooks/
     sys.path.append(str(_d))
 from _aodd_secrets import SECRET_PATTERNS  # noqa: E402
+import _aodd_paths  # noqa: E402
 
 MEMORY_PATH_MARKERS = ("/agent-memory/", "/memory/", "/knowledge/")
 
@@ -61,7 +63,16 @@ def is_memory_path(path: str) -> bool:
     return any(marker in path for marker in MEMORY_PATH_MARKERS) and path.endswith(".md")
 
 
-def scan(text: str) -> str | None:
+def secret(text: str) -> str | None:
+    """Reason for the one deny: a real token shape. The value is never named."""
+    for name, pattern in SECRET_PATTERNS:
+        if pattern.search(text):
+            return f"looks like a real {name} — value withheld from this message"
+    return None
+
+
+def advice(text: str) -> str | None:
+    """Advice only: invisible codepoints or an injection-like phrase."""
     found_invisible = sorted({f"U+{ord(c):04X}" for c in text if c in INVISIBLE_CODEPOINTS})
     if found_invisible:
         return f"invisible unicode codepoint(s) found: {', '.join(found_invisible)}"
@@ -69,10 +80,20 @@ def scan(text: str) -> str | None:
         m = pattern.search(text)
         if m:
             return f"injection-like phrase matched: \"{m.group(0)}\""
-    for name, pattern in SECRET_PATTERNS:
-        if pattern.search(text):
-            return f"looks like a real {name} — value withheld from this message"
     return None
+
+
+def first_time(sid: str, text: str) -> bool:
+    """True once per (session, text); same advice again in a session -> False."""
+    d = _aodd_paths.state() / "memory-write-scan"
+    f = d / re.sub(r"[^\w.-]", "_", sid)
+    digest = hashlib.sha1(text.encode()).hexdigest()
+    seen = f.read_text().split() if f.is_file() else []
+    if digest in seen:
+        return False
+    d.mkdir(parents=True, exist_ok=True)
+    f.write_text("\n".join(seen + [digest]))
+    return True
 
 
 def main() -> None:
@@ -89,16 +110,30 @@ def main() -> None:
     if not content:
         return
 
-    reason = scan(content)
+    name = Path(file_path).name
+    reason = secret(content)
     if reason:
         print(json.dumps({
             "hookSpecificOutput": {
                 "hookEventName": "PreToolUse",
                 "permissionDecision": "deny",
                 "permissionDecisionReason": (
-                    f"memory-write-scan: blocked write to {Path(file_path).name} — {reason}. "
-                    "Memory files auto-load into every future session; review the content "
-                    "before writing. If this is a false positive, rephrase to avoid the pattern."
+                    f"memory-write-scan: blocked write to {name} — {reason}. "
+                    "Memory files auto-load into every future session and are pushed to a git remote; "
+                    "rewrite the entry without the credential."
+                ),
+            }
+        }))
+        return
+    note = advice(content)
+    sid = data.get("session_id")
+    if note and sid and first_time(str(sid), note):
+        print(json.dumps({
+            "hookSpecificOutput": {
+                "hookEventName": "PreToolUse",
+                "additionalContext": (
+                    f"memory-write-scan (advice, not a block): {name}: {note}. Memory files auto-load into "
+                    "every future session; check the content is what you mean to store."
                 ),
             }
         }))

@@ -28,6 +28,29 @@ assert g.find_root(plain) is None
 def pre(tool, inp, cwd=proj, sid="s1"):
     return g.decide_pre({"tool_name": tool, "tool_input": inp, "cwd": str(cwd), "session_id": sid})
 
+# [TS-TOKEN-02][BE-UT] Only explicit non-code files bypass the Bash gate.
+(proj / "rules").mkdir()
+for name in ("rules/foo.md", "rules/other file.txt", "rules/config.json", "rules/source.py"):
+    (proj / name).write_text("x")
+(proj / "rules/looks.md").mkdir()
+for cmd in (
+    "grep -n x rules/foo.md", "rg x rules/foo.md rules/config.json",
+    "grep -e x -- rules/foo.md", "rg --regexp x 'rules/other file.txt'",
+    "grep -A 2 x rules/foo.md", "rg --glob '*.py' x rules/foo.md",
+    "grep x rules/foo.md && rg y rules/config.json",
+    "find rules/foo.md -name '*.md'", "fd x rules/foo.md",
+):
+    assert pre("Bash", {"command": cmd}, sid="docs") is None, cmd
+for cmd in (
+    "rg x", "grep -n x rules", "grep x rules/foo.md rules/source.py",
+    "rg x rules/looks.md", "find rules -name '*.md'",
+    "grep x rules/foo.md; rg x rules/source.py", "grep -f rules/foo.md",
+    "rg -g '*.md' x", "grep x rules/*.md", "grep x missing.md",
+):
+    assert pre("Bash", {"command": cmd}, sid="docs")["hookSpecificOutput"]["permissionDecision"] == "deny", cmd
+assert len(g.GATE_MSG) <= 200 and "\n" not in g.GATE_MSG
+assert g.GATE_MSG.index("graphify query") < g.GATE_MSG.index("mcp__graphify__*")
+
 # ---- the gate: raw search is refused until graphify was consulted this session ----------
 d = pre("Bash", {"command": "grep -rn load_session ."})
 assert d["hookSpecificOutput"]["permissionDecision"] == "deny"

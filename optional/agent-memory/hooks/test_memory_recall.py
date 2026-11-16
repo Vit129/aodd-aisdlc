@@ -86,4 +86,33 @@ assert "#Fallback Section: [Fallback Section] epsilon mango details here." in ct
 os.environ.pop("AODD_RECALL_EXTRA", None)
 assert mr.recall("gamma grape", repo) == []
 assert mr.recall("epsilon mango", repo) == []
+# [TS-TOKEN-01][BE-IT] Strict matching, cap, and session-local recall across hook processes.
+assert mr.recall("quokkaferret", repo) == []
+(T / "m2/knowledge/thai.md").write_text("## Notes\nพอร์ตการลงทุน details\n")
+assert mr.recall("พอร์ตการลงทุน", repo) == []
+assert mr.MIN_MATCHED_KEYWORDS == 2 and mr.MAX_HITS == 3
+for i in range(5):
+    (T / f"m2/knowledge/recall{i}.md").write_text(f"## Entry {i}\norbit telescope detail {i}\n")
+assert len(mr.recall("orbit telescope", repo)) == 3
+payload = {"prompt": "orbit telescope", "cwd": str(repo), "session_id": "recall/one"}
+state_env = {"AODD_STATE": str(T / "recall-state")}
+assert run(payload, state_env).stdout.count("knowledge/recall") == 3
+assert run(payload, state_env).stdout.count("knowledge/recall") == 2
+assert run(payload, state_env).stdout == ""
+for sid in ("recall-two", "recall_one"):
+    assert run({**payload, "session_id": sid}, state_env).stdout.count("knowledge/recall") == 3
+assert (T / "recall-state/memory-recall").is_dir()
+assert run({"prompt": "orbit telescope", "cwd": str(repo)}, state_env).stdout
+blocked = T / "blocked-state"; blocked.write_text("not a directory")
+r = run(payload, {"AODD_STATE": str(blocked)})
+assert r.returncode == 0 and r.stdout
+for f in (T / "recall-state/memory-recall").iterdir():
+    f.write_text("broken json")
+r = run(payload, state_env)
+assert r.returncode == 0 and r.stdout
+(T / "m2/knowledge/sections.md").write_text("## First\ncomet meteor alpha\n## Second\nplanet satellite beta\n")
+p = {"cwd": str(repo), "session_id": "sections"}
+assert "#First" in run({**p, "prompt": "comet meteor"}, state_env).stdout
+assert "#Second" in run({**p, "prompt": "planet satellite"}, state_env).stdout
+assert run({**p, "prompt": "comet meteor"}, state_env).stdout == ""
 print("ok")

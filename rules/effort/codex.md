@@ -18,8 +18,8 @@ Scope: only for Codex. Ladder rules: `rules/ai-sdlc/delegation.md` § Effort lad
 
 | Codex | Claude row | Does |
 |---|---|---|
-| `sol` | Opus/Fable | main session: plan, design, review every diff |
-| `terra` | Sonnet | writes and changes code, in its own worktree |
-| `luna` | Haiku | search, lookup, run build/test, summaries; writes no code |
+| `sol` | Opus/Fable | main session: always plans first, reviews every diff |
+| `terra` | Sonnet | writes the execution brief from the plan; does a very easy change itself |
+| `luna` | Haiku | executes the brief (code included), search, lookup, summaries and all command runs (list in `rules/ai-sdlc/delegation.md`) |
 
 Delegate with `spawn_agent` (model per the table, effort per the ladder).

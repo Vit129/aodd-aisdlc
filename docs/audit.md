@@ -28,3 +28,6 @@ Audit is on demand: the user asks, or the worker proposes it for risky work. Wit
 It never asks for an audit.
 
 It fails open on any error. `DONE_GATE_AUDIT=0` disables the verdict check.
+
+## Infrastructure failures
+A failed Codex runner (process error, timeout, usage limit or sandbox error) preserves its error in the report and falls back to the cold verifier verdict, explicitly labelled `same-family`. A substantive UNVERIFIABLE stays UNVERIFIABLE; Codex FAIL plus verifier PASS remains DISPUTED. The Codex sandbox can write only in an isolated temporary directory, allowing check caches/output there while the audited repository remains read-only.

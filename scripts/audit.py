@@ -8,7 +8,7 @@
 1. Brief is built here, not by the worker: the user's own messages (verbatim, from the transcript),
    the git log + diff of the session, and the worker's claims (labelled untrusted).
 2. Auditor is another model family than the worker (cross-family rule):
-   worker Claude Opus/Fable -> Codex (read-only sandbox) if installed, else Claude Opus (same-family, said in the report);
+   worker Claude Opus/Fable -> Codex (scratch-only writable sandbox) if installed, else Claude Opus (same-family, said in the report);
    worker Codex -> Claude Opus; worker Claude Sonnet/Haiku -> Claude Opus.
 3. Codex can invent evidence, so when it audits, a fresh Claude Opus (cold, not the worker)
    re-checks every row. But Codex has also caught real Claude mistakes that Claude then confirmed,
@@ -19,12 +19,14 @@
 Exit 0 = PASS, 1 = FAIL/UNVERIFIABLE, 2 = could not run.
 """
 import argparse
+from contextlib import nullcontext
 import json
 import os
 import re
 import shutil
 import subprocess
 import sys
+import tempfile
 from datetime import date, datetime
 from pathlib import Path
 
@@ -112,19 +114,29 @@ def scope(repo: Path, base: str | None, since: str | None) -> tuple[str, str]:
 def run_model(who: str, prompt: str, repo: Path) -> str:
     # Claude gets the prompt on stdin: as argv, a prompt starting with the JD's `---` frontmatter is
     # parsed as an unknown option (exit 1).
-    if who == "codex":  # prompt on stdin via `-`: read-only sandbox, no session file, only the final message on stdout
-        cmd, stdin = [CODEX, "exec", "-s", "read-only", "--ephemeral", "--color", "never", "-C", str(repo), "-"], prompt
+    if who == "codex":
+        # Only this throwaway directory is writable; the audited repository stays outside it.
+        scratch = tempfile.TemporaryDirectory(prefix="aodd-auditor-")
     else:
-        cmd, stdin = [CLAUDE, "-p", "--model", "opus", "--allowedTools", "Read Grep Glob Bash",
-                      "--disallowedTools", "Edit Write NotebookEdit"], prompt
+        scratch = nullcontext(None)
     # AODD_AUDITOR: hooks/auditor-readonly.py blocks writes. CLAUDE_SKILL_CAPTURE=0: the Stop nudge would
     # otherwise ask the auditor to write a skill patch.
     env = {**os.environ, "AODD_AUDITOR": "1", "CLAUDE_SKILL_CAPTURE": "0"}
-    try:
-        p = subprocess.run(cmd, cwd=repo, input=stdin, stdin=None if stdin else subprocess.DEVNULL,
-                           capture_output=True, text=True, env=env, timeout=1800)
-    except (OSError, subprocess.TimeoutExpired) as e:
-        return f"OVERALL: UNVERIFIABLE\n{who} run failed: {e}"
+    with scratch as writable:
+        if who == "codex":
+            cmd = [CODEX, "exec", "-s", "workspace-write", "--ephemeral", "--color", "never",
+                   "--skip-git-repo-check", "-C", writable, "-"]
+            stdin = (f"Audit repository: {repo.resolve()} (read-only). Your writable scratch directory is {writable}. "
+                     "Run checks with their temp/cache/output directories here; do not edit the audited repository.\n\n" + prompt)
+            env.update(TMPDIR=writable, XDG_CACHE_HOME=writable, PYTHONDONTWRITEBYTECODE="1")
+        else:
+            cmd, stdin = [CLAUDE, "-p", "--model", "opus", "--allowedTools", "Read Grep Glob Bash",
+                          "--disallowedTools", "Edit Write NotebookEdit"], prompt
+        try:
+            p = subprocess.run(cmd, cwd=repo, input=stdin, stdin=None if stdin else subprocess.DEVNULL,
+                               capture_output=True, text=True, env=env, timeout=1800)
+        except (OSError, subprocess.TimeoutExpired) as e:
+            return f"OVERALL: UNVERIFIABLE\n{who} run failed: {e}"
     if p.returncode or not p.stdout.strip():
         return f"OVERALL: UNVERIFIABLE\n{who} run failed (exit {p.returncode}): {p.stderr.strip()[-300:]}"
     return p.stdout.strip()
@@ -135,8 +147,10 @@ def verdict(text: str) -> str:
     return m.group(1).upper() if m else "UNVERIFIABLE"
 
 
-def combine(first: str, opus: str) -> str:
+def combine(first: str, opus: str, *, infra_failure: bool = False) -> str:
     """Final verdict when Codex audits and a Claude Opus verifies (see docstring point 3)."""
+    if first == "UNVERIFIABLE" and infra_failure:
+        return opus
     if first == "PASS" and opus == "PASS":
         return "PASS"
     if first == "FAIL" and opus == "PASS":
@@ -198,9 +212,13 @@ def main(argv=None) -> int:
     if git(repo, "status", "--porcelain") + git(repo, "rev-parse", "HEAD") != before or stray:
         final = ("OVERALL: FAIL\nThe auditor wrote files during the audit" +
                  (f" ({', '.join(p.name for p in stray)})" if stray else "") + ". Audit void.\n\n" + final)
+    infra_failure = first.startswith("OVERALL: UNVERIFIABLE\ncodex run failed")
+    if other and infra_failure:
+        label += " (infrastructure unavailable; claude-opus fallback, same-family)"
+        notes += "; Codex infrastructure unavailable, same-family fallback"
     v = verdict(final)
     if other and "Audit void" not in final:
-        v = combine(verdict(first), v)
+        v = combine(verdict(first), v, infra_failure=infra_failure)
     sid = _aodd_paths.session_id(tr)
     REPORTS.mkdir(parents=True, exist_ok=True)
     out = REPORTS / f"audit-{date.today()}-{sid}.md"

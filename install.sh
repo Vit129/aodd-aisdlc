@@ -112,6 +112,10 @@ OTHER=""; for a in $FOUND; do case "$a" in claude|codex|agy) ;; *) OTHER="${OTHE
 [ -n "$OTHER" ] && echo "agents  no installer yet for: $OTHER"
 found agy || found codex || echo "warn    no agy or codex CLI: the cross-family audit (scripts/audit.py) will fall back to a Claude auditor"
 [ "$DETECT" = 1 ] && exit 0
+GLOBAL_HOME="${CLAUDE_HOME:-$HOME/.claude}"
+export AODD_GLOBAL_HOME="$GLOBAL_HOME"
+INHERIT_WORKFLOW=0
+[ -n "$PROJECT_ROOT" ] && [ -f "$GLOBAL_HOME/rules/ai-sdlc-workflow.md" ] && INHERIT_WORKFLOW=1
 DEST="${CLAUDE_HOME:-$HOME/.claude}"
 [ -n "$PROJECT_ROOT" ] && DEST="$PROJECT_ROOT/.claude"
 [ "$DRY" = 1 ] && echo "[dry-run] nothing will be written"
@@ -139,6 +143,7 @@ copy_tree() {  # copy_tree <relative dir> [dest root] [source root]: every file 
   local rel="$1" f DEST="${2:-$DEST}" SRC="${3:-$SRC}"
   [ -d "$SRC/$rel" ] || return 0
   while IFS= read -r f; do
+    if [ "$INHERIT_WORKFLOW" = 1 ] && [ "$f" = rules/ai-sdlc-workflow.md ]; then continue; fi
     copy_file "$SRC/$f" "$DEST/$f"
   done < <(cd "$SRC" && find "$rel" -type f ! -name 'test_*.py' ! -name '*.pyc' ! -path '*/__pycache__/*' ! -path '*/git-hooks/*' | sort)
 }
@@ -213,6 +218,26 @@ if has_mod schedules; then
   fi
 fi
 
+# Retire only the explicitly obsolete contracts, preserving the previous contents.
+DEST="$DEST" DRY="$DRY" INHERIT_WORKFLOW="$INHERIT_WORKFLOW" python3 - <<'PYRETIRE'
+import os
+from pathlib import Path
+home = Path(os.environ["DEST"])
+paths = [home / "rules/aodd.md"]
+if os.environ["INHERIT_WORKFLOW"] == "1":
+    paths.append(home / "rules/ai-sdlc-workflow.md")
+for path in paths:
+    if not path.is_file():
+        continue
+    backup = path.with_name(path.name + ".aodd-bak")
+    i = 1
+    while backup.exists():
+        backup = path.with_name(path.name + f".aodd-bak.{i}")
+        i += 1
+    print(f"RETIRE  {path} -> {backup}")
+    if os.environ["DRY"] != "1":
+        path.rename(backup)
+PYRETIRE
 for d in skills agents rules hooks scripts docs; do copy_tree "$d"; done
 for m in $MODS; do copy_module "$m" "$DEST"; done
 
@@ -281,11 +306,29 @@ def registered_args(c, script):
     return tuple(rest.replace('"', " ").split())
 
 
+global_hooks = {}
+if PROJECT:
+    global_settings = Path(os.environ["AODD_GLOBAL_HOME"]) / "settings.json"
+    try:
+        global_hooks = json.loads(global_settings.read_text()).get("hooks", {})
+    except (OSError, ValueError):
+        pass  # A missing or invalid global config cannot replace working project hooks.
 hooks = data.setdefault("hooks", {})
 changed = 0
 for event, matcher, script, args in WANT:
     groups = hooks.setdefault(event, [])
     label = f"{script} {' '.join(args)}".strip()
+    inherited = (Path(os.environ["AODD_GLOBAL_HOME"]) / "hooks" / script).is_file() and any(
+        registered_args(h.get("command", ""), script) == args
+        for g in global_hooks.get(event, []) for h in g.get("hooks", []))
+    if PROJECT and inherited:
+        for group in groups:
+            old = group.get("hooks", [])
+            group["hooks"] = [h for h in old if registered_args(h.get("command", ""), script) != args]
+            changed += len(old) - len(group["hooks"])
+        hooks[event] = [g for g in groups if g.get("hooks")]
+        print(f"hook    {event:<16} {label}: inherited global registration")
+        continue
     mine = [h for g in groups for h in g.get("hooks", []) if registered_args(h.get("command", ""), script) == args]
     if mine:
         old = [h for h in mine if "[ -f" not in h.get("command", "")]   # an older install wrote no guard: upgrade it in place
@@ -406,7 +449,23 @@ if [ "$CODEX_ON" = 1 ]; then
 fi
 if [ -n "$PROJECT_ROOT" ]; then
   # Claude Code loads .claude/rules/ itself; AGENTS.md points other readers (Codex, Antigravity) at that file instead of repeating it
+  if [ "$INHERIT_WORKFLOW" = 1 ]; then
+    if [ "$DRY" = 1 ]; then echo "AGENTS  $PROJECT_ROOT/AGENTS.md: would retire duplicate AODD block"
+    else
+      PROJECT_ROOT="$PROJECT_ROOT" python3 - <<'PYBLOCK'
+import os, re
+from pathlib import Path
+p = Path(os.environ["PROJECT_ROOT"]) / "AGENTS.md"
+if p.is_file():
+    old = p.read_text()
+    new = re.sub(r"<!-- aodd:begin -->.*?<!-- aodd:end -->\n?", "", old, flags=re.S)
+    if new != old:
+        p.write_text(new)
+PYBLOCK
+    fi
+  else
   write_aodd_block "$PROJECT_ROOT/AGENTS.md" "> Managed by aodd-aisdlc (install.sh --project). The rules/, skills/, hooks/, scripts/, agents/ and docs/ paths here live under this repo's .claude/ folder (~/.claude means the same)." 1
+  fi
   CM="$PROJECT_ROOT/CLAUDE.md"   # Claude Code reads CLAUDE.md, so it imports the AGENTS.md contract too
   if [ -f "$CM" ] && grep -qxF '@AGENTS.md' "$CM"; then :
   elif [ "$DRY" = 1 ]; then echo "CLAUDE  $CM <- @AGENTS.md (would add)"

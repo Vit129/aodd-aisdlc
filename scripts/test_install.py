@@ -152,7 +152,7 @@ beta = repo("beta", {".claude/aidlc.json": '{"artifactPath": "agent-memory/plans
 gamma = repo("gamma", {"CLAUDE.md": "# guidelines\n"})
 REPOS = [alpha, beta, gamma]
 flags = [f for r in REPOS for f in ("--project", str(r))]
-LA = {"AODD_LAUNCHAGENTS_DIR": str(T / "la-proj")}
+LA = {"AODD_LAUNCHAGENTS_DIR": str(T / "la-proj"), "CLAUDE_HOME": str(T / "no-global-project-home")}
 global_before = {p: p.read_bytes() for p in (T / "claude").rglob("*") if p.is_file()}
 out = run(*flags, extra=LA)
 assert "skip    schedules and rea" in out and not list((T / "la-proj").glob("*"))
@@ -187,7 +187,7 @@ second = run(*flags, extra=LA)
 assert tree(*REPOS) == snap and ": registered" not in second and "UPDATE" not in second, second
 
 old_block = repo("oldblock", {"AGENTS.md": "# top\n\n<!-- aodd:begin -->\n> old header\n\n" + wf_text + "\n<!-- aodd:end -->\n\n# bottom\n"})
-run("--project", str(old_block), "--core-only")
+run("--project", str(old_block), "--core-only", extra=LA)
 ob = (old_block / "AGENTS.md").read_text()
 assert ob.startswith("# top\n") and ob.endswith("# bottom\n") and ob.count("<!-- aodd:begin -->") == 1 and len(ob.encode()) < 900   # the old inlined block is replaced in place
 assert ".claude/rules/ai-sdlc-workflow.md" in ob and "old header" not in ob
@@ -264,3 +264,22 @@ fresh = W / "guard-fresh"; fresh.mkdir()
 run("--core-only", extra={"CLAUDE_HOME": str(fresh)})
 assert all('[ -f "$f" ] || exit 0' in c for c in hook_cmds(fresh / "settings.json"))
 print("ok - single-rule install checks passed")
+
+# [TS-0102] [BE-IT] a project upgrade retires legacy rules and inherits active global hooks.
+shared = T / "shared-home"
+run("--core-only", "--claude-md", extra={"CLAUDE_HOME": str(shared)})
+upgrade = repo("upgrade", {".claude/rules/aodd.md": "legacy contract\n",
+    ".claude/rules/ai-sdlc-workflow.md": "legacy workflow\n",
+    "AGENTS.md": "# project\n<!-- aodd:begin -->old<!-- aodd:end -->\n"})
+run("--project", str(upgrade), "--core-only", extra={"CLAUDE_HOME": str(T / "absent-home")})
+# First install without a global home registers local hooks; upgrading must remove those too.
+run("--project", str(upgrade), "--core-only", extra={"CLAUDE_HOME": str(shared)})
+assert not (upgrade / ".claude/rules/aodd.md").exists()
+assert not (upgrade / ".claude/rules/ai-sdlc-workflow.md").exists()
+assert (upgrade / ".claude/rules/aodd.md.aodd-bak").read_text() == "legacy contract\n"
+assert "aodd:begin" not in (upgrade / "AGENTS.md").read_text()
+assert not hook_cmds(upgrade / ".claude/settings.json")
+snap = tree(upgrade)
+run("--project", str(upgrade), "--core-only", extra={"CLAUDE_HOME": str(shared)})
+assert tree(upgrade) == snap
+print("ok - global/project cleanup regression")

@@ -1,16 +1,16 @@
-# Graph Report - wt-hooks-never-block  (2026-11-16)
+# Graph Report - aodd-aisdlc  (2026-11-16)
 
 ## Corpus Check
-- 259 files · ~182,639 words
+- 261 files · ~183,611 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2526 nodes · 2768 edges · 258 communities (222 shown, 36 thin omitted)
+- 2533 nodes · 2774 edges · 261 communities (226 shown, 35 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 14 edges (avg confidence: 0.61)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `e449f163`
+- Built from commit: `3a7bb429`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -35,7 +35,7 @@ node's neighbors span, not by raw edge count.
 2. `state()` - bridges 9 areas (14 edges)
 3. `aodd-aisdlc` - bridges 3 areas (14 edges)
 4. `claude_home()` - bridges 3 areas (9 edges)
-5. `Browser Automation with playwright-cli` - bridges 2 areas (16 edges)
+5. `Storage Management` - bridges 3 areas (8 edges)
 6. `main()` - bridges 2 areas (13 edges)
 7. `search()` - bridges 2 areas (10 edges)
 8. `generate_design_system()` - bridges 2 areas (8 edges)
@@ -57,7 +57,7 @@ node's neighbors span, not by raw edge count.
 ## Import Cycles
 - None detected.
 
-## Communities (258 total, 36 thin omitted)
+## Communities (261 total, 35 thin omitted)
 
 ### Community 0 - "_aodd_paths.py"
 Cohesion: 0.18
@@ -76,8 +76,8 @@ Cohesion: 0.05
 Nodes (33): Android application artifacts, Choose the remedy from the observed failure, Codex tool approval is separate from REA readiness, Connection and task recovery, Continue through an installed CLI, Repair registration when needed, Evidence, comparison, and verification workflows, JavaScript and Electron application artifacts (+25 more)
 
 ### Community 4 - "Cookies"
-Cohesion: 0.06
-Nodes (35): Advanced: Multiple Cookies or Custom Options, Advanced: Multiple Operations, Authentication State Reuse, Clear All Cookies, Clear All localStorage, Clear sessionStorage, Common Patterns, Cookies (+27 more)
+Cohesion: 0.12
+Nodes (16): Advanced: Multiple Operations, Authentication State Reuse, Clear All localStorage, Common Patterns, Delete Database, Delete Single Item, Get Single Value, IndexedDB (+8 more)
 
 ### Community 5 - "UX/UI Designer"
 Cohesion: 0.06
@@ -120,8 +120,8 @@ Cohesion: 0.07
 Nodes (28): 10. Dense Information Display, 11. Trust & Stability (Blues), 12. Growth & Success (Greens), 13. Caution & Urgency (Reds/Oranges), 14. Sans-Serif + Monospace Combination, 15. Clear Hierarchy, 16. Readability Over Personality, 17. Consistent Font Weights (+20 more)
 
 ### Community 15 - "Browser Automation with playwright-cli"
-Cohesion: 0.13
-Nodes (15): Attaching screenshots and videos to pull requests, Browser Automation with playwright-cli, Browser Sessions, Example: Debugging with DevTools, Example: Form submission, Example: Interactive session, Example: Multi-tab workflow, Installation (+7 more)
+Cohesion: 0.08
+Nodes (26): Attaching screenshots and videos to pull requests, Browser Automation with playwright-cli, Browser Sessions, Commands, Core, DevTools, Example: Debugging with DevTools, Example: Form submission (+18 more)
 
 ### Community 16 - "Postman → Playwright Migration (AI-Driven)"
 Cohesion: 0.07
@@ -268,7 +268,7 @@ Cohesion: 0.14
 Nodes (13): 0. Enforcement: three levels, no optional tier, 1. Roles (fixed vocabulary), 2.1 Project runner (MAY), 2.2 Release and deployment scaffold (MUST for publishable projects), 2. Root layout (every project), 3. Source layout by size, 4. Dependency direction, 5. Naming (+5 more)
 
 ### Community 52 - "SKILL.md"
-Cohesion: 0.21
+Cohesion: 0.19
 Nodes (4): Examples, Inspecting Element Attributes, Debugging Playwright Tests, Running Playwright Tests
 
 ### Community 53 - "Running Custom Playwright Code"
@@ -420,8 +420,8 @@ Cohesion: 0.18
 Nodes (10): Destructive Actions: Undo > Confirm, Dropdown Positioning, Focus Rings, Form Design, Interaction Design, Keyboard Navigation, Loading States, Modals: The Inert Approach (+2 more)
 
 ### Community 90 - "install.sh"
-Cohesion: 0.33
-Nodes (12): add_mod(), ask(), check_home(), company_path(), copy_file(), copy_module(), copy_tree(), found() (+4 more)
+Cohesion: 0.30
+Nodes (13): add_mod(), AODD_GLOBAL_HOME, ask(), check_home(), company_path(), copy_file(), copy_module(), copy_tree() (+5 more)
 
 ### Community 91 - "Logging Standards — Backend (All Languages)"
 Cohesion: 0.20
@@ -761,7 +761,7 @@ Nodes (5): Design, Interaction principles, Interface model, Preview, Release gat
 
 ### Community 195 - "phase1-interview.md"
 Cohesion: 0.18
-Nodes (6): Codex, Running `codex exec` from an agent, Build the artifact until ready for coding, Interview, Phase 1 — Interview, Phase 3 — QA-Design (scenario + skeleton, RED)
+Nodes (6): done-gate behaviour, How the audit works, Infrastructure failures, Codex, Running `codex exec` from an agent, Phase 3 — QA-Design (scenario + skeleton, RED)
 
 ### Community 199 - "phase3-qa-design.md"
 Cohesion: 0.33
@@ -836,8 +836,8 @@ Cohesion: 0.39
 Nodes (8): cli(), leaks(), main(), opened(), Skill names the session called through the Skill tool, from stream-json output., report(), run(), skills_opened()
 
 ### Community 248 - "codex.md"
-Cohesion: 0.18
-Nodes (11): Commands, Core, DevTools, Keyboard, Mouse, Navigation, Network, Save as (+3 more)
+Cohesion: 0.22
+Nodes (9): Advanced: Multiple Cookies or Custom Options, Clear All Cookies, Cookies, Delete a Cookie, Filter Cookies by Domain, Filter Cookies by Path, Get Specific Cookie, List All Cookies (+1 more)
 
 ### Community 251 - "test_rule_duplicates.py"
 Cohesion: 0.21
@@ -851,14 +851,30 @@ Nodes (3): Companion plugins (optional, installed separately, not copied here), 
 Cohesion: 0.31
 Nodes (7): state(), _codex_meta(), decide(), main(), (is_codex, is_subagent) from a Codex rollout's first record; Claude transcripts, _size(), call()
 
+### Community 254 - "audit.md"
+Cohesion: 0.33
+Nodes (6): Clear sessionStorage, Delete Single Item, Get Single Value, List All sessionStorage Items, Session Storage, Set Value
+
 ### Community 255 - "Optional modules"
 Cohesion: 0.67
 Nodes (3): Hooks advise; the hard-safety set denies, Optional modules, Schedules
 
+### Community 258 - "Q: install.sh project hooks audit combine"
+Cohesion: 0.50
+Nodes (3): Answer, Outcome, Q: install.sh project hooks audit combine
+
+### Community 259 - "Phase 1 — Interview"
+Cohesion: 0.50
+Nodes (3): Build the artifact until ready for coding, Interview, Phase 1 — Interview
+
+### Community 260 - "Storage State"
+Cohesion: 0.50
+Nodes (4): Restore Storage State, Save Storage State, Storage State, Storage State File Format
+
 ## Knowledge Gaps
-- **1423 isolated node(s):** `name`, `pull_request`, `push`, `contents`, `check` (+1418 more)
+- **1427 isolated node(s):** `name`, `pull_request`, `push`, `contents`, `check` (+1422 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **36 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **35 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 - **15 possibly unreachable function(s):** `_size()`, `ask_model()`, `docs_only()`, `git()`, `housekeeping_scan()` (+10 more)
   Not reached from any recognized entry point - could be dead code, or dynamically dispatched/decorator-registered.
 
@@ -867,15 +883,15 @@ _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `log()` connect `AODD: the operating contract` to `BM25`?**
   _High betweenness centrality (0.004) - this node is a cross-community bridge._
+- **Why does `Tracing` connect `Tracing` to `SKILL.md`?**
+  _High betweenness centrality (0.002) - this node is a cross-community bridge._
+- **Why does `Storage Management` connect `Cookies` to `codex.md`, `Storage State`, `audit.md`?**
+  _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **What connects `name`, `pull_request`, `push` to the rest of the system?**
-  _1541 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1545 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Fix Generated Playwright Files (Postman Migration)` be split into smaller, more focused modules?**
   _Cohesion score 0.041666666666666664 - nodes in this community are weakly interconnected._
 - **Should `Changelog` be split into smaller, more focused modules?**
   _Cohesion score 0.13333333333333333 - nodes in this community are weakly interconnected._
 - **Should `SKILL.md` be split into smaller, more focused modules?**
   _Cohesion score 0.05128205128205128 - nodes in this community are weakly interconnected._
-- **Should `Cookies` be split into smaller, more focused modules?**
-  _Cohesion score 0.05555555555555555 - nodes in this community are weakly interconnected._
-- **Should `UX/UI Designer` be split into smaller, more focused modules?**
-  _Cohesion score 0.0625 - nodes in this community are weakly interconnected._

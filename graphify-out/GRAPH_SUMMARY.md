@@ -1,15 +1,15 @@
-# Graph Summary — wt-hooks-never-block
+# Graph Summary — aodd-aisdlc
 _Auto-generated from GRAPH_REPORT.md · do not edit manually_
 _Regen: `graphify update .`_
 
 ## Summary
-- 2526 nodes · 2768 edges · 258 communities (222 shown, 36 thin omitted)
+- 2533 nodes · 2774 edges · 261 communities (226 shown, 35 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 14 edges (avg confidence: 0.61)
 - Token cost: 0 input · 0 output
 
 
 ## Graph Freshness
-- Built from commit: `e449f163`
+- Built from commit: `3a7bb429`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -36,7 +36,7 @@ node's neighbors span, not by raw edge count.
 2. `state()` - bridges 9 areas (14 edges)
 3. `aodd-aisdlc` - bridges 3 areas (14 edges)
 4. `claude_home()` - bridges 3 areas (9 edges)
-5. `Browser Automation with playwright-cli` - bridges 2 areas (16 edges)
+5. `Storage Management` - bridges 3 areas (8 edges)
 6. `main()` - bridges 2 areas (13 edges)
 7. `search()` - bridges 2 areas (10 edges)
 8. `generate_design_system()` - bridges 2 areas (8 edges)

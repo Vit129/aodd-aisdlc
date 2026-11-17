@@ -57,6 +57,26 @@ assert a.combine("PASS", "FAIL") == "FAIL"                          # verifier f
 assert a.combine("FAIL", "PASS") == "DISPUTED"                      # Claude may not clear codex's FAIL alone
 assert a.combine("UNVERIFIABLE", "PASS") == "UNVERIFIABLE"
 
+# [TS-0104] [BE-UT] Codex may write test outputs only in an isolated scratch root.
+from unittest.mock import patch
+seen = {}
+def fake_run(cmd, **kwargs):
+    seen.update(cmd=cmd, env=kwargs["env"], prompt=kwargs["input"])
+    scratch = Path(cmd[cmd.index("-C") + 1])
+    assert scratch.is_dir() and scratch != Path(".").resolve()
+    assert kwargs["env"]["TMPDIR"] == str(scratch)
+    return subprocess.CompletedProcess(cmd, 0, stdout="OVERALL: PASS", stderr="")
+with patch.object(a.subprocess, "run", fake_run):
+    assert a.run_model("codex", "check", Path(".")) == "OVERALL: PASS"
+assert seen["cmd"][seen["cmd"].index("-s") + 1] == "workspace-write"
+assert not Path(seen["env"]["TMPDIR"]).exists()
+assert str(Path(".").resolve()) in seen["prompt"]
+
+# [TS-0101] [BE-UT] infrastructure failure can fall back without clearing a real failed audit.
+assert a.combine("UNVERIFIABLE", "PASS", infra_failure=True) == "PASS"
+assert a.combine("UNVERIFIABLE", "FAIL", infra_failure=True) == "FAIL"
+assert a.combine("FAIL", "PASS", infra_failure=True) == "DISPUTED"
+
 # end to end with stub models: codex audits, opus verifies and overturns; repo change voids the audit
 repo = d / "r"; repo.mkdir()
 g = lambda *c: subprocess.run(["git", "-C", str(repo), *c], capture_output=True)
@@ -119,6 +139,12 @@ assert a.main(["--transcript", str(tr), "--repo", str(repo), "--confirmed"]) == 
 assert calls == ["codex", "claude-opus"]
 rep = next(a.REPORTS.glob("audit-*-s.md")).read_text()
 assert "verdict: DISPUTED" in rep and "auditor: codex" in rep and "verifier: claude-opus" in rep and "codex's original audit" in rep
+# [TS-0103] [BE-IT] infrastructure fallback is labelled and preserves the original error.
+a.run_model = lambda who, prompt, r: ("OVERALL: UNVERIFIABLE\ncodex run failed (exit 1): EPERM" if who == "codex" else "OVERALL: PASS")
+assert a.main(["--transcript", str(tr), "--repo", str(repo), "--confirmed"]) == 0
+rep = next(a.REPORTS.glob("audit-*-s.md")).read_text()
+assert "verdict: PASS" in rep and "same-family" in rep and "EPERM" in rep
+
 # a codex worker is audited by Opus alone (no verifier step)
 tr.write_text("\n".join(map(json.dumps, crows)))
 calls.clear()

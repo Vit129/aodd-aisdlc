@@ -37,7 +37,7 @@ with tempfile.TemporaryDirectory() as home:
         ("Project", "demo"), ("Repo", str(repo)), ("What", ".claude/skills/x/SKILL.md"),
         ("Analysis", "root cause A, recurs on B, global because C"), ("Code", "src/a.py:10"),
         ("Test", "pytest -> 1 failed"), ("Fix", "guard the None case"), ("Verified", "pytest -> 3 passed"),
-        ("Commit", sha), ("Proposed change", "+ add pitfall line")])
+        ("Prevention", "pytest test_x.py guards the None case"), ("Commit", sha), ("Proposed change", "+ add pitfall line")])
     (reports / "agy-proposal-2026-10-20-x.md").write_text(good)
     assert "agy-proposal-2026-10-20-x.md" in run() and "agy-proposal-2026-10-20-x.md" in run()  # with evidence: shown until decided
     assert "agy-proposal" not in run(proj)               # ...but only in the workspace

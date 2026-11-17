@@ -2,7 +2,7 @@
 """Reject an agy-proposal that lacks evidence, before it reaches the CEO.
 
 Every proposal must carry the analysis and the full evidence chain from the session that produced it:
-Project, Repo, What, Analysis, Code, Test, Fix, Verified, Commit, Proposed change. Checked mechanically:
+Project, Repo, What, Analysis, Code, Test, Fix, Verified, Prevention, Commit, Proposed change. Checked mechanically:
 each field present and non-trivial; What targets ~/.claude (project lessons belong in that project's
 AGENTS.md); Repo is a git repo and Commit exists in it; Test and Verified are not the same text.
 Known limit: this proves the evidence is present and the commit is real, not that the output is honest;
@@ -15,7 +15,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-FIELDS = ["Project", "Repo", "What", "Analysis", "Code", "Test", "Fix", "Verified", "Commit", "Proposed change"]
+FIELDS = ["Project", "Repo", "What", "Analysis", "Code", "Test", "Fix", "Verified", "Prevention", "Commit", "Proposed change"]
 FIELD = re.compile(r"^\s*-\s*\*\*(%s):\*\*" % "|".join(map(re.escape, FIELDS)), re.M)
 HASH = re.compile(r"\b[0-9a-f]{7,40}\b")
 MIN_LEN = 8  # shorter than this is a placeholder ("TBD", "n/a", "yes")

@@ -16,6 +16,8 @@ Pre-merge gate: once all tests confirm GREEN, run `/code-review` (or any review 
 - **Standards Axis**: conforms to the project's coding standards
 - **Spec Axis**: faithfully implements the originating spec produced in Phase 1
 
+**UI and flow evidence:** a change that touches a UI or a user flow attaches a screenshot or video of the affected screens (for example `playwright-cli` video or screenshot) to the verification record or PR, not text alone.
+
 **Traceability table** (before sign-off, in the progress file): one row per Phase 1 requirement and Phase 2 NFR → the test(s) that cover it → result. A requirement with no test is a gap: add the test or record why not. The auditor checks against this table.
 
 **Release or deploy after this feature:** satisfy the release gate in `rules/coding/release.md`

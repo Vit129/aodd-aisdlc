@@ -1,15 +1,15 @@
-# Graph Summary — aodd-aisdlc
+# Graph Summary — prevention-field
 _Auto-generated from GRAPH_REPORT.md · do not edit manually_
 _Regen: `graphify update .`_
 
 ## Summary
-- 2536 nodes · 2777 edges · 260 communities (226 shown, 34 thin omitted)
+- 2532 nodes · 2774 edges · 259 communities (225 shown, 34 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 14 edges (avg confidence: 0.61)
 - Token cost: 0 input · 0 output
 
 
 ## Graph Freshness
-- Built from commit: `b7bffced`
+- Built from commit: `684a6903`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -36,11 +36,11 @@ node's neighbors span, not by raw edge count.
 2. `state()` - bridges 9 areas (14 edges)
 3. `aodd-aisdlc` - bridges 3 areas (14 edges)
 4. `claude_home()` - bridges 3 areas (9 edges)
-5. `Test generation (plan → generate → heal)` - bridges 3 areas (6 edges)
-6. `main()` - bridges 2 areas (13 edges)
-7. `search()` - bridges 2 areas (10 edges)
-8. `generate_design_system()` - bridges 2 areas (8 edges)
-9. `session_id()` - bridges 2 areas (6 edges)
+5. `search()` - bridges 2 areas (10 edges)
+6. `Browser Session Management` - bridges 2 areas (10 edges)
+7. `generate_design_system()` - bridges 2 areas (8 edges)
+8. `session_id()` - bridges 2 areas (6 edges)
+9. `_resolve_color_mode()` - bridges 2 areas (5 edges)
 
 ## Surprising Connections (you probably didn't know these)
 - `write_report()` --calls--> `reports()`  [EXTRACTED]
@@ -49,10 +49,10 @@ node's neighbors span, not by raw edge count.
   optional/agent-memory/hooks/memory-recall.py → hooks/_aodd_paths.py
 - `first_time()` --calls--> `state()`  [EXTRACTED]
   optional/agent-memory/hooks/memory-write-scan.py → hooks/_aodd_paths.py
-- `main()` --calls--> `state()`  [EXTRACTED]
-  optional/agent-memory/hooks/session-start-recent.py → hooks/_aodd_paths.py
 - `housekeeping_scan()` --calls--> `state()`  [EXTRACTED]
   optional/schedules/scripts/aodd_job.py → hooks/_aodd_paths.py
+- `main()` --calls--> `state()`  [EXTRACTED]
+  optional/schedules/scripts/install-schedules.py → hooks/_aodd_paths.py
 
 
 _Full map → GRAPH_REPORT.md · query: `graphify query "..."`_

@@ -15,6 +15,7 @@ evidence fields below; `scripts/check_agy_proposal.py` auto-rejects one without 
 - **Test:** <command + failing output before the fix>
 - **Fix:** <what changed>
 - **Verified:** <the same command re-run after the fix, passing; must differ from Test>
+- **Prevention:** <the lint/test/type check that stops a repeat, or why there is none>
 - **Commit:** <hash that exists in Repo>
 - **Proposed change:** <diff or exact text>
 ```

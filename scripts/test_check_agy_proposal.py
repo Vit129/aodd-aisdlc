@@ -22,6 +22,7 @@ good = f"""# agy-proposal: x
 - **Test:** `python3 t.py` -> AssertionError line 4
 - **Fix:** set GIT_CONFIG_GLOBAL in the test env
 - **Verified:** `python3 t.py` -> ok (exit 0)
+- **Prevention:** a guard test in t.py that fails on the old pattern
 - **Commit:** {sha}
 - **Proposed change:**
   ```diff
@@ -32,6 +33,7 @@ assert c.problems(good) == [], c.problems(good)
 assert any("Analysis" in p for p in c.problems(good.replace("- **Analysis:** root cause is X; recurs whenever Y; belongs in ~/.claude because every repo does Y\n", "")))
 assert any("Commit" in p for p in c.problems(good.replace(sha, "deadbee")))               # hash must exist
 assert any("hash" in p for p in c.problems(good.replace(f"- **Commit:** {sha}", "- **Commit:** pushed it")))
+assert any("Prevention" in p for p in c.problems(good.replace("- **Prevention:** a guard test in t.py that fails on the old pattern\n", "")))  # required
 assert any("AGENTS.md" in p for p in c.problems(good.replace("~/.claude/skills/git-safety/SKILL.md", "src/app.js")))
 assert any("not a git repo" in p for p in c.problems(good.replace(str(repo), "/nonexistent")))
 same = good.replace("`python3 t.py` -> ok (exit 0)", "`python3 t.py` -> AssertionError line 4")

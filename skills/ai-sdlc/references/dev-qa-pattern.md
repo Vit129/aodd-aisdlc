@@ -62,6 +62,8 @@ To prevent calculation drift, missing translations, and visual styling erosion, 
 4. **Presentation UI (`ui/`, `components/`):** Visual assembly & event dispatching (delegates math to Core, styling to Tokens, labels to Translator).
 5. **QA Architecture Guard (`tests/architectureGuard.test.*`):** Automated static/regex assertions running in CI/Vitest that fail immediately if any layer boundary is breached.
 
+A bug that recurs gets a guard, not a reminder in prose: add a lint rule, guard test or type check that fails on the old pattern. Its error message names the root-cause fix (for example "use the core helper, do not inline the formula"), so the next agent fixes the cause instead of working around it.
+
 ---
 
 ## 3. Dev Implementation Invariants & Rules

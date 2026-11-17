@@ -496,7 +496,7 @@
       "end_line": 37,
       "_origin": "ast",
       "id": "hooks_aodd_paths_state",
-      "community": 253,
+      "community": 0,
       "norm_label": "state()"
     },
     {
@@ -2022,7 +2022,7 @@
       "end_line": 93,
       "_origin": "ast",
       "id": "hooks_test_delegation_nudge",
-      "community": 253,
+      "community": 0,
       "norm_label": "test_delegation_nudge.py"
     },
     {
@@ -2033,7 +2033,7 @@
       "end_line": 13,
       "_origin": "ast",
       "id": "hooks_test_delegation_nudge_call",
-      "community": 253,
+      "community": 0,
       "norm_label": "call()"
     },
     {
@@ -4604,7 +4604,7 @@
       "file_type": "code",
       "source_file": "scripts/test_check_agy_proposal.py",
       "source_location": "L1",
-      "end_line": 42,
+      "end_line": 44,
       "_origin": "ast",
       "id": "scripts_test_check_agy_proposal",
       "community": 221,
@@ -7601,7 +7601,7 @@
       "label": "When to learn (any one signal is enough)",
       "file_type": "document",
       "source_file": "docs/skill-learning.md",
-      "source_location": "L25",
+      "source_location": "L26",
       "_origin": "ast",
       "id": "docs_skill_learning_when_to_learn_any_one_signal_is_enough",
       "community": 199,
@@ -7611,7 +7611,7 @@
       "label": "Where to write it (first rung that fits \u2014 Hermes order)",
       "file_type": "document",
       "source_file": "docs/skill-learning.md",
-      "source_location": "L33",
+      "source_location": "L34",
       "_origin": "ast",
       "id": "docs_skill_learning_where_to_write_it_first_rung_that_fits_hermes_order",
       "community": 199,
@@ -7621,7 +7621,7 @@
       "label": "How to write it",
       "file_type": "document",
       "source_file": "docs/skill-learning.md",
-      "source_location": "L49",
+      "source_location": "L50",
       "_origin": "ast",
       "id": "docs_skill_learning_how_to_write_it",
       "community": 199,
@@ -7631,58 +7631,11 @@
       "label": "Curation",
       "file_type": "document",
       "source_file": "docs/skill-learning.md",
-      "source_location": "L72",
+      "source_location": "L73",
       "_origin": "ast",
       "id": "docs_skill_learning_curation",
       "community": 199,
       "norm_label": "curation"
-    },
-    {
-      "label": "query_20261116_133146_install_sh_project_hooks_audit_combine.md",
-      "file_type": "document",
-      "source_file": "graphify-out/memory/query_20261116_133146_install_sh_project_hooks_audit_combine.md",
-      "source_location": "L1",
-      "frontmatter": {
-        "type": "query",
-        "date": "2026-11-16T13:31:46.534353+00:00",
-        "question": "install.sh project hooks audit combine",
-        "contributor": "graphify",
-        "outcome": "useful"
-      },
-      "_origin": "ast",
-      "id": "graphify_out_memory_query_20261116_133146_install_sh_project_hooks_audit_combine",
-      "community": 258,
-      "norm_label": "query_20261116_133146_install_sh_project_hooks_audit_combine.md"
-    },
-    {
-      "label": "Q: install.sh project hooks audit combine",
-      "file_type": "document",
-      "source_file": "graphify-out/memory/query_20261116_133146_install_sh_project_hooks_audit_combine.md",
-      "source_location": "L9",
-      "_origin": "ast",
-      "id": "graphify_out_memory_query_20261116_133146_install_sh_project_hooks_audit_combine_q_install_sh_project_hooks_audit_combine",
-      "community": 258,
-      "norm_label": "q: install.sh project hooks audit combine"
-    },
-    {
-      "label": "Answer",
-      "file_type": "document",
-      "source_file": "graphify-out/memory/query_20261116_133146_install_sh_project_hooks_audit_combine.md",
-      "source_location": "L11",
-      "_origin": "ast",
-      "id": "graphify_out_memory_query_20261116_133146_install_sh_project_hooks_audit_combine_answer",
-      "community": 258,
-      "norm_label": "answer"
-    },
-    {
-      "label": "Outcome",
-      "file_type": "document",
-      "source_file": "graphify-out/memory/query_20261116_133146_install_sh_project_hooks_audit_combine.md",
-      "source_location": "L15",
-      "_origin": "ast",
-      "id": "graphify_out_memory_query_20261116_133146_install_sh_project_hooks_audit_combine_outcome",
-      "community": 258,
-      "norm_label": "outcome"
     },
     {
       "label": "SKILL.md",
@@ -7692,6 +7645,7 @@
       "frontmatter": {
         "name": "agent-memory",
         "description": ">",
+        "Agent memory setup": "bootstrap agent memory\", \"setup memory\", \"\u0e2a\u0e23\u0e49\u0e32\u0e07 agent memory\", \"reset memory\", \"memory template\", \"initialize memory files\"; also the memory file structure, session flow and knowledge capture, for coding and non-coding tasks.",
         "version": "4.0.1"
       },
       "_origin": "ast",
@@ -7703,7 +7657,7 @@
       "label": "Agent Memory",
       "file_type": "document",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L13",
+      "source_location": "L8",
       "_origin": "ast",
       "id": "optional_agent_memory_skills_agent_memory_skill_agent_memory",
       "community": 68,
@@ -7713,7 +7667,7 @@
       "label": "Memory structure",
       "file_type": "document",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L18",
+      "source_location": "L13",
       "_origin": "ast",
       "id": "optional_agent_memory_skills_agent_memory_skill_memory_structure",
       "community": 68,
@@ -7723,7 +7677,7 @@
       "label": "Bootstrap",
       "file_type": "document",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L31",
+      "source_location": "L26",
       "_origin": "ast",
       "id": "optional_agent_memory_skills_agent_memory_skill_bootstrap",
       "community": 68,
@@ -7733,7 +7687,7 @@
       "label": "When to load each reference",
       "file_type": "document",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L42",
+      "source_location": "L37",
       "_origin": "ast",
       "id": "optional_agent_memory_skills_agent_memory_skill_when_to_load_each_reference",
       "community": 68,
@@ -7743,7 +7697,7 @@
       "label": "Knowledge capture",
       "file_type": "document",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L51",
+      "source_location": "L46",
       "_origin": "ast",
       "id": "optional_agent_memory_skills_agent_memory_skill_knowledge_capture",
       "community": 68,
@@ -7753,7 +7707,7 @@
       "label": "Promotion flow",
       "file_type": "document",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L57",
+      "source_location": "L52",
       "_origin": "ast",
       "id": "optional_agent_memory_skills_agent_memory_skill_promotion_flow",
       "community": 68,
@@ -7763,7 +7717,7 @@
       "label": "Rules",
       "file_type": "document",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L64",
+      "source_location": "L59",
       "_origin": "ast",
       "id": "optional_agent_memory_skills_agent_memory_skill_rules",
       "community": 68,
@@ -7773,7 +7727,7 @@
       "label": "Session search",
       "file_type": "document",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L74",
+      "source_location": "L69",
       "_origin": "ast",
       "id": "optional_agent_memory_skills_agent_memory_skill_session_search",
       "community": 68,
@@ -7783,7 +7737,7 @@
       "label": "Context compression",
       "file_type": "document",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L84",
+      "source_location": "L79",
       "_origin": "ast",
       "id": "optional_agent_memory_skills_agent_memory_skill_context_compression",
       "community": 68,
@@ -7793,7 +7747,7 @@
       "label": "Verification",
       "file_type": "document",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L88",
+      "source_location": "L83",
       "_origin": "ast",
       "id": "optional_agent_memory_skills_agent_memory_skill_verification",
       "community": 68,
@@ -7803,7 +7757,7 @@
       "label": "Self-update",
       "file_type": "document",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L93",
+      "source_location": "L88",
       "_origin": "ast",
       "id": "optional_agent_memory_skills_agent_memory_skill_self_update",
       "community": 68,
@@ -10780,7 +10734,7 @@
       "label": "3. Dev Implementation Invariants & Rules",
       "file_type": "document",
       "source_file": "skills/ai-sdlc/references/dev-qa-pattern.md",
-      "source_location": "L67",
+      "source_location": "L69",
       "_origin": "ast",
       "id": "skills_ai_sdlc_references_dev_qa_pattern_3_dev_implementation_invariants_rules",
       "community": 105,
@@ -10790,7 +10744,7 @@
       "label": "4. QA Verification Pattern \u2014 Dual-Layer Testing",
       "file_type": "document",
       "source_file": "skills/ai-sdlc/references/dev-qa-pattern.md",
-      "source_location": "L89",
+      "source_location": "L91",
       "_origin": "ast",
       "id": "skills_ai_sdlc_references_dev_qa_pattern_4_qa_verification_pattern_dual_layer_testing",
       "community": 105,
@@ -10800,7 +10754,7 @@
       "label": "5. Continuous Architecture Guard (Automated Static Invariants)",
       "file_type": "document",
       "source_file": "skills/ai-sdlc/references/dev-qa-pattern.md",
-      "source_location": "L124",
+      "source_location": "L126",
       "_origin": "ast",
       "id": "skills_ai_sdlc_references_dev_qa_pattern_5_continuous_architecture_guard_automated_static_invariants",
       "community": 105,
@@ -10810,7 +10764,7 @@
       "label": "6. Anti-Patterns & Traps",
       "file_type": "document",
       "source_file": "skills/ai-sdlc/references/dev-qa-pattern.md",
-      "source_location": "L190",
+      "source_location": "L192",
       "_origin": "ast",
       "id": "skills_ai_sdlc_references_dev_qa_pattern_6_anti_patterns_traps",
       "community": 105,
@@ -10820,7 +10774,7 @@
       "label": "7. Definition of Done Checklist (Dev & QA)",
       "file_type": "document",
       "source_file": "skills/ai-sdlc/references/dev-qa-pattern.md",
-      "source_location": "L203",
+      "source_location": "L205",
       "_origin": "ast",
       "id": "skills_ai_sdlc_references_dev_qa_pattern_7_definition_of_done_checklist_dev_qa",
       "community": 105,
@@ -15075,7 +15029,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_request_mocking",
-      "community": 122,
+      "community": 52,
       "norm_label": "request-mocking.md"
     },
     {
@@ -15475,7 +15429,7 @@
       "source_location": "L195",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_session_management_best_practices",
-      "community": 40,
+      "community": 243,
       "norm_label": "best practices"
     },
     {
@@ -15485,7 +15439,7 @@
       "source_location": "L197",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_session_management_1_name_browser_sessions_semantically",
-      "community": 40,
+      "community": 243,
       "norm_label": "1. name browser sessions semantically"
     },
     {
@@ -15495,7 +15449,7 @@
       "source_location": "L208",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_session_management_2_always_clean_up",
-      "community": 40,
+      "community": 243,
       "norm_label": "2. always clean up"
     },
     {
@@ -15505,7 +15459,7 @@
       "source_location": "L222",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_session_management_3_delete_stale_browser_data",
-      "community": 40,
+      "community": 243,
       "norm_label": "3. delete stale browser data"
     },
     {
@@ -15945,7 +15899,7 @@
       "source_location": "L142",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_1_planning",
-      "community": 243,
+      "community": 21,
       "norm_label": "1. planning"
     },
     {
@@ -15955,7 +15909,7 @@
       "source_location": "L146",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_1_1_prerequisite_workspace",
-      "community": 243,
+      "community": 21,
       "norm_label": "1.1 prerequisite: workspace"
     },
     {
@@ -15965,7 +15919,7 @@
       "source_location": "L162",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_1_2_prerequisite_seed_test",
-      "community": 243,
+      "community": 21,
       "norm_label": "1.2 prerequisite: seed test"
     },
     {
@@ -15975,7 +15929,7 @@
       "source_location": "L203",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_1_3_explore_the_app",
-      "community": 243,
+      "community": 21,
       "norm_label": "1.3 explore the app"
     },
     {
@@ -15985,7 +15939,7 @@
       "source_location": "L234",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_1_4_write_the_spec_file",
-      "community": 243,
+      "community": 21,
       "norm_label": "1.4 write the spec file"
     },
     {
@@ -15995,7 +15949,7 @@
       "source_location": "L281",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_2_generate",
-      "community": 244,
+      "community": 21,
       "norm_label": "2. generate"
     },
     {
@@ -16005,7 +15959,7 @@
       "source_location": "L285",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_2_1_inputs",
-      "community": 244,
+      "community": 21,
       "norm_label": "2.1 inputs"
     },
     {
@@ -16015,7 +15969,7 @@
       "source_location": "L291",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_2_2_generate_one_scenario",
-      "community": 244,
+      "community": 21,
       "norm_label": "2.2 generate one scenario"
     },
     {
@@ -16025,7 +15979,7 @@
       "source_location": "L350",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_2_3_generate_multiple_scenarios",
-      "community": 244,
+      "community": 21,
       "norm_label": "2.3 generate multiple scenarios"
     },
     {
@@ -16035,7 +15989,7 @@
       "source_location": "L354",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_test_generation_2_4_run_generated_tests",
-      "community": 244,
+      "community": 21,
       "norm_label": "2.4 run generated tests"
     },
     {
@@ -16145,7 +16099,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_trace_output_files",
-      "community": 54,
+      "community": 244,
       "norm_label": "trace output files"
     },
     {
@@ -16155,7 +16109,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_trace_timestamp_trace",
-      "community": 54,
+      "community": 244,
       "norm_label": "`trace-{timestamp}.trace`"
     },
     {
@@ -16165,7 +16119,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_trace_timestamp_network",
-      "community": 54,
+      "community": 244,
       "norm_label": "`trace-{timestamp}.network`"
     },
     {
@@ -16175,7 +16129,7 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "skills_playwright_cli_references_tracing_resources",
-      "community": 54,
+      "community": 244,
       "norm_label": "`resources/`"
     },
     {
@@ -38483,7 +38437,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/skill-learning.md",
-      "source_location": "L72",
+      "source_location": "L73",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_skill_learning_skill_learning_how_an_agent_improves_its_own_skills",
@@ -38494,7 +38448,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/skill-learning.md",
-      "source_location": "L49",
+      "source_location": "L50",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_skill_learning_skill_learning_how_an_agent_improves_its_own_skills",
@@ -38505,7 +38459,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/skill-learning.md",
-      "source_location": "L25",
+      "source_location": "L26",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_skill_learning_skill_learning_how_an_agent_improves_its_own_skills",
@@ -38516,7 +38470,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/skill-learning.md",
-      "source_location": "L33",
+      "source_location": "L34",
       "weight": 1.0,
       "_origin": "ast",
       "source": "docs_skill_learning_skill_learning_how_an_agent_improves_its_own_skills",
@@ -38526,41 +38480,8 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "graphify-out/memory/query_20261116_133146_install_sh_project_hooks_audit_combine.md",
-      "source_location": "L9",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "graphify_out_memory_query_20261116_133146_install_sh_project_hooks_audit_combine",
-      "target": "graphify_out_memory_query_20261116_133146_install_sh_project_hooks_audit_combine_q_install_sh_project_hooks_audit_combine",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "graphify-out/memory/query_20261116_133146_install_sh_project_hooks_audit_combine.md",
-      "source_location": "L11",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "graphify_out_memory_query_20261116_133146_install_sh_project_hooks_audit_combine_q_install_sh_project_hooks_audit_combine",
-      "target": "graphify_out_memory_query_20261116_133146_install_sh_project_hooks_audit_combine_answer",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "graphify-out/memory/query_20261116_133146_install_sh_project_hooks_audit_combine.md",
-      "source_location": "L15",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "graphify_out_memory_query_20261116_133146_install_sh_project_hooks_audit_combine_q_install_sh_project_hooks_audit_combine",
-      "target": "graphify_out_memory_query_20261116_133146_install_sh_project_hooks_audit_combine_outcome",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L13",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "optional_agent_memory_skills_agent_memory_skill",
@@ -38571,7 +38492,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L31",
+      "source_location": "L26",
       "weight": 1.0,
       "_origin": "ast",
       "source": "optional_agent_memory_skills_agent_memory_skill_agent_memory",
@@ -38582,7 +38503,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L84",
+      "source_location": "L79",
       "weight": 1.0,
       "_origin": "ast",
       "source": "optional_agent_memory_skills_agent_memory_skill_agent_memory",
@@ -38593,7 +38514,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L51",
+      "source_location": "L46",
       "weight": 1.0,
       "_origin": "ast",
       "source": "optional_agent_memory_skills_agent_memory_skill_agent_memory",
@@ -38604,7 +38525,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L18",
+      "source_location": "L13",
       "weight": 1.0,
       "_origin": "ast",
       "source": "optional_agent_memory_skills_agent_memory_skill_agent_memory",
@@ -38615,7 +38536,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L64",
+      "source_location": "L59",
       "weight": 1.0,
       "_origin": "ast",
       "source": "optional_agent_memory_skills_agent_memory_skill_agent_memory",
@@ -38626,7 +38547,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L93",
+      "source_location": "L88",
       "weight": 1.0,
       "_origin": "ast",
       "source": "optional_agent_memory_skills_agent_memory_skill_agent_memory",
@@ -38637,7 +38558,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L74",
+      "source_location": "L69",
       "weight": 1.0,
       "_origin": "ast",
       "source": "optional_agent_memory_skills_agent_memory_skill_agent_memory",
@@ -38648,7 +38569,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L88",
+      "source_location": "L83",
       "weight": 1.0,
       "_origin": "ast",
       "source": "optional_agent_memory_skills_agent_memory_skill_agent_memory",
@@ -38659,7 +38580,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L42",
+      "source_location": "L37",
       "weight": 1.0,
       "_origin": "ast",
       "source": "optional_agent_memory_skills_agent_memory_skill_agent_memory",
@@ -38670,7 +38591,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "optional/agent-memory/skills/agent-memory/SKILL.md",
-      "source_location": "L57",
+      "source_location": "L52",
       "weight": 1.0,
       "_origin": "ast",
       "source": "optional_agent_memory_skills_agent_memory_skill_knowledge_capture",
@@ -41464,7 +41385,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "skills/ai-sdlc/references/dev-qa-pattern.md",
-      "source_location": "L67",
+      "source_location": "L69",
       "weight": 1.0,
       "_origin": "ast",
       "source": "skills_ai_sdlc_references_dev_qa_pattern_dev_qa_pattern_unified_architectural_testing_standard",
@@ -41475,7 +41396,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "skills/ai-sdlc/references/dev-qa-pattern.md",
-      "source_location": "L89",
+      "source_location": "L91",
       "weight": 1.0,
       "_origin": "ast",
       "source": "skills_ai_sdlc_references_dev_qa_pattern_dev_qa_pattern_unified_architectural_testing_standard",
@@ -41486,7 +41407,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "skills/ai-sdlc/references/dev-qa-pattern.md",
-      "source_location": "L124",
+      "source_location": "L126",
       "weight": 1.0,
       "_origin": "ast",
       "source": "skills_ai_sdlc_references_dev_qa_pattern_dev_qa_pattern_unified_architectural_testing_standard",
@@ -41497,7 +41418,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "skills/ai-sdlc/references/dev-qa-pattern.md",
-      "source_location": "L190",
+      "source_location": "L192",
       "weight": 1.0,
       "_origin": "ast",
       "source": "skills_ai_sdlc_references_dev_qa_pattern_dev_qa_pattern_unified_architectural_testing_standard",
@@ -41508,7 +41429,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "skills/ai-sdlc/references/dev-qa-pattern.md",
-      "source_location": "L203",
+      "source_location": "L205",
       "weight": 1.0,
       "_origin": "ast",
       "source": "skills_ai_sdlc_references_dev_qa_pattern_dev_qa_pattern_unified_architectural_testing_standard",
@@ -57038,5 +56959,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "b7bffcedabad2cf02ce1f24dc604c2fb0175bd13"
+  "built_at_commit": "684a690397fcf5c38a99102e79f241274ab24e32"
 }

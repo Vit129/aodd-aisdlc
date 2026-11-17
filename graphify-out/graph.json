@@ -496,7 +496,7 @@
       "end_line": 37,
       "_origin": "ast",
       "id": "hooks_aodd_paths_state",
-      "community": 0,
+      "community": 253,
       "norm_label": "state()"
     },
     {
@@ -2022,7 +2022,7 @@
       "end_line": 93,
       "_origin": "ast",
       "id": "hooks_test_delegation_nudge",
-      "community": 0,
+      "community": 253,
       "norm_label": "test_delegation_nudge.py"
     },
     {
@@ -2033,7 +2033,7 @@
       "end_line": 13,
       "_origin": "ast",
       "id": "hooks_test_delegation_nudge_call",
-      "community": 0,
+      "community": 253,
       "norm_label": "call()"
     },
     {
@@ -2153,6 +2153,39 @@
       "id": "hooks_test_graphify_guard_rationale_45",
       "community": 181,
       "norm_label": "a pretooluse result that only adds context: never a permission decision."
+    },
+    {
+      "label": "test_provider_payloads.py",
+      "file_type": "code",
+      "source_file": "hooks/test_provider_payloads.py",
+      "source_location": "L1",
+      "end_line": 49,
+      "_origin": "ast",
+      "id": "hooks_test_provider_payloads",
+      "community": 258,
+      "norm_label": "test_provider_payloads.py"
+    },
+    {
+      "label": "run()",
+      "file_type": "code",
+      "source_file": "hooks/test_provider_payloads.py",
+      "source_location": "L16",
+      "end_line": 19,
+      "_origin": "ast",
+      "id": "hooks_test_provider_payloads_run",
+      "community": 258,
+      "norm_label": "run()"
+    },
+    {
+      "label": "load_adapter()",
+      "file_type": "code",
+      "source_file": "hooks/test_provider_payloads.py",
+      "source_location": "L22",
+      "end_line": 24,
+      "_origin": "ast",
+      "id": "hooks_test_provider_payloads_load_adapter",
+      "community": 258,
+      "norm_label": "load_adapter()"
     },
     {
       "label": "test_public_api.py",
@@ -8277,7 +8310,7 @@
       "label": "Commit preparation",
       "file_type": "document",
       "source_file": "rules/ai-sdlc/git-ops.md",
-      "source_location": "L25",
+      "source_location": "L27",
       "_origin": "ast",
       "id": "rules_ai_sdlc_git_ops_commit_preparation",
       "community": 237,
@@ -30153,6 +30186,28 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "hooks/test_provider_payloads.py",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "hooks_test_provider_payloads",
+      "target": "hooks_test_provider_payloads_load_adapter",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "hooks/test_provider_payloads.py",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "hooks_test_provider_payloads",
+      "target": "hooks_test_provider_payloads_run",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "hooks/test_public_api.py",
       "source_location": "L7",
       "weight": 1.0,
@@ -39053,7 +39108,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "rules/ai-sdlc/git-ops.md",
-      "source_location": "L25",
+      "source_location": "L27",
       "weight": 1.0,
       "_origin": "ast",
       "source": "rules_ai_sdlc_git_ops_git_ops_the_haiku_ops_runner_and_commit_preparation",
@@ -56959,5 +57014,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "684a690397fcf5c38a99102e79f241274ab24e32"
+  "built_at_commit": "97af63c8faae1ae3004657a481061fb5a43eef14"
 }

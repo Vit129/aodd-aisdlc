@@ -1,16 +1,16 @@
 # Graph Report - prevention-field  (2026-11-17)
 
 ## Corpus Check
-- 259 files · ~183,868 words
+- 260 files · ~184,168 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2532 nodes · 2774 edges · 259 communities (225 shown, 34 thin omitted)
+- 2535 nodes · 2776 edges · 260 communities (226 shown, 34 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 14 edges (avg confidence: 0.61)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `684a6903`
+- Built from commit: `97af63c8`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -35,12 +35,12 @@ node's neighbors span, not by raw edge count.
 2. `state()` - bridges 9 areas (14 edges)
 3. `aodd-aisdlc` - bridges 3 areas (14 edges)
 4. `claude_home()` - bridges 3 areas (9 edges)
-5. `search()` - bridges 2 areas (10 edges)
-6. `Browser Session Management` - bridges 2 areas (10 edges)
-7. `generate_design_system()` - bridges 2 areas (8 edges)
-8. `session_id()` - bridges 2 areas (6 edges)
-9. `_resolve_color_mode()` - bridges 2 areas (5 edges)
-10. `_select_palette_for_mode()` - bridges 2 areas (4 edges)
+5. `main()` - bridges 2 areas (13 edges)
+6. `search()` - bridges 2 areas (10 edges)
+7. `Browser Session Management` - bridges 2 areas (10 edges)
+8. `generate_design_system()` - bridges 2 areas (8 edges)
+9. `session_id()` - bridges 2 areas (6 edges)
+10. `housekeeping_scan()` - bridges 2 areas (5 edges)
 
 ## Surprising Connections (you probably didn't know these)
 - `write_report()` --calls--> `reports()`  [EXTRACTED]
@@ -49,19 +49,19 @@ node's neighbors span, not by raw edge count.
   optional/agent-memory/hooks/memory-recall.py → hooks/_aodd_paths.py
 - `first_time()` --calls--> `state()`  [EXTRACTED]
   optional/agent-memory/hooks/memory-write-scan.py → hooks/_aodd_paths.py
+- `main()` --calls--> `state()`  [EXTRACTED]
+  optional/agent-memory/hooks/session-start-recent.py → hooks/_aodd_paths.py
 - `housekeeping_scan()` --calls--> `state()`  [EXTRACTED]
   optional/schedules/scripts/aodd_job.py → hooks/_aodd_paths.py
-- `main()` --calls--> `state()`  [EXTRACTED]
-  optional/schedules/scripts/install-schedules.py → hooks/_aodd_paths.py
 
 ## Import Cycles
 - None detected.
 
-## Communities (259 total, 34 thin omitted)
+## Communities (260 total, 34 thin omitted)
 
 ### Community 0 - "_aodd_paths.py"
-Cohesion: 0.16
-Nodes (21): claude_home(), home(), memory(), memory_dirs(), plans(), project(), Path, Where AODD keeps its files. Standard library only; every variable is optional. (+13 more)
+Cohesion: 0.18
+Nodes (19): claude_home(), home(), memory(), memory_dirs(), plans(), project(), Path, Where AODD keeps its files. Standard library only; every variable is optional. (+11 more)
 
 ### Community 1 - "Fix Generated Playwright Files (Postman Migration)"
 Cohesion: 0.04
@@ -856,8 +856,8 @@ Cohesion: 0.67
 Nodes (3): Companion plugins (optional, installed separately, not copied here), Install, Per repository (`--project`)
 
 ### Community 253 - "state"
-Cohesion: 0.53
-Nodes (5): _codex_meta(), decide(), main(), (is_codex, is_subagent) from a Codex rollout's first record; Claude transcripts, _size()
+Cohesion: 0.31
+Nodes (7): state(), _codex_meta(), decide(), main(), (is_codex, is_subagent) from a Codex rollout's first record; Claude transcripts, _size(), call()
 
 ### Community 255 - "Optional modules"
 Cohesion: 0.67
@@ -879,7 +879,7 @@ _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `log()` connect `AODD: the operating contract` to `BM25`?**
   _High betweenness centrality (0.004) - this node is a cross-community bridge._
-- **Why does `Tracing` connect `Tracing` to `[0.6.1] - 2026-10-30`?**
+- **Why does `_get_bm25()` connect `core.py` to `BM25`?**
   _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **What connects `name`, `pull_request`, `push` to the rest of the system?**
   _1545 weakly-connected nodes found - possible documentation gaps or missing edges._

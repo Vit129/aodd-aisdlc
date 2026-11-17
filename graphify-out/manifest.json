@@ -1285,13 +1285,18 @@
     "semantic_hash": ""
   },
   "rules/ai-sdlc/git-ops.md": {
-    "mtime": 1794903776.4499466,
-    "ast_hash": "23eb7829deb97a77dfa1962822f50a72",
+    "mtime": 1794904846.4787858,
+    "ast_hash": "cba6bf96f0013b28e3551ded110483c4",
     "semantic_hash": ""
   },
   "hooks/test_allow_by_default.py": {
     "mtime": 1794903776.440069,
     "ast_hash": "1907370bfc8398328b10a4d6685fe523",
+    "semantic_hash": ""
+  },
+  "hooks/test_provider_payloads.py": {
+    "mtime": 1794904846.4774563,
+    "ast_hash": "4bc961ff5055cdc172d0a8b1937ba4e8",
     "semantic_hash": ""
   }
 }

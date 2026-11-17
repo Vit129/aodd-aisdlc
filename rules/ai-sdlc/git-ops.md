@@ -15,6 +15,8 @@ Read this before commit, push, PR or merge. Haiku (the cheap model) does the git
   sync/install/backup scripts, status checks, summaries.
 - After the CEO approves in words ("merge", "deploy"): merge the PR, run the deploy, write to production data, rewrite existing
   records. Never before that approval.
+- Every report to the CEO lists each open PR by number and link (`#N https://...`) until its state is MERGED, not only the
+  report that opened it.
 
 Escalate to the big model when a step fails twice, a hook denies, a conflict needs intent, or more than ~5 files are involved in
 a decision, with a summary of which files to open. Main spot-checks the hash, PR and `git status` Haiku reports.

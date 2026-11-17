@@ -1,22 +1,22 @@
-# Graph Report - aodd-aisdlc  (2026-11-16)
+# Graph Report - aodd-aisdlc  (2026-11-17)
 
 ## Corpus Check
-- 261 files · ~183,611 words
+- 261 files · ~183,778 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2533 nodes · 2774 edges · 261 communities (226 shown, 35 thin omitted)
+- 2536 nodes · 2777 edges · 260 communities (226 shown, 34 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 14 edges (avg confidence: 0.61)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `3a7bb429`
+- Built from commit: `b7bffced`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## God Nodes (most connected - your core abstractions)
 1. `Fix Generated Playwright Files (Postman Migration)` - 33 edges
-2. `Changelog` - 22 edges
+2. `Changelog` - 23 edges
 3. `UX/UI Designer` - 20 edges
 4. `Browser Automation with playwright-cli` - 16 edges
 5. `Frontend Development` - 15 edges
@@ -31,11 +31,11 @@ A high-degree node isn't always architecturally central - a widely-used
 utility/config file can rack up more edges than a real coupler while only
 ever touching one area. This ranks by how many DIFFERENT communities a
 node's neighbors span, not by raw edge count.
-1. `Changelog` - bridges 15 areas (22 edges)
+1. `Changelog` - bridges 15 areas (23 edges)
 2. `state()` - bridges 9 areas (14 edges)
 3. `aodd-aisdlc` - bridges 3 areas (14 edges)
 4. `claude_home()` - bridges 3 areas (9 edges)
-5. `Storage Management` - bridges 3 areas (8 edges)
+5. `Test generation (plan → generate → heal)` - bridges 3 areas (6 edges)
 6. `main()` - bridges 2 areas (13 edges)
 7. `search()` - bridges 2 areas (10 edges)
 8. `generate_design_system()` - bridges 2 areas (8 edges)
@@ -57,7 +57,7 @@ node's neighbors span, not by raw edge count.
 ## Import Cycles
 - None detected.
 
-## Communities (261 total, 35 thin omitted)
+## Communities (260 total, 34 thin omitted)
 
 ### Community 0 - "_aodd_paths.py"
 Cohesion: 0.18
@@ -68,16 +68,16 @@ Cohesion: 0.04
 Nodes (47): 10. Request Body Types 📦, 11. Response Headers 📋, 12. Path Parameters & Query Parameters 🔗, 13. Postman Dynamic Variables 🎲, 14. Folder-level Auth Inheritance 🔐, 15. Folder-level Pre-request Script → beforeAll / beforeEach 🔧, 16. Nested Folders → File Structure 📁, 17. Collection Runner + Data File (Data-Driven) 📊 (+39 more)
 
 ### Community 2 - "Changelog"
-Cohesion: 0.13
-Nodes (14): [0.1.0] - 2026-10-16, [0.3.5] - 2026-10-17, [0.8.2] - 2026-11-15, [0.8.3] - 2026-11-16, [0.8.5] - 2026-11-16, [0.8.6] - 2026-11-16, Added, Changelog (+6 more)
+Cohesion: 0.12
+Nodes (16): [0.1.0] - 2026-10-16, [0.3.5] - 2026-10-17, [0.7.0] - 2026-10-30, [0.8.2] - 2026-11-15, [0.8.3] - 2026-11-16, [0.8.4] - 2026-11-16, [0.8.5] - 2026-11-16, Added (+8 more)
 
 ### Community 3 - "SKILL.md"
 Cohesion: 0.05
 Nodes (33): Android application artifacts, Choose the remedy from the observed failure, Codex tool approval is separate from REA readiness, Connection and task recovery, Continue through an installed CLI, Repair registration when needed, Evidence, comparison, and verification workflows, JavaScript and Electron application artifacts (+25 more)
 
 ### Community 4 - "Cookies"
-Cohesion: 0.12
-Nodes (16): Advanced: Multiple Operations, Authentication State Reuse, Clear All localStorage, Common Patterns, Delete Database, Delete Single Item, Get Single Value, IndexedDB (+8 more)
+Cohesion: 0.06
+Nodes (35): Advanced: Multiple Cookies or Custom Options, Advanced: Multiple Operations, Authentication State Reuse, Clear All Cookies, Clear All localStorage, Clear sessionStorage, Common Patterns, Cookies (+27 more)
 
 ### Community 5 - "UX/UI Designer"
 Cohesion: 0.06
@@ -144,8 +144,8 @@ Cohesion: 0.08
 Nodes (23): 161 Industry Rules, Accessibility Check (WCAG AA), BM25 Ranking, Deliverables, Example Flow, Five Search Domains, Input, Integration (+15 more)
 
 ### Community 21 - "3. Heal"
-Cohesion: 0.09
-Nodes (23): 0. How generation works, 1.1 Prerequisite: workspace, 1.2 Prerequisite: seed test, 1.3 Explore the app, 1.4 Write the spec file, 1. Planning, 2.1 Inputs, 2.2 Generate one scenario (+15 more)
+Cohesion: 0.15
+Nodes (13): 0. How generation works, 3.1 Find failing tests, 3.2 Debug one failure, 3.3 Apply the fix, 3.4 Reconcile with the spec, 3.5 Iteration and giving up, 3. Heal, Add assertions manually (+5 more)
 
 ### Community 22 - "The `study` Trigger — Extracting Design DNA from a Screenshot or URL"
 Cohesion: 0.09
@@ -268,7 +268,7 @@ Cohesion: 0.14
 Nodes (13): 0. Enforcement: three levels, no optional tier, 1. Roles (fixed vocabulary), 2.1 Project runner (MAY), 2.2 Release and deployment scaffold (MUST for publishable projects), 2. Root layout (every project), 3. Source layout by size, 4. Dependency direction, 5. Naming (+5 more)
 
 ### Community 52 - "SKILL.md"
-Cohesion: 0.19
+Cohesion: 0.21
 Nodes (4): Examples, Inspecting Element Attributes, Debugging Playwright Tests, Running Playwright Tests
 
 ### Community 53 - "Running Custom Playwright Code"
@@ -808,8 +808,8 @@ Cohesion: 0.67
 Nodes (3): [0.2.0] - 2026-10-17, Added, Fixed
 
 ### Community 236 - "[0.6.0] - 2026-10-23"
-Cohesion: 0.67
-Nodes (3): [0.6.0] - 2026-10-23, Added, Documentation
+Cohesion: 0.40
+Nodes (5): [0.6.1] - 2026-10-30, Added, Changed, Documentation, Fixed
 
 ### Community 237 - "[0.7.0] - 2026-10-30"
 Cohesion: 0.50
@@ -827,17 +827,25 @@ Nodes (13): argv(), baked_env(), cron_block(), crontab_bin(), describe(), load_j
 Cohesion: 0.29
 Nodes (11): Short session key for audit filenames: disambiguates Antigravity transcript.json, session_id(), already_raised(), audit_report(), decide(), main(), Path, (progress files written this session, whether an auditor subagent ran, files edi (+3 more)
 
+### Community 243 - "1. Planning"
+Cohesion: 0.40
+Nodes (5): 1.1 Prerequisite: workspace, 1.2 Prerequisite: seed test, 1.3 Explore the app, 1.4 Write the spec file, 1. Planning
+
 ### Community 244 - "[0.6.1] - 2026-10-30"
 Cohesion: 0.40
-Nodes (5): [0.6.1] - 2026-10-30, Added, Changed, Documentation, Fixed
+Nodes (5): 2.1 Inputs, 2.2 Generate one scenario, 2.3 Generate multiple scenarios, 2.4 Run generated tests, 2. Generate
 
 ### Community 245 - "Best Practices"
 Cohesion: 0.39
 Nodes (8): cli(), leaks(), main(), opened(), Skill names the session called through the Skill tool, from stream-json output., report(), run(), skills_opened()
 
+### Community 247 - "[0.7.0] - 2026-10-30"
+Cohesion: 0.67
+Nodes (3): [0.6.0] - 2026-10-23, Added, Documentation
+
 ### Community 248 - "codex.md"
-Cohesion: 0.22
-Nodes (9): Advanced: Multiple Cookies or Custom Options, Clear All Cookies, Cookies, Delete a Cookie, Filter Cookies by Domain, Filter Cookies by Path, Get Specific Cookie, List All Cookies (+1 more)
+Cohesion: 0.67
+Nodes (3): [0.8.7] - 2026-11-17, Documentation, Fixed
 
 ### Community 251 - "test_rule_duplicates.py"
 Cohesion: 0.21
@@ -851,10 +859,6 @@ Nodes (3): Companion plugins (optional, installed separately, not copied here), 
 Cohesion: 0.31
 Nodes (7): state(), _codex_meta(), decide(), main(), (is_codex, is_subagent) from a Codex rollout's first record; Claude transcripts, _size(), call()
 
-### Community 254 - "audit.md"
-Cohesion: 0.33
-Nodes (6): Clear sessionStorage, Delete Single Item, Get Single Value, List All sessionStorage Items, Session Storage, Set Value
-
 ### Community 255 - "Optional modules"
 Cohesion: 0.67
 Nodes (3): Hooks advise; the hard-safety set denies, Optional modules, Schedules
@@ -867,14 +871,10 @@ Nodes (3): Answer, Outcome, Q: install.sh project hooks audit combine
 Cohesion: 0.50
 Nodes (3): Build the artifact until ready for coding, Interview, Phase 1 — Interview
 
-### Community 260 - "Storage State"
-Cohesion: 0.50
-Nodes (4): Restore Storage State, Save Storage State, Storage State, Storage State File Format
-
 ## Knowledge Gaps
-- **1427 isolated node(s):** `name`, `pull_request`, `push`, `contents`, `check` (+1422 more)
+- **1429 isolated node(s):** `name`, `pull_request`, `push`, `contents`, `check` (+1424 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **35 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **34 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 - **15 possibly unreachable function(s):** `_size()`, `ask_model()`, `docs_only()`, `git()`, `housekeeping_scan()` (+10 more)
   Not reached from any recognized entry point - could be dead code, or dynamically dispatched/decorator-registered.
 
@@ -883,15 +883,15 @@ _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `log()` connect `AODD: the operating contract` to `BM25`?**
   _High betweenness centrality (0.004) - this node is a cross-community bridge._
-- **Why does `Tracing` connect `Tracing` to `SKILL.md`?**
-  _High betweenness centrality (0.002) - this node is a cross-community bridge._
-- **Why does `Storage Management` connect `Cookies` to `codex.md`, `Storage State`, `audit.md`?**
-  _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **What connects `name`, `pull_request`, `push` to the rest of the system?**
-  _1545 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1547 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Fix Generated Playwright Files (Postman Migration)` be split into smaller, more focused modules?**
   _Cohesion score 0.041666666666666664 - nodes in this community are weakly interconnected._
 - **Should `Changelog` be split into smaller, more focused modules?**
-  _Cohesion score 0.13333333333333333 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.11764705882352941 - nodes in this community are weakly interconnected._
 - **Should `SKILL.md` be split into smaller, more focused modules?**
   _Cohesion score 0.05128205128205128 - nodes in this community are weakly interconnected._
+- **Should `Cookies` be split into smaller, more focused modules?**
+  _Cohesion score 0.05555555555555555 - nodes in this community are weakly interconnected._
+- **Should `UX/UI Designer` be split into smaller, more focused modules?**
+  _Cohesion score 0.0625 - nodes in this community are weakly interconnected._

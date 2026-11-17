@@ -3,6 +3,24 @@
 All notable changes to aodd-aisdlc are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and it follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.8.7] - 2026-11-17
+
+### Documentation
+- Say where the graph lives and where 9arm companion outputs go (`bcee64c`)
+- Split Phase 1 artifact work by model tier (`36b7ec8`)
+- Hooks advise, hard-safety set, install --check and pointer block (`e449f16`)
+
+### Fixed
+- Fail the release gate on any failing test and isolate the adapter test from DONE_GATE_* env (`4e58e1a`)
+- Cut injected context in memory-recall, graphify-guard and delegation-nudge (`9849699`)
+- Graphify-guard and coding-rules-gate advise once per session instead of denying (`0a991a3`)
+- Dirty-branch-switch-guard advises; secret-read-guard, auditor-readonly and memory-write-scan narrowed to the hard-safety set (`5e23406`)
+- Stop and nudge hooks note once per session and never block (`3e14454`)
+- Agy adapter denies only the hard-safety set and relays advice as allow (`e6fe634`)
+- Update installed Codex/agy on a non-terminal re-run, add --check, write a pointer block in project mode (`a11edc9`)
+- Honour payload cwd in dirty-branch guard, close two secret-read false negatives, test the adapter CLI (`2e50bbc`)
+- Inherit global hooks and separate audit infrastructure failures (`ac12e42`)
+
 ## [0.8.6] - 2026-11-16
 
 ### Fixed

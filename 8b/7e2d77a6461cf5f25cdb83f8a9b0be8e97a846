@@ -1,0 +1,31 @@
+skills/reverse-engineer-anything/SKILL.md
+  s_8908b88c4c07fd::t_f80904529b0e3e 5-6,35-77,79,83,108-116,120-157,161-165,167-189,219-232,242-249,345-346
+skills/reverse-engineer-anything/references/javascript-applications.md
+  s_8908b88c4c07fd::t_f80904529b0e3e 3-10,12-27,38-41,97-126,198-199,207-218
+skills/reverse-engineer-anything/references/android-applications.md
+  s_8908b88c4c07fd::t_f80904529b0e3e 27-29
+skills/reverse-engineer-anything/references/native-and-artifacts.md
+  s_8908b88c4c07fd::t_f80904529b0e3e 3-40,66-79,98-105,113-145,154-157,178-197,213-223,247-249,265-276,292-297
+skills/reverse-engineer-anything/references/evidence-workflows.md
+  s_8908b88c4c07fd::t_f80904529b0e3e 14-26,62-71
+skills/reverse-engineer-anything/references/connection-and-recovery.md
+  s_8908b88c4c07fd::t_f80904529b0e3e 14-21,48-49
+skills/reverse-engineer-anything/references/runtime-observation.md
+  s_8908b88c4c07fd::t_f80904529b0e3e 1,10-15,17-19,27-58,64-78
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "8b7e2d77a6461cf5f25cdb83f8a9b0be8e97a846",
+  "prompts": {},
+  "sessions": {
+    "s_8908b88c4c07fd": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "18d26acd-e78f-4d7a-b954-c914b104bcba",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

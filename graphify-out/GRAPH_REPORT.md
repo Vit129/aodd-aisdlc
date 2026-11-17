@@ -1,16 +1,16 @@
-# Graph Report - aodd-aisdlc  (2026-11-17)
+# Graph Report - rules-cleanup  (2026-11-17)
 
 ## Corpus Check
-- 261 files · ~183,778 words
+- 260 files · ~183,986 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2536 nodes · 2777 edges · 260 communities (226 shown, 34 thin omitted)
+- 2535 nodes · 2776 edges · 260 communities (226 shown, 34 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 14 edges (avg confidence: 0.61)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `b7bffced`
+- Built from commit: `684a6903`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -35,9 +35,9 @@ node's neighbors span, not by raw edge count.
 2. `state()` - bridges 9 areas (14 edges)
 3. `aodd-aisdlc` - bridges 3 areas (14 edges)
 4. `claude_home()` - bridges 3 areas (9 edges)
-5. `Test generation (plan → generate → heal)` - bridges 3 areas (6 edges)
-6. `main()` - bridges 2 areas (13 edges)
-7. `search()` - bridges 2 areas (10 edges)
+5. `main()` - bridges 2 areas (13 edges)
+6. `search()` - bridges 2 areas (10 edges)
+7. `Browser Session Management` - bridges 2 areas (10 edges)
 8. `generate_design_system()` - bridges 2 areas (8 edges)
 9. `session_id()` - bridges 2 areas (6 edges)
 10. `housekeeping_scan()` - bridges 2 areas (5 edges)
@@ -144,8 +144,8 @@ Cohesion: 0.08
 Nodes (23): 161 Industry Rules, Accessibility Check (WCAG AA), BM25 Ranking, Deliverables, Example Flow, Five Search Domains, Input, Integration (+15 more)
 
 ### Community 21 - "3. Heal"
-Cohesion: 0.15
-Nodes (13): 0. How generation works, 3.1 Find failing tests, 3.2 Debug one failure, 3.3 Apply the fix, 3.4 Reconcile with the spec, 3.5 Iteration and giving up, 3. Heal, Add assertions manually (+5 more)
+Cohesion: 0.09
+Nodes (23): 0. How generation works, 1.1 Prerequisite: workspace, 1.2 Prerequisite: seed test, 1.3 Explore the app, 1.4 Write the spec file, 1. Planning, 2.1 Inputs, 2.2 Generate one scenario (+15 more)
 
 ### Community 22 - "The `study` Trigger — Extracting Design DNA from a Screenshot or URL"
 Cohesion: 0.09
@@ -220,8 +220,8 @@ Cohesion: 0.12
 Nodes (15): Component Design, Critical — Eliminating Waterfalls, Cross-Platform Standards, Folder Structure, High — Bundle Size, Hooks, Medium — Re-render Optimization, Naming (+7 more)
 
 ### Community 40 - "Browser Session Management"
-Cohesion: 0.10
-Nodes (20): 1. Name Browser Sessions Semantically, 2. Always Clean Up, 3. Delete Stale Browser Data, A/B Testing Sessions, Attach by channel name, Attach via browser extension, Attach via CDP endpoint, Attaching to a Running Browser (+12 more)
+Cohesion: 0.12
+Nodes (16): A/B Testing Sessions, Attach by channel name, Attach via browser extension, Attach via CDP endpoint, Attaching to a Running Browser, Browser Session Commands, Browser Session Configuration, Browser Session Isolation Properties (+8 more)
 
 ### Community 41 - "Appium Testing (Android) — Platform Rules & Capabilities"
 Cohesion: 0.13
@@ -276,8 +276,8 @@ Cohesion: 0.15
 Nodes (13): Clipboard, Complex Workflows, Error Handling, File Downloads, Frames and Iframes, Geolocation, JavaScript Execution, Media Emulation (+5 more)
 
 ### Community 54 - "Tracing"
-Cohesion: 0.12
-Nodes (16): 1. Start Tracing Before the Problem, 2. Clean Up Old Traces, Analyzing Performance, Basic Usage, Best Practices, Capturing Evidence, Debugging Failed Actions, Limitations (+8 more)
+Cohesion: 0.15
+Nodes (12): 1. Start Tracing Before the Problem, 2. Clean Up Old Traces, Analyzing Performance, Basic Usage, Best Practices, Capturing Evidence, Debugging Failed Actions, Limitations (+4 more)
 
 ### Community 55 - "Accessibility Testing — Playwright + axe-core"
 Cohesion: 0.15
@@ -544,7 +544,7 @@ Cohesion: 0.25
 Nodes (7): 1. Hard Standards, 2. Standard SLA Thresholds, 3. Production Script Template, 4. CI/CD Performance Gates, Azure DevOps, GitHub Actions, K6 Load Testing Standards & CI Gates
 
 ### Community 122 - "Advanced Mocking with run-code"
-Cohesion: 0.22
+Cohesion: 0.25
 Nodes (8): Advanced Mocking with run-code, CLI Route Commands, Conditional Response Based on Request, Delayed Response, Modify Real Response, Request Mocking, Simulate Network Failures, URL Patterns
 
 ### Community 123 - "Robot Framework Workflow"
@@ -828,12 +828,12 @@ Cohesion: 0.29
 Nodes (11): Short session key for audit filenames: disambiguates Antigravity transcript.json, session_id(), already_raised(), audit_report(), decide(), main(), Path, (progress files written this session, whether an auditor subagent ran, files edi (+3 more)
 
 ### Community 243 - "1. Planning"
-Cohesion: 0.40
-Nodes (5): 1.1 Prerequisite: workspace, 1.2 Prerequisite: seed test, 1.3 Explore the app, 1.4 Write the spec file, 1. Planning
+Cohesion: 0.50
+Nodes (4): 1. Name Browser Sessions Semantically, 2. Always Clean Up, 3. Delete Stale Browser Data, Best Practices
 
 ### Community 244 - "[0.6.1] - 2026-10-30"
-Cohesion: 0.40
-Nodes (5): 2.1 Inputs, 2.2 Generate one scenario, 2.3 Generate multiple scenarios, 2.4 Run generated tests, 2. Generate
+Cohesion: 0.50
+Nodes (4): `resources/`, Trace Output Files, `trace-{timestamp}.network`, `trace-{timestamp}.trace`
 
 ### Community 245 - "Best Practices"
 Cohesion: 0.39
@@ -863,16 +863,12 @@ Nodes (7): state(), _codex_meta(), decide(), main(), (is_codex, is_subagent) fro
 Cohesion: 0.67
 Nodes (3): Hooks advise; the hard-safety set denies, Optional modules, Schedules
 
-### Community 258 - "Q: install.sh project hooks audit combine"
-Cohesion: 0.50
-Nodes (3): Answer, Outcome, Q: install.sh project hooks audit combine
-
 ### Community 259 - "Phase 1 — Interview"
 Cohesion: 0.50
 Nodes (3): Build the artifact until ready for coding, Interview, Phase 1 — Interview
 
 ## Knowledge Gaps
-- **1429 isolated node(s):** `name`, `pull_request`, `push`, `contents`, `check` (+1424 more)
+- **1427 isolated node(s):** `name`, `pull_request`, `push`, `contents`, `check` (+1422 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **34 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 - **15 possibly unreachable function(s):** `_size()`, `ask_model()`, `docs_only()`, `git()`, `housekeeping_scan()` (+10 more)
@@ -883,8 +879,10 @@ _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `log()` connect `AODD: the operating contract` to `BM25`?**
   _High betweenness centrality (0.004) - this node is a cross-community bridge._
+- **Why does `_get_bm25()` connect `core.py` to `BM25`?**
+  _High betweenness centrality (0.002) - this node is a cross-community bridge._
 - **What connects `name`, `pull_request`, `push` to the rest of the system?**
-  _1547 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1545 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Fix Generated Playwright Files (Postman Migration)` be split into smaller, more focused modules?**
   _Cohesion score 0.041666666666666664 - nodes in this community are weakly interconnected._
 - **Should `Changelog` be split into smaller, more focused modules?**
@@ -893,5 +891,3 @@ _Questions this graph is uniquely positioned to answer:_
   _Cohesion score 0.05128205128205128 - nodes in this community are weakly interconnected._
 - **Should `Cookies` be split into smaller, more focused modules?**
   _Cohesion score 0.05555555555555555 - nodes in this community are weakly interconnected._
-- **Should `UX/UI Designer` be split into smaller, more focused modules?**
-  _Cohesion score 0.0625 - nodes in this community are weakly interconnected._

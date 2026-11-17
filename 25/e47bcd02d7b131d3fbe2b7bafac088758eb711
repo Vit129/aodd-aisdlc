@@ -1,0 +1,19 @@
+rules/ai-sdlc/git-ops.md
+  s_8908b88c4c07fd::t_ea6cd75541409d 18-19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "25e47bcd02d7b131d3fbe2b7bafac088758eb711",
+  "prompts": {},
+  "sessions": {
+    "s_8908b88c4c07fd": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "18d26acd-e78f-4d7a-b954-c914b104bcba",
+        "model": "unknown"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

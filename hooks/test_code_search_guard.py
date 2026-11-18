@@ -106,6 +106,10 @@ assert g.changed_since_index(proj) == ["a.py"]
 (proj / "notes.md").write_text("doc")
 assert g.changed_since_index(proj) == ["a.py"]                                 # docs never count
 calls = []
+os.environ.pop("AODD_INDEX_ON_STOP", None)
+g.run_index = lambda root, cmd: (_ for _ in ()).throw(AssertionError("Stop must not reindex unless AODD_INDEX_ON_STOP=1"))
+assert g.decide_stop({"cwd": str(proj), "session_id": "s1"}) is None            # default off, even with changes
+os.environ["AODD_INDEX_ON_STOP"] = "1"
 g.run_index = lambda root, cmd: (calls.append((root, cmd)) or (0, ""))         # no real backend in unit tests
 out = g.decide_stop({"cwd": str(proj), "session_id": "s1"})
 assert len(calls) == 1 and calls[0][0] == proj and "refreshed" in out["systemMessage"]

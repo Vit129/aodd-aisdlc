@@ -27,4 +27,4 @@ URL, verbatim output tails).
 ## Commit preparation
 
 - Code-search index output (any backend) is generated, never tracked in git: list its folder in the repo's `.gitignore` and
-  never stage it. The index refreshes on its own (the search guard's Stop step); there is no refresh step in the commit flow.
+  never stage it. The index refreshes on its own (the backend's watcher, or the search guard's opt-in Stop step); there is no refresh step in the commit flow.

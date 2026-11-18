@@ -3,6 +3,11 @@
 All notable changes to aodd-aisdlc are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and it follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.9.1] - 2026-11-18
+
+### Changed
+- Stop-time reindex in code-search-guard is opt-in (`AODD_INDEX_ON_STOP=1`), default off, so the backend's own watcher is the single reindex path
+
 ## [0.9.0] - 2026-11-18
 
 ### Added

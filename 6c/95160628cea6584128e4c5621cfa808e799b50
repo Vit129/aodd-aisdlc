@@ -1,0 +1,29 @@
+CHANGELOG.md
+  s_57b54754110592::t_a962c4f1ad037d 6-10
+README.md
+  s_57b54754110592::t_eac676c4a011e9 59,146
+VERSION
+  s_57b54754110592::t_b4b6459d3c2372 1
+hooks/code-search-guard.py
+  s_57b54754110592::t_4caa5f5c25f9d5 16-17,257-258
+hooks/test_code_search_guard.py
+  s_57b54754110592::t_b4848ba30ac184 109-112
+rules/ai-sdlc/git-ops.md
+  s_57b54754110592::t_e12e056f2edb57 30
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "6c95160628cea6584128e4c5621cfa808e799b50",
+  "prompts": {},
+  "sessions": {
+    "s_57b54754110592": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7860b657-e5ae-49bd-92e1-c3eb70cfb06d",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

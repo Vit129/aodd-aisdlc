@@ -1,0 +1,19 @@
+rules/ai-sdlc/delegation.md
+  s_b2770ed4c11253::t_f7a558cf829890 58-79
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "9d0dfa6cb2e11af933e9f02462cbffd4316f7527",
+  "prompts": {},
+  "sessions": {
+    "s_b2770ed4c11253": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "2bff1b51-82ac-4c36-9db5-9ae791e2c16f",
+        "model": "claude-haiku-5-5"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

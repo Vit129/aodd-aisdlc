@@ -20,4 +20,4 @@ The conventions are in `AGENTS.md` under "Conventions".
 
 ## Commit preparation
 
-The commit and graph rules are in `rules/ai-sdlc/git-ops.md`. `scripts/graphify_commit.py` is the helper the release runner uses.
+The commit rules are in `rules/ai-sdlc/git-ops.md`. Code-search index output is never tracked; the release runner only commits `VERSION` and `CHANGELOG.md`.

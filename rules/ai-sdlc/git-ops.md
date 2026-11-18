@@ -8,7 +8,7 @@ Read this before commit, push, PR or merge. Haiku (the cheap model) does the git
 - Choose what to commit: read status + diff, stage only the files that belong to the task, by path (never `git add -A`); a file
   whose owner is unclear (another session's edit) goes to the big model.
 - Resolve merge conflicts. If a conflict needs the code's intent, send the big model a short summary naming the files and
-  hunks, and let it decide. Graphify (query / neighbors / blast_radius), when installed, guides the lookup.
+  hunks, and let it decide. `project_search` (or rg + Read) guides the lookup.
 - Rewrite history only on its own unmerged branch (rebase, squash, amend; push with `--force-with-lease` to that branch only),
   never on `main`/`master` or a merged branch.
 - Commit, push the branch, open the PR, post-merge cleanup (delete a branch only after the PR state is MERGED), run
@@ -26,12 +26,5 @@ URL, verbatim output tails).
 
 ## Commit preparation
 
-- The graph refresh is the last step of `rules/ai-sdlc-workflow.md`; do not refresh again here. A repo without graphify skips it.
-- Where the graph lives: `graphify-out/` at the repo root (hooks find it at or above the cwd). Track only the small
-  orientation files: `GRAPH_REPORT.md`, `GRAPH_SUMMARY.md`, `manifest.json`, `.graphify_labels.json`, `.graphify_root`, and
-  `graph.json` while it stays a few MB. Never commit `graph.html`, `cache/` or dated snapshot folders; a repo whose output
-  grows to tens of MB keeps `graph.json` ignored too. List the ignored paths in the repo's `.gitignore`.
-- Stage the tracked graph artifacts by explicit path with `git add --update -- <paths>` in the same commit as the edits they
-  describe. Never a separate graph-only commit. Set `PYTHONHASHSEED=0` when a helper script refreshes the graph.
-- `python3 scripts/graphify_commit.py -m "<message>"` refreshes, stages tracked graph paths and commits the prepared index for
-  standard graphify repos; the release runner uses it too.
+- Code-search index output (any backend) is generated, never tracked in git: list its folder in the repo's `.gitignore` and
+  never stage it. The index refreshes on its own (the search guard's Stop step); there is no refresh step in the commit flow.

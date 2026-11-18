@@ -3,6 +3,4 @@ __pycache__/
 .DS_Store
 .kouen-worktrees/
 .tmp/
-graphify-out/20*/
-graphify-out/memory/
-graphify-out/release-backup-*/
+code-index-out/

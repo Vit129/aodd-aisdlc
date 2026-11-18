@@ -23,7 +23,7 @@ Pre-merge gate: once all tests confirm GREEN, run `/code-review` (or any review 
 **Release or deploy after this feature:** satisfy the release gate in `rules/coding/release.md`
 (security/pen test, performance, audit, version + changelog), reusing valid results without a separate Test-Before-Deliver run.
 
-**Last step, after everything passes:** if `graphify-out/` exists, run `graphify update .` and stage its tracked files with the commit (`rules/ai-sdlc/git-ops.md`).
+**Final step:** no manual index refresh; a configured search index updates on its own and is never committed (`rules/ai-sdlc/git-ops.md`).
 
 **Update `ai-sdlc-task-progress.md` now** — mark the final checkbox, feature Done (§
 Incremental Update Rule, `skills/ai-sdlc/references/ai-sdlc-progress-spec.md`; this IS the Done-gate (`rules/ai-sdlc-workflow.md`) — don't call it Done anywhere

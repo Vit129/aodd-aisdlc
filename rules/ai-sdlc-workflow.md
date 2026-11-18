@@ -36,12 +36,12 @@ Phase files live in `skills/ai-sdlc/phases/` (Phase map in `skills/ai-sdlc/SKILL
    `.html` file of the agreed requirement and plan (render it with an artifact tool when available, else save it as
    `$AODD_PLANS/<feature>/plan.html`). Refine it until ready for coding (Phase 1 defines readiness); no code before that.
 2. Read `skills/ai-sdlc/references/dev-qa-pattern.md` (tagging, invariants, test barriers), then a dev step and a QA testing step.
-3. Last step, after everything passes: run `graphify update .` when `graphify-out/` exists; stage its tracked files with the
-   commit (`rules/ai-sdlc/git-ops.md`); skip it when every changed file is documentation (`.md`, `VERSION`).
+3. Last step, after everything passes: nothing to refresh by hand; the search index (if a backend is configured) updates on
+   its own and is never committed (`rules/ai-sdlc/git-ops.md`).
 4. Every coding task enters `delivery-workflow` for delivery. Non-coding changes take the same workflow with `skip`
    (no version bump); an explicitly requested version takes precedence. Run authorized stages only, retaining publish approvals.
 
-**Look before you pick.** Size comes from the code: check the blast radius (graphify `blast_radius`/`affected`, or grep), how
+**Look before you pick.** Size comes from the code: check the blast radius (`project_search` for callers, or rg), how
 many callers or screens it reaches, and whether it was "fixed" before (git log). One place, first attempt: the path as is.
 Wide reach: list every affected place in a short plan; QA checks each. A multi-file change that adds or splits files states a
 file separation plan first. A new feature or "do it all and report back": `chief-of-staff` full, which invokes `ai-sdlc` itself.
@@ -120,7 +120,7 @@ No hook enforces these. "The user hasn't objected" is not approval: ask directly
 - Test automation: no hard waits (use the framework's wait-for-condition); 1 self-heal attempt, then a root-cause pass with the
   debugging skill.
 - Interactive UI elements carry a stable test identifier; handoff conventions: `skills/ai-sdlc/references/dev-qa-handoff.md`.
-- Graph-before-edit applies in every phase when graphify is installed.
+- Search-before-edit applies in every phase: `project_search` first (rg + Read is the primary method), then read what you edit.
 - Stack skills (`backend-dev`, `frontend-dev`, `macos-swiftui`) and `rules/coding.md` own coding conventions.
 
 ## Read on demand

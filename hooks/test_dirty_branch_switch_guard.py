@@ -42,13 +42,13 @@ open(f"{d}/f", "a").write("c")
 assert advised(f"git -C {d} worktree add -b t2 {d}-wt", d)
 g("checkout", "-q", "--", "f")
 assert not advised(f"git -C {d} worktree add -b t2 {d}-wt", d)
-# -C <repo> is honoured even when the hook's cwd is elsewhere; generated graphify-out/ changes never count
+# -C <repo> is honoured even when the hook's cwd is elsewhere; generated code-index-out/ changes never count
 open(f"{d}/f", "a").write("d")
 assert advised(f"git -C {d} checkout -b t3", os.path.expanduser("~"))
 g("checkout", "-q", "--", "f")
-os.makedirs(f"{d}/graphify-out"); open(f"{d}/graphify-out/graph.json", "w").write("1")
-g("add", "-f", "graphify-out/graph.json"); g("-c", "user.email=t@t", "-c", "user.name=t", "commit", "-q", "-m", "go")
-open(f"{d}/graphify-out/graph.json", "w").write("2")
+os.makedirs(f"{d}/code-index-out"); open(f"{d}/code-index-out/graph.json", "w").write("1")
+g("add", "-f", "code-index-out/graph.json"); g("-c", "user.email=t@t", "-c", "user.name=t", "commit", "-q", "-m", "go")
+open(f"{d}/code-index-out/graph.json", "w").write("2")
 assert not advised(f"git -C {d} checkout -b t4", os.path.expanduser("~"))
 # a `git stash` earlier in the same command cleans the tree before the switch; stash list/show does not
 open(f"{d}/f", "a").write("e")

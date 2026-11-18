@@ -237,7 +237,7 @@ def test_install_agy():
 
 
 def test_advice_hooks_never_deny():
-    """coding-rules-gate, dirty-branch-switch-guard and graphify-guard give advice, never a deny."""
+    """coding-rules-gate, dirty-branch-switch-guard and search-guard give advice, never a deny."""
     os.environ["AODD_HOOKS_DIR"] = str(ROOT / "hooks")
     os.environ["AODD_STATE"] = str(T / "state-advice")
     os.environ["CODING_RULES_GATE_STATE"] = str(T / "crg-state")
@@ -282,23 +282,25 @@ def test_secret_deny_only_for_hard_secrets():
         os.environ.pop("AODD_STATE", None)
 
 
-def test_graphify_guard_integration():
+def test_search_guard_integration():
     os.environ["AODD_HOOKS_DIR"] = str(ROOT / "hooks")
     gproj = T / "gproj"
-    (gproj / "graphify-out").mkdir(parents=True, exist_ok=True)
-    (gproj / "graphify-out" / "graph.json").write_text("{}")
+    gproj.mkdir(parents=True, exist_ok=True)
+    subprocess.run(["git", "init", "-q"], cwd=gproj, check=True, capture_output=True)
+    os.environ["AODD_INDEX_CMD"] = "python3 -c pass {root}"   # a configured search backend
+    os.environ["AODD_SEARCH_GUARD_STATE"] = str(T / "sg-state")
 
     res_deny = adapter.handle_pre({
         "conversationId": "gg-sess-1",
         "workspacePaths": [str(gproj)],
         "toolCall": {"name": "run_command", "args": {"CommandLine": "grep -rn foo ."}}
     })
-    assert res_deny.get("decision") == "allow" and "graphify" in res_deny.get("additionalContext", ""), res_deny
+    assert res_deny.get("decision") == "allow" and "project_search" in res_deny.get("additionalContext", ""), res_deny
 
     adapter.handle_post({
         "conversationId": "gg-sess-1",
         "workspacePaths": [str(gproj)],
-        "toolCall": {"name": "run_command", "args": {"CommandLine": "graphify query 'foo'"}}
+        "toolCall": {"name": "run_command", "args": {"CommandLine": "python3 project_search.py query foo"}}
     })
     res_allow = adapter.handle_pre({
         "conversationId": "gg-sess-1",
@@ -306,6 +308,7 @@ def test_graphify_guard_integration():
         "toolCall": {"name": "run_command", "args": {"CommandLine": "grep -rn foo ."}}
     })
     assert res_allow == {"decision": "allow"}, res_allow
+    os.environ.pop("AODD_INDEX_CMD", None); os.environ.pop("AODD_SEARCH_GUARD_STATE", None)
 
 
 if __name__ == "__main__":
@@ -313,7 +316,7 @@ if __name__ == "__main__":
     test_done_gate_integration()
     test_skill_capture_integration()
     test_auditor_readonly_integration()
-    test_graphify_guard_integration()
+    test_search_guard_integration()
     test_advice_hooks_never_deny()
     test_secret_deny_only_for_hard_secrets()
     test_install_agy()

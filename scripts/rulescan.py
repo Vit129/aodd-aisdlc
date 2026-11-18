@@ -2,7 +2,7 @@
 import ast, pathlib, re
 
 root = pathlib.Path(__file__).resolve().parent.parent
-EXCLUDE = ("CHANGELOG.md", "graphify-out/", ".tmp/", ".kouen-worktrees/")
+EXCLUDE = ("CHANGELOG.md", "code-index-out/", ".tmp/", ".kouen-worktrees/")
 
 
 def _ok(p):

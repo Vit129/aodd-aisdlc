@@ -29,7 +29,7 @@ Search with Haiku, check with Sonnet, escalate to the `advisor`.
 | Work | 1. Do it | 2. Check it |
 |---|---|---|
 | Search, lookup, research, file/log sweeps | Haiku returns facts + paths, no dumps | Sonnet reads the cited files itself before building on it |
-| Code lookup (graphify tools or grep) | Haiku returns file paths + edges | Sonnet reads in full every file it will edit or judge |
+| Code lookup (`project_search` or rg) | Haiku returns file paths + edges | Sonnet reads in full every file it will edit or judge |
 | Run an approved build / test / deploy, verify a page | Haiku reports pass/fail + output excerpt | Sonnet re-checks the excerpt against the brief |
 | Write or change code | Haiku, from Sonnet's brief (Sonnet itself when very easy) | main reviews every diff |
 | Debug, plan, review a diff | main session | main |

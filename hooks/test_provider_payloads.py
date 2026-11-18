@@ -8,9 +8,9 @@ from pathlib import Path
 HOOKS = Path(__file__).resolve().parent
 T = Path(tempfile.mkdtemp()).resolve()
 env = T / ".env"; env.write_text('KEY="sk-abcdefghijklmnopqrstuvwx"\n')
-(T / "graphify-out").mkdir(); (T / "graphify-out" / "graph.json").write_text("{}")
+(T / ".git").mkdir()
 ENV = {k: v for k, v in os.environ.items() if not k.startswith("AODD_")}
-ENV.update(AODD_HOME=str(T / "home"), AODD_STATE=str(T / "state"), GRAPHIFY_GUARD_STATE=str(T / "gstate"), HOME=str(T))
+ENV.update(AODD_HOME=str(T / "home"), AODD_STATE=str(T / "state"), AODD_SEARCH_GUARD_STATE=str(T / "gstate"), AODD_INDEX_CMD="python3 -c pass {root}", HOME=str(T))
 
 
 def run(script, payload, *args):
@@ -40,9 +40,9 @@ for name, pl in shapes.items():
     assert out and out["hookSpecificOutput"]["permissionDecision"] == "deny", name   # hard-safety set: every provider
     safe = {**pl, "session_id": pl["session_id"] + "x", "tool_input": {"command": "ls"}}
     assert run("secret-read-guard.py", safe) is None, name
-    # graphify-guard nudges once per session and never blocks, whoever the caller is
+    # search-guard nudges once per session and never blocks, whoever the caller is
     raw = {**pl, "session_id": pl["session_id"] + "g", "tool_input": {"command": "grep -rn foo src"}}
-    out = run("graphify-guard.py", raw, "pre")
+    out = run("code-search-guard.py", raw, "pre")
     assert out and "permissionDecision" not in out["hookSpecificOutput"], name
-    assert run("graphify-guard.py", raw, "pre") is None, name
+    assert run("code-search-guard.py", raw, "pre") is None, name
 print("ok")

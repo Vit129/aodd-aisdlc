@@ -51,23 +51,22 @@ Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, sim
 - **Mark a deliberate shortcut** that has a known ceiling (global lock, O(n²) scan, naive heuristic) with a comment `shortcut: <the limit>, <when to upgrade>` (older code may say `ponytail:`). List them with `git grep -nE '(#|//|/[*]) ?(shortcut|ponytail):'`; a marker with no upgrade trigger is debt that rots, flag it `no-trigger`.
 - **Never lazy about:** understanding the problem, input validation at trust boundaries, error handling that prevents data loss, security, accessibility, calibration real hardware needs, anything explicitly requested. Non-trivial logic leaves ONE runnable check behind (a small assert-based self-check or one test file); trivial one-liners need none.
 
-- Never write or open report-style HTML files with large embedded data (for example graphify's `graph.html`, or a test/coverage report) in the workspace: they burn tokens and context. For graphify use `query`/`path`/`explain`; write other documents and reports as Markdown or plain text.
+- Never write or open report-style HTML files with large embedded data (for example a code-graph visualization, or a test/coverage report) in the workspace: they burn tokens and context. For code questions use `project_search`; write other documents and reports as Markdown or plain text.
 
-## 3. Graph Before & After Edit
+## 3. Search Before Edit
 
-If `graphify-out/graph.json` exists at or above the project root, **find and change code through graphify** (optional tool, installed separately; MCP `mcp__graphify__*` or the CLI, same functions):
+Find code with `project_search` (one call returns text hits and, when a graph backend is configured, graph hits such as callers and impact). No specific tool is assumed: `rg` + `Read` is the primary method and always works; the graph backend is optional and configured in one place (`AODD_INDEX_CMD`, see the README).
 
 | To do | Use |
 |---|---|
-| find a symbol / concept / file | `query "<q>"`, `explain "<symbol>" --snippet` (get_snippet) |
-| find exact text, error message, config key | `graphify grep "<text>"` (search_text) — hits show their enclosing symbol |
-| who is affected by a change | `affected "<symbol>"`, `affected --git-diff` (blast_radius) |
-| where a Python parameter flows | `flow "<fn>" --param p --to "<sink regex>"` (trace_flow) |
-| rename / replace / insert / delete a symbol | `edit rename\|replace\|insert-after\|delete "<symbol>" ...` — dry run first, `--apply` to write |
+| find a symbol / concept / file | `project_search "<q>"`; then `Read` the file |
+| find exact text, error message, config key | `project_search "<text>"`, or `rg "<text>"` |
+| who is affected by a change | `project_search` for callers/impact; confirm with `rg` on the symbol name |
+| rename a symbol | `rg` every use, change each, run the tests |
 
-Raw `grep`/`find` are for the cases the graph cannot answer: confirming a caller list is exhaustive before changing a signature (the graph can miss dynamic or attribute calls), files graphify does not index, or editing a specific known line — say so when you use them. Skip all of this for trivial changes (typos, config values, docs).
+`rg` is the final check for a change that must reach every caller (a graph can miss dynamic or attribute calls) and for files a backend does not index (YAML, config, scripts). Skip all of this for trivial changes (typos, config values, docs).
 
-**After modifying code:** refresh the graph as the last step of `rules/ai-sdlc-workflow.md` says.
+**After modifying code:** nothing to refresh by hand; the index (when configured) updates on its own.
 
 ## 4. Surgical Changes
 
@@ -166,14 +165,14 @@ Each step names what to read or call next. **[hook]** means a hook reminds you a
 
 | Step | Do | Read / call |
 |---|---|---|
-| 1. Orient | Project root `ARCHITECTURE.md`, `CONTEXT.md`; find code via graphify if the project has `graphify-out/`; past decisions in the project's memory (`knowledge/`, `plans/`) | `rules/product-design.md` |
+| 1. Orient | Project root `ARCHITECTURE.md`, `CONTEXT.md`; find code with `project_search` (or rg); past decisions in the project's memory (`knowledge/`, `plans/`) | `rules/product-design.md` |
 | 2. Size it | Medium: Architecture-First (§1, § Anti-Monolith), `chief-of-staff` light. AODD triage is in `rules/ai-sdlc-workflow.md`. Large: `chief-of-staff` full. Every change takes a path in `rules/ai-sdlc-workflow.md` | `skills/chief-of-staff` |
 | 3. Branch | New branch from `main` before the first edit (rule only; the hook reminds you once before switching away from uncommitted work, not about editing on `main`) | your project's git conventions |
 | 4. Place code | Logic vs UI vs Tests split (§6) & Anti-Monolith pattern (target 300–400 lines); structure work → blueprint | `rules/coding/project-blueprint.md`, `project-blueprint` skill |
 | 5. Domain skill | Web/mobile UI → `frontend-dev` (+ `uxui-designer` if no design tokens); API/DB → `backend-dev`; SwiftUI → `macos-swiftui`; auth/input/secrets → `security`; UI layout bug → `rules/gui-fixes.md` | the skill |
 | 6. Verify | Use covering PASS scenario results; otherwise run applicable tests/checks (`rules/ai-sdlc-workflow.md` § Verification evidence). Reuse valid evidence without duplicate runs | — |
 | 7. Review | Medium+: review the diff against the brief (an independent reviewer if available); **[done-gate hook notes a non-PASS verdict]** | `rules/coding/review-report.md` |
-| 8. Close | Tick progress boxes **[done-gate hook]**, skill patch **[skill-capture-nudge hook, at 20+ tool calls with a learning signal]**, graph refresh if used | `docs/skill-learning.md` |
+| 8. Close | Tick progress boxes **[done-gate hook]**, skill patch **[skill-capture-nudge hook, at 20+ tool calls with a learning signal]** | `docs/skill-learning.md` |
 
 - **Read before write:** understand existing code before modifying it.
 - **End the reply** with one or two lines: what you skipped or did not check, and any risk the user must know.

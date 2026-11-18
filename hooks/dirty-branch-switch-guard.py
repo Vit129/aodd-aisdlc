@@ -51,8 +51,8 @@ def unquoted(cmd: str) -> str:
     return re.sub(r"\"(?:\\.|[^\"\\])*\"|'[^']*'", '""', cmd)
 
 
-# a graphify refresh rewrites graphify-out/ after every session; in repos that track it that is never "unfinished work"
-GENERATED = ":(exclude,glob)**/graphify-out/**"
+# generated code-index output is never "unfinished work"
+GENERATED = ":(exclude,glob)**/code-index-out/**"
 
 
 def git(repo, *args):

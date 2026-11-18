@@ -56,7 +56,7 @@ see the [effort ladder](rules/ai-sdlc/delegation.md#effort-ladder).
 | `hooks/coding-rules-gate.py` | PreToolUse/PostToolUse hook: the first code edit of a session gets one reminder to read `rules/coding.md` (if you have one) and the project's `ARCHITECTURE.md`; the edit always goes through |
 | `hooks/delegation-nudge.py` | PostToolUse hook: one reminder per session to hand lookups and big outputs to a Haiku subagent (`AODD_DELEGATION_NUDGE=0` turns it off) |
 | `hooks/dirty-branch-switch-guard.py` | PreToolUse hook: one reminder per session before a branch switch or new worktree while earlier work is uncommitted; the command still runs |
-| `hooks/graphify-guard.py` | graph-first lookup reminder (once per session) and graph refresh; a silent no-op unless `graphify-out/graph.json` exists |
+| `hooks/code-search-guard.py` | tool-neutral code-search guard (replaces an older, tool-named hook; the installer drops the old registration): one `project_search` reminder per session before the first raw search, and an index refresh at Stop when code changed; a silent no-op unless a search backend is configured (`AODD_INDEX_CMD`) |
 | `hooks/work-log.py` | Stop hook: one record per session (tokens, tool calls, rework signals); `--report YYYY-MM` |
 | `scripts/skill_learning_report.py`, `scripts/agent_ops_gather.py` | the curator (stale/archive/merge candidates, capture yield) and the agent-ops input gatherer |
 | `scripts/skill_trigger_eval.py` | measures whether a model opens a model-invoked skill on its own, from unseen user phrasings; under half → make it user-invoked |
@@ -143,7 +143,7 @@ Full by default: every module that works per repository (agent-memory). `--core-
 ### Companion plugins (optional, installed separately, not copied here)
 
 - **9arm-skills**: upstream repo `github.com/thananon/9arm-skills` (`debug-mantra`, `post-mortem`, `scrutinize`, ...). Install with `npx skills add thananon/9arm-skills -g -y`. The upstream repo ships no Claude Code marketplace manifest; to use it as a plugin, wrap it in a one-plugin local marketplace whose plugin source is that GitHub repo.
-- **graphify** (code knowledge graph for code navigation): `uv tool install graphifyy` (PyPI package `graphifyy`), or `pip install graphifyy`. Add the `mcp` extra (`graphifyy[mcp]`) if you want the MCP server; check the extra against the version of `mcp` you run. Then `graphify update .` in a project. The workflow only uses it when `graphify-out/` exists.
+- **Code search backend** (optional, no specific tool required): agents search code with `project_search` (one call returns text hits and, if a graph backend is behind it, graph hits). `rg` + `Read` is the primary method and always works. To plug in an index, set `AODD_INDEX_CMD` to the command that builds or refreshes it (`{root}` is replaced by the project root); if unset and `<claude home>/scripts/lib/project_search.py` exists, the guard runs `python3 <that file> index <root>`. Set `AODD_SEARCH_CLI` (comma-separated command names) so calls to your backend CLI count as "searched". Index output is generated: never track it in git. `AODD_SEARCH_GUARD=0` turns the guard off.
 
 ## Optional modules
 
@@ -156,7 +156,7 @@ Core works alone. Each module is a folder `optional/<module>/` with its own `ski
 
 Add one later: `./install.sh --with agent-memory` (or `--with agent-memory,schedules`).
 
-Not included: cross-session full-text search (`session_search`) and the unified `recall.py`. The indexer reads five tools' private transcript formats and the unified query needs graphify and an embedding model; neither is self-contained enough to ship neutral.
+Not included: cross-session full-text search (`session_search`) and the unified `recall.py`. The indexer reads five tools' private transcript formats and the unified query needs a code-search backend and an embedding model; neither is self-contained enough to ship neutral.
 
 ### Schedules
 
@@ -208,7 +208,7 @@ Tests point `AODD_HOME` at a temp directory and use stub models; no network, no 
 
 Delete the files this repo copied (for Codex: from `$CODEX_HOME`, also the block between the `aodd:begin` and `aodd:end` markers in `AGENTS.md` and the hook entries in `hooks.json`) from your Claude home, remove the matching hook entries from `settings.json` (or restore `settings.json.aodd-bak`) and the `@rules/ai-sdlc-workflow.md` line from `CLAUDE.md`, and optionally delete `~/.aodd`. Because the hook commands are fail-open, deleting only the hook files already makes them inert.
 
-- **Core**: `skills/{chief-of-staff,ai-sdlc,agent-ops,reverse-engineer-anything}`, `agents/{auditor,advisor}.md`, `rules/ai-sdlc-workflow.md`, `rules/ai-sdlc/`, `rules/effort/`, `hooks/{done-gate,auditor-readonly,skill-capture-nudge,secret-read-guard,coding-rules-gate,dirty-branch-switch-guard,graphify-guard,work-log,delegation-nudge,_aodd_paths,_aodd_secrets}.py`, `scripts/{audit,check_agy_proposal,skill_learning_report,skill_trigger_eval,agent_ops_gather}.py`, `docs/skill-learning.md`, plus the `env` keys you had it write.
+- **Core**: `skills/{chief-of-staff,ai-sdlc,agent-ops,reverse-engineer-anything}`, `agents/{auditor,advisor}.md`, `rules/ai-sdlc-workflow.md`, `rules/ai-sdlc/`, `rules/effort/`, `hooks/{done-gate,auditor-readonly,skill-capture-nudge,secret-read-guard,coding-rules-gate,dirty-branch-switch-guard,code-search-guard,work-log,delegation-nudge,_aodd_paths,_aodd_secrets}.py`, `scripts/{audit,check_agy_proposal,skill_learning_report,skill_trigger_eval,agent_ops_gather}.py`, `docs/skill-learning.md`, plus the `env` keys you had it write.
 - **agent-memory**: `hooks/{memory-recall,memory-write-scan,session-start-recent}.py` and the three entries (`UserPromptSubmit`, `SessionStart`, and `memory-write-scan` under `PreToolUse`) in `settings.json`. Your `$AODD_MEMORY` notes are yours; the installer never touches them.
 - **schedules**: first `python3 <claude home>/scripts/install-schedules.py --uninstall` (removes the `# aodd:begin` ... `# aodd:end` cron block or the `com.aodd.*` launch agents; `--dry-run` previews), then delete `scripts/{install-schedules,aodd_job}.py` and `schedules/`.
 

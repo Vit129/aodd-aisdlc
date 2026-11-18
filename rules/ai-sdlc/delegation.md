@@ -55,6 +55,28 @@ Five levels, shared by every vendor: `low` < `medium` < `high` < `xhigh` < `max`
 - `xhigh` and `max` run only when a ticket says so or the ai-sdlc review stage requires `xhigh`.
 - A passing check returns the task to its starting level.
 
+## Model escalation (proposal, not active)
+
+Status: proposal. It stays inactive until the CEO confirms the thresholds and the per-ticket budget below, and a bake-off
+(see Bake-off) supports it. Until then the Model split table and the effort ladder above apply unchanged.
+
+The model does not judge its own difficulty. Escalation runs on external signals only: check results, diff scope, review
+verdicts and token use. Each ticket starts at its Model split tier and effort `low`.
+
+Tier order: small (Haiku) → middle (Sonnet) → big (Opus/Fable, advisor only). Escalate one tier when, on the same diagnosed problem:
+
+1. A required check still fails after 3 consecutive attempts at `high` effort on the current tier.
+2. The diff touches a file outside the brief's scope, or the main review rejects the diff twice.
+3. The ticket's token budget is more than 50% spent with no passing check.
+
+Rules for escalation:
+
+- Expected RED tests, unavailable services, environment failures and missing permissions never trigger escalation (same as the effort ladder).
+- The middle tier fixes from the failing check output; it does not re-plan. Re-planning stays with the big tier.
+- The big tier is reached through the advisor, at most two calls per task (Cheap-model delegation). If it still fails, stop and report to the user.
+- Each ticket records its tier path, effort per attempt, attempt count, pass or fail and total tokens, so the bake-off can measure the rule.
+- Ticket token budget: `[CEO to set]`. A ticket that reaches its budget stops and reports, whatever its tier.
+
 ## Bake-off: a tier change is measured, not guessed
 
 Before a model or default effort changes for a work type: pick 3-5 past tickets with known outcomes from `$AODD_PLANS`, run each

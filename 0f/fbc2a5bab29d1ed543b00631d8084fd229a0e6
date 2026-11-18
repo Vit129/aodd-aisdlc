@@ -1,0 +1,85 @@
+.gitignore
+  s_57b54754110592::t_0c7926789923de 6
+AGENTS.md
+  s_57b54754110592::t_adf70d17118acf 10
+ARCHITECTURE.md
+  s_57b54754110592::t_8f4b2bb9d382af 23
+README.md
+  s_57b54754110592::t_8d0cdedd849a01 59,146,159,211
+VERSION
+  s_57b54754110592::t_ebebb68c905418 1
+adapters/antigravity-hook-adapter.py
+  s_57b54754110592::t_faa15690591a61 81,205,393
+adapters/test_antigravity_hook_adapter.py
+  s_57b54754110592::t_5f407eebe9fbea 240,285,288-291,298,303,311,319
+docs/antigravity.md
+  s_57b54754110592::t_aca7dab1ce8ed4 17
+hooks/code-search-guard.py
+  s_57b54754110592::t_f31d67a47d13c4 2-19,38-39,42-43,49,52,57-73,134-136,138-143,149-150,153,172,175-176,184,189,203-204,210-216,218,235,243,245,255,258-262,264,266-268
+hooks/dirty-branch-switch-guard.py
+  s_57b54754110592::t_b6a471bcae2109 54-55
+hooks/secret-read-guard.py
+  s_57b54754110592::t_04f9a417cbf063 62
+hooks/test_allow_by_default.py
+  s_57b54754110592::t_5edb15de89591e 20
+hooks/test_code_search_guard.py
+  s_57b54754110592::t_9473ecfbc9e6f7 3,11-17,19,21,23-30,33-40,71,74,78-82,86-91,93,100-101,103,105-107,109,111-114,116-120
+hooks/test_coding_rules_gate.py
+  s_57b54754110592::t_2e4bd5f684cc71 24
+hooks/test_dirty_branch_switch_guard.py
+  s_57b54754110592::t_e1fe0bd910efbc 45,49-51
+hooks/test_provider_payloads.py
+  s_57b54754110592::t_3a91b8f1834510 11,13,43,45,47
+hooks/test_secret_read_guard.py
+  s_57b54754110592::t_e12789cfef7678 86,89,91,93
+install.sh
+  s_57b54754110592::t_3d4374205cfa30 274-276,318-327
+rules/ai-sdlc-workflow.md
+  s_57b54754110592::t_c6a5635c0d83eb 39-40,44,123
+rules/ai-sdlc/delegation.md
+  s_57b54754110592::t_0f5a31efa8a35d 32
+rules/ai-sdlc/git-ops.md
+  s_57b54754110592::t_9ca54365db7021 11,29-30
+rules/coding.md
+  s_57b54754110592::t_3d778a2c30d027 54,56,58,62-65,67,69,168,175
+rules/coding/release.md
+  s_57b54754110592::t_380e6b4837e4ee 15
+rules/product-design.md
+  s_57b54754110592::t_3af6021a813e1b 77
+scripts/release.py
+  s_57b54754110592::t_0c5a9c9a97fabe 168,176
+scripts/rulescan.py
+  s_57b54754110592::t_1800b5b5ec923e 5
+scripts/skill_learning_report.py
+  s_57b54754110592::t_464aea9496c576 187
+scripts/test_agent_ops_gather.py
+  s_57b54754110592::t_1f998f705a1ce7 8-11,13,25,29
+scripts/test_install.py
+  s_57b54754110592::t_29111a8e252d72 47,258-259
+skills/ai-sdlc/phases/phase2-existing-asset-scan.md
+  s_57b54754110592::t_d926a28663e5de 14
+skills/ai-sdlc/phases/phase2-reuse-retest.md
+  s_57b54754110592::t_64868cfff54734 12-15,17
+skills/ai-sdlc/phases/phase2-reuse-table.md
+  s_57b54754110592::t_44679fd92d824e 37
+skills/ai-sdlc/phases/phase5-qa-verify.md
+  s_57b54754110592::t_6517c36d1a9bf2 26
+skills/ai-sdlc/references/skill-routing.md
+  s_57b54754110592::t_8240c25319018f 29
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "0ffbc2a5bab29d1ed543b00631d8084fd229a0e6",
+  "prompts": {},
+  "sessions": {
+    "s_57b54754110592": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7860b657-e5ae-49bd-92e1-c3eb70cfb06d",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

@@ -78,7 +78,7 @@ def load_hooks(hooks_dir: Path | None = None) -> dict:
         "srg": _load_module("secret_read_guard", hdir / "secret-read-guard.py"),
         "crg": _load_module("coding_rules_gate", hdir / "coding-rules-gate.py"),
         "dbs": _load_module("dirty_branch_switch_guard", hdir / "dirty-branch-switch-guard.py"),
-        "gg": _load_module("graphify_guard", hdir / "graphify-guard.py"),
+        "gg": _load_module("search_guard", hdir / "code-search-guard.py"),
         "wl": _load_module("work_log", hdir / "work-log.py"),
     }
 
@@ -202,7 +202,7 @@ def handle_pre(agy_data: dict) -> dict:
             except Exception:
                 pass
 
-        # 5. graphify-guard (if installed): advice only
+        # 5. code-search-guard (if installed): advice only
         h_gg = get_hook("gg")
         if h_gg and hasattr(h_gg, "decide_pre"):
             try:
@@ -390,7 +390,7 @@ def handle_stop(agy_data: dict) -> dict:
             except Exception:
                 pass
 
-        # 3. graphify-guard stop refresh (if installed)
+        # 3. search-guard stop index refresh (if installed)
         h_gg = get_hook("gg")
         if h_gg and hasattr(h_gg, "decide_stop"):
             try:

@@ -83,13 +83,13 @@ tera = d / "cliff.toml"; tera.write_text('body = """{{ version | trim_start_matc
 assert not h.is_secret(str(tera))                                  # template call args are not secrets
 mini = d / "m.json"; mini.write_text('{"a":1,"pat":"ghp_realvalue123"}')
 assert h.is_secret(str(mini))                                      # minified JSON key after "," still caught
-gdir = d / "graphify-out"; gdir.mkdir()
+gdir = d / "code-index-out"; gdir.mkdir()
 gg = gdir / "graph.json"; gg.write_text('{"label": "max_tokens: x", "pat": "ghp_realvalue123", "api_key": "sk-abcdefghijklmnopqrstuvwx"}\n')
 assert dec("Read", file_path=str(gg)) is None and dec("Bash", command=f"cat {gg}") is None   # generated graph: allowed
-assert dec("Bash", command="grep -n foo graphify-out/graph.json") is None
+assert dec("Bash", command="grep -n foo code-index-out/graph.json") is None
 ge = gdir / ".env"; ge.write_text('export DEEPSEEK_API_KEY="sk-abcdefghijklmnopqrstuvwx"\n')
-assert denied(dec("Read", file_path=str(ge)))   # name-based secret under graphify-out stays blocked
+assert denied(dec("Read", file_path=str(ge)))   # name-based secret under code-index-out stays blocked
 ge2 = d / "other" / "graph.json"; ge2.parent.mkdir(); ge2.write_text(gg.read_text())
-assert denied(dec("Read", file_path=str(ge2)))   # same content (real token shape) outside graphify-out stays blocked
+assert denied(dec("Read", file_path=str(ge2)))   # same content (real token shape) outside code-index-out stays blocked
 assert denied(dec("Read", file_path=str(env)))   # real .env unchanged
 print("ok")

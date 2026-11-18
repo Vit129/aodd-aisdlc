@@ -17,7 +17,7 @@ CLI = [  # (script, modes); "" = no argument
     (HOOKS / "secret-read-guard.py", [""]),
     (HOOKS / "coding-rules-gate.py", ["pre", "post"]),
     (HOOKS / "dirty-branch-switch-guard.py", [""]),
-    (HOOKS / "graphify-guard.py", ["pre", "post", "stop"]),
+    (HOOKS / "code-search-guard.py", ["pre", "post", "stop"]),
     (HOOKS / "skill-capture-nudge.py", ["", "post"]),
     (HOOKS / "done-gate.py", [""]),
     (HOOKS / "delegation-nudge.py", [""]),

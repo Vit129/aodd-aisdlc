@@ -1,20 +1,22 @@
 #!/usr/bin/env python3
-"""graphify-guard: ONE central Claude Code hook that makes every project with a graph behave alike.
+"""search-guard (file name kept so existing hook registrations keep working): tool-neutral code-search hook.
 
-A project "has a graph" when `graphify-out/graph.json` exists at or above the session's cwd; anywhere
-else every mode is a silent no-op, so new graphified projects are covered with zero setup.
+Agents search code with `project_search` (one call returns text and graph hits; MCP tool
+`mcp__memory__project_search` or any server exposing a tool of that name); rg + Read is the primary
+method and any graph backend is optional. The hook is active only when a search backend is configured:
+`AODD_INDEX_CMD` (a command, `{root}` is replaced by the project root) or, if that file exists,
+`<claude home>/scripts/lib/project_search.py index <root>`. Without one every mode is a silent no-op
+and grep is never touched.
 
-  pre   (PreToolUse  Bash|Grep|Read|Glob)  graph-first advice, never a block: the first raw search (Grep
-        tool, or a Bash grep/rg/ag/ack/fd/find) or source-file read of a session, before graphify was
-        consulted, gets ONE line of context. Nothing is ever denied: the graphify server or binary can be
-        down, and a PreToolUse hook cannot see a lookup that runs in the same command.
-  post  (PostToolUse Bash|mcp__graphify__*) records that graphify was consulted (query/grep/explain/
-        affected/path/flow/dead-code/match/edit via the CLI, or any mcp__graphify__ tool).
-  stop  (Stop) refreshes the graph with `graphify update .` (AST only, free) when a code file changed
-        since the graph was built, so "update after editing" is guaranteed per turn.
+  pre   (PreToolUse  Bash|Grep|Read|Glob)  advice, never a block: the first raw search or source-file
+        read of a session, before `project_search` was consulted, gets ONE line of context.
+  post  (PostToolUse Bash|mcp__.*)  records that search was consulted: any tool named `project_search`
+        (also `mcp__<server>__project_search`), or a Bash call to the backend CLI (`project_search.py`,
+        or a command named in `AODD_SEARCH_CLI`, comma separated).
+  stop  (Stop) runs the index command when a code file changed since the last index run, so the index
+        is refreshed once per turn.
 
-Calls the `graphify` binary directly (the system python usually cannot import graphify, which lives
-in its own tool env). Without graphify installed every mode is a silent no-op. Fails open on any error. Disable with GRAPHIFY_GUARD=0.
+Fails open on any error. Disable with AODD_SEARCH_GUARD=0. State markers: `AODD_SEARCH_GUARD_STATE`.
 """
 import hashlib
 import json
@@ -27,28 +29,45 @@ import sys
 from pathlib import Path
 
 RAW_SEARCH = {"grep", "egrep", "fgrep", "rg", "ripgrep", "ag", "ack", "fd", "find"}
-LOOKUP = {"query", "grep", "explain", "affected", "path", "flow", "dead-code", "match", "pattern", "edit"}
 CODE_EXT = {
     ".py", ".js", ".jsx", ".mjs", ".cjs", ".ts", ".tsx", ".swift", ".go", ".rs", ".java", ".kt", ".kts",
     ".c", ".h", ".m", ".mm", ".cpp", ".cc", ".cxx", ".hpp", ".cs", ".rb", ".php", ".gd", ".sh", ".lua",
     ".dart", ".scala", ".vue", ".svelte",
 }
 GATE_MSG = (
-    'graphify-first (advice, not a block): prefer `graphify query "<question>"` or `graphify grep "<text>"` '
-    'over raw code search (or mcp__graphify__*). Shown once per session.'
+    "search-first (advice, not a block): prefer `project_search` (text + graph hits in one call) "
+    "before raw code search. Shown once per session."
 )
 NUDGE_MSG = (
-    "graphify-out/ exists: prefer `graphify query/explain --snippet/grep/affected` over reading source files "
-    "to explore; read a file when you need to edit specific lines."
+    "A code-search backend is configured: use `project_search` to explore; read a file when you "
+    "need to edit specific lines."
 )
 
 
 # ---- helpers ---------------------------------------------------------------------------------
 def find_root(cwd):
+    """Nearest ancestor that is a git checkout, else None."""
     p = Path(cwd).resolve()
     for d in [p, *p.parents]:
-        if (d / "graphify-out" / "graph.json").is_file():
+        if (d / ".git").exists():
             return d
+    return None
+
+
+def _claude_home():
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import _aodd_paths
+    return _aodd_paths.claude_home()
+
+
+def index_cmd(root):
+    """Argv of the configured index command, or None when no backend is configured."""
+    custom = os.environ.get("AODD_INDEX_CMD", "").strip()
+    if custom:
+        return [w.replace("{root}", str(root)) for w in shlex.split(custom)]
+    script = _claude_home() / "scripts" / "lib" / "project_search.py"
+    if script.is_file():
+        return ["python3", str(script), "index", str(root)]
     return None
 
 
@@ -108,25 +127,30 @@ def non_code_targets(words, cwd):
 
 
 def is_raw_search(command, cwd=None):
-    if "graphify-out" in command:
-        return False
     return any(w and os.path.basename(w[0]) in RAW_SEARCH and not non_code_targets(w, cwd or os.getcwd())
                for w in map(_first_words, _segments(command)))
 
 
-def uses_graphify(command):
+def uses_search(command):
+    """True for a Bash call to the search backend CLI (not an index run)."""
+    names = {n.strip() for n in os.environ.get("AODD_SEARCH_CLI", "").split(",") if n.strip()}
     for w in map(_first_words, _segments(command)):
-        if len(w) >= 2 and os.path.basename(w[0]) == "graphify" and w[1] in LOOKUP:
+        if not w:
+            continue
+        head = os.path.basename(w[0])
+        if head in names and not (len(w) >= 2 and w[1] == "index"):
+            return True
+        if head.startswith("python") and len(w) >= 3 and os.path.basename(w[1]) == "project_search.py" and w[2] != "index":
             return True
     return False
 
 
 def _state_dir():
-    if os.environ.get("GRAPHIFY_GUARD_STATE"):
-        return Path(os.environ["GRAPHIFY_GUARD_STATE"])
+    if os.environ.get("AODD_SEARCH_GUARD_STATE"):
+        return Path(os.environ["AODD_SEARCH_GUARD_STATE"])
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     import _aodd_paths
-    return _aodd_paths.state() / "graphify-guard"
+    return _aodd_paths.state() / "search-guard"
 
 
 def _marker(session_id, root, kind):
@@ -145,11 +169,11 @@ def _hso(**kw):
 
 # ---- pre -------------------------------------------------------------------------------------
 def decide_pre(payload):
-    if os.environ.get("GRAPHIFY_GUARD") == "0":
+    if os.environ.get("AODD_SEARCH_GUARD") == "0":
         return None
     root = find_root(payload.get("cwd") or os.getcwd())
-    if root is None:
-        return None
+    if root is None or (index_cmd(root) is None and not os.environ.get("AODD_SEARCH_CLI")):
+        return None  # no backend configured: never interfere with grep
     tool, inp, sid = payload.get("tool_name"), payload.get("tool_input") or {}, payload.get("session_id")
     if not sid:  # cannot throttle without a session -> stay silent rather than repeat on every call
         return None
@@ -157,12 +181,12 @@ def decide_pre(payload):
         msg = GATE_MSG
     elif tool in ("Read", "Glob"):
         target = str(inp.get("file_path") or inp.get("pattern") or "")
-        if "graphify-out" in target or Path(target).suffix.lower() not in CODE_EXT:
+        if Path(target).suffix.lower() not in CODE_EXT:
             return None
         msg = NUDGE_MSG
     else:
         return None
-    nudged = _marker(sid, root, "nudged")  # one graphify line per session, whichever tool comes first
+    nudged = _marker(sid, root, "nudged")  # one advice line per session, whichever tool comes first
     if nudged.exists() or _marker(sid, root, "used").exists():
         return None
     _touch(nudged)
@@ -176,17 +200,22 @@ def record_post(payload):
     if root is None or not sid:
         return
     tool = str(payload.get("tool_name") or "")
-    if tool.startswith("mcp__graphify__") or (
-        tool == "Bash" and uses_graphify(str((payload.get("tool_input") or {}).get("command", "")))
+    if tool == "project_search" or tool.endswith("__project_search") or (
+        tool == "Bash" and uses_search(str((payload.get("tool_input") or {}).get("command", "")))
     ):
         _touch(_marker(sid, root, "used"))
 
 
 # ---- stop ------------------------------------------------------------------------------------
-def changed_since_graph(root):
-    graph = root / "graphify-out" / "graph.json"
+def _index_marker(root):
+    return _state_dir() / f"index-{hashlib.sha1(str(root).encode()).hexdigest()[:10]}"
+
+
+def changed_since_index(root):
+    """Code files changed (git status) since the last index run; all of them when it never ran."""
+    marker = _index_marker(root)
     try:
-        built = graph.stat().st_mtime
+        built = marker.stat().st_mtime if marker.exists() else 0
         out = subprocess.run(
             ["git", "-C", str(root), "status", "--porcelain", "-z"], capture_output=True, text=True, timeout=10
         )
@@ -203,7 +232,7 @@ def changed_since_graph(root):
         status, path = e[:2], e[3:]
         if status[0] in "RC":
             i += 1  # the next entry is the original path
-        if path.startswith("graphify-out/") or Path(path).suffix.lower() not in CODE_EXT:
+        if Path(path).suffix.lower() not in CODE_EXT:
             continue
         f = root / path
         if "D" in status or (f.is_file() and f.stat().st_mtime > built + 0.5):
@@ -211,15 +240,9 @@ def changed_since_graph(root):
     return sorted(set(changed))
 
 
-def run_update(root):
-    exe = shutil.which("graphify") or str(Path.home() / ".local" / "bin" / "graphify")
-    if not os.path.exists(exe):
-        return 127, "graphify not installed"
+def run_index(root, cmd):
     try:
-        r = subprocess.run(
-            [exe, "update", "."], cwd=root, capture_output=True, text=True, timeout=150,
-            env={**os.environ, "GRAPHIFY_NO_OPEN": "1"},
-        )
+        r = subprocess.run(cmd, cwd=root, capture_output=True, text=True, timeout=150)
     except subprocess.TimeoutExpired:
         return 124, "timed out after 150s"
     except OSError as exc:
@@ -229,18 +252,20 @@ def run_update(root):
 
 
 def decide_stop(payload):
-    if payload.get("stop_hook_active") or os.environ.get("GRAPHIFY_GUARD") == "0":
+    if payload.get("stop_hook_active") or os.environ.get("AODD_SEARCH_GUARD") == "0":
         return None
     root = find_root(payload.get("cwd") or os.getcwd())
-    if root is None:
+    cmd = index_cmd(root) if root else None
+    if root is None or cmd is None:
+        return None  # no backend configured: nothing to refresh, stay silent
+    changed = changed_since_index(root)
+    if not changed:
         return None
-    changed = changed_since_graph(root)
-    if not changed or not (shutil.which("graphify") or (Path.home() / ".local/bin/graphify").exists()):
-        return None  # graphify not installed: nothing to refresh, stay silent
-    rc, tail = run_update(root)
+    rc, tail = run_index(root, cmd)
     if rc == 0:
-        return {"systemMessage": f"graphify: graph refreshed ({len(changed)} changed file(s))"}
-    return {"systemMessage": f"graphify: update failed (exit {rc}): {tail} - run `graphify update .` (add --force if code was deleted)"}
+        _touch(_index_marker(root))
+        return {"systemMessage": f"search index refreshed ({len(changed)} changed file(s))"}
+    return {"systemMessage": f"search index update failed (exit {rc}): {tail}"}
 
 
 def main():

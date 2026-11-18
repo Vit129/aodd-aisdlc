@@ -44,7 +44,7 @@ assert (T / "codex/AGENTS.md.aodd-bak").read_text() == "# mine\n" and (T / "code
 run("--codex")
 assert (T / "codex/AGENTS.md").read_text() == first
 hooks = json.loads((T / "codex/hooks.json").read_text())["hooks"]
-assert set(hooks) == {"Stop", "PreToolUse", "PostToolUse"} and len(hooks["Stop"]) == 5   # theirs + four of ours (graphify-guard, skill-capture, done-gate, work-log), once
+assert set(hooks) == {"Stop", "PreToolUse", "PostToolUse"} and len(hooks["Stop"]) == 5   # theirs + four of ours (code-search-guard, skill-capture, done-gate, work-log), once
 assert (T / "codex/skills/ai-sdlc/SKILL.md").is_file() and (T / "codex/agents/auditor.md").is_file()
 assert (T / "codex/skills/project-blueprint/references/release-profiles.md").is_file()
 assert (T / "claude/skills/project-blueprint/references/release-profiles.md").is_file()
@@ -255,7 +255,8 @@ cmds = hook_cmds(G / "settings.json")
 mine_ok = [c for c in cmds if c == "echo mine"]
 ours = [c for c in cmds if c != "echo mine"]
 assert len(mine_ok) == 1 and ours and all('[ -f "$f" ] || exit 0' in c for c in ours), [c for c in ours if "[ -f" not in c]
-assert sum("graphify-guard.py" in c and c.rstrip().endswith(" pre") for c in cmds) == 1      # upgraded in place, not duplicated
+assert sum("code-search-guard.py" in c and c.rstrip().endswith(" pre") for c in cmds) == 1  # old registration replaced, not duplicated
+assert not any("graphify-guard.py" in c for c in cmds)
 assert sum("done-gate.py" in c for c in cmds) == 1
 snap = (G / "settings.json").read_text()
 run("--core-only", extra={"CLAUDE_HOME": str(G)})

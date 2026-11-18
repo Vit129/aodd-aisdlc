@@ -21,7 +21,7 @@ assert not w("git add a.py && git commit -q -F - <<'EOF'\nfix: sed -i on x.sh\nE
 assert not w("gh pr create --body \"$(printf 'run sed -i s/a/b/ x.py first')\"")
 assert w("cat > hooks/y.py <<'EOF'\nprint(1)\nEOF")                                  # redirect on the head line
 assert w("python3 - <<'EOF'\nopen('a.py','w').write('')\nEOF") and w("python3 -c \"open('a.py','w')\"")
-assert not w("sed -i '' 's|^graphify update . && ~/.claude/scripts/x.sh .$|graphify update .|' AGENTS.md")  # .sh only in the sed script
+assert not w("sed -i '' 's|^index update . && ~/.claude/scripts/x.sh .$|index update .|' AGENTS.md")  # .sh only in the sed script
 assert g.bash_target("sed -i '' 's|~/.claude/x.sh|y|' /r/AGENTS.md") is None
 assert g.bash_target("python3 - <<'EOF'\np='/r/t.py'; s='a && b'\nopen(p,'w')\nEOF") == "/r/t.py"
 assert not w("sed -i '' s/a/b/ rules/core.md && git add hooks/x.py")

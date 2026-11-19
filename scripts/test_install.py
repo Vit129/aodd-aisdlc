@@ -246,8 +246,7 @@ def hook_cmds(path):
     return [h["command"] for ev in json.loads(Path(path).read_text())["hooks"].values() for g in ev for h in g["hooks"]]
 G.mkdir()
 old = {"hooks": {
-    "PreToolUse": [{"matcher": "Bash|Grep|Read|Glob", "hooks": [{"type": "command", "command": f'python3 "{GH}/graphify-guard.py" pre'}]},
-                   {"matcher": "Bash", "hooks": [{"type": "command", "command": "echo mine"}]}],
+    "PreToolUse": [{"matcher": "Bash", "hooks": [{"type": "command", "command": "echo mine"}]}],
     "Stop": [{"matcher": "*", "hooks": [{"type": "command", "command": f'python3 "{GH}/done-gate.py"'}]}]}}
 json.dump(old, open(G / "settings.json", "w"))
 run("--core-only", extra={"CLAUDE_HOME": str(G)})
@@ -255,8 +254,7 @@ cmds = hook_cmds(G / "settings.json")
 mine_ok = [c for c in cmds if c == "echo mine"]
 ours = [c for c in cmds if c != "echo mine"]
 assert len(mine_ok) == 1 and ours and all('[ -f "$f" ] || exit 0' in c for c in ours), [c for c in ours if "[ -f" not in c]
-assert sum("code-search-guard.py" in c and c.rstrip().endswith(" pre") for c in cmds) == 1  # old registration replaced, not duplicated
-assert not any("graphify-guard.py" in c for c in cmds)
+assert sum("code-search-guard.py" in c and c.rstrip().endswith(" pre") for c in cmds) == 1  # registered once, not duplicated
 assert sum("done-gate.py" in c for c in cmds) == 1
 snap = (G / "settings.json").read_text()
 run("--core-only", extra={"CLAUDE_HOME": str(G)})

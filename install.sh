@@ -315,16 +315,6 @@ if PROJECT:
         pass  # A missing or invalid global config cannot replace working project hooks.
 hooks = data.setdefault("hooks", {})
 changed = 0
-# migration: the code-search hook used to ship under an older file name; drop its registrations (the new name is added below)
-LEGACY = "graphify-guard.py"
-for event, groups in list(hooks.items()):
-    for group in groups:
-        old = group.get("hooks", [])
-        group["hooks"] = [h for h in old if LEGACY not in h.get("command", "")]
-        if len(group["hooks"]) != len(old):
-            changed += len(old) - len(group["hooks"])
-            print(f"hook    {event:<16} {LEGACY}: {'would remove' if dry else 'removed'} (replaced by code-search-guard.py)")
-    hooks[event] = [g for g in groups if g.get("hooks")]
 for event, matcher, script, args in WANT:
     groups = hooks.setdefault(event, [])
     label = f"{script} {' '.join(args)}".strip()

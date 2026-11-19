@@ -1,0 +1,20 @@
+scripts/test_install.py
+  s_8f021ef8660c43::t_01560a33f85ec6 249
+  s_8f021ef8660c43::t_dc517d23f101a4 257
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "365ec70e4b8786bc7437eb6f232dee8c2ddcac5d",
+  "prompts": {},
+  "sessions": {
+    "s_8f021ef8660c43": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "4aec23af-d6dc-4972-a180-08cb6042c38b",
+        "model": "unknown"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

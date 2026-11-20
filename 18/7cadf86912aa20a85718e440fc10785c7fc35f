@@ -1,0 +1,21 @@
+CHANGELOG.md
+  s_d55e01ba0781c8::t_09700058c200c1 6-14,302
+VERSION
+  s_d55e01ba0781c8::t_09700058c200c1 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "187cadf86912aa20a85718e440fc10785c7fc35f",
+  "prompts": {},
+  "sessions": {
+    "s_d55e01ba0781c8": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1f73a-5ffc-7fd3-aec4-e985485ed5e3",
+        "model": "gpt-6.1-terra"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

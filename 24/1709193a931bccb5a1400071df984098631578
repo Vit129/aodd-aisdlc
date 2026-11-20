@@ -1,0 +1,21 @@
+scripts/test_install.py
+  s_b702f4efbdd257::t_83d7e97d10a53c 249,257
+CHANGELOG.md
+  s_b702f4efbdd257::t_83d7e97d10a53c 6,11,285
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "241709193a931bccb5a1400071df984098631578",
+  "prompts": {},
+  "sessions": {
+    "s_b702f4efbdd257": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1f401-10a8-78d2-a9de-17309418fb2f",
+        "model": "gpt-6.2-sol"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

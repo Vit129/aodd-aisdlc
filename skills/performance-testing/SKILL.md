@@ -97,4 +97,4 @@ Related: when a bottleneck needs falsification-driven root-cause triage (reprodu
 | After baseline results | Single select (acceptable / needs tuning / investigate) | After first successful load test run |
 | After analysis report | Open field | Before declaring performance testing complete |
 
-**Rule:** At decision points, always present 2-3 options with tradeoffs — never a single answer.
+For decision points, follow `rules/ai-sdlc-workflow.md` § Boss mode.

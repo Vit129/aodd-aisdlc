@@ -4,6 +4,12 @@ Sub-file of `rules/coding.md`.
 
 ## 6. Visual Output: .md vs HTML/Artifact
 
+**AODD plan exception:** when `rules/ai-sdlc-workflow.md` requires a plan artifact, use the
+single `plan.html` described there, including for text-only plans. This is a workflow artifact,
+not a checked-in product spec. A complete requirement skips interview questions but does not
+cancel a plan artifact when the selected path requires one. Routine answers and light changes
+with no plan requirement do not need HTML.
+
 - **Test scene/structure docs, specs, scaffolding** → always `.md`/text. Never a checked-in `.html` file — markup overhead costs tokens on every future AI read with no readability gain (see § 2).
 - **UI prototype/demo that a human needs to actually see** (layout, interaction, "does this look right?") → use the **Artifact tool**, not a workspace `.html` file. Rendering it beats describing it in chat text — chat descriptions are lossy and still cost tokens, plus the inevitable "not quite like that" rework loop.
 - **Actual test scripts** (Playwright/Vitest/etc.) → stay as code (`.ts`/`.js`). They execute, they aren't viewed — HTML adds nothing.

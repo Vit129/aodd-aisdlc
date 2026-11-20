@@ -64,7 +64,7 @@ see the [effort ladder](rules/ai-sdlc/delegation.md#effort-ladder).
 | `scripts/audit.py` | runs the cross-family audit and writes the report |
 | `scripts/check_agy_proposal.py` | rejects another agent's skill proposal that lacks evidence |
 | `docs/skill-learning.md` | how skills improve themselves |
-| `install.sh` | installs into Claude Code (and Codex with `--codex`, Antigravity with `--agy`; see `docs/antigravity.md`) |
+| `install.sh` | installs into Claude Code (and Codex with `--codex`, Antigravity CLI with `--agy`; see `docs/antigravity.md`) |
 | `AGENTS.md`, `CLAUDE.md` | guide for working on this repo itself (`CLAUDE.md` is one line: `@AGENTS.md`) |
 
 ## Requirements
@@ -79,7 +79,7 @@ see the [effort ladder](rules/ai-sdlc/delegation.md#effort-ladder).
 
 ```bash
 git clone https://github.com/<owner>/aodd-aisdlc.git && cd aodd-aisdlc
-./install.sh --claude-md        # copy files, register hooks, import rules/ai-sdlc-workflow.md in CLAUDE.md
+./install.sh                    # copy files, register hooks, import the workflow in CLAUDE.md
 ```
 
 `./install.sh --detect` lists the coding agents on this machine (Claude Code, Codex, Antigravity, Gemini CLI, Cursor, Copilot, OpenCode, Hermes, Kiro, Aider, Goose, Grok, Pi, OpenClaw; found by binary on PATH or home dir). A terminal install offers Codex and Antigravity when found; the others are listed as having no installer yet. It also warns when neither `agy` nor `codex` is present, since the cross-family audit then falls back to a Claude auditor.
@@ -94,7 +94,7 @@ In a terminal the installer asks about each optional module (one line each, defa
 | `--all` / `--core-only` | every module / none |
 | `--yes` | ask nothing: core only unless `--with`/`--all` is given; schedules use their default times |
 | `--dry-run` | print everything, write nothing (also previews the schedule entries) |
-| `--claude-md`, `--codex` | import the contract in `CLAUDE.md`; also install into `${CODEX_HOME:-~/.codex}` |
+| `--codex`, `--agy` | also install into the selected agent homes |
 
 Modules are additive: add one later with `./install.sh --with <module>`; modules you do not name are left as they are.
 
@@ -137,12 +137,12 @@ Full by default: every module that works per repository (agent-memory). `--core-
   `python3 hooks/_aodd_paths.py reports|state|plans [cwd]` prints the resolved path.
 - **Your own agent-ops steps**: if `$AODD_HOME/extensions/agent-ops.md` exists, the agent-ops skill also follows it. That is the only extension hook; there is no plugin framework.
 - **Optional post-merge hook** (off unless you enable it): `git config core.hooksPath scripts/git-hooks` plus `AODD_AUTO_INSTALL=1` in your environment makes `scripts/git-hooks/post-merge` run `./install.sh` after a merge or pull that changes this repo's main branch, then, only if `AODD_POST_INSTALL` is set, that command (for example a script that mirrors the installed files to other tools). One runner at a time (a `mkdir` lock, 30 s debounce), output in `$AODD_STATE/post-merge.log`, never blocks git. It runs `install.sh` as the current checkout, so it only installs what you merged.
-- Without `--claude-md`, add the line `@rules/ai-sdlc-workflow.md` to your `CLAUDE.md` yourself, or the contract will not load.
-- **Upgrading from a release that had rules/aodd.md**: the installer retires `<home>/rules/aodd.md` to a non-loading `.aodd-bak` backup. Review any older `<home>/rules/aodd/` directory separately. With `--claude-md` an old `@rules/aodd.md` line in `CLAUDE.md` is replaced by `@rules/ai-sdlc-workflow.md`. The installer also writes `claudeMdExcludes` to `settings.json` so Claude Code loads only `rules/ai-sdlc-workflow.md` at session start (your own entries are kept).
+- The installer imports `rules/ai-sdlc-workflow.md` in `CLAUDE.md` automatically.
+- **Upgrading from a release that had rules/aodd.md**: the installer retires `<home>/rules/aodd.md` to a non-loading `.aodd-bak` backup. Review any older `<home>/rules/aodd/` directory separately. An old `@rules/aodd.md` line in `CLAUDE.md` is replaced by `@rules/ai-sdlc-workflow.md`. The installer also writes `claudeMdExcludes` to `settings.json` so Claude Code loads only `rules/ai-sdlc-workflow.md` at session start (your own entries are kept).
 
-### Companion plugins (optional, installed separately, not copied here)
+### Companion skills and plugins
 
-- **9arm-skills**: upstream repo `github.com/thananon/9arm-skills` (`debug-mantra`, `post-mortem`, `scrutinize`, ...). Install with `npx skills add thananon/9arm-skills -g -y`. The upstream repo ships no Claude Code marketplace manifest; to use it as a plugin, wrap it in a one-plugin local marketplace whose plugin source is that GitHub repo.
+- **9arm-skills**: the installer copies missing `debug-mantra` and `scrutinize` from `github.com/thananon/9arm-skills` into each selected agent home. Existing skills are preserved. A network connection and git are needed when either skill is missing.
 - **Code search backend** (optional, no specific tool required): agents search code with `project_search` (one call returns text hits and, if a graph backend is behind it, graph hits). `rg` + `Read` is the primary method and always works. To plug in an index, set `AODD_INDEX_CMD` to the command that builds or refreshes it (`{root}` is replaced by the project root); if unset and `<claude home>/scripts/lib/project_search.py` exists, the guard uses `python3 <that file> index <root>` as the index command. The guard does not reindex at Stop by default (a backend with its own file watcher stays fresh on its own); set `AODD_INDEX_ON_STOP=1` to run the index command once per turn when code changed. Set `AODD_SEARCH_CLI` (comma-separated command names) so calls to your backend CLI count as "searched". Index output is generated: never track it in git. `AODD_SEARCH_GUARD=0` turns the guard off.
 
 ## Optional modules

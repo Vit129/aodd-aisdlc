@@ -2,7 +2,7 @@
 name: chief-of-staff
 version: 0.1.3
 description: >
-  Delegate a whole job across teams or kinds of work, with one final report: "handle design, dev and QA"; "research and write it up"; "ทำให้จบแล้วค่อยมารายงาน". A single dev feature belongs to ai-sdlc; small edits do not need this skill.
+  Delegate a whole job across teams or kinds of work, with one final report: "handle design, dev and QA"; "research and write it up"; "ทำให้จบแล้วค่อยมารายงาน". Every request first passes AODD triage; a single dev feature belongs to ai-sdlc, and small edits use their triaged path without requiring this full-job skill.
 ---
 
 # Chief of Staff — one brief in, one report out
@@ -10,6 +10,9 @@ description: >
 Entered from the AODD triage in `rules/ai-sdlc-workflow.md`: **micro** (small logic fixes) = no brief question; runs the `ai-sdlc` Logic path (`rules/ai-sdlc-workflow.md`): state a one-line Done yourself, verify with covering results or missing checks (§ Verification evidence), check the diff against design docs/README, report in the `rules/ai-sdlc-workflow.md` shape; **light** (medium tasks) = steps 1-2 and 4; **full** (large tasks) = everything.
 
 **Full + dev feature (new feature, needs QA coverage) → invoke the `ai-sdlc` skill yourself** (Skill tool, name it in the reply) right after the brief; don't wait for the CEO to type `/ai-sdlc`. Research, finance, design-only or ops jobs stay plain full.
+
+When the CEO explicitly assigns implementation to Luna, keep that assignment through the
+triaged path and the bounded brief. The main session still reviews the result and its evidence.
 
 **Hard work → `ai-sdlc` at any size.** Size is not difficulty. Invoke `ai-sdlc` even for a small or medium job when ANY of these hold:
 - touches daemon, concurrency, security, network/bind
@@ -44,7 +47,7 @@ Save it as `$AODD_PLANS/<feature>/brief.md` when the work spans sessions.
 |---|---|
 | Engineering (Dev Lead) | `ai-sdlc` Phase 2/4 and any stack-specific coding skills you have; cheap hands: Haiku |
 | QA (QA Lead) | `ai-sdlc` Phase 3/5 and your test-framework skills. A test-framework skill marked `disable-model-invocation` cannot be called by you: ask the CEO to run the `/slash-command` (put it under "Needs your decision"), don't read around it |
-| Review | built-in `/code-review` |
+| Review | `scrutinize` (9arm) |
 | Design | any design skill you have installed |
 | Audit (independent → CEO) | `python3 scripts/audit.py` (cross-family auditor, writes its own report to the CEO), a security review if you have one |
 | Experts | `advisor` subagent |

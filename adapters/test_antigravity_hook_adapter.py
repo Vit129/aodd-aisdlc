@@ -160,8 +160,15 @@ def test_install_agy():
     temp_claude = T / "claude"
     temp_gemini = T / "gemini"
 
+    nine_source = T / "9arm-fixture"
+    for skill in ("debug-mantra", "scrutinize"):
+        skill_dir = nine_source / "skills" / "engineering" / skill
+        skill_dir.mkdir(parents=True, exist_ok=True)
+        (skill_dir / "SKILL.md").write_text(skill)
+
     install_env = {
         **{k: v for k, v in os.environ.items() if k != "AODD_NO_BACKUP"},  # a caller's switch must not skip the backup this test checks
+        "AODD_9ARM_SOURCE": str(nine_source),
         "AGY_HOME": str(temp_agy),
         "CLAUDE_HOME": str(temp_claude),
     }
@@ -181,6 +188,7 @@ def test_install_agy():
     # 5b. Pre-create host files to check backup and non-destructive updates
     temp_gemini.mkdir(parents=True, exist_ok=True)
     (temp_gemini / "AGENTS.md").write_text("# Existing Host Instructions\n")
+    (temp_gemini / "GEMINI.md").write_text("# Keep\n<!-- aodd:begin -->\nstale\n<!-- aodd:end -->\n# Keep too\n")
     (temp_gemini / "config").mkdir(parents=True, exist_ok=True)
     (temp_gemini / "config" / "hooks.json").write_text(json.dumps({"existing_suite": {"Stop": []}}))
     host_file = temp_gemini / "custom-script.sh"
@@ -195,6 +203,9 @@ def test_install_agy():
         env=install_env,
     )
     assert p_real.returncode == 0, p_real.stderr
+
+    assert (temp_gemini / "GEMINI.md").read_text() == "# Keep\n# Keep too\n"
+    assert "stale" in (temp_gemini / "GEMINI.md.aodd-bak").read_text()
 
     # Check installed artifacts
     assert (temp_agy / "skills" / "chief-of-staff" / "SKILL.md").is_file()

@@ -96,4 +96,4 @@ Related: drive the implementation test-first (Red→Green), then review the diff
 | After implementation approach selection | Single select (framework/pattern choice) | When multiple valid approaches exist |
 | After security review | Open field | Before deploying auth/data changes |
 
-**Rule:** At decision points, always present 2-3 options with tradeoffs — never a single answer.
+For decision points, follow `rules/ai-sdlc-workflow.md` § Boss mode.

@@ -22,7 +22,7 @@ These are the setup targets. A repo that lacks one is fixed in its own repo, not
 4. Version scheme: semver in every surface that shows it, plus a build number where the app needs one.
 5. Living docs (PRODUCT / ARCHITECTURE / DESIGN / CONTEXT) updated before a release starts when the change affects them.
 6. Changelog: `CHANGELOG.md` exists, and its generator is declared (`cliff.toml` / git-cliff or the repo's own tool). Every commit that changes behaviour adds its entry; a semver release generates the version heading, `skip` writes under `Unreleased`. Only one generator per repo.
-7. Debugging skill: the `9arm-skills` plugin is installed (`debug-mantra`). Check `~/.claude/plugins/installed_plugins.json` for `9arm-skills@9arm-marketplace`; if it is missing, install it with `npx skills add thananon/9arm-skills -g -y` before the first bug fix, and report that the install happened.
+7. Before a bug investigation or review, ensure the current agent can load the required 9arm skill (`debug-mantra` or `scrutinize`). If missing, install through the supported upstream installer `npx skills add thananon/9arm-skills -g -y`, verify availability to that agent, and report the result.
 
 If the repo is missing one of these, report it as a gap. Do not invent the missing piece. Per-repo values (commands, ports, version files, changelog generator) and the gaps found in real repos are in [references/project-adapters.md](references/project-adapters.md).
 
@@ -60,7 +60,7 @@ Compute the candidates with the repo's own function (for example the repo's own 
 | `skip` | unchanged | +1 if present | add entry under `Unreleased`; no version heading | **no** | yes, if requested | merged + deployed + live matches the intended commit |
 
 Rules that follow from this:
-- Coding requires this release workflow and a `patch` / `minor` / `major` choice from the user. Without coding, retain the delivery stages but default to `skip`: no version bump, tag or release page. An explicit version request overrides that default, including for docs or shipped workflow rules. Classify executable config or shipped instructions that change behavior with the user when the version choice is unclear; do not silently bump. A missing required choice is asked once.
+- Code and shipped workflows, skills, rules, or configuration that change agent behavior require this release workflow and a `patch` / `minor` / `major` choice from the user. Pure wording or documentation changes default to `skip`. An explicit version request takes precedence. Apply the repository package version to its shipped workflow and skill changes; preserve any existing independent component version scheme. A missing required choice is asked once.
 - `skip` never creates or moves a tag and never creates a release page. The deployed build is identified by its commit SHA and build number.
 - A published tag is never moved or deleted. `git tag -f` and `git push --force` on a tag are not allowed.
 - A repo whose helper cannot express `skip` (for example, patch-only) reports `skip` as unsupported, not as an approximation.
@@ -88,6 +88,52 @@ Before publishing, every surface that shows the version must match the candidate
 - Verify the tag on the remote: `git ls-remote --tags origin <tag>` must show the release commit. Verify the release page: `gh release view <tag>` must show the same tag and the changelog notes.
 - Find out where the release is created before relying on it. If the repo has no workflow that runs on tag push, the release page exists only when the machine that ran the helper completed it. Check the repo's workflows for a tag trigger, and do not assume CI published it.
 - A helper that moves an existing tag (`git tag -f`, `git push --force` of a tag) breaks the version contract. Report it as a gap in the repo's adapter and do not run it.
+
+## Release procedure and tooling
+
+This section is the single source for release and deploy requirements. The references `rules/coding/release.md` and `references/release-deploy.md` point here.
+
+### Preflight
+
+- Trace the entrypoint and every helper it calls (see [references/script-tracing.md](references/script-tracing.md)). Check for dry-run and resume support, and what each one skips or changes.
+- Check branch, worktree, local and remote refs, tags, hosted releases, and the live revision.
+- Show the preflight version table before any mutation: last completed version and build, the candidate for each choice, and the target. For `skip`, show `semver unchanged` and the build number if the repo has one.
+- Look for a pending candidate: a version written to the repo's release manifest or state, a tag without a release, a release without a verified deploy, or a live version that differs. If one exists, resume it only when recovery was requested. Otherwise report it and ask. Do not allocate a new number over it.
+- If the request does not name the choice (patch, minor, major, or skip) or the target, ask once. Never trust a non-TTY default.
+
+### Candidate and validation
+
+- Before any version file changes, record the candidate: baseline, semver, build (if any), bump type, source commit, shared dependency commit, target, and stage status. Use the repo's release manifest if it has one. If it has none, keep the record in the report and, if the repo allows, a file under the repo's ignored state directory.
+- Prepare metadata (version fields, build number, changelog, generated notes) and commit it as one local candidate commit. Stage explicit paths only; see [references/commit-push.md](references/commit-push.md).
+- Match existing PASS scenario and required gate results to that candidate using `rules/ai-sdlc-workflow.md` § Verification evidence. Record the tested revision, relevant inputs and any unchanged inputs carried forward from an earlier revision. Run only missing or invalidated checks. If a build is required, identify the artifact built from candidate inputs and include any security or audit check required by the repo.
+- A failed gate stops publishing. Keep the candidate. Fix source and metadata, make a new local candidate commit, and rerun affected gates. Do not roll back metadata and bump again.
+- Known-failing tests are declared in the repo's adapter with a reason. An undeclared failure is a failure. A skipped test is reported as NOT RUN, not PASS.
+- If the repo's stage order differs, report the gap with file:line evidence. Do not rewrite the repo's route without the user's decision.
+
+### Release notes and gates
+
+- `git-cliff` is the default for `CHANGELOG.md` and GitHub Release notes on new or unconfigured tagged-release pipelines. It parses commit types through `cliff.toml` (`feat` → Added, `fix` → Fixed, `refactor`/`perf` → Changed, `docs` → Documentation; `test`/`chore`/`build`/`ci`/`style` skipped). Keep an existing maintained tool when it generates the correct range from the last completed release. Do not migrate tools during an ordinary release. Skip changelog generation for repos with no GitHub Releases or a fork whose release pipeline belongs upstream. Check for an existing release script before adding one.
+- Security gates include secret scan, dependency vulnerabilities, and SAST. For externally reachable apps, APIs, or ports, test auth and trust boundaries, including surfaces Phase 2 flagged.
+- When the project has an NFR or performance budget, or the change touches a hot path, measure against it and compare with the last release. Use suitable measures such as API p95 and error rate, or bundle size and Core Web Vitals. If there is nothing to measure, state that in the release report.
+- Propose an audit to the CEO. If approved, `scripts/audit.py --confirmed` must PASS on the final release diff. State when an audit is skipped. An earlier PASS remains valid only if relevant inputs and claims have not changed.
+- Generate the version changelog with `git-cliff --tag vX.Y.Z --output CHANGELOG.md`, unless a maintained project tool is used.
+- Do not swallow `gh release create` or `gh release edit` errors with `2>/dev/null`. Preserve stderr on failure and guard release notes length. GitHub caps a release body at 125000 characters.
+- Do not use `--version X.Y.Z` to skip a version. Use `major`, `minor`, or `patch`. Use an explicit version only for a genuine exception, such as an externally required number or recovery from a botched tag, and state the reason in the release commit message.
+
+### Publish, deploy, and recovery
+
+- Before publishing, ensure every version surface (manifest, app constants, changelog, hosted release, and deployed artifact) refers to the same source commit. Record shared dependency commits when needed.
+- Build committed source with locked dependencies. Pin and record any generated or external local input, or verify it is clean and synchronized. Never deploy bytes from uncommitted or moving sources.
+- For a semver release, push the validated commit, create its tag on that commit, then create the hosted release using notes from the previous completed tag. A tag already pointing to another commit is a stop condition.
+- `skip` creates no tag or release page. Deploy the already-merged commit only when asked, identified by commit SHA and build number if present.
+- Name the target before deploying. Stage before production when both exist. Production requires explicit authorization unless the user named it. A local app install or service restart is production-like. Warn before stopping running work and get approval if the request did not include it.
+- Do not install over a running app without a backup unless the install path makes one. After deployment, check `git status --porcelain`. Use `npm ci` in deploy hooks rather than `npm install` when a lockfile must remain unchanged.
+- For deploy-only, deploy an identified tagged or released artifact to a named target. Arbitrary snapshots are separate, labelled actions outside production.
+- On retry, inspect the existing version, commit, tag, hosted release, and deployment, then finish the missing step for that same candidate. Never bump because a publish or deploy step failed. Never force-push a production ref to recover.
+- If failure occurs before the release commit and metadata edits are ambiguous, preserve them, report affected paths, and give a safe recovery path.
+- Verify the live version, build, and commit (or equivalent health/revision signal). A successful CLI exit is not proof. Check every related component and confirm they agree.
+- Mark a candidate complete only when every configured target verifies. Until then, the baseline does not advance.
+- Report each stage as PASS, FAIL, BLOCKED, or NOT RUN with command and output, release-bearing version/build, target, live evidence, last completed version, and any pending candidate with its next missing step.
 
 ## Done means
 

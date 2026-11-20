@@ -9,10 +9,16 @@ handoffs), `$AODD_STATE`. Resolve one with `python3 hooks/_aodd_paths.py reports
 
 ## Triage: every request passes this gate (silently)
 
+Classify every request here before acting: questions, research, reviews, planning, code, documentation and operations.
+Use the smallest applicable path; not every request needs an artifact or the full workflow.
+
 | Request | Do |
 |---|---|
+| Bug or issue investigation, with or without a file change | Invoke `debug-mantra` (9arm) before diagnosing or proposing a fix, then follow the applicable route |
 | A question or explanation, no file change | Answer it |
+| Read-only research, review, or planning | Use the matching route in `skills/ai-sdlc/references/skill-routing.md`; return findings with evidence |
 | Any file change (code, config, tests, UI) | The path table below picks the entry phase; the dev step and the QA testing step never skip |
+| Multiple request kinds | Combine the applicable routes and checks; do not drop a requested deliverable |
 | Spends money, reaches an outside party, irreversible | Stop and ask the CEO first |
 
 `chief-of-staff`, `ai-sdlc` and `delivery-workflow` are model-invoked; `agent-ops` and `housekeeping` are
@@ -23,7 +29,7 @@ user-started (`/<name>`). When this contract routes work to a skill, invoke it a
 | What changes | Path | Enter at | Gates | Living docs |
 |---|---|---|---|---|
 | Wording, typo, config value | Light | Phase 4: edit, then Phase 5: run the existing tests (a config value that changes behavior adds a test) | none | none |
-| Logic: a bug, a rule inside an existing requirement, a refactor | Logic | Phase 4: for a bug, the debugging skill first (`9arm-skills:debug-mantra` when installed, else the stack's own), named in the reply; failing test (RED), fix to GREEN, refactor; Phase 5: the regression test, boundary and error cases, callers in the blast radius | none | `ARCHITECTURE.md` only if a seam or the data model changes |
+| Logic: a bug, a rule inside an existing requirement, a refactor | Logic | Phase 4: for a bug, `debug-mantra` (9arm) first, named in the reply; failing test (RED), fix to GREEN, refactor; Phase 5: the regression test, boundary and error cases, callers in the blast radius | none | `ARCHITECTURE.md` only if a seam or the data model changes |
 | UX/UI: look, layout, an on-screen flow | Design | Phase 4: read `DESIGN.md`, change; show a mock or screenshot first for a new screen. Phase 5: look at every affected screen in a browser (sizes, long text, dark mode); a Playwright test when a user flow changes | none | `DESIGN.md` |
 | Requirement: a new or changed capability, a rule users see, a new integration | Requirement | Phase 1 (interview skipped if the requirement is complete), then 2 to 5 | Gates 1-3 | `PRODUCT.md`, `ARCHITECTURE.md`, `CONTEXT.md` (+ `DESIGN.md` with UI) |
 | Unclear which | Interview | Phase 1 names the kind, then the path above | none | none |
@@ -31,12 +37,16 @@ user-started (`/<name>`). When this contract routes work to a skill, invoke it a
 Only the Requirement path has approval gates. A change can carry several kinds (a new requirement with a new screen runs both).
 Phase files live in `skills/ai-sdlc/phases/` (Phase map in `skills/ai-sdlc/SKILL.md`); mechanics in `skills/ai-sdlc/references/`.
 
-**Every path, always:**
-1. Interview: if the requirement is complete, skip it. If it is not, use Phase 1 interview and produce an
-   `.html` file of the agreed requirement and plan (render it with an artifact tool when available, else save it as
-   `$AODD_PLANS/<feature>/plan.html`). Refine it until ready for coding (Phase 1 defines readiness); no code before that.
-2. Read `skills/ai-sdlc/references/dev-qa-pattern.md` (tagging, invariants, test barriers), then a dev step and a QA testing step.
-3. Last step, after everything passes: nothing to refresh by hand; the search index (if a backend is configured) updates on
+**Every file-change path, always:**
+1. Plan artifact: when the chosen path requires a plan (Requirement path, a multi-step or
+   wide-reach task, or a user-requested plan), use one `.html` file even when its contents are
+   text-only. Render it with an artifact tool when available, else save it as
+   `$AODD_PLANS/<feature>/plan.html`. If the requirement is already complete, skip interview
+   questions and start from the known requirement; do not reopen settled decisions. Refine the
+   artifact through the applicable phases until ready for coding; no code before that point.
+   Routine answers and one-step light changes that do not require a plan need no HTML artifact.
+2. Read `skills/ai-sdlc/references/dev-qa-pattern.md` (tagging, invariants, test barriers), then complete a dev step and a QA testing step.
+3. Last step for changed work, after everything passes: nothing to refresh by hand; the search index (if a backend is configured) updates on
    its own and is never committed (`rules/ai-sdlc/git-ops.md`).
 4. Every coding task enters `delivery-workflow` for delivery. Non-coding changes take the same workflow with `skip`
    (no version bump); an explicitly requested version takes precedence. Run authorized stages only, retaining publish approvals.
@@ -83,8 +93,7 @@ and relevant environment. Existing valid results count; no duplicate test, build
 ## Roles and subagents
 
 One owner per phase; the main thread switches hats and dispatches the subagents. Dev Lead: Phase 2 dev half, Phase 4. QA Lead:
-Phase 2 QA half, Phase 3 (RED), Phase 5 (sign-off); never patches product code to pass a test. Reviewer: built-in `/code-review`
-on the Phase 4 diff before Phase 5. Auditor: on the CEO's yes only (`docs/audit.md`).
+Phase 2 QA half, Phase 3 (RED), Phase 5 (sign-off); never patches product code to pass a test. Reviewer: `scrutinize` (9arm) on the Phase 4 diff before Phase 5. Auditor: on the CEO's yes only (`docs/audit.md`).
 
 - **Phase 2 design (Requirement path):** two subagents in parallel with the same brief. Dev: structure, file separation, reuse,
   invariants. QA: failure modes, edge cases, security boundaries, mocks, testability. The main thread merges both into one plan and

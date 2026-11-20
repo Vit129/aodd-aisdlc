@@ -1,8 +1,11 @@
 # Skill Routing Table
 
 Read when running `/ai-sdlc` or when unsure which skill fits. Everything outside this repo
-(the `9arm-skills`, `agy`/`codex` plugins) is optional: install the companion plugins listed in the README for the full set, otherwise
-do the step directly.
+(the `agy`/`codex` plugins) is optional: install the companion plugins listed in the README for the full set, otherwise
+do the step directly. The 9arm debug and review skills are required when their routes apply; install missing skills as directed in `skills/delivery-workflow/SKILL.md`.
+
+Every request first passes the triage in `rules/ai-sdlc-workflow.md`; a route here selects
+the handling skill after triage, not a bypass around it.
 
 | Task signal | Route to |
 |---|---|
@@ -27,9 +30,9 @@ do the step directly.
 | Hard technical decision, no clear answer | The `advisor` agent with a curated brief (decision, options, constraints) |
 | Bounded subtask: search files, read/summarize logs, classify, extract facts, run build/test/lint, git/ops mechanics | `Agent(model: "haiku")`, several in parallel; the big model plans and judges. See `rules/ai-sdlc-workflow.md` |
 | Read/map code ("where is X", "who calls Y") | `project_search` first, rg as the fallback, then a Haiku subagent for broad sweeps; the big model reads every file it will edit itself |
-| Pre-merge review (standards + spec) | `/code-review` or any review skill; feed it the project's coding standards explicitly |
+| Review a plan, diff, PR or design | `scrutinize` (9arm), with project standards and the originating spec |
 | Session handoff to another agent/session | Write `$AODD_PLANS/[FEATURE]/handoff.md` (sibling of, not the same file as, `ai-sdlc-task-progress.md`; format in `references/ai-sdlc-progress-spec.md` § Resume protocol) |
-| Bug investigation | `9arm-skills:debug-mantra` (companion) |
+| Bug or issue investigation | `debug-mantra` (9arm) (companion); use before proposing or applying a fix |
 | Looping or context nearly full | `9arm-skills:qwenchance` (companion); its "invoke the `handoff` skill" step means: write `$AODD_PLANS/[FEATURE]/handoff.md` as in the row above |
 | Post-incident RCA | `9arm-skills:post-mortem` (companion); write it to the repo's `docs/postmortems/<slug>.md` unless the CEO names another place (ticket, PR) |
 | Independent audit of a "Done" claim | on the CEO's yes, `python3 scripts/audit.py --confirmed` (never a worker-briefed subagent) |

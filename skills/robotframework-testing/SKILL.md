@@ -160,4 +160,4 @@ review the diff before merge against `references/rf-code-review.md`.
 | After first keyword file | Open field (review naming + locator strategy) | Before generating remaining keywords |
 | After code review | Single select (APPROVED / NEEDS_FIX) | Before marking test implementation done |
 
-**Rule:** At decision points, always present 2-3 options with tradeoffs — never a single answer.
+For decision points, follow `rules/ai-sdlc-workflow.md` § Boss mode.

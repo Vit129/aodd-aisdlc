@@ -97,6 +97,28 @@ else:
 PY
 fi
 
+# Retire only the AODD-managed block in the alternate global context file.
+ALT="$GEMINI_DIR/GEMINI.md"
+if [ "$AG" != "$ALT" ] && [ -f "$ALT" ]; then
+  if [ "$DRY" = 1 ]; then
+    echo "AGENTS  $ALT: would retire duplicate AODD block"
+  else
+    ALT="$ALT" python3 - <<'PYALT'
+import os, re
+from pathlib import Path
+p = Path(os.environ["ALT"])
+old = p.read_text()
+new = re.sub(r"<!-- aodd:begin -->.*?<!-- aodd:end -->\n?", "", old, flags=re.S)
+if new != old:
+    backup = p.with_name(p.name + ".aodd-bak")
+    if not backup.exists() and os.environ.get("AODD_NO_BACKUP") != "1":
+        backup.write_text(old)
+    p.write_text(new)
+    print(f"AGENTS  {p}: retired duplicate AODD block")
+PYALT
+  fi
+fi
+
 # Hooks config (config/hooks.json)
 ADAPTER_PATH="$AGY_HOME/adapters/antigravity-hook-adapter.py"
 register_hooks() {
@@ -168,6 +190,29 @@ else:
 PY
 }
 register_hooks
+
+# Ensure required 9arm skills exist when this installer is run directly.
+if [ ! -f "$AGY_HOME/skills/debug-mantra/SKILL.md" ] || [ ! -f "$AGY_HOME/skills/scrutinize/SKILL.md" ]; then
+  if [ "$DRY" = 1 ]; then
+    echo "9arm    would install missing debug-mantra and scrutinize"
+  else
+    NINE_SOURCE="${AODD_9ARM_SOURCE:-}"
+    if [ -z "$NINE_SOURCE" ]; then
+      NINE_TEMP="$(mktemp -d)"
+      trap 'rm -rf "$NINE_TEMP"' EXIT
+      git clone --quiet --depth 1 https://github.com/thananon/9arm-skills.git "$NINE_TEMP/source"
+      NINE_SOURCE="$NINE_TEMP/source"
+    fi
+    for skill in debug-mantra scrutinize; do
+      if [ ! -f "$AGY_HOME/skills/$skill/SKILL.md" ]; then
+        [ ! -e "$AGY_HOME/skills/$skill" ] || { echo "error   incomplete existing skill: $AGY_HOME/skills/$skill" >&2; exit 1; }
+        [ -f "$NINE_SOURCE/skills/engineering/$skill/SKILL.md" ] || { echo "error   missing 9arm skill $skill" >&2; exit 1; }
+        mkdir -p "$AGY_HOME/skills"
+        cp -R "$NINE_SOURCE/skills/engineering/$skill" "$AGY_HOME/skills/$skill"
+      fi
+    done
+  fi
+fi
 
 echo "state   reports, plans and hook state live under \${AODD_HOME:-~/.aodd} (override: AODD_REPORTS, AODD_STATE, AODD_PLANS)"
 echo "done"

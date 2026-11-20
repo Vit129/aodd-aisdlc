@@ -23,16 +23,20 @@ or the user says to stop. Having enough to start is not enough to end the interv
 
 ## Build the artifact until ready for coding
 
-After questioning, create the agreed requirement and implementation plan as an HTML file
-(`plan.html`; rendering and storage follow the parent workflow § Every path).
+When the selected workflow path requires a plan, create the agreed requirement and
+implementation plan as an HTML file (`plan.html`; rendering and storage follow the parent
+workflow § Every path). If the requirement is complete, skip questions and represent the
+known scope in the plan; do not reopen settled choices. Routine answers and light changes with
+no plan requirement do not need this artifact.
 Continue refining that artifact through the design and QA planning phases required by the
 chosen path until it is ready for coding. Do not ask for an extra "continue" between
 interview and artifact preparation.
 
 Who does what (tiers from `rules/ai-sdlc/delegation.md`): the big model asks the questions and judges
 readiness; the middle model writes the agreed plan text (or the big model, when the plan is very small);
-the small model (Haiku, `luna` on Codex) only turns the agreed text into `plan.html` and never adds,
-drops or reinterprets content. The big model checks the rendered file against the agreed text.
+the small model (Haiku, `luna` on Codex) may turn agreed text into `plan.html` without adding,
+dropping or reinterpreting content. If the CEO explicitly assigns Luna to implementation, follow
+that assignment under the delegation rule; the main session checks the resulting diff and evidence.
 
 Once the artifact is fully agreed, write `brief.md` next to the progress file (goal, scope in / out,
 acceptance criteria, decisions with reasons) for agents and handoff. For new work, first check the

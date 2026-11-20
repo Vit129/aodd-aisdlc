@@ -24,7 +24,7 @@ Core rules and strategies for Mobile Automation using Robot Framework + Appium, 
 - **Cross-Layer Shared Fixtures:** Data used across platforms (API + Mobile + Web) MUST be stored in `tests/shared-fixtures/[system-kebab]/[feature-kebab]/`.
 
 ### Locator Strategy & Wait Rules
-- **Zero Hard Waits (MANDATORY):** Never use `Sleep` — use `Wait Until Element Is Visible` or explicit wait conditions instead.
+- **Waits:** Follow `rules/ai-sdlc-workflow.md` § Core facts. In Robot Framework use `Wait Until Element Is Visible` or another explicit condition.
 - **No Inline Locators:** Do not write locators directly in test cases — encapsulate in Page Object Keywords.
 - **Element Locator Priority:**
   1. `accessibility_id=` (Most stable across platforms)

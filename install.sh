@@ -23,7 +23,7 @@
 # stay at their defaults, see hooks/_aodd_paths.py).
 set -euo pipefail
 
-DRY=0; CHECK=0; DRIFT=0; DETECT=0; AGENTS_SET=0; CLAUDE_MD=0; CODEX_ON=0; AGY_ON=0; YES=0; MODS_SET=0; MODS=""
+DRY=0; CHECK=0; DRIFT=0; DETECT=0; AGENTS_SET=0; CLAUDE_MD=1; CODEX_ON=0; AGY_ON=0; YES=0; MODS_SET=0; MODS=""
 ALL_MODULES="agent-memory schedules"
 ORIG=("$@"); PROJECTS=()
 add_mod() { case " $MODS " in *" $1 "*) ;; *) MODS="${MODS:+$MODS }$1" ;; esac; }
@@ -88,7 +88,6 @@ fi
 AGENTS_TABLE="claude|claude claude-code|.claude
 codex|codex codex-cli|.codex
 agy|agy antigravity antigravity-cli|.gemini/antigravity-cli
-gemini|gemini gemini-cli|-
 cursor|cursor-agent cursor-cli|.cursor
 copilot|copilot copilot-cli github-copilot|.copilot
 opencode|opencode|.config/opencode
@@ -499,6 +498,41 @@ if [ -z "$PROJECT_ROOT" ]; then  # core, not a module: REA's own `rea setup` reg
       echo "rea     setup --client $c $RMODE"
       "${REA[@]}" setup --client "$c" "$RMODE" || echo "warn    rea setup for $c failed (see above); check with: rea doctor --client $c"
     done
+  fi
+fi
+if [ -z "$PROJECT_ROOT" ]; then
+  # Install only missing companion skills, preserving existing user skills.
+  NINE_HOMES=("$DEST")
+  [ "$CODEX_ON" = 1 ] && NINE_HOMES+=("${CODEX_HOME:-$HOME/.codex}")
+  [ "$AGY_ON" = 1 ] && NINE_HOMES+=("${AGY_HOME:-$HOME/.gemini/antigravity-cli}")
+  NEED_NINE=0
+  for agent_home in "${NINE_HOMES[@]}"; do
+    for skill in debug-mantra scrutinize; do
+      [ -f "$agent_home/skills/$skill/SKILL.md" ] || NEED_NINE=1
+    done
+  done
+  if [ "$NEED_NINE" = 1 ]; then
+    if [ "$DRY" = 1 ]; then
+      echo "9arm    would install missing debug-mantra and scrutinize"
+    else
+      NINE_SOURCE="${AODD_9ARM_SOURCE:-}"
+      if [ -z "$NINE_SOURCE" ]; then
+        NINE_TEMP="$(mktemp -d)"
+        trap 'rm -rf "$NINE_TEMP"' EXIT
+        git clone --quiet --depth 1 https://github.com/thananon/9arm-skills.git "$NINE_TEMP/source"
+        NINE_SOURCE="$NINE_TEMP/source"
+      fi
+      for agent_home in "${NINE_HOMES[@]}"; do
+        for skill in debug-mantra scrutinize; do
+          if [ ! -f "$agent_home/skills/$skill/SKILL.md" ]; then
+            [ ! -e "$agent_home/skills/$skill" ] || { echo "error   incomplete existing skill: $agent_home/skills/$skill" >&2; exit 1; }
+            [ -f "$NINE_SOURCE/skills/engineering/$skill/SKILL.md" ] || { echo "error   missing 9arm skill $skill" >&2; exit 1; }
+            mkdir -p "$agent_home/skills"
+            cp -R "$NINE_SOURCE/skills/engineering/$skill" "$agent_home/skills/$skill"
+          fi
+        done
+      done
+    fi
   fi
 fi
 if [ "$AGY_ON" = 1 ]; then  # Antigravity: its own installer (skills, agents, AGENTS.md block, hook adapter)

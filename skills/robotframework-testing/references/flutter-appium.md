@@ -48,9 +48,9 @@ Semantics(
 | Priority | Locator | RF Syntax | When |
 |----------|---------|-----------|------|
 | 🥇 #1 | **byValueKey** | `flutter=byValueKey('login_button')` | Widget has `Key('xxx')` |
-| 🥈 #2 | **byText** | `flutter=byText('Login')` | Visible text, no Key assigned |
+| 🥈 #2 | **byText** | `flutter=byText('Login')` | Unique visible text, no Key assigned |
 | 🥉 #3 | **byType** | `flutter=byType('ElevatedButton')` | Only one widget of that type on screen |
-| 🚫 #4 | **bySemanticsLabel** | `flutter=bySemanticsLabel('Login')` | Semantics label assigned |
+| 🚫 #4 | **bySemanticsLabel** | `flutter=bySemanticsLabel('Login')` | Fallback — requires `Semantics` widget |
 
 ### Priority Order (Native Appium — when Flutter context not available)
 

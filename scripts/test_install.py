@@ -10,7 +10,11 @@ env = {k: v for k, v in os.environ.items() if not k.startswith("AODD_")}
 REA_LOG = T / "rea.log"                                                          # stub REA launcher: never npx/network
 (T / "rea").write_text(f'#!/bin/sh\necho "$@" >> "{REA_LOG}"\n'); (T / "rea").chmod(0o755)
 (T / "claude-cli").write_text('#!/bin/sh\nexit 0\n'); (T / "claude-cli").chmod(0o755)
-env.update(CLAUDE_HOME=str(T / "claude"), CODEX_HOME=str(T / "codex"), AGY_HOME=str(T / "agy-never-installed"), CLAUDE_BIN=str(T / "claude-cli"), AODD_SCHEDULES_DRY_RUN="1", AODD_REA_CMD=str(T / "rea"))
+for skill in ("debug-mantra", "scrutinize"):
+    d = T / "nine/skills/engineering" / skill
+    d.mkdir(parents=True)
+    (d / "SKILL.md").write_text(skill)
+env.update(GEMINI_HOME=str(T / "gemini-never-installed"), AODD_9ARM_SOURCE=str(T / "nine"), CLAUDE_HOME=str(T / "claude"), CODEX_HOME=str(T / "codex"), AGY_HOME=str(T / "agy-never-installed"), CLAUDE_BIN=str(T / "claude-cli"), AODD_SCHEDULES_DRY_RUN="1", AODD_REA_CMD=str(T / "rea"))
 
 
 def run_rc(*flags, extra=None):
@@ -25,6 +29,18 @@ def run(*flags, extra=None, home=None):
     assert p.returncode == 0, p.stderr
     return p.stdout
 
+
+# Selected agents receive both the workflow and the required companion skills.
+setup = T / "setup-all"
+setup_env = {"CLAUDE_HOME": str(setup / "claude"), "CODEX_HOME": str(setup / "codex"),
+             "GEMINI_HOME": str(setup / "gemini"), "AGY_HOME": str(setup / "agy")}
+run("--codex", "--agy", extra=setup_env)
+assert "@rules/ai-sdlc-workflow.md" in (setup / "claude/CLAUDE.md").read_text()
+for agent, instruction in (("codex", "AGENTS.md"), ("gemini", "AGENTS.md")):
+    assert "Triage: every request" in (setup / agent / instruction).read_text()
+for agent in ("claude", "codex", "agy"):
+    for skill in ("debug-mantra", "scrutinize"):
+        assert (setup / agent / "skills" / skill / "SKILL.md").read_text() == skill
 
 out = run("--dry-run", "--codex")
 assert "AGENTS" in out and "would register" in out and not (T / "codex").exists() and not (T / "claude").exists()

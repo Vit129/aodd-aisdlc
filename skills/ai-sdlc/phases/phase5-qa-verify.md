@@ -7,12 +7,11 @@ Verify the full scenario suite from Phase 3 against the Phase 4 implementation, 
 recorded manual results for scenarios approved without automation. Reuse existing PASS results
 when they cover the delivered source and relevant inputs; run missing or invalidated checks only
 (parent workflow § Verification evidence). Every automated
-test still carries its `[TS-XXXX]`/`[TC-XXXX]` ID and obeys the core facts in `rules/ai-sdlc-workflow.md` (no
-hard waits, 1 heal attempt max before routing to `9arm-skills:debug-mantra`). This phase
+test still carries its `[TS-XXXX]`/`[TC-XXXX]` ID and obeys the core facts in `rules/ai-sdlc-workflow.md`. This phase
 is verification only — no new scenarios get invented here; a genuinely missing case
 found during verification goes back to Phase 3, it doesn't get patched in place.
 
-Pre-merge gate: once all tests confirm GREEN, run `/code-review` (or any review skill you have) on the full diff, checking two axes:
+Pre-merge gate: once all tests confirm GREEN, run `scrutinize` (9arm) on the full diff, checking two axes:
 - **Standards Axis**: conforms to the project's coding standards
 - **Spec Axis**: faithfully implements the originating spec produced in Phase 1
 

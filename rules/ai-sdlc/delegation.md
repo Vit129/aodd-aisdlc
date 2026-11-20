@@ -21,6 +21,11 @@ Every delegated task runs this pipeline. No exceptions, no asking each time.
   plan is step 1, then steps 2-3 apply.
 - Multi-file executions: one executor per disjoint file set, each with its own explicit scope, in its own worktree.
 - On Codex the tiers are `sol` = big (Opus/Fable), `terra` = middle (Sonnet), `luna` = small (Haiku); same pipeline.
+- If the CEO explicitly names Luna as the implementer, honor that assignment for the
+  requested implementation work (code, tests, rules, docs, configuration or other artifacts).
+  The task still passes AODD triage, gets a bounded brief and acceptance checks, and the main
+  session reviews the diff and verification evidence. This assignment does not authorize
+  unrelated work or publish/irreversible actions.
 
 ## Cheap-model delegation
 

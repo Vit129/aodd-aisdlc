@@ -147,7 +147,7 @@ Related: drive the implementation test-first (Red→Green), then review the diff
 | After state management choice | Single select (local vs global vs server) | When multiple state approaches are valid |
 | After UI states implementation | Open field | Review loading/empty/error state handling |
 
-**Rule:** At decision points, always present 2-3 options with tradeoffs — never a single answer.
+For decision points, follow `rules/ai-sdlc-workflow.md` § Boss mode.
 
 ## Pitfalls (verified)
 

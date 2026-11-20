@@ -3,6 +3,15 @@
 All notable changes to aodd-aisdlc are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and it follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.9.3] - 2026-11-20
+
+### Added
+- Support additional 9arm companion skills (`b155127`)
+
+### Fixed
+- Collapse two repeats in the always-loaded AODD contract (#98) (`1fc7181`)
+- Use upstream installer for 9arm skills (`d5b88c5`)
+
 ## [0.9.2] - 2026-11-20
 
 ### Fixed

@@ -1,0 +1,21 @@
+rules/ai-sdlc-workflow.md
+  s_3145a1cc58fd22::t_9bb9ae0edd925e 8
+  s_3145a1cc58fd22::t_3d136bfa315433 86
+  s_3145a1cc58fd22::t_74deec919a816b 7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "a2014d0e4e5bb3f2963e1e0a9495496d7934817d",
+  "prompts": {},
+  "sessions": {
+    "s_3145a1cc58fd22": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "525adaef-3c04-40be-a762-eb3f361c5fd8",
+        "model": "claude-haiku-5-5"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

@@ -13,8 +13,8 @@ and grep is never touched.
   post  (PostToolUse Bash|mcp__.*)  records that search was consulted: any tool named `project_search`
         (also `mcp__<server>__project_search`), or a Bash call to the backend CLI (`project_search.py`,
         or a command named in `AODD_SEARCH_CLI`, comma separated).
-  stop  (Stop) runs the index command when a code file changed since the last index run, so the index
-        is refreshed once per turn.
+  stop  (Stop) opt-in: with AODD_INDEX_ON_STOP=1 it runs the index command when a code file changed since
+        the last index run (once per turn). Off by default: a backend with its own file watcher keeps itself fresh.
 
 Fails open on any error. Disable with AODD_SEARCH_GUARD=0. State markers: `AODD_SEARCH_GUARD_STATE`.
 """
@@ -254,6 +254,8 @@ def run_index(root, cmd):
 def decide_stop(payload):
     if payload.get("stop_hook_active") or os.environ.get("AODD_SEARCH_GUARD") == "0":
         return None
+    if os.environ.get("AODD_INDEX_ON_STOP") != "1":
+        return None  # opt-in: one reindex path, the backend's own watcher
     root = find_root(payload.get("cwd") or os.getcwd())
     cmd = index_cmd(root) if root else None
     if root is None or cmd is None:

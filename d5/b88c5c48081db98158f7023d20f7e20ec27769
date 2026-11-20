@@ -1,0 +1,31 @@
+README.md
+  s_d55e01ba0781c8::t_a6f73c417fd050 145
+scripts/test_install.py
+  s_d55e01ba0781c8::t_25161dc6ebfc34 13-16
+adapters/test_antigravity_hook_adapter.py
+  s_d55e01ba0781c8::t_25161dc6ebfc34 163-165,169
+install.sh
+  s_d55e01ba0781c8::t_662a376886d5a8 533,537-546
+  s_d55e01ba0781c8::t_a6f73c417fd050 506-511,523-525,527,529-531,534,536
+  s_d55e01ba0781c8::t_96a721a9f2b74f 512-522
+install-agy.sh
+  s_d55e01ba0781c8::t_662a376886d5a8 205-207
+  s_d55e01ba0781c8::t_a6f73c417fd050 194-195,197-201,203
+  s_d55e01ba0781c8::t_9a8fdd4c9dfdf5 204
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "d5b88c5c48081db98158f7023d20f7e20ec27769",
+  "prompts": {},
+  "sessions": {
+    "s_d55e01ba0781c8": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1f73a-5ffc-7fd3-aec4-e985485ed5e3",
+        "model": "gpt-6.1-terra"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

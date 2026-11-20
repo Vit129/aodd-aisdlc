@@ -160,15 +160,13 @@ def test_install_agy():
     temp_claude = T / "claude"
     temp_gemini = T / "gemini"
 
-    nine_source = T / "9arm-fixture"
-    for skill in ("debug-mantra", "scrutinize", "post-mortem", "qwen-agent", "management-talk", "qwenchance"):
-        skill_dir = nine_source / "skills" / ("productivity" if skill in ("management-talk", "qwenchance") else "engineering") / skill
-        skill_dir.mkdir(parents=True, exist_ok=True)
-        (skill_dir / "SKILL.md").write_text(skill)
+    nine_installer = T / "nine-installer"
+    nine_installer.write_text("#!/usr/bin/env python3\nimport os\nfrom pathlib import Path\nfor name in ('debug-mantra', 'scrutinize'):\n    target = Path(os.environ['AGY_HOME']) / 'skills' / name\n    target.mkdir(parents=True, exist_ok=True)\n    (target / 'SKILL.md').write_text(name)\n")
+    nine_installer.chmod(0o755)
 
     install_env = {
         **{k: v for k, v in os.environ.items() if k != "AODD_NO_BACKUP"},  # a caller's switch must not skip the backup this test checks
-        "AODD_9ARM_SOURCE": str(nine_source),
+        "AODD_9ARM_INSTALLER": str(nine_installer),
         "AGY_HOME": str(temp_agy),
         "CLAUDE_HOME": str(temp_claude),
     }

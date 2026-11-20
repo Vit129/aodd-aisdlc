@@ -10,11 +10,10 @@ env = {k: v for k, v in os.environ.items() if not k.startswith("AODD_")}
 REA_LOG = T / "rea.log"                                                          # stub REA launcher: never npx/network
 (T / "rea").write_text(f'#!/bin/sh\necho "$@" >> "{REA_LOG}"\n'); (T / "rea").chmod(0o755)
 (T / "claude-cli").write_text('#!/bin/sh\nexit 0\n'); (T / "claude-cli").chmod(0o755)
-for skill in ("debug-mantra", "scrutinize", "post-mortem", "qwen-agent", "management-talk", "qwenchance"):
-    d = T / "nine/skills" / ("productivity" if skill in ("management-talk", "qwenchance") else "engineering") / skill
-    d.mkdir(parents=True)
-    (d / "SKILL.md").write_text(skill)
-env.update(GEMINI_HOME=str(T / "gemini-never-installed"), AODD_9ARM_SOURCE=str(T / "nine"), CLAUDE_HOME=str(T / "claude"), CODEX_HOME=str(T / "codex"), AGY_HOME=str(T / "agy-never-installed"), CLAUDE_BIN=str(T / "claude-cli"), AODD_SCHEDULES_DRY_RUN="1", AODD_REA_CMD=str(T / "rea"))
+nine_installer = T / "nine-installer"
+nine_installer.write_text("#!/usr/bin/env python3\nimport os, sys\nfrom pathlib import Path\nfor agent in sys.argv[1:]:\n    home = Path(os.environ[{'claude-code': 'CLAUDE_HOME', 'codex': 'CODEX_HOME', 'antigravity-cli': 'AGY_HOME'}[agent]])\n    for name in ('debug-mantra', 'scrutinize', 'post-mortem', 'qwen-agent', 'management-talk', 'qwenchance'):\n        target = home / 'skills' / name\n        target.mkdir(parents=True, exist_ok=True)\n        (target / 'SKILL.md').write_text(name)\n")
+nine_installer.chmod(0o755)
+env.update(GEMINI_HOME=str(T / "gemini-never-installed"), AODD_9ARM_INSTALLER=str(nine_installer), CLAUDE_HOME=str(T / "claude"), CODEX_HOME=str(T / "codex"), AGY_HOME=str(T / "agy-never-installed"), CLAUDE_BIN=str(T / "claude-cli"), AODD_SCHEDULES_DRY_RUN="1", AODD_REA_CMD=str(T / "rea"))
 
 
 def run_rc(*flags, extra=None):

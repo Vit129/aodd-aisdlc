@@ -503,36 +503,47 @@ if [ -z "$PROJECT_ROOT" ]; then  # core, not a module: REA's own `rea setup` reg
   fi
 fi
 if [ -z "$PROJECT_ROOT" ]; then
-  # Install only missing companion skills, preserving existing user skills.
-  NINE_HOMES=("$DEST")
-  [ "$CODEX_ON" = 1 ] && NINE_HOMES+=("${CODEX_HOME:-$HOME/.codex}")
-  [ "$AGY_ON" = 1 ] && NINE_HOMES+=("${AGY_HOME:-$HOME/.gemini/antigravity-cli}")
-  NEED_NINE=0
-  for agent_home in "${NINE_HOMES[@]}"; do
-    for skill in debug-mantra scrutinize post-mortem qwen-agent management-talk qwenchance; do
-      [ -f "$agent_home/skills/$skill/SKILL.md" ] || NEED_NINE=1
-    done
+  # The upstream 9arm installer owns its skills; AODD does not copy or vendor them.
+  NINE_AGENTS=()
+  for spec in "claude-code:$DEST" "codex:${CODEX_HOME:-$HOME/.codex}" "antigravity-cli:${AGY_HOME:-$HOME/.gemini/antigravity-cli}"; do
+    agent="${spec%%:*}"; agent_home="${spec#*:}"
+    [ "$agent" = codex ] && [ "$CODEX_ON" != 1 ] && continue
+    [ "$agent" = antigravity-cli ] && [ "$AGY_ON" != 1 ] && continue
+    if [ "$agent" = claude-code ] && AGENT_HOME="$agent_home" python3 - <<'PYPLUGIN'
+import json, os
+from pathlib import Path
+try:
+    data = json.loads((Path(os.environ["AGENT_HOME"]) / "plugins/installed_plugins.json").read_text())
+    entries = data.get("plugins", {}).get("9arm-skills@9arm-marketplace", [])
+    assert any(all((Path(e["installPath"]) / "skills/engineering" / n / "SKILL.md").is_file() for n in ("debug-mantra", "scrutinize")) for e in entries)
+except (OSError, ValueError, KeyError, TypeError, AssertionError):
+    raise SystemExit(1)
+PYPLUGIN
+    then continue; fi
+    if [ ! -f "$agent_home/skills/debug-mantra/SKILL.md" ] || [ ! -f "$agent_home/skills/scrutinize/SKILL.md" ]; then
+      NINE_AGENTS+=("$agent")
+    fi
   done
-  if [ "$NEED_NINE" = 1 ]; then
+  if [ ${#NINE_AGENTS[@]} -gt 0 ]; then
     if [ "$DRY" = 1 ]; then
-      echo "9arm    would install missing 9arm skills"
+      echo "9arm    would invoke upstream installer for ${NINE_AGENTS[*]}"
+    elif [ -n "${AODD_9ARM_INSTALLER:-}" ]; then
+      "$AODD_9ARM_INSTALLER" "${NINE_AGENTS[@]}"
     else
-      NINE_SOURCE="${AODD_9ARM_SOURCE:-}"
-      if [ -z "$NINE_SOURCE" ]; then
-        NINE_TEMP="$(mktemp -d)"
-        trap 'rm -rf "$NINE_TEMP"' EXIT
-        git clone --quiet --depth 1 https://github.com/thananon/9arm-skills.git "$NINE_TEMP/source"
-        NINE_SOURCE="$NINE_TEMP/source"
+      if [[ " ${NINE_AGENTS[*]} " == *" antigravity-cli "* ]] && [ "${AGY_HOME:-$HOME/.gemini/antigravity-cli}" != "$HOME/.gemini/antigravity-cli" ]; then
+        echo "error   upstream 9arm installer does not support a custom AGY_HOME; install the skills for that home first" >&2; exit 1
       fi
-      for agent_home in "${NINE_HOMES[@]}"; do
-        for skill in debug-mantra scrutinize post-mortem qwen-agent management-talk qwenchance; do
-          case "$skill" in management-talk|qwenchance) category=productivity ;; *) category=engineering ;; esac
-          if [ ! -f "$agent_home/skills/$skill/SKILL.md" ]; then
-            [ ! -e "$agent_home/skills/$skill" ] || { echo "error   incomplete existing skill: $agent_home/skills/$skill" >&2; exit 1; }
-            [ -f "$NINE_SOURCE/skills/$category/$skill/SKILL.md" ] || { echo "error   missing 9arm skill $skill" >&2; exit 1; }
-            mkdir -p "$agent_home/skills"
-            cp -R "$NINE_SOURCE/skills/$category/$skill" "$agent_home/skills/$skill"
-          fi
+      CLAUDE_CONFIG_DIR="$DEST" CODEX_HOME="${CODEX_HOME:-$HOME/.codex}" npx skills add thananon/9arm-skills --global --yes --agent "${NINE_AGENTS[@]}" --skill '*'
+    fi
+    if [ "$DRY" != 1 ]; then
+      for agent in "${NINE_AGENTS[@]}"; do
+        case "$agent" in
+          claude-code) agent_home="$DEST" ;;
+          codex) agent_home="${CODEX_HOME:-$HOME/.codex}" ;;
+          antigravity-cli) agent_home="${AGY_HOME:-$HOME/.gemini/antigravity-cli}" ;;
+        esac
+        for skill in debug-mantra scrutinize; do
+          [ -f "$agent_home/skills/$skill/SKILL.md" ] || { echo "error   upstream installer did not install $skill for $agent" >&2; exit 1; }
         done
       done
     fi

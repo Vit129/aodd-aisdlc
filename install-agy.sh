@@ -191,30 +191,20 @@ PY
 }
 register_hooks
 
-# Ensure required 9arm skills exist when this installer is run directly.
-NEED_NINE=0
-for skill in debug-mantra scrutinize post-mortem qwen-agent management-talk qwenchance; do
-  [ -f "$AGY_HOME/skills/$skill/SKILL.md" ] || NEED_NINE=1
-done
-if [ "$NEED_NINE" = 1 ]; then
+# Use the upstream installer if the required companion skills are missing.
+if [ ! -f "$AGY_HOME/skills/debug-mantra/SKILL.md" ] || [ ! -f "$AGY_HOME/skills/scrutinize/SKILL.md" ]; then
   if [ "$DRY" = 1 ]; then
-    echo "9arm    would install missing 9arm skills"
+    echo "9arm    would invoke upstream installer for antigravity-cli"
+  elif [ -n "${AODD_9ARM_INSTALLER:-}" ]; then
+    "$AODD_9ARM_INSTALLER" antigravity-cli
+  elif [ "$AGY_HOME" != "$HOME/.gemini/antigravity-cli" ]; then
+    echo "error   upstream 9arm installer does not support a custom AGY_HOME; install the skills for that home first" >&2; exit 1
   else
-    NINE_SOURCE="${AODD_9ARM_SOURCE:-}"
-    if [ -z "$NINE_SOURCE" ]; then
-      NINE_TEMP="$(mktemp -d)"
-      trap 'rm -rf "$NINE_TEMP"' EXIT
-      git clone --quiet --depth 1 https://github.com/thananon/9arm-skills.git "$NINE_TEMP/source"
-      NINE_SOURCE="$NINE_TEMP/source"
-    fi
-    for skill in debug-mantra scrutinize post-mortem qwen-agent management-talk qwenchance; do
-      case "$skill" in management-talk|qwenchance) category=productivity ;; *) category=engineering ;; esac
-      if [ ! -f "$AGY_HOME/skills/$skill/SKILL.md" ]; then
-        [ ! -e "$AGY_HOME/skills/$skill" ] || { echo "error   incomplete existing skill: $AGY_HOME/skills/$skill" >&2; exit 1; }
-        [ -f "$NINE_SOURCE/skills/$category/$skill/SKILL.md" ] || { echo "error   missing 9arm skill $skill" >&2; exit 1; }
-        mkdir -p "$AGY_HOME/skills"
-        cp -R "$NINE_SOURCE/skills/$category/$skill" "$AGY_HOME/skills/$skill"
-      fi
+    npx skills add thananon/9arm-skills --global --yes --agent antigravity-cli --skill '*'
+  fi
+  if [ "$DRY" != 1 ]; then
+    for skill in debug-mantra scrutinize; do
+      [ -f "$AGY_HOME/skills/$skill/SKILL.md" ] || { echo "error   upstream installer did not install $skill for antigravity-cli" >&2; exit 1; }
     done
   fi
 fi

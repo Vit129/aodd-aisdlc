@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Version, changelog, tag, push, and publish an AODD release."""
+"""Version, changelog, tag, push, and publish a release."""
 
 import argparse
 import json
@@ -11,9 +11,9 @@ from pathlib import Path
 
 def find_repo_root(start: Path) -> Path:
     for directory in (start, *start.parents):
-        if (directory / ".git").exists() and (directory / "VERSION").is_file() and (directory / "cliff.toml").is_file():
+        if (directory / ".git").exists() and (directory / "cliff.toml").is_file():
             return directory
-    raise RuntimeError("Run the release command from inside an aodd-aisdlc checkout.")
+    raise RuntimeError("Run the release command from inside a checkout with cliff.toml.")
 
 
 ROOT = find_repo_root(Path.cwd())
@@ -79,34 +79,53 @@ def release_gate() -> None:
     """Run the repository's documented checks before any release publication."""
     env = os.environ.copy()
     env["GIT_CONFIG_GLOBAL"] = os.devnull
-    run(["make", "start"], env=env)
+    run(["make", "check"], env=env)
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("bump", nargs="?", choices=("patch", "minor", "major"), default="patch")
+    parser.add_argument("bump", nargs="?", choices=("patch", "minor", "major"))
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--resume", action="store_true", help="complete the current tagged release without bumping")
     args = parser.parse_args()
+    if not args.bump and not args.resume:
+        parser.error("choose patch, minor, or major (or --resume)")
 
     branch = output("git", "branch", "--show-current")
     if branch != "main":
         raise RuntimeError(f"Release must run from main (current branch: {branch}).")
-    remote_url = output("git", "remote", "get-url", "origin").lower()
-    if "aodd-aisdlc" not in remote_url:
-        raise RuntimeError(f"Refusing to release from an unexpected origin: {remote_url}")
-    run(["git", "fetch", "origin", "main", "--tags"])
+    if not args.dry_run:
+        run(["git", "fetch", "origin", "main", "--tags"])
+    else:
+        print("Dry run uses locally available remote refs and tags.")
 
-    version = VERSION_FILE.read_text().strip()
-    tag = f"v{version}"
     tags = output("git", "tag", "--list", "v*").splitlines()
     valid_tags = [value[1:] for value in tags if VERSION_RE.fullmatch(value.removeprefix("v"))]
     latest_tag_version = max(valid_tags, key=version_tuple) if valid_tags else "0.0.0"
+    if VERSION_FILE.is_file():
+        version = VERSION_FILE.read_text().strip()
+    else:
+        match = re.search(r"^## \[?(\d+\.\d+\.\d+)\]?", CHANGELOG_FILE.read_text(), re.MULTILINE)
+        version = match.group(1) if match else latest_tag_version
+    tag = f"v{version}"
     head = output("git", "rev-parse", "HEAD")
     remote = output("git", "rev-parse", "origin/main")
     tag_result = run(["git", "rev-parse", "--verify", f"refs/tags/{tag}^{{commit}}"], capture=True, check=False)
     tag_commit = tag_result.stdout.strip() if tag_result.returncode == 0 else ""
     subject = output("git", "log", "-1", "--format=%s")
+
+    dirty = bool(output("git", "status", "--porcelain"))
+    if dirty:
+        if not args.dry_run:
+            raise RuntimeError("Release requires a clean working tree; preserve and resolve all edits first.")
+        print("BLOCKED: working tree has edits; preserve and resolve them before release.")
+
+    pending_version = version_tuple(version) > version_tuple(latest_tag_version)
+    if pending_version and args.bump and next_version(latest_tag_version, args.bump) != version:
+        raise RuntimeError(
+            f"Version v{version} is already pending after v{latest_tag_version}; "
+            "finish it with --resume before selecting another bump."
+        )
 
     # Finish a release commit that was created before its tag/push/release step failed.
     if subject == f"chore(release): {tag}":
@@ -138,8 +157,10 @@ def main() -> int:
             return 0
 
     if args.resume:
+        if tag_commit and tag_commit != head:
+            raise RuntimeError(f"Cannot verify {tag}: tag points to {tag_commit}, but checkout is {head}.")
         if tag_commit:
-            tagged_version = output("git", "show", f"{tag}:VERSION")
+            tagged_version = output("git", "show", f"{tag}:VERSION") if VERSION_FILE.is_file() else version
             if tagged_version != version:
                 raise RuntimeError(f"Tag {tag} contains VERSION {tagged_version}, expected {version}; resolve the tag mismatch manually.")
             if args.dry_run:
@@ -151,15 +172,12 @@ def main() -> int:
         if version_tuple(version) <= version_tuple(latest_tag_version):
             raise RuntimeError(f"No pending release for VERSION {version}; latest tag is v{latest_tag_version}.")
 
-    if output("git", "status", "--porcelain"):
-        raise RuntimeError("Release requires a clean working tree; preserve and resolve all edits first.")
     if head != remote:
         raise RuntimeError("Local main differs from origin/main; synchronize before release.")
     run(["gh", "auth", "status"])
     run(["git", "cliff", "--version"])
 
     # A committed VERSION bump ahead of the latest tag is a pending release, not a request to skip it.
-    pending_version = version_tuple(version) > version_tuple(latest_tag_version)
     new_version = version if pending_version else next_version(version, args.bump)
     new_tag = f"v{new_version}"
     changelog = output("git", "cliff", "--tag", new_tag)
@@ -168,10 +186,13 @@ def main() -> int:
         print(f"Would {action} {new_tag}, update VERSION/CHANGELOG.md if needed, commit the metadata, push, and create a GitHub Release.")
         return 0
 
-    if not pending_version:
+    if not pending_version and VERSION_FILE.is_file():
         VERSION_FILE.write_text(f"{new_version}\n")
-    CHANGELOG_FILE.write_text(changelog)
-    run(["git", "add", "VERSION", "CHANGELOG.md"])
+    CHANGELOG_FILE.write_text(changelog.rstrip() + "\n")
+    metadata = ["CHANGELOG.md"]
+    if VERSION_FILE.is_file():
+        metadata.append("VERSION")
+    run(["git", "add", *metadata])
     if output("git", "diff", "--cached", "--name-only"):
         run(["git", "commit", "-m", f"chore(release): {new_tag}"])
     release_gate()

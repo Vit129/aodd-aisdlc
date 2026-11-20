@@ -72,8 +72,6 @@ Verification evidence (below) is required for every changed task; passing scenar
 - Every proposal states its why: the reason and evidence (numbers, file:line, error text, usage counts).
 - Report shape, always three parts: **Result** (one line plus file links), **Evidence** (command output, verification proof),
   **Needs your decision** (remaining approvals: merge, deploy, irreversible actions).
-- Never claim Done without citing passing verification evidence for the delivered changes; reuse valid results instead of re-running them.
-
 ## Verification evidence
 
 When test scenarios cover the change and their results are PASS, the change is eligible for the requested push, release or
@@ -83,7 +81,7 @@ and relevant environment. Existing valid results count; no duplicate test, build
 - Results must cover the source and inputs being delivered. After source, dependency, configuration or environment changes,
   rerun only the affected checks; an unrelated docs or graph refresh does not invalidate results unless it changes their inputs.
 - Without covering scenario results, run the relevant existing tests and the project's build/static/type/syntax checks where
-  applicable. Report missing coverage or checks that cannot run; do not label them PASS.
+  applicable. Report missing coverage or checks that cannot run; do not label them PASS. Never claim Done without citing passing evidence for the delivered changes; reuse valid results instead of re-running them.
 - This does not authorize an unrequested publish or bypass a project's explicitly required CI, build/artifact, security or
   release gates. Reuse their valid results too; a scenario PASS does not prove that a deployable artifact exists.
 - Check diff size against task scope first (`git diff --stat`); far beyond the task: stop and confirm.
@@ -136,5 +134,4 @@ No hook enforces these. "The user hasn't objected" is not approval: ask directly
 
 - Before starting any subagent or CLI agent, read `rules/ai-sdlc/delegation.md` (model and effort rules).
 - Before commit, push, PR or merge, read `rules/ai-sdlc/git-ops.md`.
-- Audit: on demand only, see `docs/audit.md`.
 - Lessons from the work are patched into the skill that governs it: `docs/skill-learning.md`.

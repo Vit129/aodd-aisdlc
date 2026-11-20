@@ -1,0 +1,29 @@
+adapters/test_antigravity_hook_adapter.py
+  s_d55e01ba0781c8::t_4e2ed0ff4181c7 164-165
+install.sh
+  s_d55e01ba0781c8::t_4e2ed0ff4181c7 512,518,528-529,532,534
+scripts/test_install.py
+  s_d55e01ba0781c8::t_4e2ed0ff4181c7 13-14,42
+install-agy.sh
+  s_d55e01ba0781c8::t_4e2ed0ff4181c7 195-199,201,210-211,214,216
+README.md
+  s_d55e01ba0781c8::t_4e2ed0ff4181c7 145
+skills/ai-sdlc/references/skill-routing.md
+  s_d55e01ba0781c8::t_86c7220a640bc0 36-39
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "ef46b16a527eb1bcfb15979a366f19a5e96dc2dd",
+  "prompts": {},
+  "sessions": {
+    "s_d55e01ba0781c8": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1f73a-5ffc-7fd3-aec4-e985485ed5e3",
+        "model": "gpt-6.1-terra"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

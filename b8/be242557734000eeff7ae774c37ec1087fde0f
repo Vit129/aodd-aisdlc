@@ -1,0 +1,14 @@
+CHANGELOG.md
+  h_c47042854e26db 8-12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "b8be242557734000eeff7ae774c37ec1087fde0f",
+  "prompts": {},
+  "humans": {
+    "h_c47042854e26db": {
+      "author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

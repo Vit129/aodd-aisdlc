@@ -358,13 +358,13 @@ if os.environ["WRITE_ENV"] == "1":
         print(f"env     {k}={v}: {'would write' if dry else 'written'}")
 
 # Claude Code loads every .md under rules/ at session start; only the workflow file should. Exclude the rest (settings.json only).
-# The user's own entries stay; the old exclude of the workflow file is removed because that file must load.
+# Preserve all user excludes, including an explicit workflow exclusion used by conditional routers.
 if settings.name == "settings.json":
     EXCLUDES = ["**/rules/ai-sdlc/**", "**/rules/effort/**", "**/rules/coding/**", "**/rules/playwright/**", "**/rules/robot/**",
                 "**/rules/product-design.md", "**/rules/gui-fixes.md", "**/rules/data-testid-mapping.md", "**/rules/gemini-prompting.md"]
     cur = data.get("claudeMdExcludes", [])
     if isinstance(cur, list):
-        new = [e for e in cur if e != "**/rules/ai-sdlc-workflow.md"]
+        new = list(cur)
         new += [e for e in EXCLUDES if e not in new]
         if new != cur:
             data["claudeMdExcludes"] = new
@@ -429,6 +429,8 @@ for l in f.read_text().split("\n"):
     out.append(l)
 f.write_text("\n".join(out))
 PY
+  elif [ -f "$DEST/CLAUDE.md" ] && grep -qxF "@AGENTS.md" "$DEST/CLAUDE.md" && [ -f "$DEST/AGENTS.md" ] && grep -qF "ai-sdlc-workflow.md" "$DEST/AGENTS.md"; then
+    echo "CLAUDE.md routes through AGENTS.md"
   elif [ -f "$DEST/CLAUDE.md" ] && grep -qxF "$IMPORT" "$DEST/CLAUDE.md"; then
     echo "CLAUDE.md already imports $IMPORT"
   else

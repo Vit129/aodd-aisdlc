@@ -235,6 +235,12 @@ assert notgit.returncode == 2 and "not a git repository" in notgit.stderr and no
 W = T / "wf"
 wenv = {"CLAUDE_HOME": str(W / "c"), "CODEX_HOME": str(W / "x")}
 run("--claude-md", "--codex", extra=wenv)
+router = W / "router"
+router.mkdir(parents=True)
+(router / "CLAUDE.md").write_text("@AGENTS.md\n")
+(router / "AGENTS.md").write_text("Conditional routing: ai-sdlc-workflow.md\n")
+run("--core-only", extra={"CLAUDE_HOME": str(router)})
+assert (router / "CLAUDE.md").read_text() == "@AGENTS.md\n"
 cm = (W / "c/CLAUDE.md").read_text()
 assert cm.count("@rules/ai-sdlc-workflow.md") == 1 and "@rules/aodd.md" not in cm                      # (a)
 (W / "c2").mkdir()
@@ -248,7 +254,7 @@ assert (W / "c2/CLAUDE.md").read_text() == cm2
 json.dump({"claudeMdExcludes": ["mine/**", "**/rules/ai-sdlc-workflow.md"]}, open(W / "c3/settings.json", "w"))
 run("--core-only", extra={"CLAUDE_HOME": str(W / "c3")})
 ex = json.loads((W / "c3/settings.json").read_text())["claudeMdExcludes"]                             # (c)
-assert "mine/**" in ex and "**/rules/ai-sdlc-workflow.md" not in ex and "**/rules/ai-sdlc/**" in ex and "**/rules/coding/**" in ex
+assert "mine/**" in ex and "**/rules/ai-sdlc-workflow.md" in ex and "**/rules/ai-sdlc/**" in ex and "**/rules/coding/**" in ex
 assert len(ex) == len(set(ex))
 snap = (W / "c3/settings.json").read_text()
 assert "claudeMdExcludes" not in run("--core-only", extra={"CLAUDE_HOME": str(W / "c3")}) and (W / "c3/settings.json").read_text() == snap

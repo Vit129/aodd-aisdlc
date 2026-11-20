@@ -82,18 +82,89 @@ def release_gate() -> None:
     run(["make", "check"], env=env)
 
 
+def release_feature(branch: str, bump: str, dry_run: bool) -> int:
+    """Verify and merge a committed feature before releasing the merged main."""
+    if output("git", "status", "--porcelain"):
+        raise RuntimeError("Commit or explicitly stage and commit the intended changes before starting the feature release.")
+    if dry_run:
+        print(f"Would check {branch}, push it, create or reuse a PR to main, merge it, then release {bump} from main.")
+        return 0
+    run(["git", "fetch", "origin", "main", "--tags"])
+    remote = output("git", "rev-parse", "origin/main")
+    tags = output("git", "tag", "--list", "v*").splitlines()
+    versions = [tag[1:] for tag in tags if VERSION_RE.fullmatch(tag.removeprefix("v"))]
+    latest = max(versions, key=version_tuple) if versions else "0.0.0"
+    version_at_main = run(["git", "show", "origin/main:VERSION"], capture=True, check=False)
+    if version_at_main.returncode == 0:
+        current = version_at_main.stdout.strip()
+    else:
+        changelog = output("git", "show", "origin/main:CHANGELOG.md")
+        match = re.search(r"^## \[?(\d+\.\d+\.\d+)\]?", changelog, re.MULTILINE)
+        current = match.group(1) if match else latest
+    if version_tuple(current) > version_tuple(latest) and next_version(latest, bump) != current:
+        raise RuntimeError(f"Version v{current} is pending on main; finish it before merging a different bump.")
+    common = Path(output("git", "rev-parse", "--path-format=absolute", "--git-common-dir"))
+    main_root = common.parent
+    main_branch = run(["git", "-C", str(main_root), "branch", "--show-current"], capture=True).stdout.strip()
+    local_main = output("git", "rev-parse", "refs/heads/main")
+    if local_main != remote:
+        raise RuntimeError("Local main differs from origin/main; synchronize it before merging.")
+    if main_root != ROOT and (main_branch != "main" or run(["git", "-C", str(main_root), "status", "--porcelain"], capture=True).stdout.strip()):
+        raise RuntimeError("The main checkout must be clean and on main before merging.")
+    run(["git", "merge-base", "--is-ancestor", "origin/main", "HEAD"])
+    release_gate()
+    feature_head = output("git", "rev-parse", "HEAD")
+    run(["git", "push", "origin", f"HEAD:refs/heads/{branch}"])
+    prs = json.loads(output("gh", "pr", "list", "--base", "main", "--head", branch, "--state", "open", "--json", "url"))
+    if prs:
+        pr = prs[0]["url"]
+    else:
+        pr = output("gh", "pr", "create", "--base", "main", "--head", branch, "--fill")
+    run(["gh", "pr", "merge", pr, "--merge", "--match-head-commit", feature_head])
+    run(["git", "fetch", "origin", "main", "--tags"])
+    run(["git", "merge-base", "--is-ancestor", "HEAD", "origin/main"])
+    if main_root == ROOT:
+        run(["git", "switch", "main"])
+    run(["git", "-C", str(main_root), "merge", "--ff-only", "origin/main"])
+    result = subprocess.run([sys.executable, "scripts/release.py", bump], cwd=main_root)
+    if result.returncode:
+        raise RuntimeError(f"PR was merged, but release from {main_root} failed; resume from main.")
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("bump", nargs="?", choices=("patch", "minor", "major"))
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--resume", action="store_true", help="complete the current tagged release without bumping")
+    parser.add_argument("-m", "--message", default=os.environ.get("COMMIT_MESSAGE"), help="commit message for explicitly staged changes")
     args = parser.parse_args()
     if not args.bump and not args.resume:
         parser.error("choose patch, minor, or major (or --resume)")
 
+    staged = output("git", "diff", "--cached", "--name-only")
+    if staged:
+        if not args.message:
+            raise RuntimeError("Staged changes need --message; stage only the files intended for this release.")
+        if output("git", "diff", "--name-only") or output("git", "ls-files", "--others", "--exclude-standard"):
+            raise RuntimeError("Unstaged or untracked files remain; preserve and resolve them before release.")
+        if args.dry_run:
+            print(f"Would commit staged files with message: {args.message}")
+        else:
+            run(["git", "commit", "-m", args.message])
+
     branch = output("git", "branch", "--show-current")
+    if not branch:
+        raise RuntimeError("Release requires a named branch, not a detached HEAD.")
     if branch != "main":
-        raise RuntimeError(f"Release must run from main (current branch: {branch}).")
+        if args.resume:
+            raise RuntimeError("Resume the pending release from main.")
+        return release_feature(branch, args.bump, args.dry_run)
+    if staged and not args.dry_run:
+        run(["git", "fetch", "origin", "main", "--tags"])
+        run(["git", "merge-base", "--is-ancestor", "origin/main", "HEAD"])
+        release_gate()
+        run(["git", "push", "origin", "main"])
     if not args.dry_run:
         run(["git", "fetch", "origin", "main", "--tags"])
     else:

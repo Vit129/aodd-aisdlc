@@ -1,5 +1,8 @@
 .PHONY: start check preview patch minor major
 .SHELLFLAGS := -e -c
+ifneq ($(origin msg), undefined)
+export COMMIT_MESSAGE := $(msg)
+endif
 
 ifneq ($(word 2,$(filter patch minor major,$(MAKECMDGOALS))),)
 $(error Choose only one of patch, minor, or major)

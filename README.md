@@ -196,7 +196,7 @@ After a user correction or a `fix:` commit, a Stop hook notes (once per session)
 
 ## Release
 
-Run `make start` interactively and choose check, patch, minor, or major. Non-interactive callers can run `make start patch`, `make start minor`, `make start major`, or `make check`. Preview with `python3 scripts/release.py patch --dry-run`. Release from a clean, synchronized `main`. It updates `VERSION` and `CHANGELOG.md`, commits the versioned candidate, runs `make start` on that commit, then tags and publishes only if the gate passes. A normal invocation after a complete release starts the next version; use `--resume` to complete the current tag without bumping. Use `--dry-run` to preview. Requires `git-cliff` and an authenticated `gh` CLI.
+Run `make start` interactively and choose check, patch, minor, or major. Non-interactive callers can run `make start patch`, `make start minor`, `make start major`, or `make check`. To commit explicitly staged files, pass `msg="feat: description"`; unstaged and untracked files must be resolved first. From a feature branch the workflow checks the branch, pushes it, creates or reuses a PR, merges without bypassing required checks, updates the clean main checkout and releases from the merged commit. Preview with `python3 scripts/release.py patch --dry-run`. The release updates version metadata and changelog, runs `make check`, then tags and publishes only if the gate passes. Use `--resume` to complete a pending release. Requires `git-cliff` and an authenticated `gh` CLI.
 
 ## Tests
 

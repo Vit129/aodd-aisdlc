@@ -5,8 +5,11 @@ All notable changes to aodd-aisdlc are documented here. The format is based on
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [0.9.1] - 2026-11-20
 
-### Changed
-- Stop-time reindex in code-search-guard is opt-in (`AODD_INDEX_ON_STOP=1`), default off, so the backend's own watcher is the single reindex path
+### Added
+- Stop-time reindex in code-search-guard is opt-in (AODD_INDEX_ON_STOP=1) (#96) (`5f388c7`)
+
+### Fixed
+- Align agent workflow routing and setup (`9e5c810`)
 
 ## [0.9.0] - 2026-11-19
 

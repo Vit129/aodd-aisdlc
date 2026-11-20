@@ -8,6 +8,7 @@ All notable changes to aodd-aisdlc are documented here. The format is based on
 ### Added
 - Support additional 9arm companion skills (`b155127`)
 - Add shared release workflow entrypoints (`2e828dc`)
+- Release reviewed feature branches (`f97a0a8`)
 
 ### Fixed
 - Collapse two repeats in the always-loaded AODD contract (#98) (`1fc7181`)

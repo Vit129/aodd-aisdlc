@@ -1,0 +1,19 @@
+CHANGELOG.md
+  s_823baa07937f0a::t_11e3ead0ac028e 10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "3cf601ed512745b56d3c348a3bc78185ba11abce",
+  "prompts": {},
+  "sessions": {
+    "s_823baa07937f0a": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1f7df-a2ad-7832-b0a5-1a8b81f46e5e",
+        "model": "unknown"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

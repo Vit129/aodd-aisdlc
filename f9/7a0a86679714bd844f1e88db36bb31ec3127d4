@@ -1,0 +1,33 @@
+README.md
+  s_d55e01ba0781c8::t_1d71f3be6551ce 199
+scripts/release.py
+  s_d55e01ba0781c8::t_4999caba4a2d3d 145-154
+  s_d55e01ba0781c8::t_98187169fe0aee 94-105
+  s_d55e01ba0781c8::t_493b2c204e4fb0 140
+  s_d55e01ba0781c8::t_0aa062a6dbef00 163-167
+  s_d55e01ba0781c8::t_568827e0720880 85-93,106-115,117-122,124-134,157-158,160-162
+  s_d55e01ba0781c8::t_7e22350219743c 116,123
+  s_d55e01ba0781c8::t_d173391c83938f 155
+Makefile
+  s_d55e01ba0781c8::t_493b2c204e4fb0 3-5
+scripts/test_release.py
+  s_d55e01ba0781c8::t_2123c165846b34 81-109
+  s_d55e01ba0781c8::t_cbeafe67ec485d 10,112-165
+  s_d55e01ba0781c8::t_98187169fe0aee 39
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "f97a0a86679714bd844f1e88db36bb31ec3127d4",
+  "prompts": {},
+  "sessions": {
+    "s_d55e01ba0781c8": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1f73a-5ffc-7fd3-aec4-e985485ed5e3",
+        "model": "gpt-6.1-terra"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

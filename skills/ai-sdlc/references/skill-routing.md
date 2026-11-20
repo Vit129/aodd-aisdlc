@@ -33,7 +33,9 @@ the handling skill after triage, not a bypass around it.
 | Review a plan, diff, PR or design | `scrutinize` (9arm), with project standards and the originating spec |
 | Session handoff to another agent/session | Write `$AODD_PLANS/[FEATURE]/handoff.md` (sibling of, not the same file as, `ai-sdlc-task-progress.md`; format in `references/ai-sdlc-progress-spec.md` § Resume protocol) |
 | Bug or issue investigation | `debug-mantra` (9arm) (companion); use before proposing or applying a fix |
-| Looping or context nearly full | `9arm-skills:qwenchance` (companion); its "invoke the `handoff` skill" step means: write `$AODD_PLANS/[FEATURE]/handoff.md` as in the row above |
-| Post-incident RCA | `9arm-skills:post-mortem` (companion); write it to the repo's `docs/postmortems/<slug>.md` unless the CEO names another place (ticket, PR) |
+| Looping or context nearly full | `qwenchance` (9arm); its "invoke the `handoff` skill" step means: write `$AODD_PLANS/[FEATURE]/handoff.md` as in the row above |
+| Post-incident RCA | `post-mortem` (9arm); write it to the repo's `docs/postmortems/<slug>.md` unless the CEO names another place (ticket, PR) |
+| Leadership communication rewrite | `management-talk` (9arm) |
+| Explicit request to delegate mechanical work to Qwen | `qwen-agent` (9arm), when its runtime is available |
 | Independent audit of a "Done" claim | on the CEO's yes, `python3 scripts/audit.py --confirmed` (never a worker-briefed subagent) |
 | Cross-provider second opinion or stuck investigation | The `agy` / `codex` Claude Code plugins if installed; brief with a curated summary, not the raw transcript |

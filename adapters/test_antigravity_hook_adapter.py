@@ -161,8 +161,8 @@ def test_install_agy():
     temp_gemini = T / "gemini"
 
     nine_source = T / "9arm-fixture"
-    for skill in ("debug-mantra", "scrutinize"):
-        skill_dir = nine_source / "skills" / "engineering" / skill
+    for skill in ("debug-mantra", "scrutinize", "post-mortem", "qwen-agent", "management-talk", "qwenchance"):
+        skill_dir = nine_source / "skills" / ("productivity" if skill in ("management-talk", "qwenchance") else "engineering") / skill
         skill_dir.mkdir(parents=True, exist_ok=True)
         (skill_dir / "SKILL.md").write_text(skill)
 

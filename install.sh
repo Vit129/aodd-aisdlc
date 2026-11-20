@@ -509,13 +509,13 @@ if [ -z "$PROJECT_ROOT" ]; then
   [ "$AGY_ON" = 1 ] && NINE_HOMES+=("${AGY_HOME:-$HOME/.gemini/antigravity-cli}")
   NEED_NINE=0
   for agent_home in "${NINE_HOMES[@]}"; do
-    for skill in debug-mantra scrutinize; do
+    for skill in debug-mantra scrutinize post-mortem qwen-agent management-talk qwenchance; do
       [ -f "$agent_home/skills/$skill/SKILL.md" ] || NEED_NINE=1
     done
   done
   if [ "$NEED_NINE" = 1 ]; then
     if [ "$DRY" = 1 ]; then
-      echo "9arm    would install missing debug-mantra and scrutinize"
+      echo "9arm    would install missing 9arm skills"
     else
       NINE_SOURCE="${AODD_9ARM_SOURCE:-}"
       if [ -z "$NINE_SOURCE" ]; then
@@ -525,12 +525,13 @@ if [ -z "$PROJECT_ROOT" ]; then
         NINE_SOURCE="$NINE_TEMP/source"
       fi
       for agent_home in "${NINE_HOMES[@]}"; do
-        for skill in debug-mantra scrutinize; do
+        for skill in debug-mantra scrutinize post-mortem qwen-agent management-talk qwenchance; do
+          case "$skill" in management-talk|qwenchance) category=productivity ;; *) category=engineering ;; esac
           if [ ! -f "$agent_home/skills/$skill/SKILL.md" ]; then
             [ ! -e "$agent_home/skills/$skill" ] || { echo "error   incomplete existing skill: $agent_home/skills/$skill" >&2; exit 1; }
-            [ -f "$NINE_SOURCE/skills/engineering/$skill/SKILL.md" ] || { echo "error   missing 9arm skill $skill" >&2; exit 1; }
+            [ -f "$NINE_SOURCE/skills/$category/$skill/SKILL.md" ] || { echo "error   missing 9arm skill $skill" >&2; exit 1; }
             mkdir -p "$agent_home/skills"
-            cp -R "$NINE_SOURCE/skills/engineering/$skill" "$agent_home/skills/$skill"
+            cp -R "$NINE_SOURCE/skills/$category/$skill" "$agent_home/skills/$skill"
           fi
         done
       done

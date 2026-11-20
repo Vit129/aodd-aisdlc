@@ -192,9 +192,13 @@ PY
 register_hooks
 
 # Ensure required 9arm skills exist when this installer is run directly.
-if [ ! -f "$AGY_HOME/skills/debug-mantra/SKILL.md" ] || [ ! -f "$AGY_HOME/skills/scrutinize/SKILL.md" ]; then
+NEED_NINE=0
+for skill in debug-mantra scrutinize post-mortem qwen-agent management-talk qwenchance; do
+  [ -f "$AGY_HOME/skills/$skill/SKILL.md" ] || NEED_NINE=1
+done
+if [ "$NEED_NINE" = 1 ]; then
   if [ "$DRY" = 1 ]; then
-    echo "9arm    would install missing debug-mantra and scrutinize"
+    echo "9arm    would install missing 9arm skills"
   else
     NINE_SOURCE="${AODD_9ARM_SOURCE:-}"
     if [ -z "$NINE_SOURCE" ]; then
@@ -203,12 +207,13 @@ if [ ! -f "$AGY_HOME/skills/debug-mantra/SKILL.md" ] || [ ! -f "$AGY_HOME/skills
       git clone --quiet --depth 1 https://github.com/thananon/9arm-skills.git "$NINE_TEMP/source"
       NINE_SOURCE="$NINE_TEMP/source"
     fi
-    for skill in debug-mantra scrutinize; do
+    for skill in debug-mantra scrutinize post-mortem qwen-agent management-talk qwenchance; do
+      case "$skill" in management-talk|qwenchance) category=productivity ;; *) category=engineering ;; esac
       if [ ! -f "$AGY_HOME/skills/$skill/SKILL.md" ]; then
         [ ! -e "$AGY_HOME/skills/$skill" ] || { echo "error   incomplete existing skill: $AGY_HOME/skills/$skill" >&2; exit 1; }
-        [ -f "$NINE_SOURCE/skills/engineering/$skill/SKILL.md" ] || { echo "error   missing 9arm skill $skill" >&2; exit 1; }
+        [ -f "$NINE_SOURCE/skills/$category/$skill/SKILL.md" ] || { echo "error   missing 9arm skill $skill" >&2; exit 1; }
         mkdir -p "$AGY_HOME/skills"
-        cp -R "$NINE_SOURCE/skills/engineering/$skill" "$AGY_HOME/skills/$skill"
+        cp -R "$NINE_SOURCE/skills/$category/$skill" "$AGY_HOME/skills/$skill"
       fi
     done
   fi

@@ -10,8 +10,8 @@ env = {k: v for k, v in os.environ.items() if not k.startswith("AODD_")}
 REA_LOG = T / "rea.log"                                                          # stub REA launcher: never npx/network
 (T / "rea").write_text(f'#!/bin/sh\necho "$@" >> "{REA_LOG}"\n'); (T / "rea").chmod(0o755)
 (T / "claude-cli").write_text('#!/bin/sh\nexit 0\n'); (T / "claude-cli").chmod(0o755)
-for skill in ("debug-mantra", "scrutinize"):
-    d = T / "nine/skills/engineering" / skill
+for skill in ("debug-mantra", "scrutinize", "post-mortem", "qwen-agent", "management-talk", "qwenchance"):
+    d = T / "nine/skills" / ("productivity" if skill in ("management-talk", "qwenchance") else "engineering") / skill
     d.mkdir(parents=True)
     (d / "SKILL.md").write_text(skill)
 env.update(GEMINI_HOME=str(T / "gemini-never-installed"), AODD_9ARM_SOURCE=str(T / "nine"), CLAUDE_HOME=str(T / "claude"), CODEX_HOME=str(T / "codex"), AGY_HOME=str(T / "agy-never-installed"), CLAUDE_BIN=str(T / "claude-cli"), AODD_SCHEDULES_DRY_RUN="1", AODD_REA_CMD=str(T / "rea"))
@@ -39,7 +39,7 @@ assert "@rules/ai-sdlc-workflow.md" in (setup / "claude/CLAUDE.md").read_text()
 for agent, instruction in (("codex", "AGENTS.md"), ("gemini", "AGENTS.md")):
     assert "Triage: every request" in (setup / agent / instruction).read_text()
 for agent in ("claude", "codex", "agy"):
-    for skill in ("debug-mantra", "scrutinize"):
+    for skill in ("debug-mantra", "scrutinize", "post-mortem", "qwen-agent", "management-talk", "qwenchance"):
         assert (setup / agent / "skills" / skill / "SKILL.md").read_text() == skill
 
 out = run("--dry-run", "--codex")

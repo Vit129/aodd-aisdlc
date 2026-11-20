@@ -1,0 +1,88 @@
+install-agy.sh
+  s_d55e01ba0781c8::t_bce65614bf5ea4 100-121
+  s_d55e01ba0781c8::t_e933e44589ae1d 194-216
+scripts/test_install.py
+  s_d55e01ba0781c8::t_95406a6ba8ed13 13-17
+  s_d55e01ba0781c8::t_650791625d9265 33-36,38,40,42-44
+  s_d55e01ba0781c8::t_60e584cb533a9d 37,39,41
+skills/ai-sdlc/references/skill-routing.md
+  s_d55e01ba0781c8::t_cd14275d56508a 4-5
+  s_d55e01ba0781c8::t_e933e44589ae1d 33,35
+  s_d55e01ba0781c8::t_0c84447907c77b 7-8
+  s_d55e01ba0781c8::t_ecb94c3acfa817 6
+skills/ai-sdlc/references/ai-sdlc-progress-spec.md
+  s_d55e01ba0781c8::t_e933e44589ae1d 183
+rules/ai-sdlc-workflow.md
+  s_d55e01ba0781c8::t_a64490e3b36560 40,48-49
+  s_d55e01ba0781c8::t_ad1040e6154b93 12-13
+  s_d55e01ba0781c8::t_e933e44589ae1d 17,32,96
+  s_d55e01ba0781c8::t_0c84447907c77b 14,41-47
+  s_d55e01ba0781c8::t_d02037dc007cd3 19,21
+rules/coding/release.md
+  s_d55e01ba0781c8::t_9c6f742fec8538 1,3,5
+skills/robotframework-testing/references/flutter-appium.md
+  s_d55e01ba0781c8::t_e914a47d69242c 51,53
+skills/ai-sdlc/references/qa-automation-loop.md
+  s_d55e01ba0781c8::t_e933e44589ae1d 10
+skills/macos-swiftui/SKILL.md
+  s_d55e01ba0781c8::t_e914a47d69242c 19
+rules/coding/output-and-workflow.md
+  s_d55e01ba0781c8::t_0c84447907c77b 7-12
+skills/backend-dev/SKILL.md
+  s_d55e01ba0781c8::t_e914a47d69242c 99
+rules/robot/ios.md
+  s_d55e01ba0781c8::t_e914a47d69242c 68
+skills/delivery-workflow/references/release-deploy.md
+  s_d55e01ba0781c8::t_aafcb45d958fbf 3
+rules/ai-sdlc/delegation.md
+  s_d55e01ba0781c8::t_0c84447907c77b 24-28
+skills/ai-sdlc/phases/phase5-qa-verify.md
+  s_d55e01ba0781c8::t_e914a47d69242c 10
+  s_d55e01ba0781c8::t_e933e44589ae1d 14
+README.md
+  s_d55e01ba0781c8::t_74981cb42fec6e 82,140-141,143,145
+  s_d55e01ba0781c8::t_7e0e2b68356291 67,97
+rules/robot/rf-coding-standards.md
+  s_d55e01ba0781c8::t_e914a47d69242c 27
+skills/performance-testing/SKILL.md
+  s_d55e01ba0781c8::t_e914a47d69242c 100
+skills/frontend-dev/SKILL.md
+  s_d55e01ba0781c8::t_e914a47d69242c 150
+install.sh
+  s_d55e01ba0781c8::t_95406a6ba8ed13 504-534
+  s_d55e01ba0781c8::t_352ad026edadc5 26,503,535-537
+skills/delivery-workflow/SKILL.md
+  s_d55e01ba0781c8::t_cd14275d56508a 25,63
+  s_d55e01ba0781c8::t_6ab8af7383ce9f 92-131,133-137
+  s_d55e01ba0781c8::t_e914a47d69242c 132
+skills/robotframework-testing/SKILL.md
+  s_d55e01ba0781c8::t_e914a47d69242c 163
+skills/chief-of-staff/SKILL.md
+  s_d55e01ba0781c8::t_1987246350683d 5,14-15
+  s_d55e01ba0781c8::t_e933e44589ae1d 50
+  s_d55e01ba0781c8::t_e7f900b0323bd1 16
+adapters/test_antigravity_hook_adapter.py
+  s_d55e01ba0781c8::t_2baa3d14105b9e 163-168,171,191,207-208
+  s_d55e01ba0781c8::t_d3da371b087582 209
+skills/ai-sdlc/phases/phase1-interview.md
+  s_d55e01ba0781c8::t_1987246350683d 37-39
+  s_d55e01ba0781c8::t_0c84447907c77b 26-30
+rules/robot/android.md
+  s_d55e01ba0781c8::t_e914a47d69242c 67
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.3",
+  "base_commit_sha": "9e5c8102625eab13ba601f3b0e78708bada601f6",
+  "prompts": {},
+  "sessions": {
+    "s_d55e01ba0781c8": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1f73a-5ffc-7fd3-aec4-e985485ed5e3",
+        "model": "gpt-6.1-terra"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

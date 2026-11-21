@@ -4,6 +4,7 @@
 > **Status:** Active Canonical Standard across all projects  
 > **Parent:** `rules/ai-sdlc-workflow.md`  
 > **Principle:** "A Pattern, not a copy-paste template" — defines boundaries, invariants, tagging conventions, and automated test barriers rather than rigid boilerplate.
+> **Layer rules, stack adapters and the project-map template now live in [references/layering/](layering/principles.md).** Section 5 below is a web example only.
 
 ---
 
@@ -146,7 +147,7 @@ describe('Architecture Guard (Logic / UI / Translator / Tokens)', () => {
   // Guard 2: Zero Hardcoded Language Literals Outside Translation Files
   it('enforces zero hardcoded language characters outside designated strings files', () => {
     const violations = [];
-    const languageRegex = /[\u0E01-\u0E3A\u0E40-\u0E7F]/; // Thai Unicode range
+    const languageRegex = /[\u0E01-\u0E3F\u0E40-\u0E7F]/; // Thai block. The range must cover the whole block, including U+0E3F (currency sign).
     for (const file of allSrcFiles) {
       if (isTranslationFile(file)) continue;
       const lines = stripComments(fs.readFileSync(file, 'utf8')).split('\n');

@@ -1,0 +1,19 @@
+skills/delivery-workflow/references/project-adapters.md
+  s_1d58f7832d7b65::t_ad50d160f9538a 20-29
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.7",
+  "base_commit_sha": "340588ccc7e1c8a45ae7651bcfa38380707cd52c",
+  "prompts": {},
+  "sessions": {
+    "s_1d58f7832d7b65": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c01267ae-750f-41c7-a0c9-2d16947babc2",
+        "model": "claude-haiku-5-5"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

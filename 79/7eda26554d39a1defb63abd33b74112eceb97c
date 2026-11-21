@@ -1,0 +1,29 @@
+skills/ai-sdlc/references/layering/adapter-swift.md
+  s_e31c01db89157a::t_8d1f36e73c2021 1-15
+skills/ai-sdlc/references/layering/project-map-template.md
+  s_e31c01db89157a::t_8d1f36e73c2021 1-57
+skills/ai-sdlc/references/layering/adapter-js-ts.md
+  s_e31c01db89157a::t_8d1f36e73c2021 1-50
+skills/ai-sdlc/references/dev-qa-pattern.md
+  s_e31c01db89157a::t_8d1f36e73c2021 7,150
+skills/ai-sdlc/references/layering/principles.md
+  s_e31c01db89157a::t_8d1f36e73c2021 1-54
+skills/ai-sdlc/references/layering/adapter-python.md
+  s_e31c01db89157a::t_8d1f36e73c2021 1-48
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.7",
+  "base_commit_sha": "797eda26554d39a1defb63abd33b74112eceb97c",
+  "prompts": {},
+  "sessions": {
+    "s_e31c01db89157a": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1fecc-94fa-7642-ad8e-6c7cf22906ff",
+        "model": "gpt-6.1-terra"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

@@ -3,6 +3,15 @@
 All notable changes to aodd-aisdlc are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and it follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.9.4] - 2026-11-22
+
+### Documentation
+- Name the gaps seen across repos in delivery-workflow (#99) (`4d5aed7`)
+- Add layering principles, stack adapters and project-map template (`797eda2`)
+
+### Fixed
+- Reword guard-rules bullet that repeated the dev/QA example (`8135ede`)
+
 ## [0.9.3] - 2026-11-20
 
 ### Added

@@ -1,0 +1,21 @@
+CHANGELOG.md
+  s_522163941f14b1::t_4da9a3c89926b4 6-14
+VERSION
+  s_522163941f14b1::t_24ac9b6db33a66 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.7",
+  "base_commit_sha": "f4469d7c248c698ee4c2ed088e5abbc4ee6aa985",
+  "prompts": {},
+  "sessions": {
+    "s_522163941f14b1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c2fe7910-ead0-40c0-85a8-91730f1fd4ce",
+        "model": "unknown"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

@@ -25,7 +25,7 @@ The project map records which literal kinds are restricted, such as human-langua
 ## Guard rules
 - Run each automated guard in the project's default test command.
 - Each guard has a known-bad fixture that must fail as a negative control.
-- Failure messages name the fix, for example: "use the core helper; do not inline the formula".
+- Failure messages name the root-cause fix, not a workaround. The worked example is in the [dev/QA pattern, section 2](../dev-qa-pattern.md).
 - A recurring bug gets a guard, not a reminder in prose.
 
 ## Baseline (ratchet)

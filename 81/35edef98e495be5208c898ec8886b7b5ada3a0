@@ -1,0 +1,19 @@
+skills/ai-sdlc/references/layering/principles.md
+  s_0cedff1b078a92::t_19528577bf83f0 28
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.7",
+  "base_commit_sha": "8135edef98e495be5208c898ec8886b7b5ada3a0",
+  "prompts": {},
+  "sessions": {
+    "s_0cedff1b078a92": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "1e8db658-20b0-4bb4-ba33-e16ebaa0045c",
+        "model": "claude-haiku-5-5"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+docs/audit.md
+  s_a2f176bc05ccb3::t_d5ddfc20743ee2 12,15,17-19,35
+scripts/audit.py
+  s_a2f176bc05ccb3::t_c9e96e11dea0be 10-16,41-43,94-99,139-141,146,161,186,199-204,211-212,227,230
+scripts/test_audit.py
+  s_a2f176bc05ccb3::t_6900efef009a99 20-23,26,28-33,60,63-64,85-102,126,128,135,137,140,150,153,158,160,164,177-184
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.7",
+  "base_commit_sha": "37de42b27825facbba071b3a09bac6490994961c",
+  "prompts": {},
+  "sessions": {
+    "s_a2f176bc05ccb3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "4b07db33-667a-40f3-94c0-b18599068a58",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

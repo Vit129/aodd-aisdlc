@@ -7,7 +7,7 @@ tables, locator/keyword conventions) stay in your framework's own docs — this 
 ## Test Execution → Heal escalation
 
 If a test run fails: trigger the healer, **1 attempt only — no retry loop**. Still failing
-→ stop immediately, route to a root-cause debugging pass (`debug-mantra` (9arm)) with the diagnosis (root cause +
+→ stop immediately, route to a root-cause debugging pass (`9arm-skills:debug-mantra`) with the diagnosis (root cause +
 suggested fix already written to the Reflexion Log below, not re-derived from scratch).
 Apply a fix only after it validates a root cause — this is still gated by the existing
 "review healed assertions before committing" HITL step, self-healing never means auto-commit.

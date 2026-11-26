@@ -3,24 +3,28 @@
 Read this before starting any subagent, `claude -p`, `codex exec` or `agy -p` run. Vendor syntax (how an effort level is set)
 is in `rules/effort/claude-code.md`, `rules/effort/codex.md` and `rules/effort/agy.md`; read the file of the tool you dispatch to.
 
+## Tiers (customizable)
+
+This file names roles, not models: `big` (plans, reviews, advisor), `middle` (writes briefs, very easy changes), `small` (executes briefs, searches, runs commands). Which model fills each tier is set per tool in `rules/effort/<tool>.md` § Tier mapping. Change that table, not this file, to use other models or vendors; a personal override (one tier, one kind of work) goes in your own workspace rules.
+
 ## Model split: plan big, brief middle, execute small (mandatory)
 
 Every delegated task runs this pipeline. No exceptions, no asking each time.
 
 | Step | Who | Does |
 |---|---|---|
-| 1. Plan | big model (main session, Opus/Fable) | always plans first: goal, approach, architecture, files in scope, acceptance checks |
-| 2. Brief | middle model (Sonnet) | turns the plan into a step-by-step execution brief: exact files, edits, commands, checks, "stop and report one blocker" |
-| 3. Execute | small model (Haiku) | carries out the brief, code included; reports the diff and check output |
-| Very easy task | middle model (Sonnet) | skips the brief and does it itself (one small, obvious change) |
-| Search, lookup, research, summaries, and every command run: build, test, lint, install, git/ops, release, deploy, migrations, health checks | small model (Haiku) | always; reports pass/fail + output excerpt; in parallel when independent, ≤9 items per batch; publish/irreversible steps still need the CEO's approval first |
-| Review | big model | reviews every diff and every piece of verification evidence before anything is reported |
+| 1. Plan | big tier (main session) | always plans first: goal, approach, architecture, files in scope, acceptance checks |
+| 2. Brief | middle tier | turns the plan into a step-by-step execution brief: exact files, edits, commands, checks, "stop and report one blocker" |
+| 3. Execute | small tier | carries out the brief, code included; reports the diff and check output |
+| Very easy task | middle tier | skips the brief and does it itself (one small, obvious change) |
+| Search, lookup, research, summaries, and every command run: build, test, lint, install, git/ops, release, deploy, migrations, health checks | small tier | always; reports pass/fail + output excerpt; in parallel when independent, ≤9 items per batch; publish/irreversible steps still need the CEO's approval first |
+| Review | big tier | reviews every diff and every piece of verification evidence before anything is reported |
 
 - **Announce before every piece of work.** Before any step starts, tell the user which model does what (model, effort, number of runs). Nothing runs before that line is shown.
 - Requirement-path design still uses 2 subagents in parallel (Dev view + QA view, `rules/ai-sdlc-workflow.md`); their merged
   plan is step 1, then steps 2-3 apply.
 - Multi-file executions: one executor per disjoint file set, each with its own explicit scope, in its own worktree.
-- On Codex the tiers are `sol` = big (Opus/Fable), `terra` = middle (Sonnet), `luna` = small (Haiku); same pipeline.
+- Tier names per tool: `rules/effort/<tool>.md` § Tier mapping; same pipeline everywhere.
 - If the CEO explicitly names Luna as the implementer, honor that assignment for the
   requested implementation work (code, tests, rules, docs, configuration or other artifacts).
   The task still passes AODD triage, gets a bounded brief and acceptance checks, and the main
@@ -29,21 +33,21 @@ Every delegated task runs this pipeline. No exceptions, no asking each time.
 
 ## Cheap-model delegation
 
-Search with Haiku, check with Sonnet, escalate to the `advisor`.
+Search with the small tier, check with the middle tier, escalate to the `advisor` (big tier).
 
 | Work | 1. Do it | 2. Check it |
 |---|---|---|
-| Search, lookup, research, file/log sweeps | Haiku returns facts + paths, no dumps | Sonnet reads the cited files itself before building on it |
-| Code lookup (`project_search` or rg) | Haiku returns file paths + edges | Sonnet reads in full every file it will edit or judge |
-| Run an approved build / test / deploy, verify a page | Haiku reports pass/fail + output excerpt | Sonnet re-checks the excerpt against the brief |
-| Write or change code | Haiku, from Sonnet's brief (Sonnet itself when very easy) | main reviews every diff |
+| Search, lookup, research, file/log sweeps | small tier returns facts + paths, no dumps | middle tier reads the cited files itself before building on it |
+| Code lookup (`project_search` or rg) | small tier returns file paths + edges | middle tier reads in full every file it will edit or judge |
+| Run an approved build / test / deploy, verify a page | small tier reports pass/fail + output excerpt | middle tier re-checks the excerpt against the brief |
+| Write or change code | small tier, from the middle tier's brief (middle itself when very easy) | main reviews every diff |
 | Debug, plan, review a diff | main session | main |
 
-A Haiku result is input, not a conclusion. The advisor (Fable/Opus only, never Sonnet/Haiku) gets a curated brief: decision,
+A small-tier result is input, not a conclusion. The advisor (big tier only, never middle/small) gets a curated brief: decision,
 options, constraints, evidence; it sees none of the conversation. At most two advisor calls per task, then tell the user.
 
 - Do it yourself when the job is one short command, one lookup, or a file main must read anyway: a helper re-reads cold.
-- Data over ~300 lines or 40KB (ingest, scrape, dump) goes to a Haiku subagent or a local script that prints a short summary.
+- Data over ~300 lines or 40KB (ingest, scrape, dump) goes to a small-tier subagent or a local script that prints a short summary.
 - The subagent sees none of this conversation: pass the facts it needs. `hooks/delegation-nudge.py` reminds after 8 lookups in a row.
 - A background CLI agent gets `</dev/null` (`docs/codex.md`); check within a few minutes that it works.
 
@@ -68,7 +72,7 @@ Status: proposal. It stays inactive until the CEO confirms the thresholds and th
 The model does not judge its own difficulty. Escalation runs on external signals only: check results, diff scope, review
 verdicts and token use. Each ticket starts at its Model split tier and effort `low`.
 
-Tier order: small (Haiku) → middle (Sonnet) → big (Opus/Fable, advisor only). Escalate one tier when, on the same diagnosed problem:
+Tier order: small → middle → big (advisor only). Escalate one tier when, on the same diagnosed problem:
 
 1. A required check still fails after 3 consecutive attempts at `high` effort on the current tier.
 2. The diff touches a file outside the brief's scope, or the main review rejects the diff twice.
@@ -88,5 +92,5 @@ Before a model or default effort changes for a work type: pick 3-5 past tickets 
 candidate on them, record pass rate, rework rounds, tokens and cost. Choose the higher pass rate when costs are within 20%
 (a proposal, needs CEO confirmation); on equal pass rates choose the cheaper. Until a bake-off exists, keep the table default.
 
-Haiku executing code is the default (Model split). Its brief always names the files it may touch, the acceptance checks and
+The small tier executing code is the default (Model split). Its brief always names the files it may touch, the acceptance checks and
 "stop and report one blocker"; main reviews every diff. A project's own workflow may refine this split.

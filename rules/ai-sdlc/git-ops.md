@@ -15,6 +15,7 @@ Read this before commit, push, PR or merge. Haiku (the cheap model) does the git
   sync/install/backup scripts, status checks, summaries.
 - After the CEO approves in words ("merge", "deploy"): merge the PR, run the deploy, write to production data, rewrite existing
   records. Never before that approval.
+- Default to a regular merge commit (`gh pr merge --merge`), not `--squash`, unless the repo or user explicitly asks to squash — keeping branch commits intact makes history easier to search and lets `git branch --merged` verify cleanly.
 - Every report to the CEO lists each open PR by number and link (`#N https://...`) until its state is MERGED, not only the
   report that opened it.
 

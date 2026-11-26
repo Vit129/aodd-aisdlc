@@ -1,0 +1,29 @@
+rules/ai-sdlc-workflow.md
+  s_90cada05120492::t_da26ca1465533c 17,32,94
+skills/ai-sdlc/phases/phase5-qa-verify.md
+  s_90cada05120492::t_b7c8d9180fb6c0 14
+skills/ai-sdlc/references/ai-sdlc-progress-spec.md
+  s_90cada05120492::t_31b8c7c2373e96 183
+skills/ai-sdlc/references/qa-automation-loop.md
+  s_90cada05120492::t_a94111d96630c9 10
+skills/ai-sdlc/references/skill-routing.md
+  s_90cada05120492::t_d9b52c61d7110b 33,35
+skills/chief-of-staff/SKILL.md
+  s_90cada05120492::t_41089b743ae790 50
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.7",
+  "base_commit_sha": "38b66a8f7e4c75783c4531e88cbcf42f44539e59",
+  "prompts": {},
+  "sessions": {
+    "s_90cada05120492": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "s_90cada05120492",
+        "model": "unknown"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

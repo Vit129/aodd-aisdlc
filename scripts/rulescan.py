@@ -3,11 +3,13 @@ import ast, pathlib, re
 
 root = pathlib.Path(__file__).resolve().parent.parent
 EXCLUDE = ("CHANGELOG.md", "code-index-out/", ".tmp/", ".kouen-worktrees/")
+# Skills written by their own upstream installer (overwritten on update): not held to this repo's rule guards.
+VENDORED = ("skills/reverse-engineer-anything/",)
 
 
 def _ok(p):
     r = p.relative_to(root).as_posix()
-    return p.is_file() and not any(e in r or r == e for e in EXCLUDE)
+    return p.is_file() and not any(e in r or r == e for e in EXCLUDE + VENDORED)
 
 
 def markdown_files():

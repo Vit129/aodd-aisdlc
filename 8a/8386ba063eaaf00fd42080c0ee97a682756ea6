@@ -1,0 +1,14 @@
+rules/ai-sdlc/git-ops.md
+  h_c47042854e26db 18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.7",
+  "base_commit_sha": "8a8386ba063eaaf00fd42080c0ee97a682756ea6",
+  "prompts": {},
+  "humans": {
+    "h_c47042854e26db": {
+      "author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

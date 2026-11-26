@@ -2,6 +2,16 @@
 
 Scope: Claude Code only. Ladder rules: `rules/ai-sdlc/delegation.md` § Effort ladder. This file only says how levels are set on Claude.
 
+## Tier mapping (customizable)
+
+Default models for the tiers in `rules/ai-sdlc/delegation.md`. Edit this table to use other models.
+
+| Tier | Model |
+|---|---|
+| big | main session (Opus/Fable); advisor |
+| middle | Sonnet subagent |
+| small | Haiku subagent |
+
 ## Setting effort
 
 - **Subagent call:** `Agent(model: "<haiku|sonnet|opus>", effort: "<low|medium|high|xhigh|max>")`. Set both on every call, so the

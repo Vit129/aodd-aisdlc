@@ -1,0 +1,19 @@
+rules/effort/agy.md
+  s_d9cfd909c30170::t_b5f2ce62ed2090 14,18-20
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.7",
+  "base_commit_sha": "0caae8372f6b2c73dbd70eacfee68bbad56e6d2a",
+  "prompts": {},
+  "sessions": {
+    "s_d9cfd909c30170": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "s_d9cfd909c30170",
+        "model": "unknown"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

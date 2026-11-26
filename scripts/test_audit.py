@@ -17,12 +17,20 @@ a = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(a)
 
 # cross-family pick (installed = any existing binary)
-a.CODEX = sys.executable
-assert a.pick_auditor("claude-opus") == "codex" and a.pick_auditor("claude-fable") == "codex"
+os.environ.pop("AODD_AUDITOR_PICK", None)
+a.CODEX = sys.executable                                                   # codex installed but never auto-picked
+a.AGY = sys.executable
+assert a.pick_auditor("claude-opus") == "agy" and a.pick_auditor("claude-fable") == "agy"
 assert a.pick_auditor("codex") == "claude-opus"
 assert a.pick_auditor("claude-sonnet") == "claude-opus" and a.pick_auditor("claude-haiku") == "claude-opus"
-a.CODEX = "definitely-not-installed-codex"                                 # codex missing -> same-family Opus
+a.AGY = "definitely-not-installed-agy"                                     # agy missing -> same-family Opus, even with codex present
 assert a.pick_auditor("claude-opus") == "claude-opus" and a.pick_auditor("claude-fable") == "claude-opus"
+for choice in ("agy", "codex", "claude-opus"):                            # explicit selector wins over detection
+    os.environ["AODD_AUDITOR_PICK"] = choice
+    assert a.pick_auditor("claude-opus") == choice and a.pick_auditor("claude-sonnet") == choice
+os.environ["AODD_AUDITOR_PICK"] = "bogus"                                 # invalid value is ignored
+assert a.pick_auditor("claude-opus") == "claude-opus"
+os.environ.pop("AODD_AUDITOR_PICK")
 
 d = Path(tempfile.mkdtemp())
 tr = d / "s.jsonl"
@@ -49,9 +57,11 @@ assert a.verdict("**OVERALL: fail**") == "FAIL"
 assert a.verdict("looks good to me") == "UNVERIFIABLE"            # no verdict line -> not a pass
 assert a.verdict("OVERALL: PASS|FAIL|UNVERIFIABLE\n") == "UNVERIFIABLE"  # echoed template is not a verdict
 assert a.verdict("| x |\nOVERALL: PASS\n") == "PASS"
-a.CLAUDE = a.CODEX = "/bin/false"
+a.CLAUDE = a.CODEX = a.AGY = "/bin/false"
 assert a.run_model("claude-opus", "---\nname: x", Path(".")).startswith("OVERALL: UNVERIFIABLE")  # failed run
 assert a.run_model("codex", "---\nname: x", Path(".")).startswith("OVERALL: UNVERIFIABLE")
+r = a.run_model("agy", "---\nname: x", Path("."))
+assert r.startswith("OVERALL: UNVERIFIABLE\nagy run failed")
 assert a.combine("PASS", "PASS") == "PASS" and a.combine("FAIL", "FAIL") == "FAIL"
 assert a.combine("PASS", "FAIL") == "FAIL"                          # verifier found more
 assert a.combine("FAIL", "PASS") == "DISPUTED"                      # Claude may not clear codex's FAIL alone
@@ -71,6 +81,24 @@ with patch.object(a.subprocess, "run", fake_run):
 assert seen["cmd"][seen["cmd"].index("-s") + 1] == "workspace-write"
 assert not Path(seen["env"]["TMPDIR"]).exists()
 assert str(Path(".").resolve()) in seen["prompt"]
+
+# agy argv: prompt is the VALUE of -p, read-only --sandbox, no stdin, no --effort (rejected with an effort-suffixed model id)
+seen = {}
+def fake_agy(cmd, **kwargs):
+    seen.update(cmd=cmd, input=kwargs.get("input"), stdin=kwargs.get("stdin"))
+    return subprocess.CompletedProcess(cmd, 0, stdout="OVERALL: PASS", stderr="")
+a.AGY = "agy-bin"
+with patch.object(a.subprocess, "run", fake_agy):
+    assert a.run_model("agy", "---\nthe prompt", Path(".")) == "OVERALL: PASS"
+c = seen["cmd"]
+assert c[0] == "agy-bin" and c[c.index("-p") + 1] == "---\nthe prompt" and c[-2:] == ["-p", "---\nthe prompt"]
+assert "--sandbox" in c and "--effort" not in c and c[c.index("--model") + 1] == "gemini-4-neon-medium"
+assert seen["input"] is None and seen["stdin"] == subprocess.DEVNULL
+os.environ["AODD_AUDITOR_MODEL"] = "m"                                    # env override read at import time
+spec2 = importlib.util.spec_from_file_location("audit2", Path(__file__).with_name("audit.py"))
+a2 = importlib.util.module_from_spec(spec2); spec2.loader.exec_module(a2)
+assert a2.AGY_MODEL == "m"
+os.environ.pop("AODD_AUDITOR_MODEL")
 
 # [TS-0101] [BE-UT] infrastructure failure can fall back without clearing a real failed audit.
 assert a.combine("UNVERIFIABLE", "PASS", infra_failure=True) == "PASS"
@@ -95,21 +123,21 @@ assert "+edited-line" in sc and len(sc) < a.MAX_DIFF + 2000, len(sc)
 (repo / "new.py").unlink()
 calls = []
 a.REPORTS = d / "reports"
-a.CODEX = sys.executable  # an existing binary, so the codex path is taken
+a.CODEX = a.AGY = sys.executable  # existing binaries, so the cross-family path is taken
 a.run_model = lambda who, prompt, r: (calls.append((who, prompt)) or
-                                      ("OVERALL: PASS" if who == "codex" else "OVERALL: FAIL\nOverturned codex rows: 1"))
+                                      ("OVERALL: PASS" if who == "agy" else "OVERALL: FAIL\nOverturned codex rows: 1"))
 n = len(calls)
 assert a.main(["--transcript", str(tr), "--repo", str(repo)]) == 2 and len(calls) == n  # no user yes -> no model runs
 assert a.main(["--transcript", str(tr), "--repo", str(repo), "--confirmed"]) == 1
 assert "verdict: FAIL" in next((d / "reports").glob("audit-*-s.md")).read_text()
 calls.clear()
 a.run_model = lambda who, prompt, r: (calls.append((who, prompt)) or
-                                      ("OVERALL: FAIL" if who == "codex" else "OVERALL: PASS\nOverturned codex rows: 1"))
+                                      ("OVERALL: FAIL" if who == "agy" else "OVERALL: PASS\nOverturned codex rows: 1"))
 assert a.main(["--transcript", str(tr), "--repo", str(repo), "--confirmed"]) == 1
-assert [c[0] for c in calls] == ["codex", "claude-opus"] and "แก้ทุกข้อ" in calls[0][1]
+assert [c[0] for c in calls] == ["agy", "claude-opus"] and "แก้ทุกข้อ" in calls[0][1]
 assert "OVERALL: FAIL" in calls[1][1]                               # verifier sees codex's audit
 rep = next(a.REPORTS.glob("audit-*-s.md")).read_text()
-assert "verdict: DISPUTED" in rep and "auditor: codex" in rep and "codex's original audit" in rep
+assert "verdict: DISPUTED" in rep and "auditor: agy" in rep and "agy's original audit" in rep
 assert any("verdict: FAIL" in f.read_text() for f in (a.REPORTS / "done").glob("audit-*-*-s.md"))  # same-day re-audit kept the FAIL
 
 calls.clear()
@@ -119,20 +147,21 @@ assert "Audit void" in next(a.REPORTS.glob("audit-*-s.md")).read_text()
 a.run_model = lambda who, prompt, r: ((a.REPORTS / "stray-x.md").write_text("x") and "OVERALL: PASS")
 assert a.main(["--transcript", str(tr), "--repo", str(repo), "--confirmed", "--auditor", "claude-opus"]) == 1
 assert "stray-x.md" in next(a.REPORTS.glob("audit-*-s.md")).read_text()   # wrote outside the repo
-# codex not installed -> same-family Opus audits and the report says so
+# agy not installed -> same-family Opus audits and the report says so
 for f in a.REPORTS.glob("audit-*"):
     f.unlink()
-a.CODEX = "definitely-not-installed-codex"
+a.AGY = "definitely-not-installed-agy"
 calls.clear()
 a.run_model = lambda who, prompt, r: (calls.append(who) or "OVERALL: PASS")
 assert a.main(["--transcript", str(tr), "--repo", str(repo), "--confirmed"]) == 0
 assert calls == ["claude-opus"]
-assert "auditor: claude-opus (codex not installed, same-family)" in next(a.REPORTS.glob("audit-*-s.md")).read_text()
+assert "auditor: claude-opus (agy not installed, same-family)" in next(a.REPORTS.glob("audit-*-s.md")).read_text()
 
-# codex installed: codex audits a Claude Opus worker, then a cold Opus verifies; codex FAIL + opus PASS = DISPUTED
+# AODD_AUDITOR_PICK=codex: codex audits a Claude Opus worker, then a cold Opus verifies; codex FAIL + opus PASS = DISPUTED
 for f in a.REPORTS.glob("audit-*"):
     f.unlink()
 a.CODEX = sys.executable
+os.environ["AODD_AUDITOR_PICK"] = "codex"
 calls.clear()
 a.run_model = lambda who, prompt, r: (calls.append(who) or ("OVERALL: FAIL" if who == "codex" else "OVERALL: PASS"))
 assert a.main(["--transcript", str(tr), "--repo", str(repo), "--confirmed"]) == 1
@@ -144,6 +173,14 @@ a.run_model = lambda who, prompt, r: ("OVERALL: UNVERIFIABLE\ncodex run failed (
 assert a.main(["--transcript", str(tr), "--repo", str(repo), "--confirmed"]) == 0
 rep = next(a.REPORTS.glob("audit-*-s.md")).read_text()
 assert "verdict: PASS" in rep and "same-family" in rep and "EPERM" in rep
+
+os.environ.pop("AODD_AUDITOR_PICK")
+# agy infrastructure failure (e.g. usage limit) keeps its error and falls back to the verifier, labelled same-family
+a.AGY = sys.executable
+a.run_model = lambda who, prompt, r: ("OVERALL: UNVERIFIABLE\nagy run failed (exit 1): QUOTA" if who == "agy" else "OVERALL: PASS")
+assert a.main(["--transcript", str(tr), "--repo", str(repo), "--confirmed"]) == 0
+rep = next(a.REPORTS.glob("audit-*-s.md")).read_text()
+assert "same-family" in rep and "QUOTA" in rep
 
 # a codex worker is audited by Opus alone (no verifier step)
 tr.write_text("\n".join(map(json.dumps, crows)))

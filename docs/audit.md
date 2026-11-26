@@ -9,12 +9,14 @@ Audit is on demand: the user asks, or the worker proposes it for risky work. Wit
 
    | Worker | Auditor |
    |---|---|
-   | Claude Opus / Fable | Codex |
+   | Claude Opus / Fable | agy (Gemini, `--sandbox`) |
    | Codex | Claude Opus |
    | Claude Sonnet / Haiku | Claude Opus |
-   | Claude Opus / Fable, Codex not installed | Claude Opus, reported as same-family |
+   | Claude Opus / Fable, agy not installed | Claude Opus, reported as same-family |
 
-3. **Verifier and the DISPUTED rule.** Codex sometimes invents evidence, so when it audits, a cold Claude Opus re-checks every row. It has also caught real Claude mistakes, so a Claude verifier may not clear its FAIL on its own: auditor FAIL + verifier PASS = **DISPUTED**, and the CEO decides. The verifier can only add failures, never erase one silently. Combined verdicts: PASS, FAIL, DISPUTED, UNVERIFIABLE.
+   `AODD_AUDITOR_PICK` = `agy` / `codex` / `claude-opus` overrides the table (Codex runs only this way). `AODD_AUDITOR_MODEL` sets the agy model (default `gemini-4-neon-medium`; its id carries the effort).
+
+3. **Verifier and the DISPUTED rule.** agy and Codex sometimes invent evidence, so when either audits, a cold Claude Opus re-checks every row. They have also caught real Claude mistakes, so a Claude verifier may not clear their FAIL on its own: auditor FAIL + verifier PASS = **DISPUTED**, and the CEO decides. The verifier can only add failures, never erase one silently. Combined verdicts: PASS, FAIL, DISPUTED, UNVERIFIABLE.
 4. **Read-only, void on write.** The auditor runs with `AODD_AUDITOR=1`; `hooks/auditor-readonly.py` denies edits and Bash commands that write files or git history. Afterwards `audit.py` compares `git status` and `HEAD` and the reports directory; any change voids the audit (verdict FAIL, "Audit void").
 5. **Report.** Written to `$AODD_REPORTS/audit-<date>-<sid8>.md` with a `verdict:` frontmatter line. Exit code 0 = PASS, 1 = FAIL/DISPUTED/UNVERIFIABLE, 2 = could not run.
 
@@ -30,4 +32,4 @@ It never asks for an audit.
 It fails open on any error. `DONE_GATE_AUDIT=0` disables the verdict check.
 
 ## Infrastructure failures
-A failed Codex runner (process error, timeout, usage limit or sandbox error) preserves its error in the report and falls back to the cold verifier verdict, explicitly labelled `same-family`. A substantive UNVERIFIABLE stays UNVERIFIABLE; Codex FAIL plus verifier PASS remains DISPUTED. The Codex sandbox can write only in an isolated temporary directory, allowing check caches/output there while the audited repository remains read-only.
+A failed agy or Codex runner (process error, timeout, usage limit or sandbox error) preserves its error in the report and falls back to the cold verifier verdict, explicitly labelled `same-family`. A substantive UNVERIFIABLE stays UNVERIFIABLE; auditor FAIL plus verifier PASS remains DISPUTED. The Codex sandbox can write only in an isolated temporary directory, allowing check caches/output there while the audited repository remains read-only.

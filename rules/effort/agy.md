@@ -11,7 +11,7 @@ Before writing any prompt or dispatching to `agy` or a Gemini model, read `rules
 
 ## Tier mapping (customizable)
 
-Default Gemini 4 models for the tiers in `rules/ai-sdlc/delegation.md`. Edit this table to use other models; check the exact ids (`gemini-4-<family>-<effort>`) with `agy models`.
+Which Gemini 4 model fills each `rules/ai-sdlc/delegation.md` tier by default; change the rows to suit. Exact ids (`gemini-4-<family>-<effort>`) come from `agy models`.
 
 | Tier | Model |
 |---|---|

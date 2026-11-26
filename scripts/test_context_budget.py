@@ -2,7 +2,7 @@
 """Always-loaded text has a size budget: the one always-loaded rule file (also Codex's inline), descriptions the model
 reads every session, and long prompt strings in hooks."""
 import re, sys
-from rulescan import root, hook_files, hook_strings
+from rulescan import root, hook_files, hook_strings, VENDORED
 
 RULE_MAX_LINES, RULE_MAX_CHARS = 140, 16000
 CODEX_INLINE_MAX_LINES = 140
@@ -37,6 +37,8 @@ def description(fm):
 
 for f in sorted([*root.glob("skills/*/SKILL.md"), *root.glob("agents/*.md"), *root.glob("optional/*/skills/*/SKILL.md")]):
     rel = f.relative_to(root).as_posix()
+    if rel.startswith(VENDORED):
+        continue
     fm = frontmatter(f.read_text(encoding="utf-8"))
     if f.name == "SKILL.md" and re.search(r"^disable-model-invocation:\s*true", fm, re.M):
         continue

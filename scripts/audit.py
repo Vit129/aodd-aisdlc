@@ -7,12 +7,13 @@
 
 1. Brief is built here, not by the worker: the user's own messages (verbatim, from the transcript),
    the git log + diff of the session, and the worker's claims (labelled untrusted).
-2. Auditor is another model family than the worker (cross-family rule):
-   worker Claude Opus/Fable -> Codex (scratch-only writable sandbox) if installed, else Claude Opus (same-family, said in the report);
-   worker Codex -> Claude Opus; worker Claude Sonnet/Haiku -> Claude Opus.
-3. Codex can invent evidence, so when it audits, a fresh Claude Opus (cold, not the worker)
-   re-checks every row. But Codex has also caught real Claude mistakes that Claude then confirmed,
-   so a Claude verifier may not clear a Codex FAIL on its own: Codex FAIL + verifier PASS = DISPUTED,
+2. Auditor is another model family than the worker (cross-family rule). $AODD_AUDITOR_PICK
+   (agy | codex | claude-opus) wins when set; Codex runs only when chosen that way. Unset:
+   worker Claude Opus/Fable -> agy (Gemini, --sandbox) if installed, else Claude Opus (same-family, said in the report);
+   worker Codex -> Claude Opus; worker Claude Sonnet/Haiku -> Claude Opus. agy model: $AODD_AUDITOR_MODEL.
+3. agy and Codex can invent evidence, so when either audits, a fresh Claude Opus (cold, not the worker)
+   re-checks every row. But they have also caught real Claude mistakes that Claude then confirmed,
+   so a Claude verifier may not clear their FAIL on its own: auditor FAIL + verifier PASS = DISPUTED,
    which the CEO decides (combine()). The verifier can only add failures, never erase one silently.
 4. This script writes the report ($AODD_REPORTS/audit-<date>-<sid8>.md, frontmatter `verdict:`);
    hooks/done-gate.py reads it before a session may claim Done. Repo changed during the audit -> FAIL.
@@ -37,6 +38,9 @@ REPORTS = _aodd_paths.reports()
 JD = Path(__file__).resolve().parent.parent / "agents/auditor.md"
 CLAUDE = os.environ.get("CLAUDE_BIN", "claude")
 CODEX = os.environ.get("CODEX_BIN", "codex")
+AGY = os.environ.get("AGY_BIN", "agy")
+AGY_MODEL = os.environ.get("AODD_AUDITOR_MODEL", "gemini-4-neon-medium")  # the id carries its effort; agy rejects --effort with it
+AUDITORS = ("agy", "codex", "claude-opus")
 MAX_DIFF = 60_000
 # `(?!\s*\|)`: never read the format template line "OVERALL: PASS|FAIL|..." (echoed in errors) as a verdict
 VERDICT = re.compile(r"^\s*(?:\*\*)?OVERALL:\s*(PASS|FAIL|UNVERIFIABLE)\b(?![ \t]*\|)", re.M | re.I)
@@ -87,9 +91,12 @@ def read_transcript(path: Path):
 
 
 def pick_auditor(worker: str) -> str:
-    """Cross-family by default; Opus audits its own family only for Sonnet/Haiku work or when Codex is not installed."""
-    if worker in ("claude-opus", "claude-fable"):
-        return "codex" if shutil.which(CODEX) else "claude-opus"
+    """$AODD_AUDITOR_PICK wins. Else cross-family: Opus work -> agy if installed; Opus audits its own family otherwise."""
+    pick = os.environ.get("AODD_AUDITOR_PICK", "").strip().lower()
+    if pick in AUDITORS:
+        return pick
+    if worker in ("claude-opus", "claude-fable") and shutil.which(AGY):
+        return "agy"
     return "claude-opus"
 
 
@@ -129,11 +136,14 @@ def run_model(who: str, prompt: str, repo: Path) -> str:
             stdin = (f"Audit repository: {repo.resolve()} (read-only). Your writable scratch directory is {writable}. "
                      "Run checks with their temp/cache/output directories here; do not edit the audited repository.\n\n" + prompt)
             env.update(TMPDIR=writable, XDG_CACHE_HOME=writable, PYTHONDONTWRITEBYTECODE="1")
+        elif who == "agy":
+            # The prompt is the VALUE of -p (agy ignores stdin); --sandbox = read-only.
+            cmd, stdin = [AGY, "--model", AGY_MODEL, "--sandbox", "--output-format", "text", "-p", prompt], ""
         else:
             cmd, stdin = [CLAUDE, "-p", "--model", "opus", "--allowedTools", "Read Grep Glob Bash",
                           "--disallowedTools", "Edit Write NotebookEdit"], prompt
         try:
-            p = subprocess.run(cmd, cwd=repo, input=stdin, stdin=None if stdin else subprocess.DEVNULL,
+            p = subprocess.run(cmd, cwd=repo, input=stdin or None, stdin=None if stdin else subprocess.DEVNULL,
                                capture_output=True, text=True, env=env, timeout=1800)
         except (OSError, subprocess.TimeoutExpired) as e:
             return f"OVERALL: UNVERIFIABLE\n{who} run failed: {e}"
@@ -148,7 +158,7 @@ def verdict(text: str) -> str:
 
 
 def combine(first: str, opus: str, *, infra_failure: bool = False) -> str:
-    """Final verdict when Codex audits and a Claude Opus verifies (see docstring point 3)."""
+    """Final verdict when agy/Codex audits and a Claude Opus verifies (see docstring point 3)."""
     if first == "UNVERIFIABLE" and infra_failure:
         return opus
     if first == "PASS" and opus == "PASS":
@@ -173,7 +183,7 @@ def main(argv=None) -> int:
     ap.add_argument("--repo", default=".")
     ap.add_argument("--base")
     ap.add_argument("--claims", default="")
-    ap.add_argument("--auditor", choices=["codex", "claude-opus"], help="override the cross-family pick")
+    ap.add_argument("--auditor", choices=list(AUDITORS), help="override the cross-family pick")
     ap.add_argument("--confirmed", action="store_true", help="the user approved running this audit")
     a = ap.parse_args(argv)
     if not a.confirmed:
@@ -186,18 +196,20 @@ def main(argv=None) -> int:
     users, worker, since = read_transcript(tr)
     who = a.auditor or pick_auditor(worker)
     label = who
-    if who == "codex" and not shutil.which(CODEX):  # chosen auditor missing: Opus audits, said in the report
-        who, label = "claude-opus", "claude-opus (codex not installed, same-family)"
-    elif who == "claude-opus" and worker in ("claude-opus", "claude-fable") and not a.auditor:
-        label = "claude-opus (codex not installed, same-family)"
+    binary = {"agy": AGY, "codex": CODEX}.get(who)
+    if binary and not shutil.which(binary):  # chosen auditor missing: Opus audits, said in the report
+        who, label = "claude-opus", f"claude-opus ({binary} not installed, same-family)"
+    elif who == "claude-opus" and worker in ("claude-opus", "claude-fable") and not a.auditor \
+            and os.environ.get("AODD_AUDITOR_PICK", "").strip().lower() not in AUDITORS:
+        label = "claude-opus (agy not installed, same-family)"
     base, scope_text = scope(repo, a.base, since)
     before = git(repo, "status", "--porcelain") + git(repo, "rev-parse", "HEAD")
     reports_before = set(REPORTS.glob("*")) if REPORTS.is_dir() else set()
 
     first = run_model(who, build_prompt(users, a.claims, scope_text), repo)
     final, notes = first, ""
-    other = who == "codex"
-    if other:  # Codex can cite evidence that does not exist: a cold Opus re-checks every row
+    other = who in ("agy", "codex")
+    if other:  # agy/Codex can cite evidence that does not exist: a cold Opus re-checks every row
         check = (f"{JD.read_text() if JD.is_file() else ''}\n\nAnother model ({who}) audited this repo. It sometimes "
                  "invents evidence. Re-check EVERY row yourself (open the file:line, re-run the command). Keep rows "
                  "you confirm. To overturn a row you must show concrete counter-evidence (command + output, file:line); "
@@ -212,10 +224,10 @@ def main(argv=None) -> int:
     if git(repo, "status", "--porcelain") + git(repo, "rev-parse", "HEAD") != before or stray:
         final = ("OVERALL: FAIL\nThe auditor wrote files during the audit" +
                  (f" ({', '.join(p.name for p in stray)})" if stray else "") + ". Audit void.\n\n" + final)
-    infra_failure = first.startswith("OVERALL: UNVERIFIABLE\ncodex run failed")
+    infra_failure = first.startswith(f"OVERALL: UNVERIFIABLE\n{who} run failed")
     if other and infra_failure:
         label += " (infrastructure unavailable; claude-opus fallback, same-family)"
-        notes += "; Codex infrastructure unavailable, same-family fallback"
+        notes += f"; {who} infrastructure unavailable, same-family fallback"
     v = verdict(final)
     if other and "Audit void" not in final:
         v = combine(verdict(first), v, infra_failure=infra_failure)

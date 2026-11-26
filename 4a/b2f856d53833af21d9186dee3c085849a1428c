@@ -1,0 +1,63 @@
+skills/reverse-engineer-anything/SKILL.md.rea.backup.fbcd39d6abe803cf7aa49c1880815bc8e22ba2af87a23681944f687bb7629eb1.recovery
+  s_8908b88c4c07fd::t_994b390094d81d 1-356
+skills/reverse-engineer-anything/references/android-applications.md.rea.backup.67a9237d76a5b736640c6404f5e1fe01d83369848142feb7e11d78f4a5e62732.recovery
+  s_8908b88c4c07fd::t_6f6efe3fd35293 1-36
+skills/reverse-engineer-anything/references/connection-and-recovery.md.rea.backup.a33760c84ae100f6ffd27d666e515956c5014ac33a6ee2414807833ae666a2b1.recovery
+  s_8908b88c4c07fd::t_2665e237918567 1-127
+skills/reverse-engineer-anything/references/desktop-build.md
+  s_8908b88c4c07fd::t_d69eb09ca90382 1-860
+skills/reverse-engineer-anything/references/environments.md
+  s_8908b88c4c07fd::t_a22ac34748c16c 1-399
+skills/reverse-engineer-anything/references/evidence-workflows.md.rea.backup.2bdee98a843d018cf850c706111bb74c459ba8640da00799e9208122e4d5ab80.recovery
+  s_8908b88c4c07fd::t_dadaa0c06d707a 1-71
+skills/reverse-engineer-anything/references/javascript-applications.md.rea.backup.aaa78502a3e95268f6269e75f373908045291fedf6ddd106001555ed06bb2bf6.recovery
+  s_8908b88c4c07fd::t_902dfffa03530c 1-218
+skills/reverse-engineer-anything/references/native-and-artifacts.md.rea.backup.18b8828aec6476be03ca92bdb9506c47cc9ef8c1415c37d33e4af2f8c55cf8f9.recovery
+  s_8908b88c4c07fd::t_f9fc20b4a50050 1-297
+skills/reverse-engineer-anything/references/runtime-observation.md.rea.backup.fea85e2005a8fd1c86a946eeede24c20e57592a1deb36576b45216e9854803c8.recovery
+  s_8908b88c4c07fd::t_37f150ae017ae6 1-78
+skills/reverse-engineer-anything/SKILL.md
+  s_8908b88c4c07fd::t_afa0dca4069fa1 3,5-6,12,21-23,37-55,59-60,65,73-77,79,88-116,121-127,131-136,138-146,151-160,167-171,179,184-187,195,203,212-220,222-226,233-265,267-278,281-443,452,457,462,466-467,470-475,479,481-488,519-540,548-563,582-585,654-655,659-665,672-676
+skills/reverse-engineer-anything/SKILL.md.rea.backup
+  s_8908b88c4c07fd::t_0ea2b14f3634a7 1-222
+skills/reverse-engineer-anything/references/android-applications.md
+  s_8908b88c4c07fd::t_2de6d50e548d09 16-36,39-43,51-56
+skills/reverse-engineer-anything/references/android-applications.md.rea.backup
+  s_8908b88c4c07fd::t_0537aa76a4583f 1-34
+skills/reverse-engineer-anything/references/connection-and-recovery.md
+  s_8908b88c4c07fd::t_1c3e838e39a2c3 10-14,18-26,42-149,160-165,167-170,215-225
+skills/reverse-engineer-anything/references/connection-and-recovery.md.rea.backup
+  s_8908b88c4c07fd::t_8cbaec00b87f69 1-127
+skills/reverse-engineer-anything/references/evidence-workflows.md
+  s_8908b88c4c07fd::t_25e12adf356041 14-51,65-83,95-98,100-102,105,107-108,110,135-193
+skills/reverse-engineer-anything/references/evidence-workflows.md.rea.backup
+  s_8908b88c4c07fd::t_fd5304f0bc59d1 1-48
+skills/reverse-engineer-anything/references/javascript-applications.md
+  s_8908b88c4c07fd::t_a3299bbac7e086 9,20-23,26-48,63-65,81-103,186-189,256-268
+skills/reverse-engineer-anything/references/javascript-applications.md.rea.backup
+  s_8908b88c4c07fd::t_24340d113edf7f 1-149
+skills/reverse-engineer-anything/references/native-and-artifacts.md
+  s_8908b88c4c07fd::t_ff6b623de9c857 3-74,77-78,80-85,89-124,128-401,416,431,457-480,490-501,505-507,527-531,534-544,548-549,552-663,691-698,741-747,770,798-799,805-816,820-824,827-835,847-854,858-874,886-896,902-1048
+skills/reverse-engineer-anything/references/native-and-artifacts.md.rea.backup
+  s_8908b88c4c07fd::t_ce76e6948719bc 1-167
+skills/reverse-engineer-anything/references/runtime-observation.md
+  s_8908b88c4c07fd::t_4a6e5e66067a3d 1-55,95-96,128-133,139
+skills/reverse-engineer-anything/references/runtime-observation.md.rea.backup
+  s_8908b88c4c07fd::t_b1122c0e62b127 1-28
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.7",
+  "base_commit_sha": "4ab2f856d53833af21d9186dee3c085849a1428c",
+  "prompts": {},
+  "sessions": {
+    "s_8908b88c4c07fd": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "18d26acd-e78f-4d7a-b954-c914b104bcba",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

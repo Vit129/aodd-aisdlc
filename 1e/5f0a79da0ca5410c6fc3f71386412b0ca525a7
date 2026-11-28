@@ -1,0 +1,45 @@
+skills/ai-sdlc/references/incident-record.md
+  s_fd640fe5733b8f::t_d6cf516cb44b63 1-51
+skills/ai-sdlc/references/skill-routing.md
+  s_fd640fe5733b8f::t_8241bc852e50f4 5,33,35-37
+adapters/test_antigravity_hook_adapter.py
+  s_fd640fe5733b8f::t_8aeaa7197f18e3 205-206
+rules/ai-sdlc-workflow.md
+  s_fd640fe5733b8f::t_e675f11c3b4ce9 17,32,94
+rules/coding/review-report.md
+  s_fd640fe5733b8f::t_f82600b0f9ea41 21,23,25
+scripts/test_install.py
+  s_fd640fe5733b8f::t_c6b344c0879cc6 13,29,38-40
+scripts/test_rule_links.py
+  s_fd640fe5733b8f::t_65a12de31a8e71 14
+skills/ai-sdlc/phases/phase5-qa-verify.md
+  s_fd640fe5733b8f::t_0c707f38a7e06b 14
+skills/ai-sdlc/references/ai-sdlc-progress-spec.md
+  s_fd640fe5733b8f::t_51b8ff865b79f3 183
+skills/ai-sdlc/references/bug-hunt.md
+  s_fd640fe5733b8f::t_ad328165d49b99 1-43
+skills/ai-sdlc/references/course-check.md
+  s_fd640fe5733b8f::t_c91f34913abffe 1-36
+skills/ai-sdlc/references/qa-automation-loop.md
+  s_fd640fe5733b8f::t_4de39176877b06 10
+skills/chief-of-staff/SKILL.md
+  s_fd640fe5733b8f::t_88f00a5edbd626 50
+skills/playwright-testing/SKILL.md
+  s_fd640fe5733b8f::t_5d818cd2643608 102,106,113
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.7",
+  "base_commit_sha": "1e5f0a79da0ca5410c6fc3f71386412b0ca525a7",
+  "prompts": {},
+  "sessions": {
+    "s_fd640fe5733b8f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "974f5c23-3da7-4534-8f4c-8fb3f0e033a1",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

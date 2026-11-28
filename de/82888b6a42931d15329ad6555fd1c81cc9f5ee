@@ -1,0 +1,23 @@
+optional/agent-memory/skills/agent-memory/references/subagent-patterns.md
+  s_fd640fe5733b8f::t_b5f7fae7cfd8f0 47,101,129
+skills/playwright-testing/references/explore-to-test.md
+  s_fd640fe5733b8f::t_fa6588b978b0c4 155
+skills/test-scenario/references/ts-data-gen.md
+  s_fd640fe5733b8f::t_244df2ff5a0184 14
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.7",
+  "base_commit_sha": "de82888b6a42931d15329ad6555fd1c81cc9f5ee",
+  "prompts": {},
+  "sessions": {
+    "s_fd640fe5733b8f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "974f5c23-3da7-4534-8f4c-8fb3f0e033a1",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

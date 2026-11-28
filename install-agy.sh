@@ -191,23 +191,5 @@ PY
 }
 register_hooks
 
-# Use the upstream installer if the required companion skills are missing.
-if [ ! -f "$AGY_HOME/skills/debug-mantra/SKILL.md" ] || [ ! -f "$AGY_HOME/skills/scrutinize/SKILL.md" ]; then
-  if [ "$DRY" = 1 ]; then
-    echo "9arm    would invoke upstream installer for antigravity-cli"
-  elif [ -n "${AODD_9ARM_INSTALLER:-}" ]; then
-    "$AODD_9ARM_INSTALLER" antigravity-cli
-  elif [ "$AGY_HOME" != "$HOME/.gemini/antigravity-cli" ]; then
-    echo "error   upstream 9arm installer does not support a custom AGY_HOME; install the skills for that home first" >&2; exit 1
-  else
-    npx skills add thananon/9arm-skills --global --yes --agent antigravity-cli --skill '*'
-  fi
-  if [ "$DRY" != 1 ]; then
-    for skill in debug-mantra scrutinize; do
-      [ -f "$AGY_HOME/skills/$skill/SKILL.md" ] || { echo "error   upstream installer did not install $skill for antigravity-cli" >&2; exit 1; }
-    done
-  fi
-fi
-
 echo "state   reports, plans and hook state live under \${AODD_HOME:-~/.aodd} (override: AODD_REPORTS, AODD_STATE, AODD_PLANS)"
 echo "done"

@@ -11,7 +11,7 @@ files = [*root.glob("rules/**/*.md"), *root.glob("skills/**/*.md"), *root.glob("
 # /audit, ...) defines its own sub-commands, so they are not skills/<name>/ dirs
 SLASH_CHECKED = ("rules/", "skills/ai-sdlc/", "skills/chief-of-staff/", "skills/agent-ops/",
                  "skills/delivery-workflow/", "skills/housekeeping/")
-SLASH_ALLOW = {"code-review", "scrutinize", "post-mortem", "debug-mantra", "agy", "ai-sdlc"}
+SLASH_ALLOW = {"code-review", "agy", "ai-sdlc"}
 # backticked `/word` that is a URL path or placeholder, not a command
 NOT_COMMANDS = {"orders", "products", "users", "tmp", "slash-command"}
 PATH_RE = re.compile(r"`((?:rules|skills|docs|hooks|scripts)/[\w./-]+\.(?:md|py|sh|json))`")

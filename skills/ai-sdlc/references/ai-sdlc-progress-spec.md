@@ -180,7 +180,7 @@ Never mark a task ✅ while its test is still failing — completion means GREEN
 ## When all tasks complete
 
 Run the full suite one final time and record pass/fail. **Dev only** — run
-code review (via `9arm-skills:scrutinize`)
+code review (via `rules/coding/review-report.md`)
 against the full diff before committing; don't commit with Critical/Important
 findings unresolved.
 

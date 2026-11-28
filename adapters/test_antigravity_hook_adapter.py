@@ -160,13 +160,8 @@ def test_install_agy():
     temp_claude = T / "claude"
     temp_gemini = T / "gemini"
 
-    nine_installer = T / "nine-installer"
-    nine_installer.write_text("#!/usr/bin/env python3\nimport os\nfrom pathlib import Path\nfor name in ('debug-mantra', 'scrutinize'):\n    target = Path(os.environ['AGY_HOME']) / 'skills' / name\n    target.mkdir(parents=True, exist_ok=True)\n    (target / 'SKILL.md').write_text(name)\n")
-    nine_installer.chmod(0o755)
-
     install_env = {
         **{k: v for k, v in os.environ.items() if k != "AODD_NO_BACKUP"},  # a caller's switch must not skip the backup this test checks
-        "AODD_9ARM_INSTALLER": str(nine_installer),
         "AGY_HOME": str(temp_agy),
         "CLAUDE_HOME": str(temp_claude),
     }
@@ -207,6 +202,8 @@ def test_install_agy():
 
     # Check installed artifacts
     assert (temp_agy / "skills" / "chief-of-staff" / "SKILL.md").is_file()
+    for ref in ("bug-hunt.md", "incident-record.md", "course-check.md"):
+        assert (temp_agy / "skills" / "ai-sdlc" / "references" / ref).is_file()
     assert (temp_agy / "agents" / "auditor.md").is_file()
     assert (temp_agy / "adapters" / "antigravity-hook-adapter.py").is_file()
     assert os.access(temp_agy / "adapters" / "antigravity-hook-adapter.py", os.X_OK)

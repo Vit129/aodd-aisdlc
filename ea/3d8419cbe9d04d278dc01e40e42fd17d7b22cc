@@ -1,0 +1,19 @@
+skills/ai-sdlc/references/review-coverage.md
+  s_fd640fe5733b8f::t_4e7aef6dc2f77a 4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.7",
+  "base_commit_sha": "ea3d8419cbe9d04d278dc01e40e42fd17d7b22cc",
+  "prompts": {},
+  "sessions": {
+    "s_fd640fe5733b8f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "974f5c23-3da7-4534-8f4c-8fb3f0e033a1",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Vit129 <Vit129@users.noreply.github.com>"
+    }
+  }
+}

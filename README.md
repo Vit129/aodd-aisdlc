@@ -142,7 +142,6 @@ Full by default: every module that works per repository (agent-memory). `--core-
 
 ### Companion skills and plugins
 
-- **9arm-skills**: when the required skills are missing, the installer uses the upstream supported `npx skills add thananon/9arm-skills` command. Existing 9arm installations are managed by their own installer. Custom Antigravity homes require the skills to be installed there separately.
 - **Code search backend** (optional, no specific tool required): agents search code with `project_search` (one call returns text hits and, if a graph backend is behind it, graph hits). `rg` + `Read` is the primary method and always works. To plug in an index, set `AODD_INDEX_CMD` to the command that builds or refreshes it (`{root}` is replaced by the project root); if unset and `<claude home>/scripts/lib/project_search.py` exists, the guard uses `python3 <that file> index <root>` as the index command. The guard does not reindex at Stop by default (a backend with its own file watcher stays fresh on its own); set `AODD_INDEX_ON_STOP=1` to run the index command once per turn when code changed. Set `AODD_SEARCH_CLI` (comma-separated command names) so calls to your backend CLI count as "searched". Index output is generated: never track it in git. `AODD_SEARCH_GUARD=0` turns the guard off.
 
 ## Optional modules

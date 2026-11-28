@@ -10,10 +10,7 @@ env = {k: v for k, v in os.environ.items() if not k.startswith("AODD_")}
 REA_LOG = T / "rea.log"                                                          # stub REA launcher: never npx/network
 (T / "rea").write_text(f'#!/bin/sh\necho "$@" >> "{REA_LOG}"\n'); (T / "rea").chmod(0o755)
 (T / "claude-cli").write_text('#!/bin/sh\nexit 0\n'); (T / "claude-cli").chmod(0o755)
-nine_installer = T / "nine-installer"
-nine_installer.write_text("#!/usr/bin/env python3\nimport os, sys\nfrom pathlib import Path\nfor agent in sys.argv[1:]:\n    home = Path(os.environ[{'claude-code': 'CLAUDE_HOME', 'codex': 'CODEX_HOME', 'antigravity-cli': 'AGY_HOME'}[agent]])\n    for name in ('debug-mantra', 'scrutinize', 'post-mortem', 'qwen-agent', 'management-talk', 'qwenchance'):\n        target = home / 'skills' / name\n        target.mkdir(parents=True, exist_ok=True)\n        (target / 'SKILL.md').write_text(name)\n")
-nine_installer.chmod(0o755)
-env.update(GEMINI_HOME=str(T / "gemini-never-installed"), AODD_9ARM_INSTALLER=str(nine_installer), CLAUDE_HOME=str(T / "claude"), CODEX_HOME=str(T / "codex"), AGY_HOME=str(T / "agy-never-installed"), CLAUDE_BIN=str(T / "claude-cli"), AODD_SCHEDULES_DRY_RUN="1", AODD_REA_CMD=str(T / "rea"))
+env.update(GEMINI_HOME=str(T / "gemini-never-installed"), CLAUDE_HOME=str(T / "claude"), CODEX_HOME=str(T / "codex"), AGY_HOME=str(T / "agy-never-installed"), CLAUDE_BIN=str(T / "claude-cli"), AODD_SCHEDULES_DRY_RUN="1", AODD_REA_CMD=str(T / "rea"))
 
 
 def run_rc(*flags, extra=None):
@@ -29,7 +26,7 @@ def run(*flags, extra=None, home=None):
     return p.stdout
 
 
-# Selected agents receive both the workflow and the required companion skills.
+# Selected agents receive both the workflow and the built-in debugging/review/incident references.
 setup = T / "setup-all"
 setup_env = {"CLAUDE_HOME": str(setup / "claude"), "CODEX_HOME": str(setup / "codex"),
              "GEMINI_HOME": str(setup / "gemini"), "AGY_HOME": str(setup / "agy")}
@@ -38,8 +35,9 @@ assert "@rules/ai-sdlc-workflow.md" in (setup / "claude/CLAUDE.md").read_text()
 for agent, instruction in (("codex", "AGENTS.md"), ("gemini", "AGENTS.md")):
     assert "Triage: every request" in (setup / agent / instruction).read_text()
 for agent in ("claude", "codex", "agy"):
-    for skill in ("debug-mantra", "scrutinize", "post-mortem", "qwen-agent", "management-talk", "qwenchance"):
-        assert (setup / agent / "skills" / skill / "SKILL.md").read_text() == skill
+    for ref in ("bug-hunt.md", "incident-record.md", "course-check.md"):
+        assert (setup / agent / "skills/ai-sdlc/references" / ref).is_file()
+    assert (setup / agent / "rules/coding/review-report.md").is_file()
 
 out = run("--dry-run", "--codex")
 assert "AGENTS" in out and "would register" in out and not (T / "codex").exists() and not (T / "claude").exists()

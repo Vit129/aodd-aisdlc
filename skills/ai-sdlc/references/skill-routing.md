@@ -2,7 +2,7 @@
 
 Read when running `/ai-sdlc` or when unsure which skill fits. Everything outside this repo
 (the `agy`/`codex` plugins) is optional: install the companion plugins listed in the README for the full set, otherwise
-do the step directly. The 9arm debug and review skills are required when their routes apply; install missing skills as directed in `skills/delivery-workflow/SKILL.md`.
+do the step directly.
 
 Every request first passes the triage in `rules/ai-sdlc-workflow.md`; a route here selects
 the handling skill after triage, not a bypass around it.
@@ -30,12 +30,10 @@ the handling skill after triage, not a bypass around it.
 | Hard technical decision, no clear answer | The `advisor` agent with a curated brief (decision, options, constraints) |
 | Bounded subtask: search files, read/summarize logs, classify, extract facts, run build/test/lint, git/ops mechanics | `Agent(model: "haiku")`, several in parallel; the big model plans and judges. See `rules/ai-sdlc-workflow.md` |
 | Read/map code ("where is X", "who calls Y") | `project_search` first, rg as the fallback, then a Haiku subagent for broad sweeps; the big model reads every file it will edit itself |
-| Review a plan, diff, PR or design | `9arm-skills:scrutinize`, with project standards and the originating spec; for a diff or PR also `references/review-coverage.md` (git-built file checklist, line check, coverage line) |
+| Review a plan, diff, PR or design | `rules/coding/review-report.md`, with project standards and the originating spec; for a diff or PR also `references/review-coverage.md` (git-built file checklist, line check, coverage line) |
 | Session handoff to another agent/session | Write `$AODD_PLANS/[FEATURE]/handoff.md` (sibling of, not the same file as, `ai-sdlc-task-progress.md`; format in `references/ai-sdlc-progress-spec.md` § Resume protocol) |
-| Bug or issue investigation | `9arm-skills:debug-mantra` (companion); use before proposing or applying a fix |
-| Looping or context nearly full | `qwenchance` (9arm); its "invoke the `handoff` skill" step means: write `$AODD_PLANS/[FEATURE]/handoff.md` as in the row above |
-| Post-incident RCA | `post-mortem` (9arm); write it to the repo's `docs/postmortems/<slug>.md` unless the CEO names another place (ticket, PR) |
-| Leadership communication rewrite | `management-talk` (9arm) |
-| Explicit request to delegate mechanical work to Qwen | `qwen-agent` (9arm), when its runtime is available |
+| Bug or issue investigation | `skills/ai-sdlc/references/bug-hunt.md`; use before proposing or applying a fix |
+| Looping or context nearly full | `skills/ai-sdlc/references/course-check.md` (writes `$AODD_PLANS/[FEATURE]/handoff.md` per `references/ai-sdlc-progress-spec.md` § Resume protocol) |
+| Post-incident RCA | `skills/ai-sdlc/references/incident-record.md`; write it where that file says (CEO's choice, else project memory `$AODD_MEMORY`, else `docs/incidents/`) |
 | Independent audit of a "Done" claim | on the CEO's yes, `python3 scripts/audit.py --confirmed` (never a worker-briefed subagent) |
 | Cross-provider second opinion or stuck investigation | The `agy` / `codex` Claude Code plugins if installed; brief with a curated summary, not the raw transcript |

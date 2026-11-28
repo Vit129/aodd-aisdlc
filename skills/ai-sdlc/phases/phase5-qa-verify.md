@@ -11,7 +11,7 @@ test still carries its `[TS-XXXX]`/`[TC-XXXX]` ID and obeys the core facts in `r
 is verification only — no new scenarios get invented here; a genuinely missing case
 found during verification goes back to Phase 3, it doesn't get patched in place.
 
-Pre-merge gate: once all tests confirm GREEN, run `9arm-skills:scrutinize` on the full diff, checking two axes:
+Pre-merge gate: once all tests confirm GREEN, review the full diff using `rules/coding/review-report.md`, checking two axes:
 - **Standards Axis**: conforms to the project's coding standards
 - **Spec Axis**: faithfully implements the originating spec produced in Phase 1
 

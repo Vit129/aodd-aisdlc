@@ -502,53 +502,6 @@ if [ -z "$PROJECT_ROOT" ]; then  # core, not a module: REA's own `rea setup` reg
     done
   fi
 fi
-if [ -z "$PROJECT_ROOT" ]; then
-  # The upstream 9arm installer owns its skills; AODD does not copy or vendor them.
-  NINE_AGENTS=()
-  for spec in "claude-code:$DEST" "codex:${CODEX_HOME:-$HOME/.codex}" "antigravity-cli:${AGY_HOME:-$HOME/.gemini/antigravity-cli}"; do
-    agent="${spec%%:*}"; agent_home="${spec#*:}"
-    [ "$agent" = codex ] && [ "$CODEX_ON" != 1 ] && continue
-    [ "$agent" = antigravity-cli ] && [ "$AGY_ON" != 1 ] && continue
-    if [ "$agent" = claude-code ] && AGENT_HOME="$agent_home" python3 - <<'PYPLUGIN'
-import json, os
-from pathlib import Path
-try:
-    data = json.loads((Path(os.environ["AGENT_HOME"]) / "plugins/installed_plugins.json").read_text())
-    entries = data.get("plugins", {}).get("9arm-skills@9arm-marketplace", [])
-    assert any(all((Path(e["installPath"]) / "skills/engineering" / n / "SKILL.md").is_file() for n in ("debug-mantra", "scrutinize")) for e in entries)
-except (OSError, ValueError, KeyError, TypeError, AssertionError):
-    raise SystemExit(1)
-PYPLUGIN
-    then continue; fi
-    if [ ! -f "$agent_home/skills/debug-mantra/SKILL.md" ] || [ ! -f "$agent_home/skills/scrutinize/SKILL.md" ]; then
-      NINE_AGENTS+=("$agent")
-    fi
-  done
-  if [ ${#NINE_AGENTS[@]} -gt 0 ]; then
-    if [ "$DRY" = 1 ]; then
-      echo "9arm    would invoke upstream installer for ${NINE_AGENTS[*]}"
-    elif [ -n "${AODD_9ARM_INSTALLER:-}" ]; then
-      "$AODD_9ARM_INSTALLER" "${NINE_AGENTS[@]}"
-    else
-      if [[ " ${NINE_AGENTS[*]} " == *" antigravity-cli "* ]] && [ "${AGY_HOME:-$HOME/.gemini/antigravity-cli}" != "$HOME/.gemini/antigravity-cli" ]; then
-        echo "error   upstream 9arm installer does not support a custom AGY_HOME; install the skills for that home first" >&2; exit 1
-      fi
-      CLAUDE_CONFIG_DIR="$DEST" CODEX_HOME="${CODEX_HOME:-$HOME/.codex}" npx skills add thananon/9arm-skills --global --yes --agent "${NINE_AGENTS[@]}" --skill '*'
-    fi
-    if [ "$DRY" != 1 ]; then
-      for agent in "${NINE_AGENTS[@]}"; do
-        case "$agent" in
-          claude-code) agent_home="$DEST" ;;
-          codex) agent_home="${CODEX_HOME:-$HOME/.codex}" ;;
-          antigravity-cli) agent_home="${AGY_HOME:-$HOME/.gemini/antigravity-cli}" ;;
-        esac
-        for skill in debug-mantra scrutinize; do
-          [ -f "$agent_home/skills/$skill/SKILL.md" ] || { echo "error   upstream installer did not install $skill for $agent" >&2; exit 1; }
-        done
-      done
-    fi
-  fi
-fi
 if [ "$AGY_ON" = 1 ]; then  # Antigravity: its own installer (skills, agents, AGENTS.md block, hook adapter)
   if [ "$DRY" = 1 ]; then bash "$SRC/install-agy.sh" --dry-run; else bash "$SRC/install-agy.sh"; fi
 fi

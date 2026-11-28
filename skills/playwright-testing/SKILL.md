@@ -99,15 +99,15 @@ Before declaring implementation complete:
 When writing a regression test after a bug fix, this skill is the GUARD state:
 
 ```text
-debug-mantra (FIX) — fix validated
+bug-hunt (FIX) — fix validated
       ↓
 playwright-testing ← YOU ARE HERE (GUARD) — regression test
       ↓
-post-mortem (CLOSED) — document root cause
+incident-record (CLOSED) — document root cause
 ```
 
 Regression test rules:
 - Must fail without the fix applied, pass with it
 - Name it with the bug reference: `[TS-XXX] regression: {bug description}`
 - Tag `@regression` for easy filtering
-- After GUARD passes → offer to write a post-mortem
+- After GUARD passes → offer to write an incident record (`skills/ai-sdlc/references/incident-record.md`)

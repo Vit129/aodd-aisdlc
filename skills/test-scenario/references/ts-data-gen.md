@@ -11,7 +11,7 @@ Smart test data collection and generation with hierarchical reading.
 
 ### Step 1: Analyze & Collect Data
 - Extract fields needed, validation rules, and domain patterns from requirements / feature specifications
-- Scan existing test scenario files in `agent-memory/plans/` or `tests/test-scenario/` for existing patterns:
+- Scan existing test scenario files in `$AODD_MEMORY/<project>/plans/` or `tests/test-scenario/` for existing patterns:
   - Exact match: same system/feature folder
   - Fuzzy match: similar features (>50% keyword overlap)
   - Domain fallback: use domain patterns if no match

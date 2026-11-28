@@ -44,7 +44,7 @@ Use when:
 - Recreating missing memory files
 
 Responsibilities:
-- Create the base `agent-memory/` structure
+- Create the base project memory (`$AODD_MEMORY/<project>/`) structure
 - Ensure required files exist: `INDEX.md`
 - Apply the standard templates from `references/templates/`
 - Create `knowledge/`, `plans/` subdirectories
@@ -98,7 +98,7 @@ Recommended flow:
 
 ## Scope Rules
 
-- Read scope: `agent-memory/**`
+- Read scope: `$AODD_MEMORY/<project>/**`
 - Write scope: only the files requested or clearly implied by the task
 - Never touch source code or unrelated project files
 - Never store secrets, credentials, or PII
@@ -126,7 +126,7 @@ Read first:
 - the skill(s) used this session  ← patch targets for lessons
 
 Constraints:
-- Stay within agent-memory files and the skills used this session.
+- Stay within project memory files (`$AODD_MEMORY/<project>/`) and the skills used this session.
 - Keep edits minimal and structured.
 - Lessons go into skills, not into free-standing logs.
 - Do not invent lessons that are not supported by this session.

@@ -1,7 +1,7 @@
 # Review coverage
 
 Apply to every review of a diff, PR or branch, whichever skill does the analysis
-(`9arm-skills:scrutinize`, a built-in `code-review`, or a plain review). A prompt-only
+(`rules/coding/review-report.md`, a built-in `code-review`, or a plain review). A prompt-only
 review tends to skip files on a large diff and to cite line numbers that drift from the
 code. These four steps put hard limits on both.
 

@@ -152,4 +152,4 @@ This workflow feeds into:
 - Extension scaffold is optional — AI can write from scratch using explore data
 - Error cases MUST use `page.route()` not HAR
 - Re-explore when API changes (new version, new fields)
-- Document discovered APIs in `agent-memory/plans/` for team reference
+- Document discovered APIs in `$AODD_MEMORY/<project>/plans/` for team reference

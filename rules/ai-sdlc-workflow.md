@@ -14,7 +14,7 @@ Use the smallest applicable path; not every request needs an artifact or the ful
 
 | Request | Do |
 |---|---|
-| Bug or issue investigation, with or without a file change | Invoke `9arm-skills:debug-mantra` before diagnosing or proposing a fix, then follow the applicable route |
+| Bug or issue investigation, with or without a file change | Follow `skills/ai-sdlc/references/bug-hunt.md` before diagnosing or proposing a fix, then follow the applicable route |
 | A question or explanation, no file change | Answer it |
 | Read-only research, review, or planning | Use the matching route in `skills/ai-sdlc/references/skill-routing.md`; return findings with evidence |
 | Any file change (code, config, tests, UI) | The path table below picks the entry phase; the dev step and the QA testing step never skip |
@@ -29,7 +29,7 @@ user-started (`/<name>`). When this contract routes work to a skill, invoke it a
 | What changes | Path | Enter at | Gates | Living docs |
 |---|---|---|---|---|
 | Wording, typo, config value | Light | Phase 4: edit, then Phase 5: run the existing tests (a config value that changes behavior adds a test) | none | none |
-| Logic: a bug, a rule inside an existing requirement, a refactor | Logic | Phase 4: for a bug, `9arm-skills:debug-mantra` first, named in the reply; failing test (RED), fix to GREEN, refactor; Phase 5: the regression test, boundary and error cases, callers in the blast radius | none | `ARCHITECTURE.md` only if a seam or the data model changes |
+| Logic: a bug, a rule inside an existing requirement, a refactor | Logic | Phase 4: for a bug, `skills/ai-sdlc/references/bug-hunt.md` first, named in the reply; failing test (RED), fix to GREEN, refactor; Phase 5: the regression test, boundary and error cases, callers in the blast radius | none | `ARCHITECTURE.md` only if a seam or the data model changes |
 | UX/UI: look, layout, an on-screen flow | Design | Phase 4: read `DESIGN.md`, change; show a mock or screenshot first for a new screen. Phase 5: look at every affected screen in a browser (sizes, long text, dark mode); a Playwright test when a user flow changes | none | `DESIGN.md` |
 | Requirement: a new or changed capability, a rule users see, a new integration | Requirement | Phase 1 (interview skipped if the requirement is complete), then 2 to 5 | Gates 1-3 | `PRODUCT.md`, `ARCHITECTURE.md`, `CONTEXT.md` (+ `DESIGN.md` with UI) |
 | Unclear which | Interview | Phase 1 names the kind, then the path above | none | none |
@@ -91,7 +91,7 @@ and relevant environment. Existing valid results count; no duplicate test, build
 ## Roles and subagents
 
 One owner per phase; the main thread switches hats and dispatches the subagents. Dev Lead: Phase 2 dev half, Phase 4. QA Lead:
-Phase 2 QA half, Phase 3 (RED), Phase 5 (sign-off); never patches product code to pass a test. Reviewer: `9arm-skills:scrutinize` on the Phase 4 diff before Phase 5. Auditor: on the CEO's yes only (`docs/audit.md`).
+Phase 2 QA half, Phase 3 (RED), Phase 5 (sign-off); never patches product code to pass a test. Reviewer: `rules/coding/review-report.md` on the Phase 4 diff before Phase 5. Auditor: on the CEO's yes only (`docs/audit.md`).
 
 - **Phase 2 design (Requirement path):** two subagents in parallel with the same brief. Dev: structure, file separation, reuse,
   invariants. QA: failure modes, edge cases, security boundaries, mocks, testability. The main thread merges both into one plan and

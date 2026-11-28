@@ -22,7 +22,6 @@ These are the setup targets. A repo that lacks one is fixed in its own repo, not
 4. Version scheme: semver in every surface that shows it, plus a build number where the app needs one.
 5. Living docs (PRODUCT / ARCHITECTURE / DESIGN / CONTEXT) updated before a release starts when the change affects them.
 6. Changelog: `CHANGELOG.md` exists, and its generator is declared (`cliff.toml` / git-cliff or the repo's own tool). Every commit that changes behaviour adds its entry; a semver release generates the version heading, `skip` writes under `Unreleased`. Only one generator per repo.
-7. Before a bug investigation or review, ensure the current agent can load the required 9arm skill (`debug-mantra` or `scrutinize`). If missing, install through the supported upstream installer `npx skills add thananon/9arm-skills -g -y`, verify availability to that agent, and report the result.
 
 If the repo is missing one of these, report it as a gap. Do not invent the missing piece. Per-repo values (commands, ports, version files, changelog generator) and the gaps found in real repos are in [references/project-adapters.md](references/project-adapters.md).
 

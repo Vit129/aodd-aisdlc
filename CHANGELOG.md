@@ -3,6 +3,23 @@
 All notable changes to aodd-aisdlc are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and it follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.10.0] - 2026-11-28
+
+### Added
+- Agy (Gemini) is the default cross-family auditor (`37de42b`)
+- Replace 9arm skills with bug-hunt, incident-record, course-check (`1e5f0a7`)
+- Add review-coverage guardrails for diff and PR reviews (`044f99b`)
+
+### Documentation
+- Name tiers, not models; per-tool tier mapping is customizable (`71364a8`)
+- Agy tier mapping: big Carbon/Neon, middle Neon, small Hydrogen (`0caae83`)
+- Default to regular merge commit instead of squash (`8a8386b`)
+- Call per-project memory project memory ($AODD_MEMORY) (`de82888`)
+- Point review-coverage at review-report.md instead of scrutinize (`ea3d841`)
+
+### Fixed
+- Use namespaced 9arm-skills:scrutinize and 9arm-skills:debug-mantra (`38b66a8`)
+
 ## [0.9.4] - 2026-11-22
 
 ### Documentation

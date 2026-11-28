@@ -30,7 +30,7 @@ the handling skill after triage, not a bypass around it.
 | Hard technical decision, no clear answer | The `advisor` agent with a curated brief (decision, options, constraints) |
 | Bounded subtask: search files, read/summarize logs, classify, extract facts, run build/test/lint, git/ops mechanics | `Agent(model: "haiku")`, several in parallel; the big model plans and judges. See `rules/ai-sdlc-workflow.md` |
 | Read/map code ("where is X", "who calls Y") | `project_search` first, rg as the fallback, then a Haiku subagent for broad sweeps; the big model reads every file it will edit itself |
-| Review a plan, diff, PR or design | `9arm-skills:scrutinize`, with project standards and the originating spec |
+| Review a plan, diff, PR or design | `9arm-skills:scrutinize`, with project standards and the originating spec; for a diff or PR also `references/review-coverage.md` (git-built file checklist, line check, coverage line) |
 | Session handoff to another agent/session | Write `$AODD_PLANS/[FEATURE]/handoff.md` (sibling of, not the same file as, `ai-sdlc-task-progress.md`; format in `references/ai-sdlc-progress-spec.md` § Resume protocol) |
 | Bug or issue investigation | `9arm-skills:debug-mantra` (companion); use before proposing or applying a fix |
 | Looping or context nearly full | `qwenchance` (9arm); its "invoke the `handoff` skill" step means: write `$AODD_PLANS/[FEATURE]/handoff.md` as in the row above |
